@@ -11,7 +11,7 @@ public class principal {
 	
 	public static void main(String[] args) {
 		JFrame ventana = new VentanaPrincipal();
-		JPanel inicioSesion = new InicioSesion();
+		JPanel inicioSesion = new Registrarse();
 		
 		
 		final String inicioSesionString = "Iniciar Sesion";
@@ -21,7 +21,7 @@ public class principal {
 		
 
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ventana.setSize(800,800);
+		ventana.setSize(800,600);
 		ventana.setVisible(true);
 	}
 	
