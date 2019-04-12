@@ -11,20 +11,18 @@ public class principal {
 	
 	public static void main(String[] args) throws InterruptedException {
 		JFrame ventana = new Ventana();
-		JPanel inicioSesion = new PantallaPrincipal();
-		JPanel registrarse = new Registrarse();
-
-		
 		final String inicioSesionString = "Iniciar Sesion";
 		final String registrarseString = "Registrarse";
-		ventana.add(inicioSesion, inicioSesionString);
-		ventana.add(registrarse, registrarseString);
+		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		ventana.setExtendedState(6);
+		ventana.setVisible(true);
 
 		
-
-		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ventana.setSize(800,600);
-		ventana.setVisible(true);
+		JPanel inicioSesion = new PantallaPrincipal();
+		JPanel registrarse = new Registrarse();
+		ventana.add(inicioSesion, inicioSesionString);
+		ventana.add(registrarse, registrarseString);
+		
 		
 		while(true) {
 			Thread.sleep(10);

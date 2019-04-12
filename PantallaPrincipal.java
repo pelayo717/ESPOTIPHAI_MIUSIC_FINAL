@@ -19,7 +19,6 @@ public class PantallaPrincipal extends JPanel{
 		
 		
 		
-		
 		//Style changes
 		Font tituloFont = new Font(titulo.getFont().getName(),Font.BOLD,22);
 
@@ -30,16 +29,16 @@ public class PantallaPrincipal extends JPanel{
 		this.setLayout(layout);
 		
 		
-		
-		
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
 		//Manual Constraints
 		//x axis, y axis, width, height  
 		botonIzquierdaArriba.setBounds(10, 10, 150, 30);
 		botonIzquierdaAbajo.setBounds(10, 50, 150, 30);
-		titulo.setBounds(100, 20, 600, 30);
-		busquedaTextfield.setBounds(255,90,300, 40);
-		botonBuscar.setBounds(585, 90, 150, 30);
-		botonLimpiarBuscador.setBounds(585,130,150, 30);
+		titulo.setBounds(screenSize.width/2 - 300, 20, 600, 30);
+		busquedaTextfield.setBounds(screenSize.width/2 - 250,90,500, 40);
+		botonBuscar.setBounds(screenSize.width/2 + 270, 90, 150, 30);
+		botonLimpiarBuscador.setBounds(screenSize.width/2 + 270,130,150, 30);
 
 		
 		//We add all the components
