@@ -11,7 +11,7 @@ public class principal {
 	
 	public static void main(String[] args) throws InterruptedException {
 		JFrame ventana = new Ventana();
-		JPanel inicioSesion = new InicioSesion();
+		JPanel inicioSesion = new PantallaPrincipal();
 		JPanel registrarse = new Registrarse();
 
 		
