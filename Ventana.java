@@ -5,10 +5,10 @@ import java.awt.*;
 
 import javax.swing.*;
 
-public class VentanaPrincipal extends JFrame {
+public class Ventana extends JFrame {
 	public InicioSesion ventanaInicio;
 	
-	public VentanaPrincipal() {
+	public Ventana() {
 		Container container = this.getContentPane();
 		container.setLayout(new CardLayout());
 		
