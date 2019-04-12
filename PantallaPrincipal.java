@@ -38,8 +38,8 @@ public class PantallaPrincipal extends JPanel{
 		botonIzquierdaAbajo.setBounds(10, 50, 150, 30);
 		titulo.setBounds(100, 20, 600, 30);
 		busquedaTextfield.setBounds(255,90,300, 40);
-		botonBuscar.setBounds(585, 90, 200, 40);
-		botonLimpiarBuscador.setBounds(600,120,300, 40);
+		botonBuscar.setBounds(585, 90, 150, 30);
+		botonLimpiarBuscador.setBounds(585,130,150, 30);
 
 		
 		//We add all the components
