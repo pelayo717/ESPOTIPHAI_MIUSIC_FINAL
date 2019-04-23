@@ -14,7 +14,6 @@ public class principal {
 		JFrame ventana = new Ventana();
 		final String inicioSesionString = "Iniciar Sesion";
 		final String registrarseString = "Registrarse";
-		final String inicioSesionString = "Iniciar Sesion";
 
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ventana.setExtendedState(6);

@@ -44,9 +44,9 @@ public class PantallaPrincipal extends JPanel{
 		busquedaTextfield.setBounds(screenSize.width/2 - 250,90,500, 40);
 		botonBuscar.setBounds(screenSize.width/2 + 270, 90, 150, 30);
 		botonLimpiarBuscador.setBounds(screenSize.width/2 + 270,130,150, 30);
-		opcion1.setBounds(270, 130, 75, 30);
-		opcion2.setBounds(370, 130, 75, 30);
-		opcion3.setBounds(470, 130, 75, 30);
+		opcion1.setBounds(screenSize.width/2 - 180, 130, 80, 30);
+		opcion2.setBounds(screenSize.width/2 - 40, 130, 80, 30);
+		opcion3.setBounds(screenSize.width/2 + 100, 130, 80, 30);
 
 
 		
@@ -62,5 +62,7 @@ public class PantallaPrincipal extends JPanel{
 		this.add(opcion3);
 		
 	}
+	
+	
 
 }
