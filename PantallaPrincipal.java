@@ -15,9 +15,14 @@ public class PantallaPrincipal extends JPanel{
 		JButton botonBuscar = new JButton("Buscar");
 		JButton botonLimpiarBuscador = new JButton("Limpiar Buscador");
 		
+		JRadioButton opcion1 = new JRadioButton("Titulo");
+		JRadioButton opcion2 = new JRadioButton("Album");
+		JRadioButton opcion3 = new JRadioButton("Autor");
 		
-		
-		
+		ButtonGroup grupo_eleccion = new ButtonGroup();
+		grupo_eleccion.add(opcion1);
+		grupo_eleccion.add(opcion2);
+		grupo_eleccion.add(opcion3);
 		
 		//Style changes
 		Font tituloFont = new Font(titulo.getFont().getName(),Font.BOLD,22);
@@ -39,6 +44,10 @@ public class PantallaPrincipal extends JPanel{
 		busquedaTextfield.setBounds(screenSize.width/2 - 250,90,500, 40);
 		botonBuscar.setBounds(screenSize.width/2 + 270, 90, 150, 30);
 		botonLimpiarBuscador.setBounds(screenSize.width/2 + 270,130,150, 30);
+		opcion1.setBounds(270, 130, 75, 30);
+		opcion2.setBounds(370, 130, 75, 30);
+		opcion3.setBounds(470, 130, 75, 30);
+
 
 		
 		//We add all the components
@@ -48,6 +57,9 @@ public class PantallaPrincipal extends JPanel{
 		this.add(busquedaTextfield);
 		this.add(botonBuscar);
 		this.add(botonLimpiarBuscador);
+		this.add(opcion1);
+		this.add(opcion2);
+		this.add(opcion3);
 		
 	}
 
