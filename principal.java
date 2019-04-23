@@ -16,6 +16,7 @@ public class principal {
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ventana.setExtendedState(6);
 		ventana.setVisible(true);
+		ventana.setResizable(false);
 
 		
 		JPanel inicioSesion = new PantallaPrincipal();
