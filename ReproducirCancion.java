@@ -15,7 +15,7 @@ public class ReproducirCancion extends PantallaPrincipal {
 	
 	public ReproducirCancion(String arg1,int arg2,String arg3,int arg4) {
 		super();
-		
+		String[] names = { "Bill", "Geri", "Greg", "Jean", "Kirk", "Phillip", "Susan","Bill", "Geri", "Greg", "Jean", "Kirk", "Phillip", "Susan"};
 		this.titulo = arg1;
 		this.anyo = arg2;
 		this.autor = arg3;
@@ -23,9 +23,11 @@ public class ReproducirCancion extends PantallaPrincipal {
 		
 		//Declaracion
 		ImageIcon icono_corchea = new ImageIcon("src/ESPOTIPHAI_MIUSIC_FINAL/photo_default.jpg");
-		ImageIcon icono_reproducir = new ImageIcon("src/ESPOTIPHAI_MIUSIC_FINAL/play.jpg");
-		ImageIcon icono_parar = new ImageIcon("src/ESPOTIPHAI_MIUSIC_FINAL/pause.jpg");
+		ImageIcon icono_reproducir = new ImageIcon("src/ESPOTIPHAI_MIUSIC_FINAL/play.png");
+		ImageIcon icono_parar = new ImageIcon("src/ESPOTIPHAI_MIUSIC_FINAL/pause.png");
 		
+	    
+	    
 		JLabel imagen_reproduccion = new JLabel("",icono_corchea,JLabel.CENTER);
 		JLabel imagen_play = new JLabel("",icono_reproducir,JLabel.CENTER);
 		JLabel imagen_pause = new JLabel("",icono_parar,JLabel.CENTER);
@@ -36,8 +38,9 @@ public class ReproducirCancion extends PantallaPrincipal {
 		JLabel autor_cancion = new JLabel("Autor:\t\t\t\t\t" + this.autor,SwingConstants.CENTER);
 		JLabel duracion_cancion = new JLabel("Duracion:\t\t\t\t\t" + this.duracion + " s",SwingConstants.CENTER);
 		JLabel comentarios_label = new JLabel("Comentarios de la cancion", SwingConstants.CENTER);
-		JList lista_comentarios = new JList();
-		
+		JList lista_comentarios = new JList(names);
+		JScrollPane scrollPane = new JScrollPane(lista_comentarios);
+
 		
 		//Style changes
 		Font datosFont = new Font(datos_cancion.getFont().getName(),Font.BOLD,datos_cancion.getFont().getSize());
@@ -46,6 +49,7 @@ public class ReproducirCancion extends PantallaPrincipal {
 		Font autorFont = new Font(autor_cancion.getFont().getName(),Font.BOLD,autor_cancion.getFont().getSize());
 		Font duracionFont = new Font(duracion_cancion.getFont().getName(),Font.BOLD,duracion_cancion.getFont().getSize());
 		Font comentariosFont = new Font(datos_cancion.getFont().getName(),Font.BOLD,datos_cancion.getFont().getSize());
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
 		datos_cancion.setFont(datosFont);
 		titulo_cancion.setFont(tituloFont);
@@ -69,11 +73,11 @@ public class ReproducirCancion extends PantallaPrincipal {
 		autor_cancion.setBounds(screenSize.width/2 + 50,320,150,50);
 		duracion_cancion.setBounds(screenSize.width/2 + 50,360,180,50);
 		comentarios_label.setBounds(screenSize.width/2 + 105, 420, 250, 50);
-		lista_comentarios.setBounds(screenSize.width/2 + 80, 480, 300, 200);
+		scrollPane.setBounds(screenSize.width/2 + 80, 480, 300, 200);
 
 		imagen_reproduccion.setBounds(screenSize.width/2 - 350, 190, 300, 300);
-		imagen_play.setBounds(screenSize.width/2 - 300, 500, 70, 70);
-		imagen_pause.setBounds(screenSize.width/2 - 230, 500, 70, 70);
+		imagen_play.setBounds(screenSize.width/2 - 280, 500, 70, 70);
+		imagen_pause.setBounds(screenSize.width/2 - 210, 500, 70, 70);
 
 		
 		
@@ -84,7 +88,7 @@ public class ReproducirCancion extends PantallaPrincipal {
 		this.add(autor_cancion);
 		this.add(duracion_cancion);
 		this.add(comentarios_label);
-		this.add(lista_comentarios);
+		this.add(scrollPane);
 		this.add(imagen_reproduccion);
 		this.add(imagen_play);
 		this.add(imagen_pause);
