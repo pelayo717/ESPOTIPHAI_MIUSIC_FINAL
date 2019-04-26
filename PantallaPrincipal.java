@@ -4,14 +4,17 @@ import java.awt.*;
 import javax.swing.*;
 
 public class PantallaPrincipal extends JPanel{
-
+	JButton botonIzquierdaArriba;
+	JButton botonIzquierdaAbajo;
+	JTextField busquedaTextfield;
+	
 	public PantallaPrincipal() {
 		
 		this.setBackground(new Color(40,159,211));
-		JButton botonIzquierdaArriba = new JButton("Iniciar Sesion");
-		JButton botonIzquierdaAbajo = new JButton("Registro");
+		this.botonIzquierdaArriba = new JButton("Iniciar Sesion");
+		this.botonIzquierdaAbajo = new JButton("Registro");
 		JLabel titulo = new JLabel("ESPOTIPHAIMUSIC", SwingConstants.CENTER);
-		JTextField busquedaTextfield = new JTextField(10);
+		this.busquedaTextfield = new JTextField(10);
 		JButton botonBuscar = new JButton("Buscar");
 		JButton botonLimpiarBuscador = new JButton("Limpiar Buscador");
 		

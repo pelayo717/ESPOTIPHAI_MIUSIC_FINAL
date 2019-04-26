@@ -1,26 +1,41 @@
 package ESPOTIPHAI_MIUSIC_FINAL;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
 
 public class Registrarse extends JPanel{
+	JButton botonInicio;
+	JLabel titulo;
+	JLabel usuarioLabel;
+	JTextField usuarioTextfield;
+	JLabel authorLabel;
+	JTextField authorTextfield ;
+	JLabel birthLabel;
+	JTextField birthTextfield ;
+	JLabel passwordLabel;
+	JTextField passwordTextfield ;
+	JButton botonIniciarSesion ;
+	JLabel preguntaLabel;
+	JButton botonRegistrarse;
+	
 	public Registrarse() {
 		
 		this.setBackground(new Color(40,159,211));
-		JButton botonInicio = new JButton("Inicio");
-		JLabel titulo = new JLabel("ESPOTIPHAIMUSIC", SwingConstants.CENTER);
-		JLabel usuarioLabel = new JLabel("Nombre de usuario", SwingConstants.LEFT);
-		JTextField usuarioTextfield = new JTextField(10);
-		JLabel authorLabel = new JLabel("Nombre de autor", SwingConstants.LEFT);
-		JTextField authorTextfield = new JTextField(10);
-		JLabel birthLabel = new JLabel("Fecha de nacimiento", SwingConstants.LEFT);
-		JTextField birthTextfield = new JTextField(10);
-		JLabel passwordLabel = new JLabel("Contraseña", SwingConstants.LEFT);
-		JTextField passwordTextfield = new JTextField(10);
-		JButton botonIniciarSesion = new JButton("Iniciar Sesion");
-		JLabel preguntaLabel = new JLabel("¿Ya tiene cuenta?", SwingConstants.CENTER);
-		JButton botonRegistrarse = new JButton("Registrarse");
+		this.botonInicio = new JButton("Inicio");
+		this.titulo = new JLabel("ESPOTIPHAIMUSIC", SwingConstants.CENTER);
+		this.usuarioLabel = new JLabel("Nombre de usuario", SwingConstants.LEFT);
+		this.usuarioTextfield = new JTextField(10);
+		this.authorLabel = new JLabel("Nombre de autor", SwingConstants.LEFT);
+		this.authorTextfield = new JTextField(10);
+		this.birthLabel = new JLabel("Fecha de nacimiento", SwingConstants.LEFT);
+		this.birthTextfield = new JTextField(10);
+		this.passwordLabel = new JLabel("Contraseña", SwingConstants.LEFT);
+		this.passwordTextfield = new JTextField(10);
+		this.botonIniciarSesion = new JButton("Iniciar Sesion");
+		this.preguntaLabel = new JLabel("¿Ya tiene cuenta?", SwingConstants.CENTER);
+		this.botonRegistrarse = new JButton("Registrarse");
 		
 		
 		//Style changes
@@ -41,24 +56,25 @@ public class Registrarse extends JPanel{
 		this.setLayout(layout);
 		
 		
-		
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
 		
 		//Manual Constraints
 		//x axis, y axis, width, height  
 
 		botonInicio.setBounds(10, 10, 100, 30);
-		titulo.setBounds(100, 20, 600, 30);
-		usuarioLabel.setBounds(30, 90, 200, 30);
-		usuarioTextfield.setBounds(185,90,300, 40);
-		authorLabel.setBounds(30, 150, 200, 30);
-		authorTextfield.setBounds(185,150,300, 40);
-		birthLabel.setBounds(30, 210, 200, 30);
-		birthTextfield.setBounds(185,210,300, 40);
-		passwordLabel.setBounds(30, 280, 200, 30);
-		passwordTextfield.setBounds(185,280,300, 40);
-		botonRegistrarse.setBounds(325, 360, 150, 30);
-		preguntaLabel.setBounds(100, 410, 600, 30);
-		botonIniciarSesion.setBounds(325, 450, 150, 30);
+		titulo.setBounds(screenSize.width/2 - 300, 20, 600, 30);
+		usuarioLabel.setBounds(screenSize.width/2 - 200, 90, 200, 40);
+		usuarioTextfield.setBounds(screenSize.width/2,90,300, 40);
+		authorLabel.setBounds(screenSize.width/2 - 200, 150, 200, 40);
+		authorTextfield.setBounds(screenSize.width/2,150,300, 40);
+		birthLabel.setBounds(screenSize.width/2  - 200, 210, 200, 40);
+		birthTextfield.setBounds(screenSize.width/2,210,300, 40);
+		passwordLabel.setBounds(screenSize.width/2  - 200, 270, 200, 40);
+		passwordTextfield.setBounds(screenSize.width/2,270,300, 40);
+		botonRegistrarse.setBounds(screenSize.width/2 - 75, 360, 150, 30);
+		preguntaLabel.setBounds(screenSize.width/2 - 300, 410, 600, 30);
+		botonIniciarSesion.setBounds(screenSize.width/2 - 75, 450, 150, 30);
 
 		
 		//We add all the components
@@ -92,6 +108,13 @@ public class Registrarse extends JPanel{
 		);
 		*/
 	}
-
+	
+	
+	 // método para asignar un controlador al botón
+	 public void setControlador(ActionListener c) {
+		 this.botonInicio.addActionListener(c);
+		 this.botonIniciarSesion.addActionListener(c);
+	 }
+	 
 }
 

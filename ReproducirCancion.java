@@ -1,6 +1,7 @@
 package ESPOTIPHAI_MIUSIC_FINAL;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.Date;
 
@@ -29,8 +30,10 @@ public class ReproducirCancion extends PantallaPrincipal {
 	    
 	    
 		JLabel imagen_reproduccion = new JLabel("",icono_corchea,JLabel.CENTER);
-		JLabel imagen_play = new JLabel("",icono_reproducir,JLabel.CENTER);
-		JLabel imagen_pause = new JLabel("",icono_parar,JLabel.CENTER);
+		JButton imagen_play = new JButton();
+		JButton imagen_pause = new JButton();
+		imagen_play.setIcon(icono_reproducir);
+		imagen_pause.setIcon(icono_parar);
 
 		JLabel datos_cancion = new JLabel("Datos de la cancion", SwingConstants.CENTER);
 		JLabel titulo_cancion = new JLabel("Titulo:\t\t\t\t\t" + this.titulo,SwingConstants.CENTER);
@@ -92,7 +95,12 @@ public class ReproducirCancion extends PantallaPrincipal {
 		this.add(imagen_reproduccion);
 		this.add(imagen_play);
 		this.add(imagen_pause);
-
 	}
+	
+	 // método para asignar un controlador al botón
+	 public void setControlador(ActionListener c) {
+		 this.botonIzquierdaArriba.addActionListener(c);
+		 this.botonIzquierdaAbajo.addActionListener(c);
+	 }
 	
 }
