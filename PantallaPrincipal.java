@@ -7,7 +7,12 @@ public class PantallaPrincipal extends JPanel{
 	JButton botonIzquierdaArriba;
 	JButton botonIzquierdaAbajo;
 	JTextField busquedaTextfield;
-	
+	JButton botonBuscar;
+	JButton botonLimpiarBuscador;
+	JRadioButton opcion1;
+	JRadioButton opcion2;
+	JRadioButton opcion3;
+	ButtonGroup grupo_eleccion;
 	public PantallaPrincipal() {
 		
 		this.setBackground(new Color(40,159,211));
@@ -15,14 +20,14 @@ public class PantallaPrincipal extends JPanel{
 		this.botonIzquierdaAbajo = new JButton("Registro");
 		JLabel titulo = new JLabel("ESPOTIPHAIMUSIC", SwingConstants.CENTER);
 		this.busquedaTextfield = new JTextField(10);
-		JButton botonBuscar = new JButton("Buscar");
-		JButton botonLimpiarBuscador = new JButton("Limpiar Buscador");
+		this.botonBuscar = new JButton("Buscar");
+		this.botonLimpiarBuscador = new JButton("Limpiar Buscador");
 		
-		JRadioButton opcion1 = new JRadioButton("Titulo");
-		JRadioButton opcion2 = new JRadioButton("Album");
-		JRadioButton opcion3 = new JRadioButton("Autor");
+		this.opcion1 = new JRadioButton("Titulo");
+		this.opcion2 = new JRadioButton("Album");
+		this.opcion3 = new JRadioButton("Autor");
 		
-		ButtonGroup grupo_eleccion = new ButtonGroup();
+		this.grupo_eleccion = new ButtonGroup();
 		grupo_eleccion.add(opcion1);
 		grupo_eleccion.add(opcion2);
 		grupo_eleccion.add(opcion3);

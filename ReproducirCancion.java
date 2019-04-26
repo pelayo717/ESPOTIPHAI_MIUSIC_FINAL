@@ -14,6 +14,9 @@ public class ReproducirCancion extends PantallaPrincipal {
 	private String autor;
 	private int duracion;
 	
+	JButton botonPlay;
+	JButton botonPause;
+	
 	public ReproducirCancion(String arg1,int arg2,String arg3,int arg4) {
 		super();
 		String[] names = { "Bill", "Geri", "Greg", "Jean", "Kirk", "Phillip", "Susan","Bill", "Geri", "Greg", "Jean", "Kirk", "Phillip", "Susan"};
@@ -30,10 +33,10 @@ public class ReproducirCancion extends PantallaPrincipal {
 	    
 	    
 		JLabel imagen_reproduccion = new JLabel("",icono_corchea,JLabel.CENTER);
-		JButton imagen_play = new JButton();
-		JButton imagen_pause = new JButton();
-		imagen_play.setIcon(icono_reproducir);
-		imagen_pause.setIcon(icono_parar);
+		this.botonPlay = new JButton();
+		this.botonPause = new JButton();
+		botonPlay.setIcon(icono_reproducir);
+		botonPause.setIcon(icono_parar);
 
 		JLabel datos_cancion = new JLabel("Datos de la cancion", SwingConstants.CENTER);
 		JLabel titulo_cancion = new JLabel("Titulo:\t\t\t\t\t" + this.titulo,SwingConstants.CENTER);
@@ -79,8 +82,8 @@ public class ReproducirCancion extends PantallaPrincipal {
 		scrollPane.setBounds(screenSize.width/2 + 80, 480, 300, 200);
 
 		imagen_reproduccion.setBounds(screenSize.width/2 - 350, 190, 300, 300);
-		imagen_play.setBounds(screenSize.width/2 - 280, 500, 70, 70);
-		imagen_pause.setBounds(screenSize.width/2 - 210, 500, 70, 70);
+		botonPlay.setBounds(screenSize.width/2 - 280, 500, 70, 70);
+		botonPause.setBounds(screenSize.width/2 - 210, 500, 70, 70);
 
 		
 		
@@ -93,8 +96,8 @@ public class ReproducirCancion extends PantallaPrincipal {
 		this.add(comentarios_label);
 		this.add(scrollPane);
 		this.add(imagen_reproduccion);
-		this.add(imagen_play);
-		this.add(imagen_pause);
+		this.add(botonPlay);
+		this.add(botonPause);
 	}
 	
 	 // método para asignar un controlador al botón
