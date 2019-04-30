@@ -5,12 +5,12 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-public class ControladorReproducirCancion implements ActionListener{
+public class ControladorPerfil implements ActionListener{
 		private ReproducirCancion vista;
 		private int modelo;
 		
 		
-		public ControladorReproducirCancion(ReproducirCancion vista, int modelo) {
+		public ControladorPerfil(ReproducirCancion vista, int modelo) {
 			this.vista = vista;
 			this.modelo = modelo;
 		}
@@ -19,9 +19,7 @@ public class ControladorReproducirCancion implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if (((JButton)e.getSource()).getText() == "Iniciar Sesion") {
 				Ventana.ventana.showInicioSesion();
-			} else if(((JButton)e.getSource()).getText() == "Ver Perfil") {
-				Ventana.ventana.showPerfil();
-			}  else if(((JButton)e.getSource()).getText() == "Registro") {
+			} else if(((JButton)e.getSource()).getText() == "Registro") {
 				Ventana.ventana.showRegistrarse();
 			} else if(((JButton)e.getSource()).getText() == "Buscar") {
 				System.out.println("buscar");

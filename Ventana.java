@@ -6,7 +6,10 @@ import java.awt.*;
 import javax.swing.*;
 
 public class Ventana extends JFrame {
-	public InicioSesion ventanaInicio;
+	public InicioSesion inicioSesion;
+	public ReproducirCancion reproducirCancion;
+	public Registrarse registrarse;
+	public Perfil perfil;
 	public static Ventana ventana;
 	
 	public Ventana() {
@@ -16,15 +19,17 @@ public class Ventana extends JFrame {
 		final String inicioSesionString = "Iniciar Sesion";
 		final String registrarseString = "Registrarse";
 		final String reproducirCancionString = "Reproducir Cancion";
+		final String perfilString = "Perfil";
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setExtendedState(6);
 		this.setVisible(true);
 		this.setResizable(false);
 
-		ReproducirCancion reproducirCancion = new ReproducirCancion("Por la bahia",2015,"Layo",223);
-		InicioSesion inicioSesion = new InicioSesion();
-		Registrarse registrarse = new Registrarse();
+		this.reproducirCancion = new ReproducirCancion("Por la bahia",2015,"Layo",223);
+		this.inicioSesion = new InicioSesion();
+		this.registrarse = new Registrarse();
+		this.perfil = new Perfil();
 
 		
 		ControladorReproducirCancion controladorReproducirCancion = new ControladorReproducirCancion(reproducirCancion, 2);
@@ -39,6 +44,7 @@ public class Ventana extends JFrame {
 		this.add(reproducirCancion, reproducirCancionString);
 		this.add(inicioSesion, inicioSesionString);
 		this.add(registrarse, registrarseString);
+		this.add(perfil, perfilString);
 		Ventana.ventana = this;
 	}
 	
@@ -58,6 +64,12 @@ public class Ventana extends JFrame {
 		final String registrarseString = "Registrarse";
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), registrarseString);
+	}
+	
+	public void showPerfil(){
+		final String perfilString = "Perfil";
+		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
+	    cl.show(this.getContentPane(), perfilString);
 	}
 
 }

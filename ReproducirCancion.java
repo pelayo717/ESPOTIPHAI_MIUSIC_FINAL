@@ -76,7 +76,7 @@ public class ReproducirCancion extends PantallaPrincipal {
 
 		
 		//Style changes
-		Font datosFont = new Font(datos_cancion.getFont().getName(),Font.BOLD,datos_cancion.getFont().getSize());
+		Font datosFont = new Font(datos_cancion.getFont().getName(),Font.BOLD,16);
 		Font tituloFont = new Font(titulo_cancion.getFont().getName(),Font.BOLD,titulo_cancion.getFont().getSize());
 		Font anyoFont = new Font(anyo_cancion.getFont().getName(),Font.BOLD,anyo_cancion.getFont().getSize());
 		Font autorFont = new Font(autor_cancion.getFont().getName(),Font.BOLD,autor_cancion.getFont().getSize());
