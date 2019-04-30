@@ -1,4 +1,4 @@
-package ESPOTIPHAI_MIUSIC_FINAL;
+package Grafic;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
