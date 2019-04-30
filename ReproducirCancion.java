@@ -1,11 +1,29 @@
 package ESPOTIPHAI_MIUSIC_FINAL;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.net.URL;
 import java.util.Date;
 
 import javax.swing.*;
+
+import javafx.scene.input.MouseEvent;
+
+class Firulais {
+	   public String autor;
+	   public String comentario;
+	   public Firulais(String autor, String comentario) {
+			this.autor = autor;
+			this.comentario = comentario;
+	   }
+	   
+	   @Override
+	    public String toString() {
+	        return autor + ":\n\t " + comentario;
+	    }
+};  
+
+
 
 public class ReproducirCancion extends PantallaPrincipal {
 
@@ -16,10 +34,18 @@ public class ReproducirCancion extends PantallaPrincipal {
 	
 	JButton botonPlay;
 	JButton botonPause;
-	
+	JList lista_comentarios;
+	JScrollPane scrollPane;
+	JButton botonList;
+	Firulais[] names;
+
 	public ReproducirCancion(String arg1,int arg2,String arg3,int arg4) {
 		super();
-		String[] names = { "Bill", "Geri", "Greg", "Jean", "Kirk", "Phillip", "Susan","Bill", "Geri", "Greg", "Jean", "Kirk", "Phillip", "Susan"};
+		Firulais pelayo = new Firulais("Pelayo", "Estoy haciendo el codigo");
+		Firulais manolo = new Firulais("Manuel", "Estoy jugando al Fornite");
+		names = new Firulais[2];
+		names[0] = pelayo;
+		names[1] = manolo;
 		this.titulo = arg1;
 		this.anyo = arg2;
 		this.autor = arg3;
@@ -35,6 +61,7 @@ public class ReproducirCancion extends PantallaPrincipal {
 		JLabel imagen_reproduccion = new JLabel("",icono_corchea,JLabel.CENTER);
 		this.botonPlay = new JButton();
 		this.botonPause = new JButton();
+		this.botonList = new JButton("Ver comentario");
 		botonPlay.setIcon(icono_reproducir);
 		botonPause.setIcon(icono_parar);
 
@@ -44,8 +71,8 @@ public class ReproducirCancion extends PantallaPrincipal {
 		JLabel autor_cancion = new JLabel("Autor:\t\t\t\t\t" + this.autor,SwingConstants.CENTER);
 		JLabel duracion_cancion = new JLabel("Duracion:\t\t\t\t\t" + this.duracion + " s",SwingConstants.CENTER);
 		JLabel comentarios_label = new JLabel("Comentarios de la cancion", SwingConstants.CENTER);
-		JList lista_comentarios = new JList(names);
-		JScrollPane scrollPane = new JScrollPane(lista_comentarios);
+		lista_comentarios = new JList(names);
+		scrollPane = new JScrollPane(lista_comentarios);
 
 		
 		//Style changes
@@ -78,14 +105,16 @@ public class ReproducirCancion extends PantallaPrincipal {
 		anyo_cancion.setBounds(screenSize.width/2 + 50, 280, 150, 50);
 		autor_cancion.setBounds(screenSize.width/2 + 50,320,150,50);
 		duracion_cancion.setBounds(screenSize.width/2 + 50,360,180,50);
-		comentarios_label.setBounds(screenSize.width/2 + 105, 420, 250, 50);
-		scrollPane.setBounds(screenSize.width/2 + 80, 480, 300, 200);
+		comentarios_label.setBounds(screenSize.width/2 + 105, 400, 250, 50);
+		scrollPane.setBounds(screenSize.width/2 + 80, 460, 300, 200);
+		botonList.setBounds(screenSize.width/2 + 150, 670, 150, 30);
+
 
 		imagen_reproduccion.setBounds(screenSize.width/2 - 350, 190, 300, 300);
 		botonPlay.setBounds(screenSize.width/2 - 280, 500, 70, 70);
 		botonPause.setBounds(screenSize.width/2 - 210, 500, 70, 70);
 
-		
+	
 		
 		//Añadimos
 		this.add(datos_cancion);
@@ -95,15 +124,23 @@ public class ReproducirCancion extends PantallaPrincipal {
 		this.add(duracion_cancion);
 		this.add(comentarios_label);
 		this.add(scrollPane);
+		this.add(botonList);
 		this.add(imagen_reproduccion);
 		this.add(botonPlay);
 		this.add(botonPause);
+	}
+	
+	public void limpiarBuscador(){
+		this.busquedaTextfield.setText("");
+		this.grupo_eleccion.clearSelection();
 	}
 	
 	 // método para asignar un controlador al botón
 	 public void setControlador(ActionListener c) {
 		 this.botonIzquierdaArriba.addActionListener(c);
 		 this.botonIzquierdaAbajo.addActionListener(c);
+		 this.botonBuscar.addActionListener(c);
+		 this.botonLimpiarBuscador.addActionListener(c);
+		 this.botonList.addActionListener(c);
 	 }
-	
 }

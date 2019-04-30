@@ -1,9 +1,9 @@
 package ESPOTIPHAI_MIUSIC_FINAL;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
+import java.awt.event.*;
+
+import javax.swing.*;
 
 public class ControladorReproducirCancion implements ActionListener{
 		private ReproducirCancion vista;
@@ -21,6 +21,16 @@ public class ControladorReproducirCancion implements ActionListener{
 				Ventana.ventana.showInicioSesion();
 			} else if(((JButton)e.getSource()).getText() == "Registro") {
 				Ventana.ventana.showRegistrarse();
+			} else if(((JButton)e.getSource()).getText() == "Buscar") {
+				System.out.println("buscar");
+			} else if(((JButton)e.getSource()).getText() == "Limpiar Buscador") {
+				vista.limpiarBuscador();
+				System.out.println("limpiar buscador");
+			} else if(((JButton)e.getSource()).getText() == "Ver comentario") {
+		        final JFrame parent = new JFrame();
+				JOptionPane.showMessageDialog(parent,"Autor: " + vista.names[vista.lista_comentarios.getSelectedIndex()].autor + "\n" + "Comentario: " + vista.names[vista.lista_comentarios.getSelectedIndex()].comentario);
+			} else {
+				System.out.println(e.getSource());
 			}
 		}
 }
