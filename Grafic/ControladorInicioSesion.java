@@ -1,9 +1,11 @@
-package Grafic;
+package ESPOTIPHAI_MIUSIC_FINAL.Grafic;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
 
 public class ControladorInicioSesion implements ActionListener{
 		private InicioSesion vista;
@@ -23,6 +25,8 @@ public class ControladorInicioSesion implements ActionListener{
 				Ventana.ventana.reproducirCancion.botonIzquierdaAbajo.setVisible(false);
 			} else if(((JButton)e.getSource()).getText() == "Registrarse") {
 				Ventana.ventana.showRegistrarse();
+			} else if(((JButton)e.getSource()).getText() == "Iniciar Sesion") {
+				Sistema.sistema.iniciarSesion(vista.usuarioTextfield.getText(), vista.passwordTextfield.getText());
 			}
 		}
 }

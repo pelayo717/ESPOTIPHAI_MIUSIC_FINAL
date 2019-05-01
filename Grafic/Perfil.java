@@ -1,4 +1,4 @@
-package Grafic;
+package ESPOTIPHAI_MIUSIC_FINAL.Grafic;
 
 import java.awt.*;
 import javax.swing.*;

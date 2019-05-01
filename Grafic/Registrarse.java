@@ -1,4 +1,4 @@
-package Grafic;
+package ESPOTIPHAI_MIUSIC_FINAL.Grafic;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
@@ -114,6 +114,7 @@ public class Registrarse extends JPanel{
 	 public void setControlador(ActionListener c) {
 		 this.botonInicio.addActionListener(c);
 		 this.botonIniciarSesion.addActionListener(c);
+		 this.botonRegistrarse.addActionListener(c);
 	 }
 	 
 }

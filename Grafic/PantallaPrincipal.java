@@ -1,11 +1,11 @@
-package Grafic;
+package ESPOTIPHAI_MIUSIC_FINAL.Grafic;
 
 import java.awt.*;
 import javax.swing.*;
 
 public class PantallaPrincipal extends JPanel{
-	JButton botonIzquierdaArriba;
-	JButton botonIzquierdaAbajo;
+	public JButton botonIzquierdaArriba;
+	public JButton botonIzquierdaAbajo;
 	JTextField busquedaTextfield;
 	JButton botonBuscar;
 	JButton botonLimpiarBuscador;

@@ -1,9 +1,13 @@
-package Grafic;
+package ESPOTIPHAI_MIUSIC_FINAL.Grafic;
 
 
 import java.awt.*;
+import java.io.IOException;
 
 import javax.swing.*;
+
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
+import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 public class Ventana extends JFrame {
 	public InicioSesion inicioSesion;
@@ -11,8 +15,11 @@ public class Ventana extends JFrame {
 	public Registrarse registrarse;
 	public Perfil perfil;
 	public static Ventana ventana;
+	Sistema sistema;
 	
-	public Ventana() {
+	public Ventana() throws Mp3PlayerException, IOException{
+		this.sistema = Sistema.getSistema();
+		
 		Container container = this.getContentPane();
 		container.setLayout(new CardLayout());
 		
