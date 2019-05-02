@@ -103,7 +103,6 @@ public class Sistema implements Serializable{
 				if(archivo_configuracion.exists() == true) {
 					sistema.leerDatosConfiguracion();
 				}
-				System.out.println(sistema);
 				sistema.empeorarCuentaPrincipal();
 				sistema.desbloquearUsuario();
 			}else {
@@ -280,10 +279,9 @@ public class Sistema implements Serializable{
 					sistema.es_administrador = true;
 				}
 				new ExcepcionInformativa("\nHa iniciado correctamente la sesion " + nombre_usuario);
-
+				Ventana.ventana.inicioSesion.limpiarVentana();
 				Ventana.ventana.showReproducirCancion();
-				Ventana.ventana.reproducirCancion.botonIzquierdaArriba.setText("Ver Perfil");
-				Ventana.ventana.reproducirCancion.botonIzquierdaAbajo.setVisible(false);
+				Ventana.ventana.reproducirCancion.setUsuarioRegistrado();
 				return Status.OK;
 			}
 			
@@ -312,6 +310,9 @@ public class Sistema implements Serializable{
 			sistema.usuario_actual = null;
 			guardarDatosGenerales();
 			new ExcepcionInformativa("\nSesion de usuario cerrada correctamente");
+			Ventana.ventana.showReproducirCancion();
+			Ventana.ventana.reproducirCancion.botonIzquierdaArriba.setText("Iniciar Sesion");
+			Ventana.ventana.reproducirCancion.botonIzquierdaAbajo.setVisible(true);
 			return Status.OK;
 		}
 		new ExcepcionInformativa("\nLo sentimos pero para cerrar sesion necesita iniciarla primero");
@@ -1221,10 +1222,6 @@ public class Sistema implements Serializable{
 			Sistema s1 = (Sistema) oin.readObject();
 			oin.close();
 			in.close();
-			System.out.println("config exists");
-
-			System.out.println(s1);
-
 			return s1;
 		}catch(IOException ie) {
 			System.out.println(ie.toString());

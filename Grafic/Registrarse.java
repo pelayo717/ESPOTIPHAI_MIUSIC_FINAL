@@ -15,7 +15,7 @@ public class Registrarse extends JPanel{
 	JLabel birthLabel;
 	JTextField birthTextfield ;
 	JLabel passwordLabel;
-	JTextField passwordTextfield ;
+	JPasswordField passwordTextfield ;
 	JButton botonIniciarSesion ;
 	JLabel preguntaLabel;
 	JButton botonRegistrarse;
@@ -26,13 +26,13 @@ public class Registrarse extends JPanel{
 		this.botonInicio = new JButton("Inicio");
 		this.titulo = new JLabel("ESPOTIPHAIMUSIC", SwingConstants.CENTER);
 		this.usuarioLabel = new JLabel("Nombre de usuario", SwingConstants.LEFT);
-		this.usuarioTextfield = new JTextField(10);
+		this.usuarioTextfield = new JTextField(20);
 		this.authorLabel = new JLabel("Nombre de autor", SwingConstants.LEFT);
 		this.authorTextfield = new JTextField(10);
 		this.birthLabel = new JLabel("Fecha de nacimiento", SwingConstants.LEFT);
 		this.birthTextfield = new JTextField(10);
 		this.passwordLabel = new JLabel("Contraseña", SwingConstants.LEFT);
-		this.passwordTextfield = new JTextField(10);
+		this.passwordTextfield = new JPasswordField(20);
 		this.botonIniciarSesion = new JButton("Iniciar Sesion");
 		this.preguntaLabel = new JLabel("¿Ya tiene cuenta?", SwingConstants.CENTER);
 		this.botonRegistrarse = new JButton("Registrarse");
@@ -109,6 +109,12 @@ public class Registrarse extends JPanel{
 		*/
 	}
 	
+	public void limpiarVentana(){
+		this.passwordTextfield.setText("");
+		this.authorTextfield.setText("");
+		this.birthTextfield.setText("");
+		this.usuarioTextfield.setText("");
+	}
 	
 	 // método para asignar un controlador al botón
 	 public void setControlador(ActionListener c) {

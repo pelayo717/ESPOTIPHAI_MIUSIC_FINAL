@@ -52,9 +52,9 @@ public class ReproducirCancion extends PantallaPrincipal {
 		this.duracion = arg4;
 		
 		//Declaracion
-		ImageIcon icono_corchea = new ImageIcon("src/ESPOTIPHAI_MIUSIC_FINAL/photo_default.jpg");
-		ImageIcon icono_reproducir = new ImageIcon("src/ESPOTIPHAI_MIUSIC_FINAL/play.png");
-		ImageIcon icono_parar = new ImageIcon("src/ESPOTIPHAI_MIUSIC_FINAL/pause.png");
+		ImageIcon icono_corchea = new ImageIcon("src/ESPOTIPHAI_MIUSIC_FINAL/Grafic/photo_default.jpg");
+		ImageIcon icono_reproducir = new ImageIcon("src/ESPOTIPHAI_MIUSIC_FINAL/Grafic/play.png");
+		ImageIcon icono_parar = new ImageIcon("src/ESPOTIPHAI_MIUSIC_FINAL/Grafic/pause.png");
 		
 	    
 	    
@@ -100,7 +100,7 @@ public class ReproducirCancion extends PantallaPrincipal {
 		//x axis, y axis, width, height 
 		
 		//Distribucion
-		datos_cancion.setBounds(screenSize.width/2 + 150, 190, 150, 50);
+		datos_cancion.setBounds(screenSize.width/2 + 125, 190, 200, 50);
 		titulo_cancion.setBounds(screenSize.width/2 + 50, 240, 200, 50);
 		anyo_cancion.setBounds(screenSize.width/2 + 50, 280, 150, 50);
 		autor_cancion.setBounds(screenSize.width/2 + 50,320,150,50);
@@ -135,6 +135,12 @@ public class ReproducirCancion extends PantallaPrincipal {
 		this.grupo_eleccion.clearSelection();
 	}
 	
+	
+	public void setUsuarioRegistrado() {
+		this.botonIzquierdaArriba.setText("Ver Perfil");
+		this.botonIzquierdaAbajo.setVisible(false);
+	}
+	
 	 // método para asignar un controlador al botón
 	 public void setControlador(ActionListener c) {
 		 this.botonIzquierdaArriba.addActionListener(c);
@@ -142,5 +148,6 @@ public class ReproducirCancion extends PantallaPrincipal {
 		 this.botonBuscar.addActionListener(c);
 		 this.botonLimpiarBuscador.addActionListener(c);
 		 this.botonList.addActionListener(c);
+		 this.botonPlay.addActionListener(c);
 	 }
 }

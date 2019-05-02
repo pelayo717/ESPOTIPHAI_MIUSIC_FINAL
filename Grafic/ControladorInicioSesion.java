@@ -2,10 +2,14 @@ package ESPOTIPHAI_MIUSIC_FINAL.Grafic;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.util.Date;
 
 import javax.swing.JButton;
 
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.Cancion;
+import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 public class ControladorInicioSesion implements ActionListener{
 		private InicioSesion vista;
@@ -20,13 +24,20 @@ public class ControladorInicioSesion implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (((JButton)e.getSource()).getText() == "Inicio") {
+				Ventana.ventana.inicioSesion.limpiarVentana();
 				Ventana.ventana.showReproducirCancion();
-				Ventana.ventana.reproducirCancion.botonIzquierdaArriba.setText("Ver Perfil");
-				Ventana.ventana.reproducirCancion.botonIzquierdaAbajo.setVisible(false);
 			} else if(((JButton)e.getSource()).getText() == "Registrarse") {
+				Ventana.ventana.inicioSesion.limpiarVentana();
 				Ventana.ventana.showRegistrarse();
 			} else if(((JButton)e.getSource()).getText() == "Iniciar Sesion") {
-				Sistema.sistema.iniciarSesion(vista.usuarioTextfield.getText(), vista.passwordTextfield.getText());
+				Sistema.sistema.iniciarSesion(vista.usuarioTextfield.getText(), String.valueOf(vista.passwordTextfield.getPassword()));
+				try {
+					Cancion c1 = Sistema.sistema.crearCancion(new Date(), "astronauts", "Parker_-_Astronauts.mp3", false);
+				} catch (FileNotFoundException | Mp3PlayerException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 			}
 		}
 }

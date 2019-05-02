@@ -3,10 +3,12 @@ package ESPOTIPHAI_MIUSIC_FINAL.Grafic;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Date;
 
 import javax.swing.*;
 
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.*;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 public class Ventana extends JFrame {
@@ -19,7 +21,7 @@ public class Ventana extends JFrame {
 	
 	public Ventana() throws Mp3PlayerException, IOException{
 		this.sistema = Sistema.getSistema();
-		
+
 		Container container = this.getContentPane();
 		container.setLayout(new CardLayout());
 		
@@ -42,11 +44,13 @@ public class Ventana extends JFrame {
 		ControladorReproducirCancion controladorReproducirCancion = new ControladorReproducirCancion(reproducirCancion, 2);
 		ControladorInicioSesion controladorInicioSesion = new ControladorInicioSesion(inicioSesion, 2);
 		ControladorRegistrarse controladorRegistrarse = new ControladorRegistrarse(registrarse, 2);
+		ControladorPerfil controladorPerfil = new ControladorPerfil(perfil,2);
 
 		// configurar la vista con el controlador
 		reproducirCancion.setControlador(controladorReproducirCancion);
 		inicioSesion.setControlador(controladorInicioSesion);
 		registrarse.setControlador(controladorRegistrarse);
+		perfil.setControlador(controladorPerfil);
 		
 		this.add(reproducirCancion, reproducirCancionString);
 		this.add(inicioSesion, inicioSesionString);

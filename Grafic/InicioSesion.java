@@ -11,7 +11,7 @@ public class InicioSesion extends JPanel{
 	JLabel usuarioLabel;
 	JTextField usuarioTextfield;
 	JLabel passwordLabel;
-	JTextField passwordTextfield;
+	JPasswordField passwordTextfield;
 	JButton botonIniciarSesion;
 	JLabel preguntaLabel;
 	JButton botonRegistrarse;;
@@ -22,9 +22,9 @@ public class InicioSesion extends JPanel{
 		this.botonInicio = new JButton("Inicio");
 		this.titulo = new JLabel("ESPOTIPHAIMUSIC", SwingConstants.CENTER);
 		this.usuarioLabel = new JLabel("Introduzca nombre de usuario", SwingConstants.CENTER);
-		this.usuarioTextfield = new JTextField(10);
+		this.usuarioTextfield = new JTextField(20);
 		this.passwordLabel = new JLabel("Introduzca su contraseña", SwingConstants.CENTER);
-		this.passwordTextfield = new JTextField(10);
+		this.passwordTextfield = new JPasswordField(20);
 		this.botonIniciarSesion = new JButton("Iniciar Sesion");
 		this.preguntaLabel = new JLabel("¿Sin registrarse?", SwingConstants.CENTER);
 		this.botonRegistrarse = new JButton("Registrarse");
@@ -88,6 +88,12 @@ public class InicioSesion extends JPanel{
 		);
 		*/
 	}
+	
+	public void limpiarVentana(){
+		this.passwordTextfield.setText("");
+		this.usuarioTextfield.setText("");
+	}
+	
 	
 	 // método para asignar un controlador al botón
 	 public void setControlador(ActionListener c) {
