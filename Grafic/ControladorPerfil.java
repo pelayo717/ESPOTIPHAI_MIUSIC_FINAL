@@ -35,7 +35,7 @@ public class ControladorPerfil implements ActionListener{
 			} else if(((JButton)e.getSource()).getText() == "Eliminar Cuenta") {
 				Ventana.ventana.showRegistrarse();
 			} else if(((JButton)e.getSource()).getText() == "Hacerse PRO") {
-				Ventana.ventana.showRegistrarse();
+				Ventana.ventana.showReproducirAlbum();
 			} else {
 				System.out.println(e.getSource());
 			}

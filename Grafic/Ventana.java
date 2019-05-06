@@ -14,6 +14,7 @@ import pads.musicPlayer.exceptions.Mp3PlayerException;
 public class Ventana extends JFrame {
 	public InicioSesion inicioSesion;
 	public ReproducirCancion reproducirCancion;
+	public ReproducirAlbum reproducirAlbum;
 	public Registrarse registrarse;
 	public Perfil perfil;
 	public static Ventana ventana;
@@ -28,6 +29,7 @@ public class Ventana extends JFrame {
 		final String inicioSesionString = "Iniciar Sesion";
 		final String registrarseString = "Registrarse";
 		final String reproducirCancionString = "Reproducir Cancion";
+		final String reproducirAlbumString = "Reproducir Album";
 		final String perfilString = "Perfil";
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,23 +37,27 @@ public class Ventana extends JFrame {
 		this.setVisible(true);
 		this.setResizable(false);
 
-		this.reproducirCancion = new ReproducirCancion("Por la bahia",2015,"Layo",223);
+		this.reproducirCancion = new ReproducirCancion(null);
+		this.reproducirAlbum = new ReproducirAlbum(null);
 		this.inicioSesion = new InicioSesion();
 		this.registrarse = new Registrarse();
 		this.perfil = new Perfil();
 
 		
 		ControladorReproducirCancion controladorReproducirCancion = new ControladorReproducirCancion(reproducirCancion, 2);
+		ControladorReproducirAlbum controladorReproducirAlbum = new ControladorReproducirAlbum(reproducirAlbum, 2);
 		ControladorInicioSesion controladorInicioSesion = new ControladorInicioSesion(inicioSesion, 2);
 		ControladorRegistrarse controladorRegistrarse = new ControladorRegistrarse(registrarse, 2);
 		ControladorPerfil controladorPerfil = new ControladorPerfil(perfil,2);
 
 		// configurar la vista con el controlador
 		reproducirCancion.setControlador(controladorReproducirCancion);
+		reproducirAlbum.setControlador(controladorReproducirAlbum);
 		inicioSesion.setControlador(controladorInicioSesion);
 		registrarse.setControlador(controladorRegistrarse);
 		perfil.setControlador(controladorPerfil);
 		
+		this.add(reproducirAlbum, reproducirAlbumString);
 		this.add(reproducirCancion, reproducirCancionString);
 		this.add(inicioSesion, inicioSesionString);
 		this.add(registrarse, registrarseString);
@@ -69,6 +75,22 @@ public class Ventana extends JFrame {
 		final String reproducirCancionString = "Reproducir Cancion";
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), reproducirCancionString);
+	    if (Sistema.sistema.getUsuarioActual() != null) {
+	    	this.reproducirCancion.setUsuarioRegistrado();
+	    } else {
+	    	this.reproducirCancion.setUsuarioNoRegistrado();
+	    }
+	}
+	
+	public void showReproducirAlbum(){
+		final String reproducirAlbumString = "Reproducir Album";
+		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
+	    cl.show(this.getContentPane(), reproducirAlbumString);
+	    if (Sistema.sistema.getUsuarioActual() != null) {
+	    	this.reproducirCancion.setUsuarioRegistrado();
+	    } else {
+	    	this.reproducirCancion.setUsuarioNoRegistrado();
+	    }
 	}
 	
 	public void showRegistrarse(){

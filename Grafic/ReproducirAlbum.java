@@ -2,7 +2,6 @@ package ESPOTIPHAI_MIUSIC_FINAL.Grafic;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.net.URL;
 import java.util.*;
 
 import javax.swing.*;
@@ -10,48 +9,34 @@ import javax.swing.*;
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.*;
 
-class Firulais {
-	   public String autor;
-	   public String comentario;
-	   public Firulais(String autor, String comentario) {
-			this.autor = autor;
-			this.comentario = comentario;
-	   }
-	   
-	   @Override
-	    public String toString() {
-	        return autor + ":\n\t " + comentario;
-	    }
-};  
 
 
+public class ReproducirAlbum extends PantallaPrincipal {
 
-public class ReproducirCancion extends PantallaPrincipal {
-
-	private Cancion cancion;
+	private Album album;
 	
 	JButton botonPlay;
 	JButton botonPause;
 	JList lista_comentarios;
-	JScrollPane scrollPane;
+	JScrollPane comentariosScrollPane;
+	JList lista_canciones;
+	JScrollPane cancionesScrollPane;
 	JButton botonList;
 	JButton botonAnyadirComentario;
 	JButton botonReportar;
 	Firulais[] names;
 	Comentario[] comentarios;
 
-	public ReproducirCancion(Cancion cancion) {
+	public ReproducirAlbum(Album album) {
 		super();
-		this.cancion = cancion;
+		this.album = album;
 		
 		//Declaracion
-		ImageIcon icono_corchea = new ImageIcon("src/ESPOTIPHAI_MIUSIC_FINAL/Grafic/photo_default.jpg");
 		ImageIcon icono_reproducir = new ImageIcon("src/ESPOTIPHAI_MIUSIC_FINAL/Grafic/play.png");
 		ImageIcon icono_parar = new ImageIcon("src/ESPOTIPHAI_MIUSIC_FINAL/Grafic/pause.png");
 		
 	    
 	    
-		JLabel imagen_reproduccion = new JLabel("",icono_corchea,JLabel.CENTER);
 		this.botonPlay = new JButton();
 		this.botonPause = new JButton();
 		this.botonList = new JButton("Ver comentario");
@@ -60,19 +45,13 @@ public class ReproducirCancion extends PantallaPrincipal {
 		botonPlay.setIcon(icono_reproducir);
 		botonPause.setIcon(icono_parar);
 
-		/*JLabel datos_cancion = new JLabel("Datos de la cancion", SwingConstants.CENTER);
-		JLabel titulo_cancion = new JLabel("Titulo:\t\t\t\t\t" + this.cancion.getTitulo(),SwingConstants.CENTER);
-		JLabel anyo_cancion = new JLabel("Año:\t\t\t\t\t" + this.cancion.getAnyo(),SwingConstants.CENTER);
-		JLabel autor_cancion = new JLabel("Autor:\t\t\t\t\t" + this.cancion.getAutor(),SwingConstants.CENTER);
-		JLabel duracion_cancion = new JLabel("Duracion:\t\t\t\t\t" + this.cancion.getDuracion() + " s",SwingConstants.CENTER);
-		JLabel comentarios_label = new JLabel("Comentarios de la cancion", SwingConstants.CENTER);*/
-		
 		JLabel datos_cancion = new JLabel("Datos de la cancion", SwingConstants.CENTER);
-		JLabel titulo_cancion = new JLabel("Titulo:\t\t\t\t\t" ,SwingConstants.LEFT);
-		JLabel anyo_cancion = new JLabel("Año:\t\t\t\t\t" ,SwingConstants.LEFT);
-		JLabel autor_cancion = new JLabel("Autor:\t\t\t\t\t" ,SwingConstants.LEFT);
+		JLabel titulo_cancion = new JLabel("Titulo:\t\t\t\t\t" ,SwingConstants.CENTER);
+		JLabel anyo_cancion = new JLabel("Año:\t\t\t\t\t",SwingConstants.LEFT);
+		JLabel autor_cancion = new JLabel("Autor:\t\t\t\t\t",SwingConstants.LEFT);
 		JLabel duracion_cancion = new JLabel("Duracion:\t\t\t\t\t" + " s",SwingConstants.LEFT);
 		JLabel comentarios_label = new JLabel("Comentarios de la cancion", SwingConstants.CENTER);
+		
 		
 		if (!Sistema.sistema.getCancionTotales().isEmpty()) {
 			ArrayList<Comentario> arrayComentarios = Sistema.sistema.getCancionTotales().get(0).getComentarios();
@@ -86,8 +65,9 @@ public class ReproducirCancion extends PantallaPrincipal {
 		names[0] = pelayo;
 		names[1] = manolo;
 		lista_comentarios = new JList(names);
-		scrollPane = new JScrollPane(lista_comentarios);
-
+		comentariosScrollPane = new JScrollPane(lista_comentarios);
+		lista_canciones = new JList(names);
+		cancionesScrollPane = new JScrollPane(lista_canciones);
 		
 		//Style changes
 		Font datosFont = new Font(datos_cancion.getFont().getName(),Font.BOLD,16);
@@ -96,7 +76,8 @@ public class ReproducirCancion extends PantallaPrincipal {
 		Font autorFont = new Font(autor_cancion.getFont().getName(),Font.BOLD,autor_cancion.getFont().getSize());
 		Font duracionFont = new Font(duracion_cancion.getFont().getName(),Font.BOLD,duracion_cancion.getFont().getSize());
 		Font comentariosFont = new Font(datos_cancion.getFont().getName(),Font.BOLD,datos_cancion.getFont().getSize());
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        comentariosScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        cancionesScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
 		datos_cancion.setFont(datosFont);
 		titulo_cancion.setFont(tituloFont);
@@ -114,21 +95,21 @@ public class ReproducirCancion extends PantallaPrincipal {
 		//x axis, y axis, width, height 
 		
 		//Distribucion
-		datos_cancion.setBounds(screenSize.width/2 + 125, 170, 200, 50);
-		titulo_cancion.setBounds(screenSize.width/2 + 50, 210, 200, 50);
-		anyo_cancion.setBounds(screenSize.width/2 + 50, 250, 150, 50);
-		autor_cancion.setBounds(screenSize.width/2 + 50,290,150,50);
-		duracion_cancion.setBounds(screenSize.width/2 + 50,330,180,50);
-		comentarios_label.setBounds(screenSize.width/2 + 105, 370, 250, 50);
-		scrollPane.setBounds(screenSize.width/2 + 80, 420, 300, 200);
-		botonList.setBounds(screenSize.width/2 + 150, 630, 150, 30);
-		botonAnyadirComentario.setBounds(screenSize.width/2 + 80, 670, 150, 30);
-		botonReportar.setBounds(screenSize.width/2 + 230, 670, 150, 30);
+		datos_cancion.setBounds(screenSize.width/2 - 380, 170, 300, 50);
+		autor_cancion.setBounds(screenSize.width/2  - 375, 210, 150, 50);
+		anyo_cancion.setBounds(screenSize.width/2  - 375,250,150,50);
+		duracion_cancion.setBounds(screenSize.width/2  - 375,290,180,50);
+		comentarios_label.setBounds(screenSize.width/2  - 380, 340, 300, 50);
+		comentariosScrollPane.setBounds(screenSize.width/2  - 380, 400, 300, 200);
+		botonList.setBounds(screenSize.width/2 - 300, 610, 150, 30);
+		botonAnyadirComentario.setBounds(screenSize.width/2 - 380, 640, 150, 30);
+		botonReportar.setBounds(screenSize.width/2 - 230, 640, 150, 30);
 
+		titulo_cancion.setBounds(screenSize.width/2 + 150, 210, 200, 50);
+		cancionesScrollPane.setBounds(screenSize.width/2  + 100, 260, 300, 300);
 
-		imagen_reproduccion.setBounds(screenSize.width/2 - 350, 190, 300, 300);
-		botonPlay.setBounds(screenSize.width/2 - 280, 500, 70, 70);
-		botonPause.setBounds(screenSize.width/2 - 210, 500, 70, 70);
+		botonPlay.setBounds(screenSize.width/2 + 180, 580, 70, 70);
+		botonPause.setBounds(screenSize.width/2 + 250, 580, 70, 70);
 
 	
 		
@@ -139,11 +120,11 @@ public class ReproducirCancion extends PantallaPrincipal {
 		this.add(autor_cancion);
 		this.add(duracion_cancion);
 		this.add(comentarios_label);
-		this.add(scrollPane);
+		this.add(cancionesScrollPane);
+		this.add(comentariosScrollPane);
 		this.add(botonList);
 		this.add(botonAnyadirComentario);
 		this.add(botonReportar);
-		this.add(imagen_reproduccion);
 		this.add(botonPlay);
 		this.add(botonPause);
 	}

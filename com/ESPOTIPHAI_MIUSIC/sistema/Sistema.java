@@ -281,7 +281,6 @@ public class Sistema implements Serializable{
 				new ExcepcionInformativa("\nHa iniciado correctamente la sesion " + nombre_usuario);
 				Ventana.ventana.inicioSesion.limpiarVentana();
 				Ventana.ventana.showReproducirCancion();
-				Ventana.ventana.reproducirCancion.setUsuarioRegistrado();
 				return Status.OK;
 			}
 			
@@ -311,8 +310,6 @@ public class Sistema implements Serializable{
 			guardarDatosGenerales();
 			new ExcepcionInformativa("\nSesion de usuario cerrada correctamente");
 			Ventana.ventana.showReproducirCancion();
-			Ventana.ventana.reproducirCancion.botonIzquierdaArriba.setText("Iniciar Sesion");
-			Ventana.ventana.reproducirCancion.botonIzquierdaAbajo.setVisible(true);
 			return Status.OK;
 		}
 		new ExcepcionInformativa("\nLo sentimos pero para cerrar sesion necesita iniciarla primero");
