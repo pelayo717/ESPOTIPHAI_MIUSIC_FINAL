@@ -1209,6 +1209,7 @@ public class Sistema implements Serializable{
 			Set keySet = allProps.keySet();
 			Iterator it = keySet.iterator();
 			while(it.hasNext()){
+				
 				Object keyObj = it.next();
 				String key = (String)keyObj;
 				Object valObj = allProps.get(key);
@@ -1219,11 +1220,14 @@ public class Sistema implements Serializable{
 			
 			FileInputStream in = new FileInputStream(final_path);
 			ObjectInputStream oin = new ObjectInputStream(in);
+			System.out.println("works");
 			Sistema s1 = (Sistema) oin.readObject();
+			System.out.println("works");
 			oin.close();
 			in.close();
 			return s1;
 		}catch(IOException ie) {
+			System.out.println("IO error:");
 			System.out.println(ie.toString());
 			return null;
 		}catch(ClassNotFoundException ce) {

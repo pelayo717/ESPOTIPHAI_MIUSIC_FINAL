@@ -6,7 +6,12 @@ import java.util.*;
  *	Clase Comentario
  */
 public class Comentario implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Date fecha;
+	private String autor;
 	private String texto;
 	
 	/**
@@ -14,9 +19,10 @@ public class Comentario implements Serializable{
 	 *	@param fecha  fecha del comentario (Date)
 	 *	@param texto  texto del comentario (String)
 	 */
-	public Comentario(Date fecha,String texto) {
+	public Comentario(String nombre, Date fecha,String texto) {
 		this.setFecha(fecha);
 		this.setTexto(texto);
+		this.setAutor(nombre);
 	}
 	
 	
@@ -57,8 +63,33 @@ public class Comentario implements Serializable{
 	 * Setter de texto
 	 * @param texto del comentario
 	 */
+	public void setAutor(String autor) {
+		this.autor = autor;
+	}
+
+	/**
+	 * Getter de texto
+	 * @return the texto
+	 */
+	public String getAutor() {
+		return autor;
+	}
+
+
+	/**
+	 * Setter de texto
+	 * @param texto del comentario
+	 */
 	public void setTexto(String texto) {
 		this.texto = texto;
+	}
+
+
+
+
+	@Override
+	public String toString() {
+		return autor + ": " + texto ;
 	}
 	
 

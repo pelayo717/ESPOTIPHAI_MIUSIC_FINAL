@@ -2,11 +2,14 @@ package ESPOTIPHAI_MIUSIC_FINAL.Grafic;
 
 
 import java.awt.event.*;
+import java.time.LocalDate;
+import java.util.Date;
 
 import javax.swing.*;
 
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.ExcesoReproduccionesExcepcion;
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.Comentario;
 
 public class ControladorReproducirCancion implements ActionListener{
 		private ReproducirCancion vista;
@@ -31,11 +34,15 @@ public class ControladorReproducirCancion implements ActionListener{
 				System.out.println("buscar");
 			} else if(((JButton)e.getSource()).getText() == "Limpiar Buscador") {
 				vista.limpiarBuscador();
-				System.out.println("limpiar buscador");
 			} else if(((JButton)e.getSource()).getText() == "Ver comentario" && !vista.lista_comentarios.isSelectionEmpty()) {
-		        final JFrame parent = new JFrame();
-				JOptionPane.showMessageDialog(parent,"Autor: " + vista.names[vista.lista_comentarios.getSelectedIndex()].autor + "\n" + "Comentario: " + vista.names[vista.lista_comentarios.getSelectedIndex()].comentario);
+				JOptionPane.showMessageDialog(vista,"Autor: " + vista.comentarios[vista.lista_comentarios.getSelectedIndex()].getAutor() + "\n" + "Comentario: " + vista.comentarios[vista.lista_comentarios.getSelectedIndex()].getTexto());
 				vista.lista_comentarios.clearSelection();
+			} else if(((JButton)e.getSource()).getText() == "Añadir Comentario") {
+				String comentarioEscrito = JOptionPane.showInputDialog("Escribe tu comentario");
+				Comentario nuevoComentario = new Comentario(Sistema.sistema.getUsuarioActual().getNombreUsuario(), new Date() , comentarioEscrito);
+				Sistema.sistema.getCancionTotales().get(0).anyadirComentario(nuevoComentario);
+			} else if(((JButton)e.getSource()).getText() == "Reportar") {
+				vista.limpiarBuscador();
 			} else {
 				try {
 					System.out.println(Sistema.sistema.getCancionTotales());
