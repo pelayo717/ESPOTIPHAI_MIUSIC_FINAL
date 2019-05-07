@@ -1,16 +1,9 @@
-package com.ESPOTIPHAI_MIUSIC.sistema;
-import com.ESPOTIPHAI_MIUSIC.sistema.contenido.Album;
-
-import com.ESPOTIPHAI_MIUSIC.sistema.contenido.Cancion;
-import com.ESPOTIPHAI_MIUSIC.sistema.contenido.Comentario;
-import com.ESPOTIPHAI_MIUSIC.sistema.contenido.Contenido;
-import com.ESPOTIPHAI_MIUSIC.sistema.contenido.EstadoCancion;
-import com.ESPOTIPHAI_MIUSIC.sistema.contenido.Lista;
-import com.ESPOTIPHAI_MIUSIC.sistema.notificacion.Notificacion;
-import com.ESPOTIPHAI_MIUSIC.sistema.notificacion.TipoNotificacion;
-import com.ESPOTIPHAI_MIUSIC.sistema.status.Status;
-import com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
-import com.ESPOTIPHAI_MIUSIC.sistema.usuario.UsuarioBloqueado;
+package ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema;
+import ESPOTIPHAI_MIUSIC_FINAL.Grafic.Ventana;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.*;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.notificacion.*;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.status.Status;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.*;
 
 import es.uam.eps.padsof.telecard.FailedInternetConnectionException;
 import es.uam.eps.padsof.telecard.InvalidCardNumberException;
@@ -260,6 +253,7 @@ public class Sistema implements Serializable{
 		
 		Usuario usuario_registrado_nuevo = new Usuario(nombre_usuario,nombre_autor,fecha_nacimiento, contrasenia); 
 		sistema.usuarios_totales.add(usuario_registrado_nuevo);
+		System.out.println("usuario registrado");
 		return Status.OK;
 	}
 	
@@ -277,6 +271,8 @@ public class Sistema implements Serializable{
 		
 		if(nombre_usuario.equals("root1967") && contrasenia.equals("ADMINISTRADOR") == true) {
 			sistema.es_administrador = true;
+			Ventana.ventana.showReproducirCancion();
+			Ventana.ventana.inicioSesion.limpiarVentana();
 			return Status.OK;
 		}
 			
@@ -284,6 +280,8 @@ public class Sistema implements Serializable{
 			if(usuario.getNombreUsuario().equals(nombre_usuario) == true && usuario.getContrasena().equals(contrasenia)== true) {
 				if(usuario.getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
 					sistema.usuario_actual = usuario;
+					Ventana.ventana.showReproducirCancion();
+					Ventana.ventana.inicioSesion.limpiarVentana();
 					return Status.OK;
 				}else {
 					break;
@@ -307,10 +305,12 @@ public class Sistema implements Serializable{
 				this.es_administrador = false;
 				sistema.usuario_actual = null;
 				guardarDatosGenerales();
+				Ventana.ventana.showReproducirCancion();
 				return Status.OK;
 			}
 			sistema.usuario_actual = null;
 			guardarDatosGenerales();
+			Ventana.ventana.showReproducirCancion();
 			return Status.OK;
 		}
 		return Status.ERROR;
@@ -1086,7 +1086,7 @@ public class Sistema implements Serializable{
 			String ret = File.separator;
 			ret = System.getProperty("file.separator");
 			ret = String.valueOf(File.separatorChar);
-			String final_path = "..." + ret + "datos.obj";
+			String final_path = ".." + ret + "datos.obj";
 		
 			FileOutputStream fileOut = new FileOutputStream(final_path);
 			ObjectOutputStream oos = new ObjectOutputStream(fileOut);
@@ -1097,6 +1097,7 @@ public class Sistema implements Serializable{
 			return Status.OK;
 		}catch(IOException ie) {
 			ie.toString();
+			System.out.println(ie.toString());
 			return Status.ERROR;
 		}
 		
@@ -1125,9 +1126,11 @@ public class Sistema implements Serializable{
 			return s1;
 		}catch(IOException ie) {
 			ie.toString();
+			System.out.println(ie.toString());
 			return null;
 		}catch(ClassNotFoundException ce) {
 			ce.toString();
+			System.out.println(ce.toString());
 			return null;
 		}
 		

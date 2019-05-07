@@ -1,16 +1,12 @@
-package com.ESPOTIPHAI_MIUSIC.sistema.usuario;
+package ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
-import com.ESPOTIPHAI_MIUSIC.sistema.contenido.Album;
-import com.ESPOTIPHAI_MIUSIC.sistema.contenido.Cancion;
-import com.ESPOTIPHAI_MIUSIC.sistema.contenido.EstadoCancion;
-import com.ESPOTIPHAI_MIUSIC.sistema.contenido.Lista;
-import com.ESPOTIPHAI_MIUSIC.sistema.notificacion.Notificacion;
-import com.ESPOTIPHAI_MIUSIC.sistema.notificacion.TipoNotificacion;
-import com.ESPOTIPHAI_MIUSIC.sistema.status.Status;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.*;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.notificacion.*;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.status.Status;
 
 import es.uam.eps.padsof.telecard.FailedInternetConnectionException;
 import es.uam.eps.padsof.telecard.InvalidCardNumberException;

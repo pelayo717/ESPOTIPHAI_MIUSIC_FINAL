@@ -8,7 +8,6 @@ import java.util.Date;
 
 import javax.swing.*;
 
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.ExcesoReproduccionesExcepcion;
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.Comentario;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
@@ -37,19 +36,18 @@ public class ControladorReproducirCancion implements ActionListener{
 			} else if(((JButton)e.getSource()).getText() == "Limpiar Buscador") {
 				vista.limpiarBuscador();
 			} else if(((JButton)e.getSource()).getText() == "Ver comentario" && !vista.lista_comentarios.isSelectionEmpty()) {
-				JOptionPane.showMessageDialog(vista,"Autor: " + vista.comentarios[vista.lista_comentarios.getSelectedIndex()].getAutor() + "\n" + "Comentario: " + vista.comentarios[vista.lista_comentarios.getSelectedIndex()].getTexto());
+				JOptionPane.showMessageDialog(vista,"Autor: " + vista.comentarios[vista.lista_comentarios.getSelectedIndex()].getComentador() + "\n" + "Comentario: " + vista.comentarios[vista.lista_comentarios.getSelectedIndex()].getTexto());
 				vista.lista_comentarios.clearSelection();
 			} else if(((JButton)e.getSource()).getText() == "Añadir Comentario") {
 				String comentarioEscrito = JOptionPane.showInputDialog("Escribe tu comentario");
-				Comentario nuevoComentario = new Comentario(Sistema.sistema.getUsuarioActual().getNombreUsuario(), new Date() , comentarioEscrito);
+				Comentario nuevoComentario = new Comentario( new Date() , comentarioEscrito, Sistema.sistema.getUsuarioActual());
 				Sistema.sistema.getCancionTotales().get(0).anyadirComentario(nuevoComentario);
 			} else if(((JButton)e.getSource()).getText() == "Reportar") {
 				vista.limpiarBuscador();
 			}else if(((JButton)e.getSource()).getText() == "play") {
 				try {
-					System.out.println(Sistema.sistema.getCancionTotales());
-					Sistema.sistema.reproducirCancion(Sistema.sistema.getCancionTotales().get(0));
-				} catch (InterruptedException | ExcesoReproduccionesExcepcion e1) {
+					Sistema.sistema.getCancionTotales().get(0).reproducirCancion();
+				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}

@@ -1,13 +1,13 @@
-package com.ESPOTIPHAI_MIUSIC.sistema.notificacion;
+package ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.notificacion;
 
 
 import java.io.Serializable;
 
-import com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
-import com.ESPOTIPHAI_MIUSIC.sistema.contenido.Cancion;
-import com.ESPOTIPHAI_MIUSIC.sistema.status.Status;
-import com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
-import com.ESPOTIPHAI_MIUSIC.sistema.usuario.UsuarioBloqueado;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.Cancion;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.status.Status;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.UsuarioBloqueado;
 
 
 /**

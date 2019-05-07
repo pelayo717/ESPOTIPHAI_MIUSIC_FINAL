@@ -1,9 +1,9 @@
-package com.ESPOTIPHAI_MIUSIC.sistema.contenido;
+package ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido;
 import java.util.*;
 
-import com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
-import com.ESPOTIPHAI_MIUSIC.sistema.status.Status;
-import com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.status.Status;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
 
 /**
  *	Clase Lista con herencia de Contenido

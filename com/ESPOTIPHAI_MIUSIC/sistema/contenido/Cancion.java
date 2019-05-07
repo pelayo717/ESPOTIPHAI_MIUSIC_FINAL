@@ -1,14 +1,14 @@
-package com.ESPOTIPHAI_MIUSIC.sistema.contenido;
+package ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido;
 
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
 
-import com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
-import com.ESPOTIPHAI_MIUSIC.sistema.status.Status;
-import com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
-import com.ESPOTIPHAI_MIUSIC.sistema.usuario.UsuarioBloqueado;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.status.Status;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.UsuarioBloqueado;
 
 import pads.musicPlayer.Mp3Player;
 import pads.musicPlayer.exceptions.Mp3InvalidFileException;

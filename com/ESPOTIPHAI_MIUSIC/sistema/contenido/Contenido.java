@@ -1,9 +1,9 @@
-package com.ESPOTIPHAI_MIUSIC.sistema.contenido;
+package ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido;
 
 import java.io.Serializable;
 import java.util.*;
 
-import com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
 
 /**
  *	Clase Contenido
