@@ -1,11 +1,14 @@
-package ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido;
+package com.ESPOTIPHAI_MIUSIC.sistema.contenido;
 
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.*;
 
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.status.Status;
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
+import com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
+import com.ESPOTIPHAI_MIUSIC.sistema.status.Status;
+import com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
+import com.ESPOTIPHAI_MIUSIC.sistema.usuario.UsuarioBloqueado;
 
 import pads.musicPlayer.Mp3Player;
 import pads.musicPlayer.exceptions.Mp3InvalidFileException;
@@ -27,25 +30,20 @@ import pads.musicPlayer.exceptions.Mp3PlayerException;
 		private EstadoCancion estado;
 		private String nombreMP3;
 		private static Mp3Player repro_mp3;
-		private boolean es_explicita=false;
 		private LocalDate fecha_modificar;
 		/**
 		 *	Constructor de Cancion
-		 *	@param anyo anyo de creacion de la Cancion (Date)
-		 * 	@param titulo el titulo de la Cancion (String)
-		 * 	@param autor autor de la Cancion (Usuario) 
-		 * 	@param nombreMP3 el titulo de la Cancion (String)
-		 *  @param explicita boleean de expolicita de la Cancion (boolean)
-		 *	@throws Mp3PlayerException 
-		 * 	@throws FileNotFoundException 
+		 *	@param estado  estado de la cancion
+		 *	@param reproducible  si la cacion es o no reproducible
+		 * @throws Mp3PlayerException 
+		 * @throws FileNotFoundException 
 		 */
-		public Cancion(Date anyo, String titulo, Usuario autor,  String nombreMP3, boolean explicita) throws FileNotFoundException, Mp3PlayerException{
-			super(anyo, titulo, autor, new ArrayList<Comentario>());
+		public Cancion(String titulo, Usuario autor,  String nombreMP3) throws FileNotFoundException, Mp3PlayerException{
+			super(null,titulo, autor, new ArrayList<Comentario>());
 			Cancion.repro_mp3 = new Mp3Player();
 			this.setNombreMP3(nombreMP3);
 			this.setDuracion(this.devolverDuracion());
 			this.setEstado(EstadoCancion.PENDIENTEAPROBACION);
-			this.setEsExplicita(explicita);
 			this.fecha_modificar = LocalDate.now();
 		}
 		
@@ -127,10 +125,7 @@ import pads.musicPlayer.exceptions.Mp3PlayerException;
 			return Status.OK;
 		}
 		
-		/**
-		 *	Funcion de validarCancionExplicita
-		 * 	@return  OK si no hay errores y ERROR de lo contrario
-		 */
+		
 		public Status validarCancionExplicita() {
 			this.setEstado(EstadoCancion.EXPLICITA);
 			return Status.OK;
@@ -163,10 +158,6 @@ import pads.musicPlayer.exceptions.Mp3PlayerException;
 			return Status.OK;
 		}
 		
-		/**
-		 *	Funcion de cancionDescartada
-		 * 	@return  OK si no hay errores y ERROR de lo contrario
-		 */
 		public Status cancionDescartada() {
 			this.setEstado(EstadoCancion.ELIMINADA);
 			return Status.OK;
@@ -175,17 +166,14 @@ import pads.musicPlayer.exceptions.Mp3PlayerException;
 		
 		
 		//GETTERS Y SETTERS
-		/**
-		 * Getter de fechaModificacion
-		 * @return fecha de modificacion
-		 */
+		
 		public LocalDate getFechaModificacion() {
 			return this.fecha_modificar;
 		}
 		
 		/**
 		 * Getter de estado
-		 * @return estado estado de la cancion
+		 * @return the estado
 		 */
 		public EstadoCancion getEstado() {
 			return estado;
@@ -203,7 +191,7 @@ import pads.musicPlayer.exceptions.Mp3PlayerException;
 		}
 		
 		/**
-		 * Getter del nombre del MP3
+		 * Getter deL nombre del MP3
 		 * @return nombreMP3 nombre de la cancion
 		 */
 		public String getNombreMP3() {
@@ -211,8 +199,8 @@ import pads.musicPlayer.exceptions.Mp3PlayerException;
 		}
 
 		/**
-		 * Setter de la fecha de inicio para realizar la modificacion
-		 * @param d la fecha de mofificacion de la cancion
+		 * Establece la fecha de inicio para realizar la modificacion
+		 * @param d
 		 */
 		public void setFechaModificacion(LocalDate d) {
 			this.fecha_modificar = d;
@@ -232,22 +220,90 @@ import pads.musicPlayer.exceptions.Mp3PlayerException;
 		public void setMp3Player() throws FileNotFoundException, Mp3PlayerException {
 			Cancion.repro_mp3 = new Mp3Player();
 		}
+
 		
 		/**
-		 * Getter del boolean de Explicita
-		 * @return True si es explicita o false de lo contrario
+		 * Esta funcion que la puede utilizar los usuarios registrados les permite escribir un comentario sobre una cancion
+		 * @param comentario
+		 * @param cancion
+		 * @return OK si se a�adio correctamente a la cancion o ERROR si no fue asi
 		 */
-		public boolean getEsExplicita() {
-			return this.es_explicita;
+		public Status anyadirComentarioCancion(Comentario comentario) {
+			if((comentario == null) && (Sistema.sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO && Sistema.sistema.getUsuarioActual() != null)) {
+				return Status.ERROR;
+			}else {
+				return this.anyadirComentario(comentario);
+			}
 		}
+		
 		
 		/**
-		 * Setter del boolean de Explicita
-		 * @param explicita2 boolean de si es o no explicita
+		 * Esta funcion permite a cualquier usuario reproducir una cancion que se pase como argumento
+		 * @param c
+		 * @throws InterruptedException ExcesoReproduccionesExcepcion
 		 */
-		public void setEsExplicita(boolean explicita2) {
-			this.es_explicita = explicita2;
+		
+		public void reproducirCancion() throws InterruptedException { //se supone que la cancion ha sido subida, valida y a la hora de buscar se devuelve en base a criterios ya comprobados
+			LocalDate fecha_actual = LocalDate.now();
+			
+			if(Sistema.sistema.getUsuarioActual() != null && (Sistema.sistema.getAdministrador() == true || Sistema.sistema.getUsuarioActual().getPremium() == true)) {
+				Period intervalo = Period.between(Sistema.sistema.getUsuarioActual().getFechaNacimiento(), fecha_actual);
+				if(intervalo.getYears() < 18 && this.getEstado() == EstadoCancion.EXPLICITA) {
+					return;
+				}
+				
+				if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) != true) {
+					Sistema.sistema.setCancionReproduciendo(this);
+					Sistema.sistema.getCancionReproduciendo().anyadirCola();
+					Sistema.sistema.getCancionReproduciendo().reproducir();
+					Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
+					Sistema.sistema.getCancionReproduciendo().getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());
+				}else {
+					Sistema.sistema.setCancionReproduciendo(this);
+					Sistema.sistema.getCancionReproduciendo().anyadirCola();
+					Sistema.sistema.getCancionReproduciendo().reproducir();
+					Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
+				}
+				
+			}else{
+				if(Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
+					
+					Period intervalo = Period.between(Sistema.sistema.getUsuarioActual().getFechaNacimiento(), fecha_actual);
+					if(intervalo.getYears() < 18 && this.getEstado() == EstadoCancion.EXPLICITA) {
+						return;
+					}
+					
+					if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getUsuarioActual().getCanciones().contains(this) != true) {
+						Sistema.sistema.setCancionReproduciendo(this);
+						Sistema.sistema.getCancionReproduciendo().anyadirCola();
+						Sistema.sistema.getCancionReproduciendo().reproducir();
+						Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
+						Sistema.sistema.getCancionReproduciendo().getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());
+						Sistema.sistema.getUsuarioActual().setContenidoEscuchadoSinSerPremium();
+						
+					}else if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getUsuarioActual().getCanciones().contains(this) == true) {
+						Sistema.sistema.setCancionReproduciendo(this);
+						Sistema.sistema.getCancionReproduciendo().anyadirCola();
+						Sistema.sistema.getCancionReproduciendo().reproducir();
+						Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
+						Sistema.sistema.getUsuarioActual().setContenidoEscuchadoSinSerPremium();
+						
+					}
+				}else if(Sistema.sistema.getContenidoEscuchadoSinRegistrarse() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
+					if(this.getEstado() == EstadoCancion.EXPLICITA ||  Sistema.sistema.getContenidoEscuchadoSinRegistrarse() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()) {
+						return;
+					}
+					Sistema.sistema.setCancionReproduciendo(this);
+					Sistema.sistema.getCancionReproduciendo().anyadirCola();
+					Sistema.sistema.getCancionReproduciendo().reproducir();
+					Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
+					Sistema.sistema.setContenidoEscuchadoSinRegistrarse();
+					
+				}
+			}
+			
 		}
 		
+
 
 	}

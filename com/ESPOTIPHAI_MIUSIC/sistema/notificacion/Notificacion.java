@@ -1,10 +1,13 @@
-package ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.notificacion;
+package com.ESPOTIPHAI_MIUSIC.sistema.notificacion;
 
 
 import java.io.Serializable;
 
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.Cancion;
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
+import com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
+import com.ESPOTIPHAI_MIUSIC.sistema.contenido.Cancion;
+import com.ESPOTIPHAI_MIUSIC.sistema.status.Status;
+import com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
+import com.ESPOTIPHAI_MIUSIC.sistema.usuario.UsuarioBloqueado;
 
 
 /**
@@ -120,4 +123,6 @@ public class Notificacion implements Serializable {
 	public void setEmisor(Usuario emisor) {
 		this.emisor = emisor;
 	}
+	
+	
 }

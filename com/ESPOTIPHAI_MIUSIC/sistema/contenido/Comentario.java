@@ -1,28 +1,26 @@
-package ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido;
+package com.ESPOTIPHAI_MIUSIC.sistema.contenido;
 import java.io.Serializable;
 import java.util.*;
+
+import com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
 
 /**
  *	Clase Comentario
  */
 public class Comentario implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private Date fecha;
-	private String autor;
 	private String texto;
+	private Usuario comentador;
 	
 	/**
 	 *	Constructor de Comentario
 	 *	@param fecha  fecha del comentario (Date)
 	 *	@param texto  texto del comentario (String)
 	 */
-	public Comentario(String nombre, Date fecha,String texto) {
+	public Comentario(Date fecha,String texto,Usuario comentador) {
 		this.setFecha(fecha);
 		this.setTexto(texto);
-		this.setAutor(nombre);
+		this.setComentador(comentador);
 	}
 	
 	
@@ -31,7 +29,21 @@ public class Comentario implements Serializable{
 	
 	//GETTERS Y SETTERS
 	
+	/**
+	 * Establece el usuario que esta comentando
+	 * @param c
+	 */
+	public void setComentador(Usuario c) {
+		this.comentador = c;
+	}
 	
+	/**
+	 * Devuelve el comentador
+	 * @return la referencia al usuario que ha comentado
+	 */
+	public Usuario getComentador() {
+		return this.comentador;
+	}
 	
 	/**
 	 * Getter de fecha
@@ -63,33 +75,8 @@ public class Comentario implements Serializable{
 	 * Setter de texto
 	 * @param texto del comentario
 	 */
-	public void setAutor(String autor) {
-		this.autor = autor;
-	}
-
-	/**
-	 * Getter de texto
-	 * @return the texto
-	 */
-	public String getAutor() {
-		return autor;
-	}
-
-
-	/**
-	 * Setter de texto
-	 * @param texto del comentario
-	 */
 	public void setTexto(String texto) {
 		this.texto = texto;
-	}
-
-
-
-
-	@Override
-	public String toString() {
-		return autor + ": " + texto ;
 	}
 	
 

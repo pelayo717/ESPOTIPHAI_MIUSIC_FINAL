@@ -1,9 +1,9 @@
-package ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido;
+package com.ESPOTIPHAI_MIUSIC.sistema.contenido;
 import java.util.*;
 
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.status.*;
+import com.ESPOTIPHAI_MIUSIC.sistema.status.*;
 
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
+import com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
 
 /**
  *	Clase ContenidoComentable con herencia de Contenido
@@ -16,13 +16,7 @@ public abstract class ContenidoComentable extends Contenido {
 	
 	private ArrayList<Comentario> comentarios = new ArrayList<Comentario>();
 	
-	/**
-	 *	Constructor de ContenidoComentable
-	 *	@param anyo anyo de creacion del ContenidoComentable (Date)
-	 * 	@param titulo el titulo del ContenidoComentable (String)
-	 * 	@param autor autor del ContenidoComentable (Usuario) 
-	 *  @param contenido array de los comentarios del ContenidoComentable (ArrayList<Comentario>)
-	 */
+	
 	public ContenidoComentable (Date anyo, String titulo, Usuario autor, ArrayList<Comentario> comentarios) {
 		super(anyo, titulo,autor);
 		this.setComentarios(comentarios);

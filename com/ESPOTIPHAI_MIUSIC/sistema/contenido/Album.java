@@ -1,9 +1,11 @@
-package ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido;
+package com.ESPOTIPHAI_MIUSIC.sistema.contenido;
 
 
 import java.util.*;
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.status.Status;
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
+import com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
+import com.ESPOTIPHAI_MIUSIC.sistema.status.Status;
+import com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
+import com.ESPOTIPHAI_MIUSIC.sistema.usuario.UsuarioBloqueado;
 
 /**
  *	Clase Album con herencia de ContenidoComentable
@@ -13,11 +15,8 @@ public class Album extends ContenidoComentable {
 
 	/**
 	 *	Constructor de Album con herencia de ContenidoComentable
-	 *	@param anyo anyo de creacion del album (Date)
-	 * 	@param titulo el titulo del album (String)
-	 * 	@param autor autor del album (Usuario) 
-	 *  @param contenido array de las canciones del album (ArrayList<Cancion>)
-	 *  */
+	 *	@param contenido  canciones del album
+	 */
 	public Album (Date anyo, String titulo,  Usuario autor, ArrayList<Cancion> contenido) {
 		super(anyo, titulo, autor, new ArrayList<Comentario>());
 		this.setContenido(contenido);
@@ -41,22 +40,6 @@ public class Album extends ContenidoComentable {
 	 *	@param contenido  contenido a anyadir al album
 	 * 	@return  OK si no hay errores y ERROR de lo contrario
 	 */
-	/*public Status anyadirContenido(Cancion contenido) {
-		
-		for(Cancion cancion:this.contenido) {
-			if(cancion.getTitulo().equals(contenido.getTitulo()) == true && cancion.getNombreMP3().equals(contenido.getNombreMP3()) == true) {
-				return Status.ERROR;
-			}
-		}
-		
-		if (this.contenido.add(contenido)) {
-			this.setDuracion(this.calcularTiempo());
-			return Status.OK;
-		} else {
-			return Status.ERROR;
-		}
-		
-	}*/
 	public Status anyadirContenido(Cancion contenido) {
 		if(this.contenido.contains(contenido)) {
 			return Status.ERROR;
@@ -126,7 +109,65 @@ public class Album extends ContenidoComentable {
 		return contenido;
 	}
 	
-
+	/**
+	 * Esta funcion permite a cualquier usuario reproducir un album de cancion en cancion si es un usuario premium el que lo realiza o de manera limita si no lo es
+	 * @param a
+	 * @throws InterruptedException
+	 * @throws ExcesoReproduccionesExcepcion
+	 */
+	
+	public void reproducirAlbum() throws InterruptedException{
+		
+		if(Sistema.sistema.getUsuarioActual() != null && (Sistema.sistema.getAdministrador() == true || Sistema.sistema.getUsuarioActual().getPremium() == true)) {
+			for(Cancion canciones_reproduciendose:this.getContenido()) {
+				canciones_reproduciendose.reproducirCancion();
+			}
+			
+			return;
+								
+		}else {
+			if(Sistema.sistema.getUsuarioActual() != null) {
+				if(Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
+					for(Cancion canciones_reproduciendose:this.getContenido()) {
+						if(Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium() == Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()) {
+							return;
+						}
+						canciones_reproduciendose.reproducirCancion();
+					}
+					
+					return;				
+				}
+			}else {
+				if(Sistema.sistema.getContenidoEscuchadoSinRegistrarse() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
+					for(Cancion canciones_reproduciendose:this.getContenido()) {
+						if(Sistema.sistema.getContenidoEscuchadoSinRegistrarse() == Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()) {
+							return;
+						}
+						canciones_reproduciendose.reproducirCancion();
+					}
+					
+					return;				
+				}
+			}
+		}
+	}
+	
+	
+	/**
+	 * Esta funcion que la puede utilizar los usuario registrados les permite escribir un comentario sobre un album
+	 * @param comentario
+	 * @param album
+	 * @return OK si se a�adio correctamente al album o ERROR si no fue asi
+	 */
+	
+	public Status anyadirComentarioAlbum(Comentario comentario) {
+		if((comentario == null) && (Sistema.sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO && Sistema.sistema.getUsuarioActual() != null)) {
+			return Status.ERROR;
+		}else {
+			return this.anyadirComentario(comentario);
+		}
+	
+	}
 	
 	
 }

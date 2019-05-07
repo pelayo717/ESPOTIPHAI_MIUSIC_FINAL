@@ -1,4 +1,4 @@
-package ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.notificacion;
+package com.ESPOTIPHAI_MIUSIC.sistema.notificacion;
 
 public enum TipoNotificacion {
 	PLAGIO,SEGUIMIENTO,BLOQUEO,VALIDACION,CUENTA;

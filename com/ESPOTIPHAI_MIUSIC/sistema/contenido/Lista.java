@@ -1,8 +1,9 @@
-package ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido;
+package com.ESPOTIPHAI_MIUSIC.sistema.contenido;
 import java.util.*;
 
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.status.Status;
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
+import com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
+import com.ESPOTIPHAI_MIUSIC.sistema.status.Status;
+import com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
 
 /**
  *	Clase Lista con herencia de Contenido
@@ -15,17 +16,8 @@ public class Lista extends Contenido{
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Cancion> contenidos = new ArrayList<Cancion>();
 	
-	
-	/**
-	 *	Constructor de Lista
-	 *	@param anyo anyo de creacion de la lista (Date)
-	 * 	@param titulo el titulo de la lista (String)
-	 * 	@param autor autor de la lista (Usuario) 
-	 *  @param contenido array de las canciones de la lista (ArrayList<Cancion>)
-	 */
-	
-	public Lista(Date anyo, String titulo,Usuario autor, ArrayList<Cancion> contenido) {
-		super(anyo, titulo,autor);
+	public Lista(String titulo,Usuario autor, ArrayList<Cancion> contenido) {
+		super(null, titulo,autor);
 		this.setContenido(contenido);
 		this.setDuracion(this.calcularTiempo());
 
@@ -139,6 +131,35 @@ public class Lista extends Contenido{
 	 */
 	public ArrayList<Cancion> getContenido() {
 		return contenidos;
+	}
+
+	/**
+	 * Esta funcion permite reproducir una de tus listas
+	 * @param l
+	 * @throws ExcesoReproduccionesExcepcion 
+	 * @throws InterruptedException 
+	 */
+	
+	public void reproducirLista() throws InterruptedException {
+		
+		if(Sistema.sistema.getUsuarioActual() != null && (Sistema.sistema.getAdministrador() == true || Sistema.sistema.getUsuarioActual().getPremium() == true)) {
+			for(Cancion canciones_reproduciendose:this.getContenido()) {
+				canciones_reproduciendose.reproducirCancion();
+			}	
+			return;
+				
+		}else {
+			if(Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
+				for(Cancion canciones_reproduciendose:this.getContenido()) {
+					if(Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium() == Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()) {
+						return;
+					}
+					canciones_reproduciendose.reproducirCancion();
+				}
+				
+				return;
+			}
+		}
 	}
 	
 
