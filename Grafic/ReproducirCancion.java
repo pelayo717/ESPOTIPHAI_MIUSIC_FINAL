@@ -52,8 +52,8 @@ public class ReproducirCancion extends PantallaPrincipal {
 	    
 	    
 		JLabel imagen_reproduccion = new JLabel("",icono_corchea,JLabel.CENTER);
-		this.botonPlay = new JButton();
-		this.botonPause = new JButton();
+		this.botonPlay = new JButton("play");
+		this.botonPause = new JButton("pause");
 		this.botonList = new JButton("Ver comentario");
 		this.botonAnyadirComentario = new JButton("Añadir Comentario");
 		this.botonReportar = new JButton("Reportar");
@@ -127,8 +127,8 @@ public class ReproducirCancion extends PantallaPrincipal {
 
 
 		imagen_reproduccion.setBounds(screenSize.width/2 - 350, 190, 300, 300);
-		botonPlay.setBounds(screenSize.width/2 - 280, 500, 70, 70);
-		botonPause.setBounds(screenSize.width/2 - 210, 500, 70, 70);
+		botonPlay.setBounds(screenSize.width/2 - 280, 500, 60, 60);
+		botonPause.setBounds(screenSize.width/2 - 210, 500, 60, 60);
 
 	
 		
@@ -174,5 +174,6 @@ public class ReproducirCancion extends PantallaPrincipal {
 		 this.botonAnyadirComentario.addActionListener(c);
 		 this.botonReportar.addActionListener(c);
 		 this.botonPlay.addActionListener(c);
+		 this.botonPause.addActionListener(c);
 	 }
 }

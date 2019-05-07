@@ -87,9 +87,9 @@ public class Ventana extends JFrame {
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), reproducirAlbumString);
 	    if (Sistema.sistema.getUsuarioActual() != null) {
-	    	this.reproducirCancion.setUsuarioRegistrado();
+	    	this.reproducirAlbum.setUsuarioRegistrado();
 	    } else {
-	    	this.reproducirCancion.setUsuarioNoRegistrado();
+	    	this.reproducirAlbum.setUsuarioNoRegistrado();
 	    }
 	}
 	

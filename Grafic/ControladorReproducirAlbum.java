@@ -2,6 +2,7 @@ package ESPOTIPHAI_MIUSIC_FINAL.Grafic;
 
 
 import java.awt.event.*;
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -10,6 +11,7 @@ import javax.swing.*;
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.ExcesoReproduccionesExcepcion;
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.Comentario;
+import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 public class ControladorReproducirAlbum implements ActionListener{
 		private ReproducirAlbum vista;
@@ -28,8 +30,10 @@ public class ControladorReproducirAlbum implements ActionListener{
 			} else if(((JButton)e.getSource()).getText() == "Ver Perfil") {
 				Ventana.ventana.showPerfil();
 				Ventana.ventana.perfil.setInformacion(Sistema.sistema.getUsuarioActual());
-			}  else if(((JButton)e.getSource()).getText() == "Registro") {
+			} else if(((JButton)e.getSource()).getText() == "Registro") {
 				Ventana.ventana.showRegistrarse();
+			} else if(((JButton)e.getSource()).getText() == "Atras") {
+				Ventana.ventana.showReproducirCancion();
 			} else if(((JButton)e.getSource()).getText() == "Buscar") {
 				System.out.println("buscar");
 			} else if(((JButton)e.getSource()).getText() == "Limpiar Buscador") {
@@ -43,7 +47,7 @@ public class ControladorReproducirAlbum implements ActionListener{
 				Sistema.sistema.getCancionTotales().get(0).anyadirComentario(nuevoComentario);
 			} else if(((JButton)e.getSource()).getText() == "Reportar") {
 				vista.limpiarBuscador();
-			} else {
+			} else if(((JButton)e.getSource()).getText() == "play") {
 				try {
 					System.out.println(Sistema.sistema.getCancionTotales());
 					Sistema.sistema.reproducirCancion(Sistema.sistema.getCancionTotales().get(0));
@@ -51,6 +55,15 @@ public class ControladorReproducirAlbum implements ActionListener{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+			} else if(((JButton)e.getSource()).getText() == "pause") {
+				try {
+					Sistema.sistema.pararReproductor();
+				} catch (FileNotFoundException | Mp3PlayerException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			} else {
+				
 				System.out.println(e.getSource());
 			}
 		}

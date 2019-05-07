@@ -15,6 +15,7 @@ public class ReproducirAlbum extends PantallaPrincipal {
 
 	private Album album;
 	
+	JButton botonInicio;
 	JButton botonPlay;
 	JButton botonPause;
 	JList lista_comentarios;
@@ -36,16 +37,16 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		ImageIcon icono_parar = new ImageIcon("src/ESPOTIPHAI_MIUSIC_FINAL/Grafic/pause.png");
 		
 	    
-	    
-		this.botonPlay = new JButton();
-		this.botonPause = new JButton();
+		this.botonInicio = new JButton("Atras");
+		this.botonPlay = new JButton("play");
+		this.botonPause = new JButton("pause");
 		this.botonList = new JButton("Ver comentario");
 		this.botonAnyadirComentario = new JButton("Añadir Comentario");
 		this.botonReportar = new JButton("Reportar");
 		botonPlay.setIcon(icono_reproducir);
 		botonPause.setIcon(icono_parar);
 
-		JLabel datos_cancion = new JLabel("Datos de la cancion", SwingConstants.CENTER);
+		JLabel datos_cancion = new JLabel("Datos del album", SwingConstants.CENTER);
 		JLabel titulo_cancion = new JLabel("Titulo:\t\t\t\t\t" ,SwingConstants.CENTER);
 		JLabel anyo_cancion = new JLabel("Año:\t\t\t\t\t",SwingConstants.LEFT);
 		JLabel autor_cancion = new JLabel("Autor:\t\t\t\t\t",SwingConstants.LEFT);
@@ -95,6 +96,7 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		//x axis, y axis, width, height 
 		
 		//Distribucion
+		botonInicio.setBounds(10, 90, 150, 30);
 		datos_cancion.setBounds(screenSize.width/2 - 380, 170, 300, 50);
 		autor_cancion.setBounds(screenSize.width/2  - 375, 210, 150, 50);
 		anyo_cancion.setBounds(screenSize.width/2  - 375,250,150,50);
@@ -108,12 +110,13 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		titulo_cancion.setBounds(screenSize.width/2 + 150, 210, 200, 50);
 		cancionesScrollPane.setBounds(screenSize.width/2  + 100, 260, 300, 300);
 
-		botonPlay.setBounds(screenSize.width/2 + 180, 580, 70, 70);
-		botonPause.setBounds(screenSize.width/2 + 250, 580, 70, 70);
+		botonPlay.setBounds(screenSize.width/2 + 180, 580, 60, 60);
+		botonPause.setBounds(screenSize.width/2 + 250, 580, 60, 60);
 
 	
 		
 		//Añadimos
+		this.add(botonInicio);
 		this.add(datos_cancion);
 		this.add(titulo_cancion);
 		this.add(anyo_cancion);
@@ -137,18 +140,21 @@ public class ReproducirAlbum extends PantallaPrincipal {
 	
 	public void setUsuarioRegistrado() {
 		this.botonIzquierdaArriba.setText("Ver Perfil");
-		this.botonIzquierdaAbajo.setVisible(false);
+		this.botonIzquierdaAbajo.setText("Atras");
+		this.botonInicio.setVisible(false);
 	}
 	
 	public void setUsuarioNoRegistrado() {
 		this.botonIzquierdaArriba.setText("Iniciar Sesion");
-		this.botonIzquierdaAbajo.setVisible(true);
+		this.botonIzquierdaAbajo.setText("Registro");
+		this.botonInicio.setVisible(true);
 	}
 	
 	 // método para asignar un controlador al botón
 	 public void setControlador(ActionListener c) {
 		 this.botonIzquierdaArriba.addActionListener(c);
 		 this.botonIzquierdaAbajo.addActionListener(c);
+		 this.botonInicio.addActionListener(c);
 		 this.botonBuscar.addActionListener(c);
 		 this.botonLimpiarBuscador.addActionListener(c);
 		 this.botonList.addActionListener(c);
