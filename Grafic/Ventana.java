@@ -15,6 +15,7 @@ public class Ventana extends JFrame {
 	public InicioSesion inicioSesion;
 	public ReproducirCancion reproducirCancion;
 	public ReproducirAlbum reproducirAlbum;
+	public ReproducirLista reproducirLista;
 	public Registrarse registrarse;
 	public Perfil perfil;
 	public static Ventana ventana;
@@ -30,6 +31,7 @@ public class Ventana extends JFrame {
 		final String registrarseString = "Registrarse";
 		final String reproducirCancionString = "Reproducir Cancion";
 		final String reproducirAlbumString = "Reproducir Album";
+		final String reproducirListaString = "Reproducir Lista";
 		final String perfilString = "Perfil";
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,12 +41,14 @@ public class Ventana extends JFrame {
 
 		this.reproducirCancion = new ReproducirCancion(null);
 		this.reproducirAlbum = new ReproducirAlbum(null);
+		this.reproducirLista = new ReproducirLista(null);
 		this.inicioSesion = new InicioSesion();
 		this.registrarse = new Registrarse();
 		this.perfil = new Perfil();
 
 		
 		ControladorReproducirCancion controladorReproducirCancion = new ControladorReproducirCancion(reproducirCancion, 2);
+		ControladorReproducirLista controladorReproducirLista = new ControladorReproducirLista(reproducirLista, 2);
 		ControladorReproducirAlbum controladorReproducirAlbum = new ControladorReproducirAlbum(reproducirAlbum, 2);
 		ControladorInicioSesion controladorInicioSesion = new ControladorInicioSesion(inicioSesion, 2);
 		ControladorRegistrarse controladorRegistrarse = new ControladorRegistrarse(registrarse, 2);
@@ -52,11 +56,13 @@ public class Ventana extends JFrame {
 
 		// configurar la vista con el controlador
 		reproducirCancion.setControlador(controladorReproducirCancion);
+		reproducirLista.setControlador(controladorReproducirLista);
 		reproducirAlbum.setControlador(controladorReproducirAlbum);
 		inicioSesion.setControlador(controladorInicioSesion);
 		registrarse.setControlador(controladorRegistrarse);
 		perfil.setControlador(controladorPerfil);
 		
+		this.add(reproducirLista, reproducirListaString);
 		this.add(reproducirAlbum, reproducirAlbumString);
 		this.add(reproducirCancion, reproducirCancionString);
 		this.add(inicioSesion, inicioSesionString);
@@ -80,6 +86,12 @@ public class Ventana extends JFrame {
 	    } else {
 	    	this.reproducirCancion.setUsuarioNoRegistrado();
 	    }
+	}
+	
+	public void showReproducirLista(){
+		final String reproducirListaString = "Reproducir Lista";
+		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
+	    cl.show(this.getContentPane(), reproducirListaString);
 	}
 	
 	public void showReproducirAlbum(){

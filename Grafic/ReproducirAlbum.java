@@ -46,12 +46,12 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		botonPlay.setIcon(icono_reproducir);
 		botonPause.setIcon(icono_parar);
 
-		JLabel datos_cancion = new JLabel("Datos del album", SwingConstants.CENTER);
-		JLabel titulo_cancion = new JLabel("Titulo:\t\t\t\t\t" ,SwingConstants.CENTER);
-		JLabel anyo_cancion = new JLabel("Año:\t\t\t\t\t",SwingConstants.LEFT);
-		JLabel autor_cancion = new JLabel("Autor:\t\t\t\t\t",SwingConstants.LEFT);
-		JLabel duracion_cancion = new JLabel("Duracion:\t\t\t\t\t" + " s",SwingConstants.LEFT);
-		JLabel comentarios_label = new JLabel("Comentarios de la cancion", SwingConstants.CENTER);
+		JLabel datos_album = new JLabel("Datos del album", SwingConstants.CENTER);
+		JLabel titulo_album = new JLabel("Titulo:\t\t\t\t\t" ,SwingConstants.CENTER);
+		JLabel anyo_album = new JLabel("Año:\t\t\t\t\t",SwingConstants.LEFT);
+		JLabel autor_album = new JLabel("Autor:\t\t\t\t\t",SwingConstants.LEFT);
+		JLabel duracion_album = new JLabel("Duracion:\t\t\t\t\t" + " s",SwingConstants.LEFT);
+		JLabel comentarios_label = new JLabel("Comentarios de la album", SwingConstants.CENTER);
 		
 		
 		if (!Sistema.sistema.getCancionTotales().isEmpty()) {
@@ -71,20 +71,20 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		cancionesScrollPane = new JScrollPane(lista_canciones);
 		
 		//Style changes
-		Font datosFont = new Font(datos_cancion.getFont().getName(),Font.BOLD,16);
-		Font tituloFont = new Font(titulo_cancion.getFont().getName(),Font.BOLD,titulo_cancion.getFont().getSize());
-		Font anyoFont = new Font(anyo_cancion.getFont().getName(),Font.BOLD,anyo_cancion.getFont().getSize());
-		Font autorFont = new Font(autor_cancion.getFont().getName(),Font.BOLD,autor_cancion.getFont().getSize());
-		Font duracionFont = new Font(duracion_cancion.getFont().getName(),Font.BOLD,duracion_cancion.getFont().getSize());
-		Font comentariosFont = new Font(datos_cancion.getFont().getName(),Font.BOLD,datos_cancion.getFont().getSize());
+		Font datosFont = new Font(datos_album.getFont().getName(),Font.BOLD,16);
+		Font tituloFont = new Font(titulo_album.getFont().getName(),Font.BOLD,titulo_album.getFont().getSize());
+		Font anyoFont = new Font(anyo_album.getFont().getName(),Font.BOLD,anyo_album.getFont().getSize());
+		Font autorFont = new Font(autor_album.getFont().getName(),Font.BOLD,autor_album.getFont().getSize());
+		Font duracionFont = new Font(duracion_album.getFont().getName(),Font.BOLD,duracion_album.getFont().getSize());
+		Font comentariosFont = new Font(datos_album.getFont().getName(),Font.BOLD,datos_album.getFont().getSize());
         comentariosScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         cancionesScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-		datos_cancion.setFont(datosFont);
-		titulo_cancion.setFont(tituloFont);
-		anyo_cancion.setFont(anyoFont);
-		autor_cancion.setFont(autorFont);
-		duracion_cancion.setFont(duracionFont);
+		datos_album.setFont(datosFont);
+		titulo_album.setFont(tituloFont);
+		anyo_album.setFont(anyoFont);
+		autor_album.setFont(autorFont);
+		duracion_album.setFont(duracionFont);
 		comentarios_label.setFont(comentariosFont);
 
 		GroupLayout layout = new GroupLayout(this);
@@ -97,17 +97,17 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		
 		//Distribucion
 		botonInicio.setBounds(10, 90, 150, 30);
-		datos_cancion.setBounds(screenSize.width/2 - 380, 170, 300, 50);
-		autor_cancion.setBounds(screenSize.width/2  - 375, 210, 150, 50);
-		anyo_cancion.setBounds(screenSize.width/2  - 375,250,150,50);
-		duracion_cancion.setBounds(screenSize.width/2  - 375,290,180,50);
+		datos_album.setBounds(screenSize.width/2 - 380, 170, 300, 50);
+		autor_album.setBounds(screenSize.width/2  - 375, 210, 150, 50);
+		anyo_album.setBounds(screenSize.width/2  - 375,250,150,50);
+		duracion_album.setBounds(screenSize.width/2  - 375,290,180,50);
 		comentarios_label.setBounds(screenSize.width/2  - 380, 340, 300, 50);
 		comentariosScrollPane.setBounds(screenSize.width/2  - 380, 400, 300, 200);
 		botonList.setBounds(screenSize.width/2 - 300, 610, 150, 30);
 		botonAnyadirComentario.setBounds(screenSize.width/2 - 380, 640, 150, 30);
 		botonReportar.setBounds(screenSize.width/2 - 230, 640, 150, 30);
 
-		titulo_cancion.setBounds(screenSize.width/2 + 150, 210, 200, 50);
+		titulo_album.setBounds(screenSize.width/2 + 150, 210, 200, 50);
 		cancionesScrollPane.setBounds(screenSize.width/2  + 100, 260, 300, 300);
 
 		botonPlay.setBounds(screenSize.width/2 + 180, 580, 60, 60);
@@ -117,11 +117,11 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		
 		//Añadimos
 		this.add(botonInicio);
-		this.add(datos_cancion);
-		this.add(titulo_cancion);
-		this.add(anyo_cancion);
-		this.add(autor_cancion);
-		this.add(duracion_cancion);
+		this.add(datos_album);
+		this.add(titulo_album);
+		this.add(anyo_album);
+		this.add(autor_album);
+		this.add(duracion_album);
 		this.add(comentarios_label);
 		this.add(cancionesScrollPane);
 		this.add(comentariosScrollPane);
