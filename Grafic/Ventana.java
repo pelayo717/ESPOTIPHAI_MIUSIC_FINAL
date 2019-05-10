@@ -2,7 +2,9 @@ package ESPOTIPHAI_MIUSIC_FINAL.Grafic;
 
 
 import java.awt.*;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.swing.*;
@@ -23,6 +25,8 @@ public class Ventana extends JFrame {
 	
 	public Ventana() throws Mp3PlayerException, IOException{
 		this.sistema = Sistema.getSistema();
+		this.sistema.registrarse("Roberto Pirck", "Vivarob", LocalDate.now(), "password");
+		
 
 		Container container = this.getContentPane();
 		container.setLayout(new CardLayout());
@@ -62,9 +66,9 @@ public class Ventana extends JFrame {
 		registrarse.setControlador(controladorRegistrarse);
 		perfil.setControlador(controladorPerfil);
 		
+		this.add(reproducirCancion, reproducirCancionString);
 		this.add(reproducirLista, reproducirListaString);
 		this.add(reproducirAlbum, reproducirAlbumString);
-		this.add(reproducirCancion, reproducirCancionString);
 		this.add(inicioSesion, inicioSesionString);
 		this.add(registrarse, registrarseString);
 		this.add(perfil, perfilString);

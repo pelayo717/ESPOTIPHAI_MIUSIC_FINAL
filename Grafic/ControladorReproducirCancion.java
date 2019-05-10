@@ -9,6 +9,7 @@ import java.util.Date;
 import javax.swing.*;
 
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.Cancion;
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.Comentario;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
 
@@ -45,6 +46,15 @@ public class ControladorReproducirCancion implements ActionListener{
 			} else if(((JButton)e.getSource()).getText() == "Reportar") {
 				vista.limpiarBuscador();
 			}else if(((JButton)e.getSource()).getText() == "play") {
+				try {
+					Cancion c1 = Sistema.sistema.crearCancion(new Date(), "astronauts", "Parker_-_Astronauts.mp3");
+					System.out.println("cancion: " + c1.getTitulo());
+					Ventana.ventana.reproducirCancion.setInformacion(c1);
+				} catch (FileNotFoundException | Mp3PlayerException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 				try {
 					Sistema.sistema.getCancionTotales().get(0).reproducirCancion();
 				} catch (InterruptedException e1) {

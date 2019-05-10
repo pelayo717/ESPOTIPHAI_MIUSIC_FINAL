@@ -9,6 +9,7 @@ import javax.swing.*;
 
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.*;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
 
 class Firulais {
 	   public String autor;
@@ -29,6 +30,13 @@ class Firulais {
 public class ReproducirCancion extends PantallaPrincipal {
 
 	private Cancion cancion;
+	
+	JLabel datos_cancion;
+	JLabel titulo_cancion;
+	JLabel anyo_cancion;
+	JLabel autor_cancion;
+	JLabel duracion_cancion;
+	JLabel comentarios_label;
 	
 	JButton botonPlay;
 	JButton botonPause;
@@ -67,12 +75,12 @@ public class ReproducirCancion extends PantallaPrincipal {
 		JLabel duracion_cancion = new JLabel("Duracion:\t\t\t\t\t" + this.cancion.getDuracion() + " s",SwingConstants.CENTER);
 		JLabel comentarios_label = new JLabel("Comentarios de la cancion", SwingConstants.CENTER);*/
 		
-		JLabel datos_cancion = new JLabel("Datos de la cancion", SwingConstants.CENTER);
-		JLabel titulo_cancion = new JLabel("Titulo:\t\t\t\t\t" ,SwingConstants.LEFT);
-		JLabel anyo_cancion = new JLabel("Año:\t\t\t\t\t" ,SwingConstants.LEFT);
-		JLabel autor_cancion = new JLabel("Autor:\t\t\t\t\t" ,SwingConstants.LEFT);
-		JLabel duracion_cancion = new JLabel("Duracion:\t\t\t\t\t" + " s",SwingConstants.LEFT);
-		JLabel comentarios_label = new JLabel("Comentarios de la cancion", SwingConstants.CENTER);
+		this.datos_cancion = new JLabel("Datos de la cancion", SwingConstants.CENTER);
+		titulo_cancion = new JLabel("Titulo:\t\t\t\t\t" ,SwingConstants.LEFT);
+		anyo_cancion = new JLabel("Año:\t\t\t\t\t" ,SwingConstants.LEFT);
+		autor_cancion = new JLabel("Autor:\t\t\t\t\t" ,SwingConstants.LEFT);
+		duracion_cancion = new JLabel("Duracion:\t\t\t\t\t" + " s",SwingConstants.LEFT);
+		comentarios_label = new JLabel("Comentarios de la cancion", SwingConstants.CENTER);
 		
 		if (!Sistema.sistema.getCancionTotales().isEmpty()) {
 			ArrayList<Comentario> arrayComentarios = Sistema.sistema.getCancionTotales().get(0).getComentarios();
@@ -153,6 +161,12 @@ public class ReproducirCancion extends PantallaPrincipal {
 		this.grupo_eleccion.clearSelection();
 	}
 	
+	public void setInformacion(Cancion cancion) {
+		this.titulo_cancion.setText("Titulo:\t\t\t\t\t " + cancion.getTitulo());
+		this.anyo_cancion.setText("Año:\t\t\t\t\t" + "7/12/1996");
+		this.autor_cancion.setText("Autor: \t\t\t\t\t" + cancion.getAutor().getNombreAutor());
+		this.duracion_cancion.setText("Duracion:\t\t\t\t\t" + cancion.getDuracion() +" s" );
+	}
 	
 	public void setUsuarioRegistrado() {
 		this.botonIzquierdaArriba.setText("Ver Perfil");

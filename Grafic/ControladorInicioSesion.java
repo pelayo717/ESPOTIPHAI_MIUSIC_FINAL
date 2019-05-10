@@ -31,12 +31,7 @@ public class ControladorInicioSesion implements ActionListener{
 				Ventana.ventana.showRegistrarse();
 			} else if(((JButton)e.getSource()).getText() == "Iniciar Sesion") {
 				Sistema.sistema.iniciarSesion(vista.usuarioTextfield.getText(), String.valueOf(vista.passwordTextfield.getPassword()));
-				try {
-					Cancion c1 = Sistema.sistema.crearCancion(new Date(), "astronauts", "Parker_-_Astronauts.mp3");
-				} catch (FileNotFoundException | Mp3PlayerException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				
 
 			}
 		}
