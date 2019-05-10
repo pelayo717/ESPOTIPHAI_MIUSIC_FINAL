@@ -5,11 +5,13 @@ import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Iterator;
 
 import javax.swing.*;
 
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.Comentario;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.*;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.*;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 public class ControladorReproducirLista implements ActionListener{
@@ -29,22 +31,26 @@ public class ControladorReproducirLista implements ActionListener{
 			} else if(((JButton)e.getSource()).getText() == "Ver Perfil") {
 				Ventana.ventana.showPerfil();
 				Ventana.ventana.perfil.setInformacion(Sistema.sistema.getUsuarioActual());
+			} else if(((JButton)e.getSource()).getText() == "Ver Perfil Autor") {
+				for (Usuario usuario : Sistema.sistema.getUsuariosTotales()) {
+					if (usuario.getNombreAutor().equals(vista.lista.getAutor()) ) {
+						Ventana.ventana.showPerfil();
+						Ventana.ventana.perfil.setInformacion(usuario);
+					}
+				}
 			}  else if(((JButton)e.getSource()).getText() == "Registro") {
 				Ventana.ventana.showRegistrarse();
 			} else if(((JButton)e.getSource()).getText() == "Buscar") {
 				System.out.println("buscar");
 			} else if(((JButton)e.getSource()).getText() == "Limpiar Buscador") {
 				vista.limpiarBuscador();
-			} else if(((JButton)e.getSource()).getText() == "Ver comentario" && !vista.lista_comentarios.isSelectionEmpty()) {
-				JOptionPane.showMessageDialog(vista,"Autor: " + vista.comentarios[vista.lista_comentarios.getSelectedIndex()].getComentador() + "\n" + "Comentario: " + vista.comentarios[vista.lista_comentarios.getSelectedIndex()].getTexto());
-				vista.lista_comentarios.clearSelection();
 			} else if(((JButton)e.getSource()).getText() == "Añadir Comentario") {
 				String comentarioEscrito = JOptionPane.showInputDialog("Escribe tu comentario");
 				Comentario nuevoComentario = new Comentario( new Date() , comentarioEscrito, Sistema.sistema.getUsuarioActual());
 				Sistema.sistema.getCancionTotales().get(0).anyadirComentario(nuevoComentario);
 			} else if(((JButton)e.getSource()).getText() == "Reportar") {
 				vista.limpiarBuscador();
-			}else if(((JButton)e.getSource()).getText() == "play") {
+			} else if(((JButton)e.getSource()).getText() == "play") {
 				try {
 					Sistema.sistema.getCancionTotales().get(0).reproducirCancion();
 				} catch (InterruptedException e1) {
@@ -58,6 +64,8 @@ public class ControladorReproducirLista implements ActionListener{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+			} else if(((JButton)e.getSource()).getText() == "add") {
+				System.out.println("ADD BUTTON PLRESED");
 			} else {
 				
 				System.out.println(e.getSource());

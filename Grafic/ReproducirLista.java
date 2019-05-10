@@ -13,38 +13,44 @@ import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.*;
 
 public class ReproducirLista extends PantallaPrincipal {
 
-	private Lista lista;
+	Lista lista;
 	
 	JButton botonPlay;
 	JButton botonPause;
+	JButton botonAdd;
+	JButton perfilAutor;
 	JList lista_canciones;
 	JScrollPane scrollPane;
 	JButton botonList;
-	JButton botonAnyadirComentario;
-	JButton botonReportar;
 	Firulais[] names;
-	Comentario[] comentarios;
 
 	public ReproducirLista(Lista lista) {
 		super();
 		this.lista = lista;
 		
 		//Declaracion
-		ImageIcon icono_corchea = new ImageIcon("src/ESPOTIPHAI_MIUSIC_FINAL/Grafic/photo_default.jpg");
+		ImageIcon icono_add = new ImageIcon("src/ESPOTIPHAI_MIUSIC_FINAL/Grafic/plus.png");
 		ImageIcon icono_reproducir = new ImageIcon("src/ESPOTIPHAI_MIUSIC_FINAL/Grafic/play.png");
 		ImageIcon icono_parar = new ImageIcon("src/ESPOTIPHAI_MIUSIC_FINAL/Grafic/pause.png");
 		
+		
+		perfilAutor = new JButton("Ver Perfil Autor");
+		perfilAutor.setOpaque(false);
+		perfilAutor.setContentAreaFilled(false);
+		perfilAutor.setBorderPainted(false);
+		perfilAutor.setForeground(new Color(1f,0f,0f,.0f));
 	    
 	    
-		JLabel imagen_reproduccion = new JLabel("",icono_corchea,JLabel.CENTER);
 		this.botonPlay = new JButton("play");
 		this.botonPause = new JButton("pause");
+		this.botonAdd = new JButton("add");
 		this.botonList = new JButton("Ver comentario");
-		this.botonAnyadirComentario = new JButton("Añadir Comentario");
-		this.botonReportar = new JButton("Reportar");
 		botonPlay.setIcon(icono_reproducir);
 		botonPause.setIcon(icono_parar);
-
+		botonAdd.setIcon(icono_add);
+		this.botonIzquierdaArriba.setText("Ver Perfil");
+		this.botonIzquierdaAbajo.setVisible(false);
+		
 		/*JLabel datos_lista = new JLabel("Datos de la lista", SwingConstants.CENTER);
 		JLabel titulo_lista = new JLabel("Titulo:\t\t\t\t\t" + this.lista.getTitulo(),SwingConstants.CENTER);
 		JLabel anyo_lista = new JLabel("Año:\t\t\t\t\t" + this.lista.getAnyo(),SwingConstants.CENTER);
@@ -53,7 +59,7 @@ public class ReproducirLista extends PantallaPrincipal {
 		JLabel comentarios_label = new JLabel("Comentarios de la lista", SwingConstants.CENTER);*/
 		
 		JLabel datos_lista = new JLabel("Datos de la lista", SwingConstants.CENTER);
-		JLabel titulo_lista = new JLabel("Titulo:\t\t\t\t\t" ,SwingConstants.LEFT);
+		JLabel titulo_lista = new JLabel("Titulo:\t\t\t\t\t" ,SwingConstants.CENTER);
 		JLabel anyo_lista = new JLabel("Año:\t\t\t\t\t" ,SwingConstants.LEFT);
 		JLabel autor_lista = new JLabel("Autor:\t\t\t\t\t" ,SwingConstants.LEFT);
 		JLabel duracion_lista = new JLabel("Duracion:\t\t\t\t\t" + " s",SwingConstants.LEFT);
@@ -64,7 +70,6 @@ public class ReproducirLista extends PantallaPrincipal {
 			this.comentarios = arrayComentarios.toArray(new Comentario[arrayComentarios.size()]);
 		}*/
 		
-		System.out.println(comentarios);
 		Firulais pelayo = new Firulais("Pelayo", "Estoy haciendo el codigo");
 		Firulais manolo = new Firulais("Manuel", "Estoy jugando al Fornite");
 		names = new Firulais[2];
@@ -99,17 +104,18 @@ public class ReproducirLista extends PantallaPrincipal {
 		//x axis, y axis, width, height 
 		
 		//Distribucion
-		datos_lista.setBounds(screenSize.width/2 - 380, 170, 300, 50);
-		autor_lista.setBounds(screenSize.width/2  - 375, 210, 150, 50);
-		anyo_lista.setBounds(screenSize.width/2  - 375,250,150,50);
-		duracion_lista.setBounds(screenSize.width/2  - 375,290,180,50);
-		comentarios_label.setBounds(screenSize.width/2  - 380, 340, 300, 50);
+		datos_lista.setBounds(screenSize.width/2 - 380, 210, 300, 50);
+		autor_lista.setBounds(screenSize.width/2  - 375, 250, 150, 50);
+		perfilAutor.setBounds(screenSize.width/2  - 375, 250, 150, 50);
+		anyo_lista.setBounds(screenSize.width/2  - 375,290,150,50);
+		duracion_lista.setBounds(screenSize.width/2  - 375,330,180,50);
 
 		titulo_lista.setBounds(screenSize.width/2 + 150, 210, 200, 50);
 		scrollPane.setBounds(screenSize.width/2  + 100, 260, 300, 300);
 
-		botonPlay.setBounds(screenSize.width/2 + 180, 580, 60, 60);
-		botonPause.setBounds(screenSize.width/2 + 250, 580, 60, 60);
+		botonPlay.setBounds(screenSize.width/2 + 160, 580, 60, 60);
+		botonPause.setBounds(screenSize.width/2 + 230, 580, 60, 60);
+		botonAdd.setBounds(screenSize.width/2 + 300, 580, 60, 60);
 		
 		
 		
@@ -122,28 +128,19 @@ public class ReproducirLista extends PantallaPrincipal {
 		this.add(titulo_lista);
 		this.add(anyo_lista);
 		this.add(autor_lista);
+		this.add(perfilAutor);
 		this.add(duracion_lista);
-		this.add(comentarios_label);
 		this.add(scrollPane);
 		this.add(botonPlay);
 		this.add(botonPause);
+		this.add(botonAdd);
 	}
 	
 	public void limpiarBuscador(){
 		this.busquedaTextfield.setText("");
 		this.grupo_eleccion.clearSelection();
 	}
-	
-	
-	public void setUsuarioRegistrado() {
-		this.botonIzquierdaArriba.setText("Ver Perfil");
-		this.botonIzquierdaAbajo.setVisible(false);
-	}
-	
-	public void setUsuarioNoRegistrado() {
-		this.botonIzquierdaArriba.setText("Iniciar Sesion");
-		this.botonIzquierdaAbajo.setVisible(true);
-	}
+
 	
 	 // método para asignar un controlador al botón
 	 public void setControlador(ActionListener c) {
@@ -152,9 +149,9 @@ public class ReproducirLista extends PantallaPrincipal {
 		 this.botonBuscar.addActionListener(c);
 		 this.botonLimpiarBuscador.addActionListener(c);
 		 this.botonList.addActionListener(c);
-		 this.botonAnyadirComentario.addActionListener(c);
-		 this.botonReportar.addActionListener(c);
 		 this.botonPlay.addActionListener(c);
 		 this.botonPause.addActionListener(c);
+		 this.botonAdd.addActionListener(c);
+		 this.perfilAutor.addActionListener(c);
 	 }
 }
