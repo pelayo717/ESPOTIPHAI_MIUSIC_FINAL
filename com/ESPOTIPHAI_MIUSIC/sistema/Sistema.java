@@ -282,6 +282,13 @@ public class Sistema implements Serializable{
 					sistema.usuario_actual = usuario;
 					Ventana.ventana.showReproducirCancion();
 					Ventana.ventana.inicioSesion.limpiarVentana();
+					try {
+						Cancion c1 = Sistema.sistema.crearCancion(new Date(), "astronauts", "Parker_-_Astronauts.mp3");
+						Ventana.ventana.reproducirCancion.setInformacion(c1);
+					} catch (FileNotFoundException | Mp3PlayerException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					return Status.OK;
 				}else {
 					break;
