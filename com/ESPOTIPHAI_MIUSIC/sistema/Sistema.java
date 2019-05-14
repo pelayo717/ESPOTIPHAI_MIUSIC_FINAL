@@ -282,14 +282,6 @@ public class Sistema implements Serializable{
 					sistema.usuario_actual = usuario;
 					Ventana.ventana.showReproducirCancion();
 					Ventana.ventana.inicioSesion.limpiarVentana();
-					try {
-						Cancion c1 = Sistema.sistema.crearCancion(new Date(), "astronauts", "Parker_-_Astronauts.mp3");
-						Ventana.ventana.reproducirCancion.setInformacion(c1);
-					} catch (FileNotFoundException | Mp3PlayerException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					return Status.OK;
 				}else {
 					break;
 				}
@@ -1089,11 +1081,24 @@ public class Sistema implements Serializable{
 	 */
 	public Status guardarDatosGenerales() throws IOException {
 		try {
-			String ret = File.separator;
+
+			String ret = "";
+			String final_path="";
+			ret = File.separator;
 			ret = System.getProperty("file.separator");
 			ret = String.valueOf(File.separatorChar);
-			String final_path = ".." + ret + "datos.obj";
-		
+			Properties allProps = System.getProperties();
+			Set keySet = allProps.keySet();
+			Iterator it = keySet.iterator();
+			while(it.hasNext()){
+				Object keyObj = it.next();
+				String key = (String)keyObj;
+				Object valObj = allProps.get(key);
+				if(key.equals("user.dir")) {
+					final_path = valObj.toString() + ret + "datos.obj";
+				}
+			}
+			
 			FileOutputStream fileOut = new FileOutputStream(final_path);
 			ObjectOutputStream oos = new ObjectOutputStream(fileOut);
 			oos.writeObject(this);
@@ -1122,7 +1127,7 @@ public class Sistema implements Serializable{
 			String ret = File.separator;
 			ret = System.getProperty("file.separator");
 			ret = String.valueOf(File.separatorChar);
-			String final_path = "..." + ret + "datos.obj";
+			String final_path = ".." + ret + "datos.obj";
 			
 			FileInputStream in = new FileInputStream(final_path);
 			ObjectInputStream oin = new ObjectInputStream(in);

@@ -30,7 +30,7 @@ public class ControladorPerfil implements ActionListener{
 					
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					System.out.println(e1.toString());
 				}
 			} else if(((JButton)e.getSource()).getText() == "Eliminar Cuenta") {
 				Ventana.ventana.showRegistrarse();

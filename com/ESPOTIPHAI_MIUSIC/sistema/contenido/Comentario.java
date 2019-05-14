@@ -8,6 +8,8 @@ import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
  *	Clase Comentario
  */
 public class Comentario implements Serializable{
+	
+
 	private Date fecha;
 	private String texto;
 	private Usuario comentador;
@@ -77,9 +79,11 @@ public class Comentario implements Serializable{
 	 */
 	public void setTexto(String texto) {
 		this.texto = texto;
+	}	
+	
+	@Override
+	public String toString() {
+		return "Comentario []";
 	}
-	
 
-	
-	
 }

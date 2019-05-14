@@ -90,6 +90,7 @@ public class Ventana extends JFrame {
 	    } else {
 	    	this.reproducirCancion.setUsuarioNoRegistrado();
 	    }
+	    this.reproducirCancion.setInformacion(Sistema.sistema.getCancionTotales().get(0));
 	}
 	
 	public void showReproducirLista(){

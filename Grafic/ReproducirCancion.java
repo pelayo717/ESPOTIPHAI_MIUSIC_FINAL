@@ -93,7 +93,9 @@ public class ReproducirCancion extends PantallaPrincipal {
 		names = new Firulais[2];
 		names[0] = pelayo;
 		names[1] = manolo;
-		lista_comentarios = new JList(names);
+		//lista_comentarios = new JList(comentarios);
+		String[] personas = {"ana", "eduardo", "esther", "josé", "juan", "luis", "maría", "miguel", "zoe"};
+		lista_comentarios = new JList(personas);
 		scrollPane = new JScrollPane(lista_comentarios);
 
 		
@@ -166,6 +168,11 @@ public class ReproducirCancion extends PantallaPrincipal {
 		this.anyo_cancion.setText("Año:\t\t\t\t\t" + "7/12/1996");
 		this.autor_cancion.setText("Autor: \t\t\t\t\t" + cancion.getAutor().getNombreAutor());
 		this.duracion_cancion.setText("Duracion:\t\t\t\t\t" + cancion.getDuracion() +" s" );
+		if (!Sistema.sistema.getCancionTotales().isEmpty()) {
+			ArrayList<Comentario> arrayComentarios = Sistema.sistema.getCancionTotales().get(0).getComentarios();
+			this.comentarios = arrayComentarios.toArray(new Comentario[arrayComentarios.size()]);
+			lista_comentarios = new JList(comentarios);
+		}
 	}
 	
 	public void setUsuarioRegistrado() {

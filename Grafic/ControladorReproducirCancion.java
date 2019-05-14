@@ -43,6 +43,7 @@ public class ControladorReproducirCancion implements ActionListener{
 				String comentarioEscrito = JOptionPane.showInputDialog("Escribe tu comentario");
 				Comentario nuevoComentario = new Comentario( new Date() , comentarioEscrito, Sistema.sistema.getUsuarioActual());
 				Sistema.sistema.getCancionTotales().get(0).anyadirComentario(nuevoComentario);
+				vista.setInformacion(Sistema.sistema.getCancionTotales().get(0));
 			} else if(((JButton)e.getSource()).getText() == "Reportar") {
 				vista.limpiarBuscador();
 			}else if(((JButton)e.getSource()).getText() == "play") {
