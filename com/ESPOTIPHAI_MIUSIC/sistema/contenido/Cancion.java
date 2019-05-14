@@ -1,5 +1,6 @@
 package ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.Period;
@@ -107,10 +108,13 @@ import pads.musicPlayer.exceptions.Mp3PlayerException;
 		 */
 		public double devolverDuracion() {
 			try {
-				double duracion = Mp3Player.getDuration(this.nombreMP3);
+				System.out.println("path: " + new File(this.nombreMP3).getPath());
+				File file = new File(this.nombreMP3);
+				System.out.println(file.getAbsolutePath());
+				double duracion = Mp3Player.getDuration(file.getAbsolutePath());
 				return duracion;
 			}catch(FileNotFoundException fe) {
-				fe.toString();
+				System.out.println(fe.toString());
 				return -1.0;
 			}
 		}

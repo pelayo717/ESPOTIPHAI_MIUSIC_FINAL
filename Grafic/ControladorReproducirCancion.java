@@ -47,8 +47,7 @@ public class ControladorReproducirCancion implements ActionListener{
 				vista.limpiarBuscador();
 			}else if(((JButton)e.getSource()).getText() == "play") {
 				try {
-					Cancion c1 = Sistema.sistema.crearCancion(new Date(), "astronauts", "Parker_-_Astronauts.mp3");
-					System.out.println("cancion: " + c1.getTitulo());
+					Cancion c1 = Sistema.sistema.crearCancion(new Date(), "astronauts", "chicle3.mp3");
 					Ventana.ventana.reproducirCancion.setInformacion(c1);
 				} catch (FileNotFoundException | Mp3PlayerException e1) {
 					// TODO Auto-generated catch block
