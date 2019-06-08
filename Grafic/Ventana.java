@@ -26,7 +26,6 @@ public class Ventana extends JFrame {
 	
 	public Ventana() throws Mp3PlayerException, IOException{
 		this.sistema = Sistema.getSistema();
-		this.sistema.registrarse("Roberto Pirck", "Vivarob", LocalDate.now(), "password");
 
 		Container container = this.getContentPane();
 		container.setLayout(new CardLayout());
@@ -98,7 +97,7 @@ public class Ventana extends JFrame {
 	    }
 	}
 	
-	public void showReproducirCancion(){
+	public void showReproducirCancion(Cancion cancion){
 		final String reproducirCancionString = "Reproducir Cancion";
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), reproducirCancionString);
@@ -107,7 +106,7 @@ public class Ventana extends JFrame {
 	    } else {
 	    	this.reproducirCancion.setUsuarioNoRegistrado();
 	    }
-	    this.reproducirCancion.setInformacion(Sistema.sistema.getCancionTotales().get(0));
+	    this.reproducirCancion.setInformacion(cancion);
 	}
 	
 	public void showReproducirLista(){

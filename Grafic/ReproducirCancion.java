@@ -9,25 +9,10 @@ import javax.swing.*;
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.*;
 
-class Firulais {
-	   public String autor;
-	   public String comentario;
-	   public Firulais(String autor, String comentario) {
-			this.autor = autor;
-			this.comentario = comentario;
-	   }
-	   
-	   @Override
-	    public String toString() {
-	        return autor + ":\n\t " + comentario;
-	    }
-};  
-
-
 
 public class ReproducirCancion extends PantallaPrincipal {
 
-	private Cancion cancion;
+	public Cancion cancion;
 	
 	JLabel datos_cancion;
 	JLabel titulo_cancion;
@@ -43,8 +28,7 @@ public class ReproducirCancion extends PantallaPrincipal {
 	JButton botonList;
 	JButton botonAnyadirComentario;
 	JButton botonReportar;
-	Firulais[] names;
-	Comentario[] comentarios;
+	DefaultListModel<Comentario>  comentariosModel;
 
 	public ReproducirCancion(Cancion cancion) {
 		super();
@@ -80,19 +64,8 @@ public class ReproducirCancion extends PantallaPrincipal {
 		duracion_cancion = new JLabel("Duracion:\t\t\t\t\t" + " s",SwingConstants.LEFT);
 		comentarios_label = new JLabel("Comentarios de la cancion", SwingConstants.CENTER);
 		
-		if (!Sistema.sistema.getCancionTotales().isEmpty()) {
-			ArrayList<Comentario> arrayComentarios = Sistema.sistema.getCancionTotales().get(0).getComentarios();
-			this.comentarios = arrayComentarios.toArray(new Comentario[arrayComentarios.size()]);
-		}
-		
-		Firulais pelayo = new Firulais("Pelayo", "Estoy haciendo el codigo");
-		Firulais manolo = new Firulais("Manuel", "Estoy jugando al Fornite");
-		names = new Firulais[2];
-		names[0] = pelayo;
-		names[1] = manolo;
-		//lista_comentarios = new JList(comentarios);
-		String[] personas = {"ana", "eduardo", "esther", "josé", "juan", "luis", "maría", "miguel", "zoe"};
-		lista_comentarios = new JList<String> (personas);
+		comentariosModel = new DefaultListModel<Comentario> ();	
+		lista_comentarios = new JList<Comentario> (comentariosModel);
 		scrollPane = new JScrollPane(lista_comentarios);
 
 		
@@ -157,14 +130,14 @@ public class ReproducirCancion extends PantallaPrincipal {
 	
 	
 	public void setInformacion(Cancion cancion) {
+		this.cancion = cancion;
 		this.titulo_cancion.setText("Titulo:\t\t\t\t\t " + cancion.getTitulo());
 		this.anyo_cancion.setText("Año:\t\t\t\t\t" + "7/12/1996");
 		this.autor_cancion.setText("Autor: \t\t\t\t\t" + cancion.getAutor().getNombreAutor());
 		this.duracion_cancion.setText("Duracion:\t\t\t\t\t" + cancion.getDuracion() +" s" );
-		if (!Sistema.sistema.getCancionTotales().isEmpty()) {
-			ArrayList<Comentario> arrayComentarios = Sistema.sistema.getCancionTotales().get(0).getComentarios();
-			this.comentarios = arrayComentarios.toArray(new Comentario[arrayComentarios.size()]);
-			lista_comentarios = new JList<Comentario> (comentarios);
+		comentariosModel.removeAllElements();
+		for(Comentario comentario : cancion.getComentarios()) {
+			comentariosModel.addElement(comentario);
 		}
 	}
 	

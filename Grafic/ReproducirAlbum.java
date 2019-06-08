@@ -13,19 +13,19 @@ import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.*;
 
 public class ReproducirAlbum extends PantallaPrincipal {
 
-	private Album album;
+	public Album album;
 	
 	JButton botonPlay;
 	JButton botonPause;
-	JList lista_comentarios;
+	JList<Comentario> lista_comentarios;
 	JScrollPane comentariosScrollPane;
-	JList lista_canciones;
+	JList<Cancion> lista_canciones;
 	JScrollPane cancionesScrollPane;
 	JButton botonList;
 	JButton botonAnyadirComentario;
 	JButton botonReportar;
-	Firulais[] names;
-	Comentario[] comentarios;
+	DefaultListModel<Cancion>  cancionesModel;
+	DefaultListModel<Comentario>  comentariosModel;
 
 	public ReproducirAlbum(Album album) {
 		super();
@@ -51,20 +51,13 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		JLabel duracion_album = new JLabel("Duracion:\t\t\t\t\t" + " s",SwingConstants.LEFT);
 		JLabel comentarios_label = new JLabel("Comentarios de la album", SwingConstants.CENTER);
 		
+		cancionesModel = new DefaultListModel<Cancion> ();
+		lista_canciones = new JList<Cancion> (cancionesModel);
 		
-		if (!Sistema.sistema.getCancionTotales().isEmpty()) {
-			ArrayList<Comentario> arrayComentarios = Sistema.sistema.getCancionTotales().get(0).getComentarios();
-			this.comentarios = arrayComentarios.toArray(new Comentario[arrayComentarios.size()]);
-		}
+		comentariosModel = new DefaultListModel<Comentario> ();
+		lista_comentarios = new JList<Comentario> (comentariosModel);
 		
-		Firulais pelayo = new Firulais("Pelayo", "Estoy haciendo el codigo");
-		Firulais manolo = new Firulais("Manuel", "Estoy jugando al Fornite");
-		names = new Firulais[2];
-		names[0] = pelayo;
-		names[1] = manolo;
-		lista_comentarios = new JList(names);
 		comentariosScrollPane = new JScrollPane(lista_comentarios);
-		lista_canciones = new JList(names);
 		cancionesScrollPane = new JScrollPane(lista_canciones);
 		
 		//Style changes

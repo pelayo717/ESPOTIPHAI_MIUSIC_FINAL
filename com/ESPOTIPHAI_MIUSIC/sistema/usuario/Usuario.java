@@ -105,10 +105,23 @@ public class Usuario implements Serializable{
 		this.bloqueado = UsuarioBloqueado.NOBLOQUEADO; //De primeras el usuario no esta bloqueado
 	}
 	
+	
+	
+	
+	
 	/*=================================================================================*/
 	/*=============== FUNCIONES GENERALES DE GETTERS Y SETTERS ========================*/
 	/*=================================================================================*/
 	
+	@Override
+	public String toString() {
+		return nombre_autor;
+	}
+
+
+
+
+
 	/**
 	 * 
 	 * @param aux

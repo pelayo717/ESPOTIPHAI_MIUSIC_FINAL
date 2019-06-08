@@ -3,9 +3,13 @@ package ESPOTIPHAI_MIUSIC_FINAL.Grafic;
 
 
 import java.awt.event.*;
+import java.io.FileNotFoundException;
+
 import javax.swing.JButton;
+import java.util.Date;
 
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
+import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 public class ControladorPantallaInicio implements ActionListener{
 	private PantallaInicio vista;
@@ -19,7 +23,10 @@ public ControladorPantallaInicio(PantallaInicio x, int modelo) {
 @Override
 	public void actionPerformed(ActionEvent e) {
 		if(((JButton)e.getSource()).getText() == "Elegir cancion") {
-			Ventana.ventana.showReproducirCancion();
+			if(!vista.lista_canciones.isSelectionEmpty()) {
+				System.out.println(vista.cancionesModel.elementAt(vista.lista_canciones.getSelectedIndex()));
+				Ventana.ventana.showReproducirCancion(vista.cancionesModel.elementAt(vista.lista_canciones.getSelectedIndex()));
+			}
 		}  else if(((JButton)e.getSource()).getText() == "Ver Perfil") {
 			Ventana.ventana.showPerfil();
 			Ventana.ventana.perfil.setInformacion(Sistema.sistema.getUsuarioActual());

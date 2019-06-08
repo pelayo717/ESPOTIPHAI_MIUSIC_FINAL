@@ -38,12 +38,12 @@ public class ControladorReproducirAlbum implements ActionListener{
 			} else if(((JButton)e.getSource()).getText() == "Limpiar Buscador") {
 				vista.limpiarBuscador();
 			} else if(((JButton)e.getSource()).getText() == "Ver comentario" && !vista.lista_comentarios.isSelectionEmpty()) {
-				JOptionPane.showMessageDialog(vista,"Autor: " + vista.comentarios[vista.lista_comentarios.getSelectedIndex()].getComentador() + "\n" + "Comentario: " + vista.comentarios[vista.lista_comentarios.getSelectedIndex()].getTexto());
+				JOptionPane.showMessageDialog(vista,"Autor: " + vista.comentariosModel.get(vista.lista_comentarios.getSelectedIndex()).getComentador() + "\n" + "Comentario: " + vista.comentariosModel.get(vista.lista_comentarios.getSelectedIndex()).getTexto());
 				vista.lista_comentarios.clearSelection();
 			} else if(((JButton)e.getSource()).getText() == "Añadir Comentario") {
 				String comentarioEscrito = JOptionPane.showInputDialog("Escribe tu comentario");
 				Comentario nuevoComentario = new Comentario(new Date(), comentarioEscrito, Sistema.sistema.getUsuarioActual());
-				Sistema.sistema.getCancionTotales().get(0).anyadirComentario(nuevoComentario);
+				vista.album.anyadirComentario(nuevoComentario);
 			} else if(((JButton)e.getSource()).getText() == "Reportar") {
 				vista.limpiarBuscador();
 			} else if(((JButton)e.getSource()).getText() == "play") {

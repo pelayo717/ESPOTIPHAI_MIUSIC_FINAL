@@ -6,35 +6,46 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
+import javax.swing.*;
+
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.*;
 
 public class PantallaInicio extends PantallaPrincipal {
 
 	private JScrollPane canciones;
 	private JScrollPane albumes;
-	private JList lista_canciones;
-	private JList lista_albumes;
+	DefaultListModel<Cancion>  cancionesModel;
+	JList<Cancion> lista_canciones;
+	JList<Album> lista_albumes;
 	JButton seleccionarAlbum;
 	JButton seleccionarCancion;
 	
 	public PantallaInicio() {
 		
-		canciones = new JScrollPane(lista_canciones);
-		albumes = new JScrollPane(lista_albumes);
 		JLabel susCanciones = new JLabel("Sus canciones",  SwingConstants.CENTER);
 		JLabel susAlbumes = new JLabel("Sus albumes",  SwingConstants.CENTER);		
 		seleccionarAlbum = new JButton("Elegir album");
 		seleccionarCancion = new JButton("Elegir cancion");
+		if(Sistema.sistema.getUsuarioActual() != null) {
+			lista_canciones  = new JList<Cancion> (Sistema.sistema.getUsuarioActual().getCanciones().toArray(new Cancion[Sistema.sistema.getUsuarioActual().getCanciones().size()]));
+		}
 		
+		cancionesModel = new DefaultListModel<Cancion> ();
+		lista_canciones = new JList<Cancion> (cancionesModel);
+		
+		canciones = new JScrollPane(lista_canciones);
+		albumes = new JScrollPane(lista_albumes);
 		
 		//Cambio de estilo en los JLabel
 		Font susCancionesFont = new Font(susCanciones.getFont().getName(), Font.BOLD, 16);
 		Font susAlbumesFont = new Font(susAlbumes.getFont().getName(), Font.BOLD, 16);
+		
+		
+		susCanciones.setFont(susCancionesFont);
+		susAlbumes.setFont(susAlbumesFont);
+		
+		
 		canciones.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		albumes.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		
@@ -72,6 +83,12 @@ public class PantallaInicio extends PantallaPrincipal {
 	}
 		 
 	public void setUsuarioRegistrado() {
+		cancionesModel.removeAllElements();
+		if(Sistema.sistema.getUsuarioActual() != null) {
+			for(Cancion cancion : Sistema.sistema.getUsuarioActual().getCanciones()) {
+				cancionesModel.addElement(cancion);
+			}
+		}
 		this.botonIzquierdaArriba.setText("Ver Perfil");
 		this.botonIzquierdaMedio.setVisible(false);
 		this.botonIzquierdaAbajo.setVisible(false);

@@ -21,6 +21,7 @@ import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 
 public class Cancion extends ContenidoComentable {
+		
 	private static final long serialVersionUID = 1L;
 	private EstadoCancion estado_anterior;
 	private EstadoCancion estado;
@@ -43,8 +44,11 @@ public class Cancion extends ContenidoComentable {
 		this.fecha_modificar = LocalDate.now();
 	}
 	
-	
-	
+	@Override
+	public String toString() {
+		return nombreMP3;
+	}
+
 	
 	/**
 	 *	Funcion para anyadir a la cola de reproduccion
@@ -52,6 +56,7 @@ public class Cancion extends ContenidoComentable {
 	 */
 	public void anyadirCola() {
 		try {
+			System.out.println(this.nombreMP3);
 			Cancion.repro_mp3.add(this.nombreMP3);
 			return;
 		}catch(Mp3InvalidFileException ie) {

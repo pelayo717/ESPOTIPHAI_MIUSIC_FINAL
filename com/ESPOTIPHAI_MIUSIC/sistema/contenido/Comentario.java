@@ -33,6 +33,15 @@ public class Comentario implements Serializable{
 	
 	//GETTERS Y SETTERS
 	
+	@Override
+	public String toString() {
+		return texto;
+	}
+
+
+
+
+
 	/**
 	 * Establece el usuario que esta comentando
 	 * @param c

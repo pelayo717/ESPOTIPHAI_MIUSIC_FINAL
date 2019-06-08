@@ -19,10 +19,10 @@ public class ReproducirLista extends PantallaPrincipal {
 	JButton botonPause;
 	JButton botonAdd;
 	JButton perfilAutor;
-	JList lista_canciones;
+	DefaultListModel<Cancion>  cancionesModel;
+	JList<Cancion> lista_canciones;
 	JScrollPane scrollPane;
 	JButton botonList;
-	Firulais[] names;
 
 	public ReproducirLista(Lista lista) {
 		super();
@@ -70,12 +70,8 @@ public class ReproducirLista extends PantallaPrincipal {
 			this.comentarios = arrayComentarios.toArray(new Comentario[arrayComentarios.size()]);
 		}*/
 		
-		Firulais pelayo = new Firulais("Pelayo", "Estoy haciendo el codigo");
-		Firulais manolo = new Firulais("Manuel", "Estoy jugando al Fornite");
-		names = new Firulais[2];
-		names[0] = pelayo;
-		names[1] = manolo;
-		lista_canciones = new JList(names);
+		cancionesModel = new DefaultListModel<Cancion> ();
+		lista_canciones = new JList<Cancion> (cancionesModel);
 		scrollPane = new JScrollPane(lista_canciones);
 
 		
