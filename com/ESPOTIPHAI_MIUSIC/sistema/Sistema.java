@@ -271,7 +271,7 @@ public class Sistema implements Serializable{
 		
 		if(nombre_usuario.equals("root1967") && contrasenia.equals("ADMINISTRADOR") == true) {
 			sistema.es_administrador = true;
-			Ventana.ventana.showReproducirCancion();
+			Ventana.ventana.showPantallaInicio();
 			Ventana.ventana.inicioSesion.limpiarVentana();
 			return Status.OK;
 		}
@@ -280,7 +280,7 @@ public class Sistema implements Serializable{
 			if(usuario.getNombreUsuario().equals(nombre_usuario) == true && usuario.getContrasena().equals(contrasenia)== true) {
 				if(usuario.getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
 					sistema.usuario_actual = usuario;
-					Ventana.ventana.showReproducirCancion();
+					Ventana.ventana.showPantallaInicio();
 					Ventana.ventana.inicioSesion.limpiarVentana();
 				}else {
 					break;

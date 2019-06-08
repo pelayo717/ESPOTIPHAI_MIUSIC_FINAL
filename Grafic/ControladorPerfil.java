@@ -21,9 +21,7 @@ public class ControladorPerfil implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (((JButton)e.getSource()).getText() == "Inicio") {
-				Ventana.ventana.showReproducirCancion();
-			} else if(((JButton)e.getSource()).getText() == "Notificacion") {
-				Ventana.ventana.showRegistrarse();
+				Ventana.ventana.showPantallaInicio();
 			} else if(((JButton)e.getSource()).getText() == "Cerrar Sesion") {
 				try {
 					Sistema.sistema.cerrarSesion();

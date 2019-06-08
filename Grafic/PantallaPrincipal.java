@@ -5,6 +5,7 @@ import javax.swing.*;
 
 public class PantallaPrincipal extends JPanel{
 	public JButton botonIzquierdaArriba;
+	public JButton botonIzquierdaMedio;
 	public JButton botonIzquierdaAbajo;
 	JTextField busquedaTextfield;
 	JButton botonBuscar;
@@ -17,7 +18,8 @@ public class PantallaPrincipal extends JPanel{
 		
 		this.setBackground(new Color(40,159,211));
 		this.botonIzquierdaArriba = new JButton("Iniciar Sesion");
-		this.botonIzquierdaAbajo = new JButton("Registro");
+		this.botonIzquierdaMedio = new JButton("Registro");
+		this.botonIzquierdaAbajo = new JButton("Inicio");
 		JLabel titulo = new JLabel("ESPOTIPHAIMUSIC", SwingConstants.CENTER);
 		this.busquedaTextfield = new JTextField(10);
 		this.botonBuscar = new JButton("Buscar");
@@ -46,8 +48,10 @@ public class PantallaPrincipal extends JPanel{
 
 		//Manual Constraints
 		//x axis, y axis, width, height  
+		
 		botonIzquierdaArriba.setBounds(10, 10, 150, 30);
-		botonIzquierdaAbajo.setBounds(10, 50, 150, 30);
+		botonIzquierdaMedio.setBounds(10, 50, 150, 30);
+		botonIzquierdaAbajo.setBounds(10, 90, 150, 30);
 		titulo.setBounds(screenSize.width/2 - 300, 20, 600, 30);
 		busquedaTextfield.setBounds(screenSize.width/2 - 250,90,500, 40);
 		botonBuscar.setBounds(screenSize.width/2 + 270, 90, 150, 30);
@@ -60,6 +64,7 @@ public class PantallaPrincipal extends JPanel{
 		
 		//We add all the components
 		this.add(botonIzquierdaArriba);
+		this.add(botonIzquierdaMedio);
 		this.add(botonIzquierdaAbajo);
 		this.add(titulo);
 		this.add(busquedaTextfield);
@@ -71,6 +76,10 @@ public class PantallaPrincipal extends JPanel{
 		
 	}
 	
-	
+
+	public void limpiarBuscador(){
+		this.busquedaTextfield.setText("");
+		this.grupo_eleccion.clearSelection();
+	}
 
 }

@@ -27,6 +27,8 @@ public class ControladorReproducirCancion implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if (((JButton)e.getSource()).getText() == "Iniciar Sesion") {
 				Ventana.ventana.showInicioSesion();
+			} else if (((JButton)e.getSource()).getText() == "Inicio") {
+				Ventana.ventana.showPantallaInicio();
 			} else if(((JButton)e.getSource()).getText() == "Ver Perfil") {
 				Ventana.ventana.showPerfil();
 				Ventana.ventana.perfil.setInformacion(Sistema.sistema.getUsuarioActual());
@@ -61,7 +63,7 @@ public class ControladorReproducirCancion implements ActionListener{
 					e1.printStackTrace();
 				}
 			} else {
-				
+				System.out.println(vista.lista_comentarios.isSelectionEmpty());
 				System.out.println(e.getSource());
 			}
 		}

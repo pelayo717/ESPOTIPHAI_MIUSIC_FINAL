@@ -18,6 +18,7 @@ public class Ventana extends JFrame {
 	public ReproducirCancion reproducirCancion;
 	public ReproducirAlbum reproducirAlbum;
 	public ReproducirLista reproducirLista;
+	public PantallaInicio pantallaInicio;
 	public Registrarse registrarse;
 	public Perfil perfil;
 	public static Ventana ventana;
@@ -36,6 +37,7 @@ public class Ventana extends JFrame {
 		final String reproducirCancionString = "Reproducir Cancion";
 		final String reproducirAlbumString = "Reproducir Album";
 		final String reproducirListaString = "Reproducir Lista";
+		final String pantallaInicioString = "Pantalla Inicio";
 		final String perfilString = "Perfil";
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -43,6 +45,7 @@ public class Ventana extends JFrame {
 		this.setVisible(true);
 		this.setResizable(false);
 
+		this.pantallaInicio = new PantallaInicio();
 		this.reproducirCancion = new ReproducirCancion(null);
 		this.reproducirAlbum = new ReproducirAlbum(null);
 		this.reproducirLista = new ReproducirLista(null);
@@ -51,6 +54,7 @@ public class Ventana extends JFrame {
 		this.perfil = new Perfil();
 
 		
+		ControladorPantallaInicio controladorPantallaInicio = new ControladorPantallaInicio(pantallaInicio, 2);
 		ControladorReproducirCancion controladorReproducirCancion = new ControladorReproducirCancion(reproducirCancion, 2);
 		ControladorReproducirLista controladorReproducirLista = new ControladorReproducirLista(reproducirLista, 2);
 		ControladorReproducirAlbum controladorReproducirAlbum = new ControladorReproducirAlbum(reproducirAlbum, 2);
@@ -59,6 +63,7 @@ public class Ventana extends JFrame {
 		ControladorPerfil controladorPerfil = new ControladorPerfil(perfil,2);
 
 		// configurar la vista con el controlador
+		pantallaInicio.setControlador(controladorPantallaInicio);
 		reproducirCancion.setControlador(controladorReproducirCancion);
 		reproducirLista.setControlador(controladorReproducirLista);
 		reproducirAlbum.setControlador(controladorReproducirAlbum);
@@ -66,6 +71,7 @@ public class Ventana extends JFrame {
 		registrarse.setControlador(controladorRegistrarse);
 		perfil.setControlador(controladorPerfil);
 		
+		this.add(pantallaInicio, pantallaInicioString);
 		this.add(reproducirCancion, reproducirCancionString);
 		this.add(reproducirLista, reproducirListaString);
 		this.add(reproducirAlbum, reproducirAlbumString);
@@ -73,12 +79,27 @@ public class Ventana extends JFrame {
 		this.add(registrarse, registrarseString);
 		this.add(perfil, perfilString);
 		Ventana.ventana = this;
+		this.showPantallaInicio();
 	}
 	
 	public void showInicioSesion(){
 		final String inicioSesionString = "Iniciar Sesion";
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), inicioSesionString);
+	}
+	
+	public void showPantallaInicio(){
+		final String pantallaInicioString = "Pantalla Inicio";
+		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
+	    cl.show(this.getContentPane(), pantallaInicioString);
+	    if (Sistema.sistema.getUsuarioActual() != null) {
+	    	this.pantallaInicio.setUsuarioRegistrado();
+	    	System.out.println("registrado");
+	    } else {
+	    	this.pantallaInicio.setUsuarioNoRegistrado();
+	    	System.out.println("no registrado");
+
+	    }
 	}
 	
 	public void showReproducirCancion(){

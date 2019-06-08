@@ -22,7 +22,7 @@ public class ControladorRegistrarse implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (((JButton)e.getSource()).getText() == "Inicio") {
-				Ventana.ventana.showReproducirCancion();
+				Ventana.ventana.showPantallaInicio();
 				Ventana.ventana.registrarse.limpiarVentana();
 			} else if(((JButton)e.getSource()).getText() == "Iniciar Sesion") {
 				Ventana.ventana.showInicioSesion();

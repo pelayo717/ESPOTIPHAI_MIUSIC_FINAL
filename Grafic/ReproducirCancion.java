@@ -2,14 +2,12 @@ package ESPOTIPHAI_MIUSIC_FINAL.Grafic;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.net.URL;
 import java.util.*;
 
 import javax.swing.*;
 
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.*;
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
 
 class Firulais {
 	   public String autor;
@@ -95,7 +93,7 @@ public class ReproducirCancion extends PantallaPrincipal {
 		names[1] = manolo;
 		//lista_comentarios = new JList(comentarios);
 		String[] personas = {"ana", "eduardo", "esther", "josé", "juan", "luis", "maría", "miguel", "zoe"};
-		lista_comentarios = new JList(personas);
+		lista_comentarios = new JList<String> (personas);
 		scrollPane = new JScrollPane(lista_comentarios);
 
 		
@@ -158,10 +156,6 @@ public class ReproducirCancion extends PantallaPrincipal {
 		this.add(botonPause);
 	}
 	
-	public void limpiarBuscador(){
-		this.busquedaTextfield.setText("");
-		this.grupo_eleccion.clearSelection();
-	}
 	
 	public void setInformacion(Cancion cancion) {
 		this.titulo_cancion.setText("Titulo:\t\t\t\t\t " + cancion.getTitulo());
@@ -171,23 +165,26 @@ public class ReproducirCancion extends PantallaPrincipal {
 		if (!Sistema.sistema.getCancionTotales().isEmpty()) {
 			ArrayList<Comentario> arrayComentarios = Sistema.sistema.getCancionTotales().get(0).getComentarios();
 			this.comentarios = arrayComentarios.toArray(new Comentario[arrayComentarios.size()]);
-			lista_comentarios = new JList(comentarios);
+			lista_comentarios = new JList<Comentario> (comentarios);
 		}
 	}
 	
 	public void setUsuarioRegistrado() {
 		this.botonIzquierdaArriba.setText("Ver Perfil");
+		this.botonIzquierdaMedio.setText("Inicio");
 		this.botonIzquierdaAbajo.setVisible(false);
 	}
 	
 	public void setUsuarioNoRegistrado() {
 		this.botonIzquierdaArriba.setText("Iniciar Sesion");
+		this.botonIzquierdaMedio.setText("Registro");
 		this.botonIzquierdaAbajo.setVisible(true);
 	}
 	
 	 // método para asignar un controlador al botón
 	 public void setControlador(ActionListener c) {
 		 this.botonIzquierdaArriba.addActionListener(c);
+		 this.botonIzquierdaMedio.addActionListener(c);
 		 this.botonIzquierdaAbajo.addActionListener(c);
 		 this.botonBuscar.addActionListener(c);
 		 this.botonLimpiarBuscador.addActionListener(c);

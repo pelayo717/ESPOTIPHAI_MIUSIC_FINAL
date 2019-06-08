@@ -25,7 +25,7 @@ public class ControladorInicioSesion implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if (((JButton)e.getSource()).getText() == "Inicio") {
 				Ventana.ventana.inicioSesion.limpiarVentana();
-				Ventana.ventana.showReproducirCancion();
+				Ventana.ventana.showPantallaInicio();
 			} else if(((JButton)e.getSource()).getText() == "Registrarse") {
 				Ventana.ventana.inicioSesion.limpiarVentana();
 				Ventana.ventana.showRegistrarse();

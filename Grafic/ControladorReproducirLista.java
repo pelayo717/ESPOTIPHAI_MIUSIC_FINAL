@@ -28,7 +28,9 @@ public class ControladorReproducirLista implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if (((JButton)e.getSource()).getText() == "Iniciar Sesion") {
 				Ventana.ventana.showInicioSesion();
-			} else if(((JButton)e.getSource()).getText() == "Ver Perfil") {
+			} else if (((JButton)e.getSource()).getText() == "Inicio") {
+				Ventana.ventana.showPantallaInicio();
+			}  else if(((JButton)e.getSource()).getText() == "Ver Perfil") {
 				Ventana.ventana.showPerfil();
 				Ventana.ventana.perfil.setInformacion(Sistema.sistema.getUsuarioActual());
 			} else if(((JButton)e.getSource()).getText() == "Ver Perfil Autor") {

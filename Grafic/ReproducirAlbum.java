@@ -15,7 +15,6 @@ public class ReproducirAlbum extends PantallaPrincipal {
 
 	private Album album;
 	
-	JButton botonInicio;
 	JButton botonPlay;
 	JButton botonPause;
 	JList lista_comentarios;
@@ -37,7 +36,6 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		ImageIcon icono_parar = new ImageIcon("src/ESPOTIPHAI_MIUSIC_FINAL/Grafic/pause.png");
 		
 	    
-		this.botonInicio = new JButton("Atras");
 		this.botonPlay = new JButton("play");
 		this.botonPause = new JButton("pause");
 		this.botonList = new JButton("Ver comentario");
@@ -96,7 +94,6 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		//x axis, y axis, width, height 
 		
 		//Distribucion
-		botonInicio.setBounds(10, 90, 150, 30);
 		datos_album.setBounds(screenSize.width/2 - 380, 170, 300, 50);
 		autor_album.setBounds(screenSize.width/2  - 375, 210, 150, 50);
 		anyo_album.setBounds(screenSize.width/2  - 375,250,150,50);
@@ -116,7 +113,6 @@ public class ReproducirAlbum extends PantallaPrincipal {
 	
 		
 		//Añadimos
-		this.add(botonInicio);
 		this.add(datos_album);
 		this.add(titulo_album);
 		this.add(anyo_album);
@@ -140,21 +136,21 @@ public class ReproducirAlbum extends PantallaPrincipal {
 	
 	public void setUsuarioRegistrado() {
 		this.botonIzquierdaArriba.setText("Ver Perfil");
-		this.botonIzquierdaAbajo.setText("Atras");
-		this.botonInicio.setVisible(false);
+		this.botonIzquierdaMedio.setText("Inicio");
+		this.botonIzquierdaAbajo.setVisible(false);
 	}
 	
 	public void setUsuarioNoRegistrado() {
 		this.botonIzquierdaArriba.setText("Iniciar Sesion");
-		this.botonIzquierdaAbajo.setText("Registro");
-		this.botonInicio.setVisible(true);
+		this.botonIzquierdaMedio.setText("Registro");
+		this.botonIzquierdaAbajo.setVisible(true);
 	}
 	
 	 // método para asignar un controlador al botón
 	 public void setControlador(ActionListener c) {
 		 this.botonIzquierdaArriba.addActionListener(c);
 		 this.botonIzquierdaAbajo.addActionListener(c);
-		 this.botonInicio.addActionListener(c);
+		 this.botonIzquierdaMedio.addActionListener(c);
 		 this.botonBuscar.addActionListener(c);
 		 this.botonLimpiarBuscador.addActionListener(c);
 		 this.botonList.addActionListener(c);

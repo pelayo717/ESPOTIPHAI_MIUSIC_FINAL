@@ -26,14 +26,14 @@ public class ControladorReproducirAlbum implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if (((JButton)e.getSource()).getText() == "Iniciar Sesion") {
 				Ventana.ventana.showInicioSesion();
-			} else if(((JButton)e.getSource()).getText() == "Ver Perfil") {
+			} else if (((JButton)e.getSource()).getText() == "Inicio") {
+				Ventana.ventana.showPantallaInicio();
+			}  else if(((JButton)e.getSource()).getText() == "Ver Perfil") {
 				Ventana.ventana.showPerfil();
 				Ventana.ventana.perfil.setInformacion(Sistema.sistema.getUsuarioActual());
 			} else if(((JButton)e.getSource()).getText() == "Registro") {
 				Ventana.ventana.showRegistrarse();
-			} else if(((JButton)e.getSource()).getText() == "Atras") {
-				Ventana.ventana.showReproducirCancion();
-			} else if(((JButton)e.getSource()).getText() == "Buscar") {
+			}else if(((JButton)e.getSource()).getText() == "Buscar") {
 				System.out.println("buscar");
 			} else if(((JButton)e.getSource()).getText() == "Limpiar Buscador") {
 				vista.limpiarBuscador();
