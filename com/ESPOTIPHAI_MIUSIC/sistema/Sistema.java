@@ -1,23 +1,17 @@
 package ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema;
+
 import ESPOTIPHAI_MIUSIC_FINAL.Grafic.Ventana;
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.*;
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.notificacion.*;
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.status.Status;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.reporte.*;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.status.*;
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.*;
 
-import es.uam.eps.padsof.telecard.FailedInternetConnectionException;
-import es.uam.eps.padsof.telecard.InvalidCardNumberException;
-import es.uam.eps.padsof.telecard.OrderRejectedException;
-import es.uam.eps.padsof.telecard.TeleChargeAndPaySystem;
 
 import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.Properties;
-import java.util.Set;
-import java.io.BufferedReader;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -47,6 +41,7 @@ public class Sistema implements Serializable{
 	private ArrayList<Usuario> usuarios_totales =  new ArrayList<Usuario>();
 	private ArrayList<Cancion> canciones_totales = new ArrayList<Cancion>();
 	private ArrayList<Album> albumes_totales = new ArrayList<Album>();
+	private ArrayList<Reporte> reportes_totales = new ArrayList<Reporte>();
 	private Usuario usuario_actual = null;
 	private boolean es_administrador = false;
 	public static Sistema sistema = null;
@@ -80,6 +75,7 @@ public class Sistema implements Serializable{
 				sistema.empeorarCuentaPrincipal();
 				sistema.desbloquearUsuario();
 				sistema.resetearContadoresNuevoMes();
+				sistema.eliminarCancionPendienteModificacionCaducada();
 			}else {
 				sistema = new Sistema();
 				sistema.registrarse("root1967", "ADMINISTRADOR",LocalDate.of(1967, 12, 26), "ADMINISTRADOR");
@@ -88,71 +84,14 @@ public class Sistema implements Serializable{
 		return sistema;
 	}
 
-
 	/*=================================================================================*/
-	/*================FUNCIONES GENERALES DE GETTERS Y SETTERS*========================*/
+	/*======================FUNCIONES GENERALES DE GETTERS=============================*/
 	/*=================================================================================*/
 	
-	
-	public Status setCancionReproduciendo(Cancion c) {
-		if(c != null) {
-			sistema.cancion_reproduciendose = c;
-			return Status.OK;
-		}
-		
-		return Status.ERROR;
-	}
-	
-	
 	/**
-	 * Esta funcion establece el umbral de reproducciones que debe superar un autor para pasar al estado de premium, y solo es aplicable a aquellos usuarios que estan registrados
-	 * @param umbral
-	 * @return retorna un OK si se establece correctamente el umbral o ERROR si no es asi
+	 * Esta funcion retorna el numero maximo de reproducciones que puede realizar un usuario no registrado o registrado normal
+	 * @return numero de canciones
 	 */
-	public Status setUmbralReproducciones(int umbral) {
-		if(umbral < 0) {
-			return Status.ERROR;
-		}
-		sistema.umbral_reproducciones = umbral;
-		return Status.OK;
-	}
-	
-	/**
-	 * Esta funcion establece el precio que se cobra a un usuario para hacerse premium
-	 * @param precio
-	 * @return retorna un OK si se establece correctamente el precio o ERROR si no es asi
-	 */
-	public Status setPrecioPremium(double precio) {
-		if(precio < 0.0) {
-			return Status.ERROR;
-		}
-		sistema.precio_premium = precio;
-		return Status.OK;
-	}
-	
-	/**
-	 * Esta funcion establece el numero maximo de reproducciones que puede realizar un usuario no registrado o un usuario registrado pero no premium
-	 * @param x
-	 * @return retorna un OK si se establece correctamente el numero maximo de reproducciones para un usuario o ERROR si no es asi
-	 */
-	public Status setMaxReproduccionesUsuarioNoPremium(int x) {
-		if(x < 0) {
-			return Status.ERROR;
-		}
-		sistema.max_reproducciones_usuarios_no_premium = x;
-		return Status.OK;
-	}
-	
-	
-	public void setContenidoEscuchadoSinRegistrarse() {
-		sistema.contenido_escuchado_sin_registrarse++;
-	}
-	
-	public int getContenidoEscuchadoSinRegistrarse() {
-		return sistema.contenido_escuchado_sin_registrarse;
-	}
-	
-	
 	public int getMaxReproduccionesUsuariosNoPremium() {
 		return sistema.max_reproducciones_usuarios_no_premium;
 	}
@@ -182,6 +121,23 @@ public class Sistema implements Serializable{
 	}
 	
 	/**
+	 * Devuelve todos losreportes que han realizado los usuarios
+	 * @return retorna el array general de reportes o null si no existe 
+	 */
+	public ArrayList<Reporte> getReportesTotales(){
+		return sistema.reportes_totales;
+	}
+	
+	/**
+	 * Esta funcion es la encaragada de retornar el numero de reproducciones que ha escuchado un usuario sin registrarse
+	 * @return numero de canciones
+	 */
+	public int getContenidoEscuchadoSinRegistrarse() {
+		return sistema.contenido_escuchado_sin_registrarse;
+	}
+	
+	
+	/**
 	 * Devuelve el usuario que ha iniciado sesion actualmente
 	 * @return retorna el usuario actual si inicio sesion, null si no se inicio sesion
 	 */
@@ -205,6 +161,7 @@ public class Sistema implements Serializable{
 		return sistema.precio_premium;
 	}
 	
+	
 	/**
 	 * Devuelve si el usuario actual es un administrador o no
 	 * @return nos indica si el usuario actual de la cuenta es un administrador o no
@@ -214,10 +171,101 @@ public class Sistema implements Serializable{
 	}
 	
 	
-	
+	/**
+	 * Devuelve el objeto cancion que se esta reproduciendo actualmente
+	 * @return retorna el objeto de tipo cancion
+	 */
 	public Cancion getCancionReproduciendo() {
 		return sistema.cancion_reproduciendose;
 	}
+	
+	/*=================================================================================*/
+	/*======================FUNCIONES GENERALES DE SETTERS=============================*/
+	/*=================================================================================*/
+	
+	
+	/**
+	 * Esta funcion establece el umbral de reproducciones que debe superar un autor para pasar al estado de premium, y solo es aplicable a aquellos usuarios que estan registrados
+	 * @param umbral indica el umbral de reproducciones que debe superar un usuario registrado para hacerse premium sin abonar nada
+	 * @return retorna un OK si se establece correctamente el umbral o ERROR si no es asi
+	 */
+	public Status setUmbralReproducciones(int umbral) {
+		if(umbral < 0) {
+			return Status.ERROR;
+		}
+		sistema.umbral_reproducciones = umbral;
+		return Status.OK;
+	}
+	
+	/**
+	 * Esta funcion establece el precio que se cobra a un usuario para hacerse premium
+	 * @param precio indica el precio que hay que abonar para ascender a Premium
+	 * @return retorna un OK si se establece correctamente el precio o ERROR si no es asi
+	 */
+	public Status setPrecioPremium(double precio) {
+		if(precio < 0.0) {
+			return Status.ERROR;
+		}
+		sistema.precio_premium = precio;
+		return Status.OK;
+	}
+	
+	/**
+	 * Esta funcion establece el numero maximo de reproducciones que puede realizar un usuario no registrado o un usuario registrado pero no premium
+	 * @param x indica el numerode reproducciones maximas que puede escuchar un usuario no registrado o registrado normal
+	 * @return retorna un OK si se establece correctamente el numero maximo de reproducciones para un usuario o ERROR si no es asi
+	 */
+	public Status setMaxReproduccionesUsuarioNoPremium(int x) {
+		if(x < 0) {
+			return Status.ERROR;
+		}
+		sistema.max_reproducciones_usuarios_no_premium = x;
+		return Status.OK;
+	}
+	
+
+	/**
+	 * Esta funcion es la encargada de sumar +1 cuando se reproduce una cancion si es un usuario sin registrarse
+	 */
+	public void addContenidoEscuchadoSinRegistrarse() {
+		sistema.contenido_escuchado_sin_registrarse++;
+	}
+	
+	/**
+	 * Esta funcion es la encargada de establecer el usuario actual
+	 * @param aux objeto de tipo usuario que va a inciar sesion
+	 * @return devuelve ok si se establecio el usuario correctamente o error si no fue asi
+	 */
+	public Status setUsuarioActual(Usuario aux) {
+		if(aux != null) {
+			this.usuario_actual = aux;
+			return Status.OK;
+		}
+		return Status.ERROR;
+	}
+	
+	/**
+	 * Esta funcion es la encargada de establecer el usuario actual que es el administrador
+	 * @param aux objeto de tipo usuario que va a iniciar sesion y es el administrador
+	 */
+	public void setAdministrador(boolean aux) {
+		this.es_administrador = aux;
+	}
+	
+	/**
+	 * Esta funcion es la encargada de establecer la cancion que se va a reproducir a continuacion
+	 * @param c objeto de tipo cancion que se va a reproducir
+	 * @return devuelve ok si la cancion se asigna correctamente para reproducirse, error si no se consigue
+	 */
+	public Status setCancionReproduciendo(Cancion c) {
+		if(c != null) {
+			sistema.cancion_reproduciendose = c;
+			return Status.OK;
+		}
+		return Status.ERROR;
+	}
+	
+	
 	
 	
 	/*=================================================================================*/
@@ -226,10 +274,10 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Permite registrarse a un usuario creando un objeto de tipo usuario y almacenandolo en el array de usuarios totales
-	 * @param nombre_usuario
-	 * @param nombre_autor
-	 * @param fecha_nacimiento
-	 * @param contrasenia
+	 * @param nombre_usuario cadena que indica el nombre de usuario que va a recibir el usuario al registrarse
+	 * @param nombre_autor cadena que indica el nombre de autor que va a recibir el usuario al registrarse
+	 * @param fecha_nacimiento fecha que indica el dia,mes y año de nacimiento del usuario
+	 * @param contrasenia cadena que indica la contrasenya que va a utilizar el usuario al iniciar sesion
 	 * @return devuelve OK si el usuario se registro correctamente o ERROR si no lo consiguio
 	 */
 	public Status registrarse(String nombre_usuario,String nombre_autor,LocalDate fecha_nacimiento, String contrasenia) {
@@ -253,14 +301,13 @@ public class Sistema implements Serializable{
 		
 		Usuario usuario_registrado_nuevo = new Usuario(nombre_usuario,nombre_autor,fecha_nacimiento, contrasenia); 
 		sistema.usuarios_totales.add(usuario_registrado_nuevo);
-		System.out.println("usuario registrado");
 		return Status.OK;
 	}
 	
 	/**
 	 * Permite iniciar sesion en la aplicacion, ya sea el administrador o un usuario convencional
-	 * @param nombre_usuario
-	 * @param contrasenia
+	 * @param nombre_usuario cadena, nombre de usuario necesario para el login
+	 * @param contrasenia cadena, contrasenya necesario para el login
 	 * @return devuelve OK si se inicio correctamente la sesion como usuario o ERROR si no se consiguio
 	 */
 	public Status iniciarSesion(String nombre_usuario, String contrasenia) {
@@ -282,10 +329,12 @@ public class Sistema implements Serializable{
 					sistema.usuario_actual = usuario;
 					Ventana.ventana.showPantallaInicio();
 					Ventana.ventana.inicioSesion.limpiarVentana();
+					return Status.OK;
 				}else {
 					break;
 				}
 			}
+			
 		}
 			
 		return Status.ERROR;
@@ -301,14 +350,10 @@ public class Sistema implements Serializable{
 		if(sistema.usuario_actual != null) {
 			if(this.es_administrador == true) {
 				this.es_administrador = false;
-				sistema.usuario_actual = null;
-				guardarDatosGenerales();
-				Ventana.ventana.showReproducirCancion();
-				return Status.OK;
 			}
 			sistema.usuario_actual = null;
 			guardarDatosGenerales();
-			Ventana.ventana.showReproducirCancion();
+			Ventana.ventana.showPantallaInicio();
 			return Status.OK;
 		}
 		return Status.ERROR;
@@ -324,18 +369,17 @@ public class Sistema implements Serializable{
 					 
 					 //Compruebo quien es el usuario y elimino sus canciones
 					 for(Cancion canciones_usuario: usuario.getCanciones()) {
-						 canciones_usuario.setEstado(EstadoCancion.ELIMINADA);
+						 sistema.eliminarCancion(canciones_usuario);
 					 }
 					 
 					 //elimino sus albumes
-					 for(int x=0; x < usuario.getAlbumes().size();x++) {
-						 sistema.getAlbumTotales().remove(usuario.getAlbumes().get(x));
-						 usuario.getAlbumes().remove(x);
+					 for(Album albumes_usuario:usuario.getAlbumes()) {
+						 sistema.eliminarAlbum(albumes_usuario);
 					 }
 					 
 					 //elimino sus listas
-					 for(int z=0; z < usuario.getListas().size();z++) {
-						 usuario.getListas().remove(z);
+					 for(Lista listas_usuario:usuario.getListas()) {
+						 sistema.eliminarLista(listas_usuario);
 					 }
 					 
 					 //elimino sus notificaciones
@@ -354,9 +398,13 @@ public class Sistema implements Serializable{
 		return;
 	}
 	
+	/*=================================================================================*/
+	/*================FUNCIONES AUTOMATICAS AL INICIAR LA APLICACION===================*/
+	/*=================================================================================*/
 	
 	/**
-	 * Funcion que se ejcutara de manera periodica y que comprobara todos aquellos usuarios que han excedido el tiempo de usuario premium y los degrada a usuarios registrados normales
+	 * Funcion que se ejcutara de manera periodica y que comprobara todos 
+	 * aquellos usuarios que han excedido el tiempo de usuario premium y los degrada a usuarios registrados normales
 	 */
 	public void empeorarCuentaPrincipal() {
 
@@ -368,7 +416,7 @@ public class Sistema implements Serializable{
 					usuario.emperorarCuenta();
 					
 					//HACEMOS QUE SEA EL ADMINISTRADOR QUIEN AVISE AL USUARIO
-					sistema.getUsuariosTotales().get(0).enviarNotificacion(usuario, "Tras 15 dias su cuenta ha sido degrada a registrado normal, abone el importe para disfrutar de ser premium", TipoNotificacion.CUENTA);
+					sistema.getUsuariosTotales().get(0).enviarNotificacion(usuario, "Tras 15 dias su cuenta ha sido degrada a registrado normal, abone el importe para disfrutar de ser premium");
 				}
 			}
 		}
@@ -376,7 +424,8 @@ public class Sistema implements Serializable{
 	}
 
 	/**
-	 * Funcion que se ejecuta de manera periodica y que comprobara todos aqullos usuarios que han superado el tiempo de bloqueo establecido procediendo al desbloqueo
+	 * Funcion que se ejecuta de manera periodica y que comprobara todos
+	 * aquellos usuarios que han superado el tiempo de bloqueo establecido procediendo al desbloqueo
 	 */
 	public void desbloquearUsuario() {
 		LocalDate fecha_actual = LocalDate.now();
@@ -387,14 +436,15 @@ public class Sistema implements Serializable{
 					usuario.desbloquearCuenta();
 					
 					//HACEMOS QUE SEA EL ADMINISTRADOR QUIEN AVISE AL USUARIO
-					sistema.getUsuariosTotales().get(0).enviarNotificacion(usuario, "Tras 30 dias ha sido desbloqueado y puede usar de nuevo el sistema", TipoNotificacion.BLOQUEO);
+					sistema.getUsuariosTotales().get(0).enviarNotificacion(usuario, "Tras 30 dias ha sido desbloqueado y puede usar de nuevo el sistema");
 				}
 			}
 		}
 	}
 	
 	/**
-	 * 
+	 * Funcion que se ejecuta de manera periodica y que se encarga de restear
+	 * los contadores de reproducciones de los usuarios no registrados y de los usuarios registrados no premium
 	 */
 	private void resetearContadoresNuevoMes() {
 		
@@ -404,25 +454,55 @@ public class Sistema implements Serializable{
 			//Nadie ha iniciado sesion aunque seguimos poniendo el contador de contenido escuchado sin estar registrado
 			sistema.contenido_escuchado_sin_registrarse = 0;
 			
-			
 			for(Usuario usuarios_totales: sistema.usuarios_totales) {
-				usuarios_totales.resetearContenidoEscuchadosSinSerPremium();
+				if(usuarios_totales.getPremium() == false) {
+					usuarios_totales.resetContenidoEscuchadosSinSerPremium();
+				}
 			}
 		}
 		
 	}
+
+	/**
+	 * Funcion que se ejecuta de manera periodica y que se encarga de eliminar
+	 * aquellas canciones que no han sido modificadas por el usuario y han excedido el tiempo que se les dio
+	 * para hacerlo
+	 */
+	private void eliminarCancionPendienteModificacionCaducada() {
+		
+		LocalDate d = LocalDate.now();
+		
+		//ELIMINAMOS CANCIONES QUE HAN PASADO EL TIEMPO DE MODIFICACION
+		for(Cancion canciones_eliminar_sistema:sistema.getCancionTotales()) {
+			if(canciones_eliminar_sistema.getEstado() == EstadoCancion.PENDIENTEMODIFICACION && d.minusDays(3).isAfter(canciones_eliminar_sistema.getFechaModificacion())) {
+				sistema.getCancionTotales().remove(canciones_eliminar_sistema);
+			}
+		}
+		
+		//ELIMINAMOS LAS CANCIONES QUE SIGUEN EL MIMSO PATRON PERO EN CADA UNO DE LOS ARRAYS DE CANCIONES DE USUARIO
+		for(Usuario usuarios_totales:sistema.getUsuariosTotales()) {
+			for(Cancion canciones_en_usuario:usuarios_totales.getCanciones()) {
+				if(canciones_en_usuario.getEstado() == EstadoCancion.PENDIENTEMODIFICACION && d.minusDays(3).isAfter(canciones_en_usuario.getFechaModificacion())) {
+					usuarios_totales.getCanciones().remove(canciones_en_usuario);
+				}
+			}
+		}
+		
+		
+	}
+	
 	/*=================================================================================*/
 	/*================FUNCIONES RELACIONADAS CON LA BUSQUEDA POR CRITERIOS=============*/
 	/*=================================================================================*/
 	
 	/**
 	 * Permite realizar una busqueda en todas las canciones al introducir una cadena
-	 * @param palabra
+	 * @param palabra criterio a buscar dentro del sistema
 	 * @return retorna un arraylist de elementos de tipo cancion si se encuentra contenido igual
 	 * o que contiene la cadena introducida por parametro
-	 * @throws NoHayElementosExcepcion 
 	 */
 	public ArrayList<Cancion> buscadorPorTitulos(String palabra){
+		
 		LocalDate fecha_actual = LocalDate.now();
 		ArrayList<Cancion> canciones_retornar = new ArrayList<Cancion>();
 		
@@ -484,7 +564,7 @@ public class Sistema implements Serializable{
 					flag = 0;
 					if(album_totales.getTitulo().equals(palabra) == true || album_totales.getTitulo().contains(palabra) == true) {
 						for(Cancion canciones_album: album_totales.getContenido()) {
-							if(canciones_album.getEstado() == EstadoCancion.ELIMINADA || canciones_album.getEstado() == EstadoCancion.PLAGIO) { //Estados de las canciones una vez fueron a�adidas al album
+							if(canciones_album.getEstado() == EstadoCancion.ELIMINADA || canciones_album.getEstado() == EstadoCancion.PLAGIO) { //Estados de las canciones una vez fueron anyadidas al album
 								flag = 1;
 								break;
 							}
@@ -508,7 +588,7 @@ public class Sistema implements Serializable{
 			flag = 0;
 			if(album_totales.getTitulo().equals(palabra) == true || album_totales.getTitulo().contains(palabra) == true) {
 				for(Cancion canciones_album: album_totales.getContenido()) {
-					if(canciones_album.getEstado() == EstadoCancion.ELIMINADA || canciones_album.getEstado() == EstadoCancion.PLAGIO || canciones_album.getEstado() == EstadoCancion.EXPLICITA) { //Estados de las canciones una vez fueron a�adidas al album
+					if(canciones_album.getEstado() == EstadoCancion.ELIMINADA || canciones_album.getEstado() == EstadoCancion.PLAGIO || canciones_album.getEstado() == EstadoCancion.EXPLICITA) { //Estados de las canciones una vez fueron anyadidas al album
 						flag = 1;
 						break;
 					}
@@ -623,7 +703,7 @@ public class Sistema implements Serializable{
 					flag = 0;
 					if(album_totales.getAutor().getId() == ide) {
 						for(Cancion canciones_album: album_totales.getContenido()) {
-							if(canciones_album.getEstado() == EstadoCancion.ELIMINADA || canciones_album.getEstado() == EstadoCancion.PLAGIO) { //Estados de las canciones una vez fueron a�adidas al album
+							if(canciones_album.getEstado() == EstadoCancion.ELIMINADA || canciones_album.getEstado() == EstadoCancion.PLAGIO) { //Estados de las canciones una vez fueron anyadidas al album
 								flag = 1;
 								break;
 							}
@@ -647,7 +727,7 @@ public class Sistema implements Serializable{
 			flag = 0;
 			if(album_totales.getAutor().getId() == ide) {
 				for(Cancion canciones_album: album_totales.getContenido()) {
-					if(canciones_album.getEstado() == EstadoCancion.ELIMINADA || canciones_album.getEstado() == EstadoCancion.PLAGIO || canciones_album.getEstado() == EstadoCancion.EXPLICITA) { //Estados de las canciones una vez fueron a�adidas al album
+					if(canciones_album.getEstado() == EstadoCancion.ELIMINADA || canciones_album.getEstado() == EstadoCancion.PLAGIO || canciones_album.getEstado() == EstadoCancion.EXPLICITA) { //Estados de las canciones una vez fueron anyadidas al album
 						flag = 1;
 						break;
 					}
@@ -708,16 +788,13 @@ public class Sistema implements Serializable{
 	 */
 	public Status modificarCancion(Cancion c,String NombreMp3) {
 		LocalDate d = LocalDate.now();
+		
 		if(sistema.getUsuarioActual() != null && sistema.getAdministrador() == false && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
-			for(Cancion canciones_propias:sistema.getUsuarioActual().getCanciones()) {
-				if(canciones_propias.getTitulo().equals(c.getTitulo()) == true && canciones_propias.getNombreMP3().equals(c.getNombreMP3()) == true && canciones_propias.getEstado() == EstadoCancion.PENDIENTEMODIFICACION && d.minusDays(3).isBefore(c.getFechaModificacion()) == true) {
-					canciones_propias.setNombreMP3(NombreMp3);
-					if(canciones_propias.esMP3() == true) {
-						canciones_propias.setDuracion(canciones_propias.devolverDuracion());
-						return Status.OK;
-					}
-
-					return Status.ERROR;
+			if(sistema.getCancionTotales().contains(c) == true && d.minusDays(3).isBefore(c.getFechaModificacion()) == true && c.getEstado() == EstadoCancion.PENDIENTEMODIFICACION) {
+				c.setNombreMP3(NombreMp3);
+				if(c.esMP3() == true){
+					c.setDuracion(c.getDuracion());
+					return Status.OK;
 				}
 			}
 		}
@@ -736,13 +813,13 @@ public class Sistema implements Serializable{
 	 * @throws Mp3PlayerException
 	 */
 	public Cancion crearCancion(Date anyo,String titulo,String nombreMP3) throws FileNotFoundException, Mp3PlayerException{
-		LocalDate fecha_actual = LocalDate.now();
+		//LocalDate fecha_actual = LocalDate.now();
 		if(anyo == null || titulo == null || nombreMP3 == null) {
 			return null;
 		}
 		
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
-			Period intervalo = Period.between(sistema.usuario_actual.getFechaNacimiento(), fecha_actual);
+			//Period intervalo = Period.between(sistema.usuario_actual.getFechaNacimiento(), fecha_actual);
 			
 			Cancion c = new Cancion(titulo,sistema.usuario_actual,nombreMP3);
 			
@@ -761,7 +838,7 @@ public class Sistema implements Serializable{
 			
 			
 			//Lo introducimos en el array de canciones personales al cearla
-			sistema.usuario_actual.anyadirACancionPersonal(c);
+			sistema.usuario_actual.anyadirACancionesPersonales(c);
 			
 			//Lo introducimos en el array de canciones totales de la aplicacion
 			sistema.canciones_totales.add(c);
@@ -780,24 +857,51 @@ public class Sistema implements Serializable{
 	 * @param cancion_eliminar
 	 * @return retorna ERROR si la cancion no existe o no se puede eliminar del sistema u OK si se elimina correctamente
 	 */
-	public Status eliminarCancion(Cancion cancion_eliminar) {
-		
-		boolean existe_cancion_en_usuario = false;
-		
+	public Status eliminarCancion(Cancion cancion_eliminar) {		
 		if(cancion_eliminar == null) {
 			return Status.ERROR;
 		}
 		
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
-			
-			for(Cancion cancion:sistema.usuario_actual.getCanciones()) {
-				if(cancion.getTitulo().equals(cancion_eliminar.getTitulo()) == true && cancion.getNombreMP3().equals(cancion_eliminar.getNombreMP3()) == true && cancion.getEstado() != EstadoCancion.PLAGIO) {
-					existe_cancion_en_usuario = true;
+					
+			if(cancion_eliminar.getAutor().getNombreAutor().equals(sistema.getUsuarioActual().getNombreAutor()) && cancion_eliminar.getEstado() != EstadoCancion.PLAGIO) {
+				
+				//ELIMINAMOS DE SITIOS DEL PROPIO SISTEMA
+				if(sistema.getCancionTotales().contains(cancion_eliminar) == true) {
+					sistema.getCancionTotales().remove(cancion_eliminar);
 				}
-			}
-			
-			if(existe_cancion_en_usuario == true) {
-				sistema.usuario_actual.eliminarDeCancionesPersonales(cancion_eliminar);
+				
+				for(Album albumes_totales: sistema.getAlbumTotales()) {
+					if(albumes_totales.getContenido().contains(cancion_eliminar) == true) {
+						albumes_totales.eliminarContenido(cancion_eliminar);
+					}
+				}
+				
+				
+				//ELIMINAMOS DE SITIOS DEL PROPIO AUTOR(SU CANCION EN SUS ALBUMES, SOLO EL!!!)
+				
+				if(sistema.getUsuarioActual().getCanciones().contains(cancion_eliminar) == true) {
+					sistema.getUsuarioActual().eliminarDeCancionesPersonales(cancion_eliminar);
+				}
+				
+				for(Album albumes_usuario: sistema.getUsuarioActual().getAlbumes()) {
+					if(albumes_usuario.getContenido().contains(cancion_eliminar) == true) {
+						albumes_usuario.eliminarContenido(cancion_eliminar);
+					}
+				}
+				
+				
+				//ELIMINAMOS CONTENIDO DE LAS LISTAS Y ALBUMES DE TODOS LOS USUARIOS
+				
+				for(Usuario usuarios_totales:sistema.getUsuariosTotales()) {
+					
+					for(Lista lista: usuarios_totales.getListas()) {
+						lista.eliminarContenido(cancion_eliminar);
+					}
+				}
+				
+				
+				
 				return Status.OK;
 			}else {
 				return Status.ERROR;
@@ -836,7 +940,7 @@ public class Sistema implements Serializable{
 			}
 			
 			
-			sistema.usuario_actual.anyadirAAlbumPersonal(a);
+			sistema.usuario_actual.anyadirAAlbumesPersonales(a);
 			sistema.albumes_totales.add(a);
 			return a;
 			
@@ -852,20 +956,29 @@ public class Sistema implements Serializable{
 	 * @return retorna ERROR si la cancion no se elimina del album, OK si se consigue
 	 */
 	public Status eliminarAlbum(Album album_eliminar) {
-		boolean existe_album_en_usuario = false;
 		if(album_eliminar == null) {
 			return Status.ERROR;
 		}
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
-			for(Album album:sistema.usuario_actual.getAlbumes()) {
-				if(album.getTitulo().equals(album_eliminar.getTitulo()) == true) {
-					existe_album_en_usuario = true;
-				}
-			}
 			
-			if(existe_album_en_usuario == true) { //SE PUEDE ELIMINAR DEL ARRAY DE CANCIONES PERSONALES
-				sistema.usuario_actual.eliminarDeAlbumesPersonales(album_eliminar);
-				sistema.albumes_totales.remove(album_eliminar);
+			if(album_eliminar.getAutor().getNombreAutor().equals(sistema.getUsuarioActual().getNombreAutor())) {
+				
+				//ELIMINAMOS DEL PROPIO SISTEMA
+				sistema.getAlbumTotales().remove(album_eliminar);
+
+				
+				//ELIMINAMOS DE ALBUMES DEL AUTOR
+				sistema.getUsuarioActual().eliminarDeAlbumesPersonales(album_eliminar);
+
+				//ELIMINAMOS DE LAS LISTAS EN LAS QUE SE ENCUENTRE
+				for(Usuario usuarios_totales:sistema.getUsuariosTotales()) {
+					
+					for(Lista lista: usuarios_totales.getListas()) {
+						lista.eliminarContenido(album_eliminar);
+					}
+					
+				}
+				
 				return Status.OK;
 			}else {
 				return Status.ERROR;
@@ -876,10 +989,10 @@ public class Sistema implements Serializable{
 	}
 	
 	/**
-	 * Esta funcion permite a un usuario a�adir a sus albumes sus propias canciones
+	 * Esta funcion permite a un usuario anyadir a sus albumes sus propias canciones
 	 * @param a
 	 * @param c
-	 * @return retorna OK si se a�ade correctamente la cancion al album, de lo contrario nos devolvera ERROR
+	 * @return retorna OK si se anyade correctamente la cancion al album, de lo contrario nos devolvera ERROR
 	 */
 	public Status anyadirCancionAAlbum(Album a, Cancion c) {
 		int x=0;
@@ -964,7 +1077,7 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Permte al usuario registrado o registrado premium crear una lista de contenidos que inicialmente estara vacia y unicamente sera visible para el
-	 * El contenido final que almacenara la lista sera de tipo Cancion aunque a la hora de a�adir podra ser de tipo LISTA,CANCION o ALBUM
+	 * El contenido final que almacenara la lista sera de tipo Cancion aunque a la hora de anyadir podra ser de tipo LISTA,CANCION o ALBUM
 	 * @param anyo
 	 * @param titulo
 	 * @param id
@@ -979,7 +1092,7 @@ public class Sistema implements Serializable{
 			return null;
 		}
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
-			Lista l = new Lista(titulo,sistema.usuario_actual,new ArrayList<Cancion>());
+			Lista l = new Lista(titulo,sistema.usuario_actual,new ArrayList<Contenido>());
 			for(Lista lista:sistema.usuario_actual.getListas()) {
 				if(lista.getTitulo().equals(titulo) == true) {
 					lista_repetida_en_usuario = true;
@@ -988,7 +1101,7 @@ public class Sistema implements Serializable{
 			if(lista_repetida_en_usuario == true) {
 				return null;
 			}else {
-				sistema.usuario_actual.anyadirAListaPersonal(l);
+				sistema.usuario_actual.anyadirAListasPersonales(l);
 				return l;
 			}
 		}else {
@@ -1002,19 +1115,19 @@ public class Sistema implements Serializable{
 	 * @return retorna OK si la lista fue eliminada correctamente, ERROR si no se elimino del sistema
 	 */
 	public Status eliminarLista(Lista lista_eliminar) {
-		boolean existe_lista_en_usuario = false;
 		if(lista_eliminar == null) {
 			return null;
 		}
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
-			for(Lista lista:sistema.usuario_actual.getListas()) {
-				if(lista.getTitulo().equals(lista_eliminar.getTitulo()) == true) {
-					existe_lista_en_usuario = true;
+			if(sistema.getUsuarioActual().getListas().contains(lista_eliminar)==true) {
+				
+				//LISTA PROPIA
+				sistema.getUsuarioActual().eliminarDeListasPersonales(lista_eliminar);
+				
+				for(Lista l_c:sistema.getUsuarioActual().getListas()) {
+						l_c.eliminarContenido(lista_eliminar);
 				}
-			}
-			
-			if(existe_lista_en_usuario == true) {
-				sistema.usuario_actual.eliminarDeListasPersonales(lista_eliminar);
+				
 				return Status.OK;
 			}else {
 				return Status.ERROR;
@@ -1025,10 +1138,10 @@ public class Sistema implements Serializable{
 	}
 	
 	/**
-	 * Esta funcion permite a�adir un contenido(LISTA,CANCION o ALBUM) a una lista si no esta incluido ya
+	 * Esta funcion permite anyadir un contenido(LISTA,CANCION o ALBUM) a una lista si no esta incluido ya
 	 * @param l
 	 * @param c
-	 * @return retorna OK si se a�adio correctamente, ERROR si no fue asi
+	 * @return retorna OK si se anyadio correctamente, ERROR si no fue asi
 	 */
 	public Status anyadirALista(Lista l, Contenido c) {
 		if(l == null || c == null) {
@@ -1081,25 +1194,7 @@ public class Sistema implements Serializable{
 	 */
 	public Status guardarDatosGenerales() throws IOException {
 		try {
-
-			String ret = "";
-			String final_path="";
-			ret = File.separator;
-			ret = System.getProperty("file.separator");
-			ret = String.valueOf(File.separatorChar);
-			Properties allProps = System.getProperties();
-			Set keySet = allProps.keySet();
-			Iterator it = keySet.iterator();
-			while(it.hasNext()){
-				Object keyObj = it.next();
-				String key = (String)keyObj;
-				Object valObj = allProps.get(key);
-				if(key.equals("user.dir")) {
-					final_path = valObj.toString() + ret + "datos.obj";
-				}
-			}
-			
-			FileOutputStream fileOut = new FileOutputStream(final_path);
+			FileOutputStream fileOut = new FileOutputStream("datos.obj");
 			ObjectOutputStream oos = new ObjectOutputStream(fileOut);
 			oos.writeObject(this);
 			oos.flush();
@@ -1124,23 +1219,16 @@ public class Sistema implements Serializable{
 	public static Sistema cargarDatosGenerales(){
 		
 		try {
-			String ret = File.separator;
-			ret = System.getProperty("file.separator");
-			ret = String.valueOf(File.separatorChar);
-			String final_path = ".." + ret + "datos.obj";
-			
-			FileInputStream in = new FileInputStream(final_path);
+			FileInputStream in = new FileInputStream("datos.obj");
 			ObjectInputStream oin = new ObjectInputStream(in);
 			Sistema s1 = (Sistema) oin.readObject();
 			oin.close();
 			in.close();
 			return s1;
 		}catch(IOException ie) {
-			ie.toString();
 			System.out.println(ie.toString());
 			return null;
 		}catch(ClassNotFoundException ce) {
-			ce.toString();
 			System.out.println(ce.toString());
 			return null;
 		}
@@ -1157,7 +1245,7 @@ public class Sistema implements Serializable{
 	 * @return devuelve OK si la accion se realizo de manera satisfacotria, o ERROR si no fue asi
 	 * @throws IOException
 	 */
-	@SuppressWarnings("resource")
+
 	public Status guardarDatosConfiguracion(double precio,int umbral,int reproducciones) throws IOException {
 		if(precio < 0.0 || umbral <= 0 || reproducciones <= 0) {
 			return null;
@@ -1199,77 +1287,57 @@ public class Sistema implements Serializable{
 		
 	}
 	
-	/**
-	 * Esta funcion que solo el administrador puede utilizar se encarga de buscar en el array de canciones general del sistema
-	 * canciones que esten a la espera de ser validadas en base a unos requisitos establecidos. 
-	 * Si es validada se notifica al autor y a sus seguidores pero si no es asi se le da al autor un margen de 3 dias para validarla.
-	 * Si tras esos 3 dias la cancion no pasa al estado de valida se elimina directamente del sistema
-	 * @param max_tiempo
-	 * @return devuelve OK si se llevo a cabo la accion de validar(aunque no necesariamente se validase) y error si no fue asi
-	 */
-	/*public Status validarCancion(double max_tiempo) {
-		if(max_tiempo <= 0.0) {
-			return null;
-		}
-		if(sistema.getAdministrador() == true && sistema.getUsuarioActual() != null) {
-			
-			for(Cancion canciones_totales_validar: sistema.getCancionTotales()) {
-				if(canciones_totales_validar.getEstado() == EstadoCancion.PENDIENTEAPROBACION) {
-					
-					if(canciones_totales_validar.getDuracion() <= max_tiempo && canciones_totales_validar.esMP3() == true) {
-						
-						if(canciones_totales_validar.getEsExplicita() == true) {
-							canciones_totales_validar.validarCancionExplicita();
-						}else{
-							canciones_totales_validar.cancionCorregida();
-						}
-						this.enviarNotificacion(canciones_totales_validar.getAutor(), "Cancion " + canciones_totales_validar.getTitulo() + " validada perfectamente.", TipoNotificacion.VALIDACION);
-						for(Usuario seguidores:canciones_totales_validar.getAutor().getSeguidores()) {
-							this.enviarNotificacion(seguidores, "El autor " + canciones_totales_validar.getAutor().getNombreAutor() + " ha subido una nueva cancion, escuchala ya!!", TipoNotificacion.SEGUIMIENTO);
-						}
-					}else if(canciones_totales_validar.getDuracion() > max_tiempo || canciones_totales_validar.esMP3() != true) {
-						
-						this.enviarNotificacion(canciones_totales_validar.getAutor(), "Cancion " + canciones_totales_validar.getTitulo() + " no validada(Max. Tiempo:" + max_tiempo + " Tiempo tu Cancion: " + canciones_totales_validar.getDuracion() + " , Archivo valido: " + canciones_totales_validar.esMP3() + ", tiene 3 dias para realizar la modificacion y tras ese tiempo la volveremos a verificar, gracias.", TipoNotificacion.VALIDACION);
-						canciones_totales_validar.cancionRechazada();
-					}
-				}else if(canciones_totales_validar.getEstado() == EstadoCancion.PENDIENTEMODIFICACION && (Period.between(canciones_totales_validar.getFechaModificacion(), LocalDate.now()).getDays() <= 3) ) {
-					
-					if(canciones_totales_validar.getDuracion() <= max_tiempo && canciones_totales_validar.esMP3() == true) {
-						if(canciones_totales_validar.getEsExplicita()== true) {
-							canciones_totales_validar.validarCancionExplicita();
-						}else{
-							canciones_totales_validar.cancionCorregida();
-						}
-						this.enviarNotificacion(canciones_totales_validar.getAutor(), "Cancion validada perfectamente.", TipoNotificacion.VALIDACION);
-						for(Usuario seguidores:canciones_totales_validar.getAutor().getSeguidores()) {
-							this.enviarNotificacion(seguidores, "El autor " + canciones_totales_validar.getAutor().getNombreAutor() + " ha subido una nueva cancion, escuchala ya!!", TipoNotificacion.SEGUIMIENTO);
-						}
-					}
-				}else if(canciones_totales_validar.getEstado() == EstadoCancion.PENDIENTEMODIFICACION && (Period.between(canciones_totales_validar.getFechaModificacion(), LocalDate.now()).getDays() > 3)) {
-					if(canciones_totales_validar.getDuracion() < max_tiempo && canciones_totales_validar.esMP3() == true) {
-						if(canciones_totales_validar.getEsExplicita()== true) {
-							canciones_totales_validar.validarCancionExplicita();
-						}else{
-							canciones_totales_validar.cancionCorregida();
-						}
-						
-						this.enviarNotificacion(canciones_totales_validar.getAutor(), "Cancion validada perfectamente.", TipoNotificacion.VALIDACION);
-						for(Usuario seguidores:canciones_totales_validar.getAutor().getSeguidores()) {
-							this.enviarNotificacion(seguidores, "El autor " + canciones_totales_validar.getAutor().getNombreAutor() + " ha subido una nueva cancion, escuchala ya!!", TipoNotificacion.SEGUIMIENTO);
-						}
-					}else {
-						this.enviarNotificacion(canciones_totales_validar.getAutor(), "Cancion rechazada, esta no sigue los requisitos establecidos, lo sentimos.", TipoNotificacion.VALIDACION);
-						canciones_totales_validar.cancionDescartada();
-					}
-				}
-					
+	
+	public ArrayList<Cancion> getCancionesPendientesValidacion() {
+		ArrayList<Cancion> para_validar = new ArrayList<Cancion>();
+		
+		for(Cancion c_t:sistema.getCancionTotales()) {
+			if(c_t.getEstado() == EstadoCancion.PENDIENTEAPROBACION) {
+				para_validar.add(c_t);
+			}else if(c_t.getEstado() == EstadoCancion.PENDIENTEMODIFICACION && c_t.getFechaModificacion().minusDays(3).isEqual(LocalDate.now()) == true) {
+				para_validar.add(c_t);
 			}
-			
-			return Status.OK;
 		}
 		
-		return Status.ERROR;
-	}*/
+		return para_validar;
+	}
+	
+	
+	public void gestionarCancionesPendientesValidacion_Modificacion(Cancion c, EstadoCancion estado) {
+		
+		if(c == null || estado == null) {
+			return;
+		}
+		
+		if(sistema.getUsuarioActual() != null && sistema.es_administrador == true) {
+			if(estado == EstadoCancion.VALIDA || estado == EstadoCancion.EXPLICITA) {
+				c.setEstado(estado);
+				c.setEstadoAnterior(estado);
+				if(estado == EstadoCancion.VALIDA) {
+					sistema.getUsuarioActual().enviarNotificacion(c.getAutor(), "Su cancion " + c.getTitulo() + " ha sido validada correctamente.");
+				}else if(estado == EstadoCancion.EXPLICITA) {
+					sistema.getUsuarioActual().enviarNotificacion(c.getAutor(), "Su cancion " + c.getTitulo() + " ha sido validada correctamente con contenido explicito.");
+				}
+				
+				for(Usuario u_t:sistema.getUsuariosTotales()) {
+					if(u_t.getSeguidos().contains(c.getAutor()) == true) {
+						sistema.getUsuarioActual().enviarNotificacion(u_t, "El autor " + c.getAutor() + " ha subido la cancion " + c.getTitulo() + ".");
+					}
+				}
+			
+			}else if(estado == EstadoCancion.PENDIENTEMODIFICACION) {
+				c.setEstado(estado);
+				sistema.getUsuarioActual().enviarNotificacion(c.getAutor(), "Su cancion " + c.getTitulo() + " no ha sido validada, tiene 3 dias para modificarla y la validaremos de nuevo.");
+			}else if(estado == EstadoCancion.ELIMINADA) {
+				sistema.getUsuarioActual().enviarNotificacion(c.getAutor(), "Su cancion " + c.getTitulo() + " no ha sido validada y procederemos a eliminarla.");
+				c.getAutor().getCanciones().remove(c);
+				sistema.getCancionTotales().remove(c);
+			}
+		}
+	}
+	
+	
+	
 	
 	/*=================================================================================*/
 	/*================FUNCIONES RELACIONADAS CON REPRODUCCIONES========================*/
@@ -1284,6 +1352,72 @@ public class Sistema implements Serializable{
 		if(sistema.cancion_reproduciendose != null) {
 			sistema.cancion_reproduciendose.parar();
 			sistema.cancion_reproduciendose.setMp3Player();
+		}
+	}
+	
+	/*=================================================================================*/
+	/*=================FUNCIONES RELACIONADAS CON DENUNCIAS============================*/
+	/*=================================================================================*/
+	
+	public void denunciarPlagio(Cancion c) {
+		
+		if(sistema.getUsuarioActual()!= null && sistema.es_administrador == false && sistema.getUsuarioActual().getEstadoBloqueado() != UsuarioBloqueado.NOBLOQUEADO) {
+			
+			Reporte r = new Reporte(sistema.getUsuarioActual(),c);
+			if(sistema.getReportesTotales().contains(r)) {
+				return; //REPORTE YA REALIZADO POR LA MISMA PERSONA CON LA MISMA CANCION
+			}
+						
+			c.setEstado(EstadoCancion.PLAGIO);
+			c.getAutor().bloquearCuentaTemporal();
+			sistema.getUsuariosTotales().get(0).enviarNotificacion(c.getAutor(), "Su cancion " + c.getTitulo() + " ha sido bloqueada por un reporte y usted de manera temporal. Comprobaremos esta informacion con la mayor brevedad porsible.");
+			sistema.getUsuarioActual().enviarNotificacion(sistema.getUsuariosTotales().get(0), "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha reportado la cancion " + c.getTitulo() + ".");
+			
+			sistema.getReportesTotales().add(r);
+		}
+		
+	}
+	
+	public void eliminar_reporte(Reporte r) {
+		if(sistema.getUsuarioActual() != null && sistema.es_administrador == true) {
+			sistema.getReportesTotales().remove(r);
+		}
+	}
+	
+	public void gestionarReportes(Reporte r,boolean aceptada) {
+		if(sistema.getUsuarioActual() != null && sistema.es_administrador == true) {
+			if(aceptada == true) {
+				//BLOQUEAR CANCION PERMANENTEMENTE
+				r.getCancionReportada().setEstado(EstadoCancion.PLAGIO);
+				
+				//BLOQUEAR USUARIO PERMANENTEMENTE
+				r.getCancionReportada().getAutor().bloquearCuentaIndefinido();
+
+				//ENVIAR NOTIFICACION
+				sistema.getUsuarioActual().enviarNotificacion(r.getCancionReportada().getAutor(),"Hemos aceptado el reporte de la cancion " + r.getCancionReportada().getTitulo() + " y le informamos que ha sido bloqueado permanentemente.");
+				
+			}else {
+				//BLOQUEAR TEMPORALMENETE AL QUE REPORTO
+				r.getUsuarioReportador().bloquearCuentaTemporal();
+				
+				//DESBLOQUEAR LA CANCION
+				r.getCancionReportada().setEstado(r.getCancionReportada().getEstadoAnterior());
+				
+				//INFORMAR DEL BLOQUEO AL USUARIO Y AL OTRO DEL DESBLOQUEO
+				sistema.getUsuarioActual().enviarNotificacion(r.getUsuarioReportador(), "Ha sido bloqueado temporalmente por el reporte de la cancion " + r.getCancionReportada().getTitulo() + " que no ha sido aceptado.");
+				sistema.getUsuarioActual().enviarNotificacion(r.getCancionReportada().getAutor(), "El usuario denunciante del reporte ha sido bloqueado durante 30 dias.");
+			}
+			
+			//ELIMINAR REPORTE
+			sistema.getReportesTotales().remove(r);
+		}
+	}
+	
+	public void modificarCriteriosAplicacion(int u_r,double p_p, int m_r) {
+		if(sistema.getUsuarioActual() != null && sistema.es_administrador == true) {
+			sistema.setPrecioPremium(p_p);
+			sistema.setUmbralReproducciones(u_r);
+			sistema.setMaxReproduccionesUsuarioNoPremium(m_r);
 		}
 	}
 	

@@ -2,8 +2,8 @@ package ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido;
 import java.util.*;
 
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.status.Status;
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.status.*;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.*;
 
 /**
  *	Clase Lista con herencia de Contenido
@@ -14,9 +14,9 @@ public class Lista extends Contenido{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private ArrayList<Cancion> contenidos = new ArrayList<Cancion>();
+	private ArrayList<Contenido> contenidos = new ArrayList<Contenido>();
 	
-	public Lista(String titulo,Usuario autor, ArrayList<Cancion> contenido) {
+	public Lista(String titulo,Usuario autor, ArrayList<Contenido> contenido) {
 		super(null, titulo,autor);
 		this.setContenido(contenido);
 		this.setDuracion(this.calcularTiempo());
@@ -44,81 +44,70 @@ public class Lista extends Contenido{
 	 * 	@return  OK si no hay errores y ERROR de lo contrario
 	 */
 	public Status anyadirContenido(Contenido contenido) {
-		if (contenido instanceof Cancion) {
-			if(this.contenidos.contains(contenido)) {
-				return Status.ERROR;
-			} else {
-				if (this.contenidos.add((Cancion) contenido)) {
-					this.setDuracion(this.calcularTiempo());
-					return Status.OK;
-				} else {
-					return Status.ERROR;
-				}
-			}
-		} else if (contenido instanceof Lista) {
-			ArrayList<Cancion> canciones = ((Lista)contenido).getContenido();
-			for(Cancion cancion: canciones) {
-				if (this.anyadirContenido(cancion) == Status.ERROR){
-					return Status.ERROR;
-				}
-			}
-			this.setDuracion(this.calcularTiempo());
-			return Status.OK;
-		} else if (contenido instanceof Album) {
-			ArrayList<Cancion> canciones = ((Album)contenido).getContenido();
-			for(Cancion cancion: canciones) {
-				if (this.anyadirContenido(cancion) == Status.ERROR){
-					return Status.ERROR;
-				}
-			}
-			this.setDuracion(this.calcularTiempo());
-			return Status.OK;
-		} else {
+		if(this.contenidos.contains(contenido)) {
 			return Status.ERROR;
-		}
-		
+		} else {
+			if (this.contenidos.add(contenido)) {
+				this.setDuracion(this.calcularTiempo());
+				return Status.OK;
+			} else {
+				return Status.ERROR;
+			}
+		}	
 	}
 	
 	/**
 	 *	Funcion para eliminar un contenido de la lista
 	 * 	@return  OK si no hay errores y ERROR de lo contrario
 	 */
-	public Status eliminarContenido(Contenido contenido) {
-		if(this.contenidos.contains(contenido)) {
-			if(this.contenidos.remove(contenido)) {
-				this.setDuracion(this.calcularTiempo());
-				return Status.OK;
-			} else {
-				return Status.ERROR;
+	public Status eliminarContenido(Contenido contenido) {		
+		
+		if(contenido instanceof Cancion) {
+			
+			for(Contenido c_l: this.getContenido()) {
+				
+				if(c_l instanceof Cancion && c_l.equals(contenido) == true) {
+					this.getContenido().remove(contenido);
+					this.setDuracion(this.calcularTiempo());
+				}else if(c_l instanceof Album && ((Album) c_l).getContenido().contains(contenido) == true) {
+					((Album)c_l).eliminarContenido((Cancion)contenido);
+				}else if(c_l instanceof Lista) {
+					((Lista) c_l).eliminarContenido((Cancion)contenido);
+				}
 			}
-		} else {
-			return Status.OK;
-		}
-	}
-
-	
-	/**
-	 *	Funcion para eliminar los contenidos de estado eliminado de la lista
-	 * 	@return  OK si no hay errores y ERROR de lo contrario
-	 */
-	public Status checkContenido() {
-		for(Cancion c: contenidos) {
-			if (c.getEstado() == EstadoCancion.ELIMINADA) {
-				if (this.eliminarContenido(c) == Status.ERROR) {
-					return Status.ERROR;
+		}else if(contenido instanceof Album) {
+			for(Contenido c_l:this.getContenido()) {
+				if(c_l instanceof Album && c_l.equals(contenido)==true) {
+					this.getContenido().remove(contenido);
+					this.setDuracion(this.calcularTiempo());
+				}else if(c_l instanceof Lista) {
+					((Lista) c_l).eliminarContenido((Album)contenido);
+				}
+			}
+		}else if(contenido instanceof Lista) {
+			for(Contenido c_l:this.getContenido()) {
+				if(c_l instanceof Lista) {
+					if(c_l.equals(contenido) == true) {
+						this.getContenido().remove(contenido);
+						this.setDuracion(this.calcularTiempo());
+					}else {
+						((Lista) c_l).eliminarContenido((Lista)contenido);
+					}
 				}
 			}
 		}
+		
 		return Status.OK;
 	}
+
 	
 	/**
 	 *	Setter de contenido de la lista
 	 * 	@param  contenido ArrayList del contenido de la lista
 	 */
-	public void setContenido(ArrayList<Cancion> contenido) {
+	public void setContenido(ArrayList<Contenido> contenido) {
 		if (contenido == null) {
-			this.contenidos = new ArrayList<Cancion>();
+			this.contenidos = new ArrayList<Contenido>();
 		} else {
 			this.contenidos = contenido;
 		}
@@ -129,7 +118,7 @@ public class Lista extends Contenido{
 	 *	Getter de contenido de la lista
 	 * 	@return  un ArrayList del contenido de la lista
 	 */
-	public ArrayList<Cancion> getContenido() {
+	public ArrayList<Contenido> getContenido() {
 		return contenidos;
 	}
 
@@ -143,18 +132,33 @@ public class Lista extends Contenido{
 	public void reproducirLista() throws InterruptedException {
 		
 		if(Sistema.sistema.getUsuarioActual() != null && (Sistema.sistema.getAdministrador() == true || Sistema.sistema.getUsuarioActual().getPremium() == true)) {
-			for(Cancion canciones_reproduciendose:this.getContenido()) {
-				canciones_reproduciendose.reproducirCancion();
+			for(Contenido contenido_reproduciendose:this.getContenido()) {
+				if(contenido_reproduciendose instanceof Cancion) {
+					((Cancion) contenido_reproduciendose).reproducirCancion();
+				}else if(contenido_reproduciendose instanceof Album) {
+					((Album) contenido_reproduciendose).reproducirAlbum();
+				}else if(contenido_reproduciendose instanceof Lista) {
+					((Lista) contenido_reproduciendose).reproducirLista();
+				}
 			}	
 			return;
 				
 		}else {
 			if(Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
-				for(Cancion canciones_reproduciendose:this.getContenido()) {
+				
+				for(Contenido contenido_total:this.getContenido()) {
+					
 					if(Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium() == Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()) {
 						return;
 					}
-					canciones_reproduciendose.reproducirCancion();
+					
+					if(contenido_total instanceof Cancion) {
+						((Cancion) contenido_total).reproducirCancion();
+					}else if(contenido_total instanceof Album) {
+						((Album) contenido_total).reproducirAlbum();
+					}else if(contenido_total instanceof Lista) {
+						((Lista) contenido_total).reproducirLista();
+					}
 				}
 				
 				return;

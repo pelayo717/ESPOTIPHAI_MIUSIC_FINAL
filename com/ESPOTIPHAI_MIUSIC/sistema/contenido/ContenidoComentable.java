@@ -2,19 +2,19 @@ package ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido;
 import java.util.*;
 
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.status.*;
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.*;
 
 /**
  *	Clase ContenidoComentable con herencia de Contenido
  */
 
 public abstract class ContenidoComentable extends Contenido {
+
 	/**
 	 * 
 	 */
-	
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Comentario> comentarios = new ArrayList<Comentario>();
-	
 	
 	public ContenidoComentable (Date anyo, String titulo, Usuario autor, ArrayList<Comentario> comentarios) {
 		super(anyo, titulo,autor);

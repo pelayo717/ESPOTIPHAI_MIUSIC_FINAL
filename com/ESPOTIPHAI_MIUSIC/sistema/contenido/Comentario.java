@@ -2,14 +2,16 @@ package ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido;
 import java.io.Serializable;
 import java.util.*;
 
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.*;
 
 /**
  *	Clase Comentario
  */
 public class Comentario implements Serializable{
-	
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Date fecha;
 	private String texto;
 	private Usuario comentador;
@@ -79,11 +81,9 @@ public class Comentario implements Serializable{
 	 */
 	public void setTexto(String texto) {
 		this.texto = texto;
-	}	
-	
-	@Override
-	public String toString() {
-		return "Comentario []";
 	}
+	
 
+	
+	
 }

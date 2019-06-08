@@ -3,10 +3,10 @@ package ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.status.*;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.notificacion.*;
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.*;
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.notificacion.*;
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.status.*;
 
 import es.uam.eps.padsof.telecard.FailedInternetConnectionException;
 import es.uam.eps.padsof.telecard.InvalidCardNumberException;
@@ -14,6 +14,7 @@ import es.uam.eps.padsof.telecard.OrderRejectedException;
 import es.uam.eps.padsof.telecard.TeleChargeAndPaySystem;
 
 import java.util.ArrayList;
+
 
 
 /**
@@ -43,13 +44,8 @@ public class Usuario implements Serializable{
 	
 	/*ENTEROS (IDENTIFICADOR Y NUMERO DE REPRODUCCIONES)*/
 	private int numero_repro_totales;
+	private int numero_repro_para_pro;
 	
-	//Una vez que un usuario mejore su cuenta por el numero de reproducciones almacenaremos
-	//el que fue el valor previo hasta ese momento. Tras esto seguiremos sumando las reproducciones en
-	//la variable numero_repro_totales y cuando se degrade su cuenta se mirara la diferencia de variables
-	//para ver si puede ser PREMIUM de nuevo
-	
-	private int numero_repro_totales_estado_anterior;
 	private int id;
 	private int contenido_escuchado_sin_ser_premium;
 	
@@ -62,10 +58,12 @@ public class Usuario implements Serializable{
 	/*ARRAYS (USUARIOS A LOS QUE SIGUE, USUARIOS QUE LE SIGUEN, LISTAS PROPIAS, CANCIONES PROPIAS, ALBUMES PROPIOS)*/
 	private ArrayList<Usuario> seguidores;
 	private ArrayList<Usuario> seguidos;
+	
 	private ArrayList<Lista> listas;
 	private ArrayList<Cancion> canciones;
 	private ArrayList<Album> albumes;
-	private ArrayList<Notificacion> notificaciones_totales = new ArrayList<Notificacion>();
+	
+	private ArrayList<Notificacion> notificaciones_propias;
 
 	
 	/**
@@ -92,17 +90,18 @@ public class Usuario implements Serializable{
 		this.fecha_inicio_bloqueado = null; //No hay fecha de inicio de bloqueo
 		
 		this.numero_repro_totales = 0; 	//Todavia nadie ha escuchado canciones de este usuario con lo cual sus reproducciones estan a 0
+		this.numero_repro_para_pro = 0;
+
 		this.premium = false; 	//Al crear el objeto usuario le indicamos que este no es un usuario PREMIUM por el momento
 		this.id = Usuario.nextID++;
 		this.contenido_escuchado_sin_ser_premium = 0;
-		
 		
 		this.seguidores = new ArrayList<Usuario>();
 		this.seguidos = new ArrayList<Usuario>();
 		this.listas = new ArrayList<Lista>();
 		this.canciones = new ArrayList<Cancion>();
 		this.albumes = new ArrayList<Album>();
-		
+		this.notificaciones_propias = new ArrayList<Notificacion>();
 		this.bloqueado = UsuarioBloqueado.NOBLOQUEADO; //De primeras el usuario no esta bloqueado
 	}
 	
@@ -111,11 +110,27 @@ public class Usuario implements Serializable{
 	/*=================================================================================*/
 	
 	/**
+	 * 
+	 * @param aux
+	 */
+	public void setNombreUsuario(String aux) {
+		this.nombre_usuario = aux;
+	}
+	
+	/**
 	 * Funcion que retorna el nombre de autor que recibe un usuario de la aplicacion
 	 * @return nombre_usuario: devuelve el nombre de autor del usuario
 	 */
 	public String getNombreUsuario() {
 		return this.nombre_usuario;
+	}
+	
+	/**
+	 * 
+	 * @param aux
+	 */
+	public void setNombreAutor(String aux) {
+		this.nombre_autor = aux;
 	}
 	
 	/**
@@ -127,11 +142,27 @@ public class Usuario implements Serializable{
 	}
 	
 	/**
+	 * 
+	 * @param aux
+	 */
+	public void setFechaNacimiento(LocalDate aux) {
+		this.fecha_nacimiento = aux;
+	}
+	
+	/**
 	 * Funcion que devuelve la fecha en la que el usario nacio 
 	 * @return fecha_nacimiento: fecha en la que el usuario nacio
 	 */
 	public LocalDate getFechaNacimiento() {
 		return this.fecha_nacimiento;
+	}
+	
+	/**
+	 * 
+	 * @param aux
+	 */
+	public void setFechaRegistro(LocalDate aux) {
+		this.fecha_registro = aux;
 	}
 	
 	/**
@@ -143,11 +174,27 @@ public class Usuario implements Serializable{
 	}
 	
 	/**
+	 * 
+	 * @param aux
+	 */
+	public void setContrasena(String aux) {
+		this.contrasena = aux;
+	}
+	
+	/**
 	 * Funcion que devuelve la constraseña del usuario
 	 * @return contraseña: devuelve la cadena donde se almaceno la contraseña del usuario cuando se registro
 	 */
 	public String getContrasena() {
 		return this.contrasena;
+	}
+	
+	/**
+	 * 
+	 * @param aux
+	 */
+	public void setFechaInicioPro(LocalDate aux) {
+		this.fecha_inicio_pro = aux;
 	}
 	
 	/**
@@ -159,11 +206,27 @@ public class Usuario implements Serializable{
 	}
 	
 	/**
+	 * 
+	 * @param aux
+	 */
+	public void setPremium(boolean aux) {
+		this.premium = aux;
+	}
+	
+	/**
 	 * Funcion que devuelve un boolean indicando si es premium o no 
 	 * @return premium: boolean que indica si el usuario es prrmium o no 
 	 */
 	public boolean getPremium() {
 		return this.premium;
+	}
+	
+	/**
+	 * 
+	 * @param aux
+	 */
+	public void setEstadoBloqueado(UsuarioBloqueado aux) {
+		this.bloqueado = aux;
 	}
 	
 	/**
@@ -176,11 +239,27 @@ public class Usuario implements Serializable{
 	}
 	
 	/**
+	 * 
+	 * @param aux
+	 */
+	public void setId(int aux) {
+		this.id = aux;
+	}
+	
+	/**
 	 * Funcion que devuelve el identificador del usuario
 	 * @return id: devuelve el identificador del usuario 
 	 */
 	public int getId() {
 		return this.id;
+	}
+	
+	/**
+	 * 
+	 * @param aux
+	 */
+	public void setFechaInicioBloqueado(LocalDate aux) {
+		this.fecha_inicio_bloqueado = aux;
 	}
 	
 	/**
@@ -192,12 +271,66 @@ public class Usuario implements Serializable{
 	}
 	
 	/**
+	 * 
+	 * @param aux
+	 */
+	public void setNumeroReproducciones(int aux) {
+		this.numero_repro_totales = aux;
+	}
+	
+	/**
 	 * Funcion que devuelve el numero de reproducciones del usuario
 	 * @return numero_repro: suma total de todas las reproducciones de cada contenido realizadas por usuarios que no fueran su dueño 
 	 */
 	public int getNumeroReproducciones() {
 		return this.numero_repro_totales;
 	}
+	
+	/**
+	 * 
+	 * @param aux
+	 */
+	public void setNumeroReproParaPro(int aux) {
+		this.numero_repro_para_pro = aux;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getNumeroReproParaPro() {
+		return this.numero_repro_para_pro;
+	}
+	
+	/**
+	 * 
+	 */
+	public void resetNumeroReproParaPro() {
+		this.numero_repro_para_pro = 0;
+	}
+	
+	/**
+	 * 
+	 */
+	public void addContenidoEscuchadoSinSerPremium() {
+		this.contenido_escuchado_sin_ser_premium++;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getContenidoEscuchadoSinSerPremium() {
+		return this.contenido_escuchado_sin_ser_premium;
+	}
+	
+	/**
+	 * 
+	 */
+	public void resetContenidoEscuchadosSinSerPremium() {
+		this.contenido_escuchado_sin_ser_premium = 0;
+	}
+	
 	
 	/**
 	 * Devuelve el array de usuarios a los que sigue este usuario
@@ -239,26 +372,12 @@ public class Usuario implements Serializable{
 		return this.albumes;
 	}
 	
-	public int getContenidoEscuchadoSinSerPremium() {
-		return this.contenido_escuchado_sin_ser_premium;
-	}
-	
-	
 	/**
-	 * Establece la fecha de cuando se inicio el periodo de premium
-	 * @param d: dia, mes y anyo para establecer
+	 * Devuelve las notificaciones que se han realizado durante el uso del sistema
+	 * @return retorna las notificaciones totales de los usuarios
 	 */
-	public void setFechaIniPremium(LocalDate d) {
-		this.fecha_inicio_pro = d;
-	}
-	
-	
-	public void setContenidoEscuchadoSinSerPremium() {
-		this.contenido_escuchado_sin_ser_premium++;
-	}
-	
-	public void resetearContenidoEscuchadosSinSerPremium() {
-		this.contenido_escuchado_sin_ser_premium = 0;
+	public ArrayList<Notificacion> getNotificacionesTotales(){
+		return this.notificaciones_propias;
 	}
 	
 	/*=================================================================================*/
@@ -272,10 +391,11 @@ public class Usuario implements Serializable{
 	 */
 	public int sumarReproduccion(int x) {
 		this.numero_repro_totales = this.numero_repro_totales + 1;
-		if(this.numero_repro_totales >= x) {
+		this.numero_repro_para_pro = this.numero_repro_para_pro + 1;
+		if(this.numero_repro_para_pro >= x && this.premium == false) {
 			mejorarCuentaPorReproducciones();
 		}
-		return this.numero_repro_totales;
+		return this.numero_repro_para_pro;
 	}
 	
 	
@@ -308,6 +428,10 @@ public class Usuario implements Serializable{
 			return false;
 		}	
 	}
+	
+	/*===========================================*/
+	/*========== LOCK/UPDATE CUENTA =============*/
+	/*===========================================*/
 	
 	/**
 	 * Funcion que mejora la cuenta de un usuario modificando los atributos necesarios 
@@ -342,32 +466,31 @@ public class Usuario implements Serializable{
 		}
 	}
 
-	
 	/**
 	 * Funcion que baja la cuenta del estatus de premium a una cuenta normal 
 	 * que no paga mensualmente
 	 */
 	public void emperorarCuenta() {
-		this.premium = false;
-		this.fecha_inicio_pro = null;
-		this.contenido_escuchado_sin_ser_premium = 0;
+		this.setPremium(false);
+		this.resetNumeroReproParaPro();
+		this.setFechaInicioPro(null);
+		this.resetContenidoEscuchadosSinSerPremium();
 	}
 	
 	/**
 	 * Funcion que bloquea la cuenta del usuario indefinidamente modificando los atributos correspondientes
 	 */		
 	public void bloquearCuentaIndefinido() {
-		this.bloqueado = UsuarioBloqueado.INDEFINIDO;
-		this.fecha_inicio_bloqueado = LocalDate.now();
+		this.setEstadoBloqueado(UsuarioBloqueado.INDEFINIDO);
+		this.setFechaInicioBloqueado(LocalDate.now());
 	}
-	
 	
 	/**
 	 * Funcion que bloquea la cuenta temporalmente del usuario modificando los atributos correspondientes
 	 */
 	public void bloquearCuentaTemporal() {
-		this.bloqueado = UsuarioBloqueado.TEMPORAL;
-		this.fecha_inicio_bloqueado = LocalDate.now();
+		this.setEstadoBloqueado(UsuarioBloqueado.TEMPORAL);
+		this.setFechaInicioBloqueado(LocalDate.now());
 		
 	}
 	
@@ -375,31 +498,20 @@ public class Usuario implements Serializable{
 	 * Funcion que desbloquea la cuenta del usuario modificando los atributos correspondientes
 	 */
 	public void desbloquearCuenta() {
-		this.bloqueado = UsuarioBloqueado.NOBLOQUEADO;
-		this.fecha_inicio_bloqueado = null;
+		this.setEstadoBloqueado(UsuarioBloqueado.NOBLOQUEADO);
+		this.setFechaInicioBloqueado(null);;
 	}
 	
-	
-	/**
-	 * Funcion que añade al album de usuario el contenido pasado como argumento
-	 * @param c: Contenido que se va a añadir al album 
-	 * @return: true si se ha realizado correctamente, false si no
-	 */
-	public boolean anyadirAAlbumPersonal(Album c) {
-		if(this.albumes.contains(c)) {
-			return false; //Ya existe ese album en el array
-		} else {
-			this.albumes.add(c);
-		}
-		return true; 
-	}
+	/*===========================================*/
+	/*================ CANCIONES ================*/
+	/*===========================================*/
 	
 	/**
 	 * Funcion que añade el contenido a la listas de canciones
 	 * @param c: Contenido que se va a añadir a la listas de canciones 
 	 * @return: true si se ha realizado correctamente, false si no
 	 */
-	public boolean anyadirACancionPersonal(Cancion c) {
+	public boolean anyadirACancionesPersonales(Cancion c) {
 		if(this.canciones.contains(c)) {
 			return false; //Ya esta contenida la cancion
 		} else {
@@ -408,20 +520,35 @@ public class Usuario implements Serializable{
 		return true;
 	}
 	
-	
 	/**
-	 * Funcion que va a añadir el contenido a la lista Listas 
-	 * @param c: Contenido que se va a añadir a la lista de Listas  
+	 * Funcion elimina el contenido pasado de la lista de canciones
+	 * @param c: Contenido que se va a eliminar de la lista de canciones
 	 * @return: true si se ha realizado correctamente, false si no
 	 */
-	public boolean anyadirAListaPersonal(Lista c) {
-		if(this.listas.contains(c)) {
-			return false; //Ya esta esa lista
+	public boolean eliminarDeCancionesPersonales(Cancion c) {
+		if(this.canciones.contains(c)) {
+			c.setEstado(EstadoCancion.ELIMINADA);
+			return true;
+		} else
+			return false;
+	}
+	
+	/*===========================================*/
+	/*================ ALBUMES ==================*/
+	/*===========================================*/
+	
+	/**
+	 * Funcion que añade al album de usuario el contenido pasado como argumento
+	 * @param c: Contenido que se va a añadir al album 
+	 * @return: true si se ha realizado correctamente, false si no
+	 */
+	public boolean anyadirAAlbumesPersonales(Album c) {
+		if(this.albumes.contains(c)) {
+			return false; //Ya existe ese album en el array
+		} else {
+			this.albumes.add(c);
 		}
-		else {
-			this.listas.add(c);
-		}
-		return true;
+		return true; 
 	}
 	
 	/**
@@ -437,21 +564,25 @@ public class Usuario implements Serializable{
 			return false;
 	}
 	
+	/*===========================================*/
+	/*================= LISTAS ==================*/
+	/*===========================================*/
 	
 	/**
-	 * Funcion elimina el contenido pasado de la lista de canciones
-	 * @param c: Contenido que se va a eliminar de la lista de canciones
+	 * Funcion que va a añadir el contenido a la lista Listas 
+	 * @param c: Contenido que se va a añadir a la lista de Listas  
 	 * @return: true si se ha realizado correctamente, false si no
 	 */
-	public boolean eliminarDeCancionesPersonales(Cancion c) {
-		if(this.canciones.contains(c)) {
-			c.setEstado(EstadoCancion.ELIMINADA);
-			return true;
-		} else
-			return false;
+	public boolean anyadirAListasPersonales(Lista c) {
+		if(this.listas.contains(c)) {
+			return false; //Ya esta esa lista
+		}
+		else {
+			this.listas.add(c);
+		}
+		return true;
 	}
-	
-	
+
 	/**
 	 * Funcion que elimina el contenido de la lista de Listas
 	 * @param c: Contenido que se va a eliminar de la listas
@@ -465,21 +596,27 @@ public class Usuario implements Serializable{
 			return false;
 	}
 	
+	/*===========================================*/
+	/*=========== FOLLOW/UNFOLLOW ===============*/
+	/*===========================================*/
+	
 	/**
 	 * Permite a un autor seguir a otro autor
 	 * @param autor
 	 * @return devuelve OK si se llevo a cabo la tarea de seguimiento o ERROR si no fue asi
 	 */
 	public Status follow(String autor) {
+		
 		if(autor == null) {
 			return Status.ERROR;
 		}
+		
 		if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador() == false && Sistema.sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
 			
 			for(Usuario totales:Sistema.sistema.getUsuariosTotales()) {
 				if(totales.getNombreAutor().equals(autor) == true) {
 					Sistema.sistema.getUsuarioActual().seguirUsuario(totales);
-					this.enviarNotificacion(totales, "El autor " + Sistema.sistema.getUsuarioActual().getNombreAutor() + " ha comenzado a seguirle", TipoNotificacion.SEGUIMIENTO);
+					this.enviarNotificacion(totales, "El autor " + Sistema.sistema.getUsuarioActual().getNombreAutor() + " ha comenzado a seguirle");
 					return Status.OK;
 				}
 			}
@@ -488,8 +625,6 @@ public class Usuario implements Serializable{
 		return Status.ERROR;
 	}
 	
-	
-
 	/**
 	 * Permite a un autor dejar de seguir a otro autor
 	 * @param autor
@@ -503,7 +638,7 @@ public class Usuario implements Serializable{
 			for(Usuario totales:Sistema.sistema.getUsuariosTotales()) {
 				if(totales.getNombreAutor().equals(autor) == true) {
 					Sistema.sistema.getUsuarioActual().dejarDeSeguirUsuario(totales);
-					this.enviarNotificacion(totales, "El autor " + Sistema.sistema.getUsuarioActual().getNombreAutor() + " ha dejado de seguirle", TipoNotificacion.SEGUIMIENTO);
+					this.enviarNotificacion(totales, "El autor " + Sistema.sistema.getUsuarioActual().getNombreAutor() + " ha dejado de seguirle");
 					return Status.OK;
 				}
 			}
@@ -511,28 +646,11 @@ public class Usuario implements Serializable{
 		}
 		return Status.ERROR;
 	}
-	
-	/**
-	 * Devuelve las notificaciones que se han realizado durante el uso del sistema
-	 * @return retorna las notificaciones totales de los usuarios
-	 */
-	public ArrayList<Notificacion> getNotificacionesTotales(){
-		return this.notificaciones_totales;
-	}
-	
-	/**
-	 * Esta funcion permite a un usuario eliminar todas las notificaciones en las que este se ha visto
-	 * involucrado incluyendo cuando este se encuentre bloqueado
-	 * @return devuelve OK si las notificaciones fueron eliminadas del sistema correctamente
-	 */
-	public Status eliminarNotificacionesPropias() {
-		for(int x=0; x < Sistema.sistema.getUsuarioActual().getNotificacionesTotales().size(); x++) {
-			Sistema.sistema.getUsuarioActual().getNotificacionesTotales().remove(x);
-		}
-		return Status.OK;
-	}
-	
 
+	/*===========================================*/
+	/*============= NOTIFICACIONES ==============*/
+	/*===========================================*/
+	
 	/**
 	 * Esta funcion permite enviar una notificacion a un usuario o al administrador
 	 * @param receptor
@@ -541,26 +659,29 @@ public class Usuario implements Serializable{
 	 * @param cancions
 	 * @return retorna OK si la notificacion fue creada y almacenada correctamente en el array general, de lo contrario devolvera ERROR
 	 */
-	public Status enviarNotificacion(Usuario receptor,String mensaje,TipoNotificacion t,Cancion...canciones) {
-		if(receptor == null || mensaje == null || t == null || canciones == null) {
+	public Status enviarNotificacion(Usuario receptor,String mensaje) {
+		if(receptor == null || mensaje == null) {
 			return null;
 		}
-		if(t != TipoNotificacion.PLAGIO && this.getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
-			Notificacion n = new Notificacion(receptor,mensaje,Sistema.sistema.getUsuarioActual(),t);
-			this.notificaciones_totales.add(n);
-			receptor.notificaciones_totales.add(n);
-			return Status.OK;
-		}else if(t == TipoNotificacion.PLAGIO && this.getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
-			if(canciones[0] == null) {
-				return Status.ERROR;
-			}
-			Notificacion n = new Notificacion(receptor,mensaje,Sistema.sistema.getUsuarioActual(),t,canciones[0]);
-			this.notificaciones_totales.add(n);
-			receptor.notificaciones_totales.add(n);
+		if(this.getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
+			Notificacion n = new Notificacion(receptor,mensaje,Sistema.sistema.getUsuarioActual());
+			this.notificaciones_propias.add(n);
+			receptor.notificaciones_propias.add(n);
 			return Status.OK;
 		}
 		
 		return Status.ERROR;
 	}
+	
+	/**
+	 * Esta funcion permite a un usuario eliminar todas las notificaciones en las que este se ha visto
+	 * involucrado incluyendo cuando este se encuentre bloqueado
+	 * @return devuelve OK si las notificaciones fueron eliminadas del sistema correctamente
+	 */
+	public Status eliminarNotificacionesPropias() {
+		this.getNotificacionesTotales().clear();
+		return Status.OK;
+	}
+	
 		
 }

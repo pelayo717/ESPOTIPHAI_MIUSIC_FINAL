@@ -85,7 +85,6 @@ public class ReproducirCancion extends PantallaPrincipal {
 			this.comentarios = arrayComentarios.toArray(new Comentario[arrayComentarios.size()]);
 		}
 		
-		System.out.println(comentarios);
 		Firulais pelayo = new Firulais("Pelayo", "Estoy haciendo el codigo");
 		Firulais manolo = new Firulais("Manuel", "Estoy jugando al Fornite");
 		names = new Firulais[2];

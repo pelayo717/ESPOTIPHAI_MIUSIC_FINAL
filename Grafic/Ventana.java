@@ -27,7 +27,6 @@ public class Ventana extends JFrame {
 	public Ventana() throws Mp3PlayerException, IOException{
 		this.sistema = Sistema.getSistema();
 		this.sistema.registrarse("Roberto Pirck", "Vivarob", LocalDate.now(), "password");
-		
 
 		Container container = this.getContentPane();
 		container.setLayout(new CardLayout());
@@ -94,11 +93,8 @@ public class Ventana extends JFrame {
 	    cl.show(this.getContentPane(), pantallaInicioString);
 	    if (Sistema.sistema.getUsuarioActual() != null) {
 	    	this.pantallaInicio.setUsuarioRegistrado();
-	    	System.out.println("registrado");
 	    } else {
 	    	this.pantallaInicio.setUsuarioNoRegistrado();
-	    	System.out.println("no registrado");
-
 	    }
 	}
 	

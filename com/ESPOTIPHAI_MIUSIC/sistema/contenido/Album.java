@@ -2,15 +2,19 @@ package ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido;
 
 
 import java.util.*;
+
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.status.Status;
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.Usuario;
-import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.UsuarioBloqueado;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.status.*;
+import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.usuario.*;
 
 /**
  *	Clase Album con herencia de ContenidoComentable
  */
 public class Album extends ContenidoComentable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Cancion> contenido = new ArrayList<Cancion>();
 
 	/**
@@ -58,7 +62,7 @@ public class Album extends ContenidoComentable {
 	 * 	@return  OK si no hay errores y ERROR de lo contrario
 	 */
 	public Status eliminarContenido(Cancion contenido) {
-		if(this.contenido.contains(contenido)) {
+		if(this.contenido.contains(contenido) == true) {
 			if(this.contenido.remove(contenido)) {
 				this.setDuracion(this.calcularTiempo());
 				return Status.OK;
