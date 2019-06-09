@@ -54,5 +54,10 @@ public static void main(String[] args) throws Mp3PlayerException, InterruptedExc
 		
 		s.cerrarSesion();
 		
+		Sistema s2 = Sistema.getSistema();
+		
+		System.out.print("CARGADO EL DATOS.OBJ CORRECTAMENTE");
+		System.out.print(s2.getUsuariosTotales().get(0).getNombreUsuario());
+		
 	}
 }

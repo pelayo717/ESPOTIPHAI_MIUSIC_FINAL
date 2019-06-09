@@ -605,7 +605,7 @@ public class Usuario implements Serializable{
 	 * @param autor
 	 * @return devuelve OK si se llevo a cabo la tarea de seguimiento o ERROR si no fue asi
 	 */
-	public Status follow(String autor) {
+	public Status follow(Usuario autor) {
 		
 		if(autor == null) {
 			return Status.ERROR;
@@ -614,7 +614,7 @@ public class Usuario implements Serializable{
 		if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador() == false && Sistema.sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
 			
 			for(Usuario totales:Sistema.sistema.getUsuariosTotales()) {
-				if(totales.getNombreAutor().equals(autor) == true) {
+				if(totales.getNombreAutor().equals(autor.getNombreAutor()) == true) {
 					Sistema.sistema.getUsuarioActual().seguirUsuario(totales);
 					this.enviarNotificacion(totales, "El autor " + Sistema.sistema.getUsuarioActual().getNombreAutor() + " ha comenzado a seguirle");
 					return Status.OK;
@@ -630,13 +630,13 @@ public class Usuario implements Serializable{
 	 * @param autor
 	 * @return devuelve OK si se llevo a cabo la tarea de dejar de seguir o ERROR si no fue asi
 	 */
-	public Status unfollow(String autor) {
+	public Status unfollow(Usuario autor) {
 		if(autor == null) {
 			return null;
 		}
 		if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador() == false && Sistema.sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
 			for(Usuario totales:Sistema.sistema.getUsuariosTotales()) {
-				if(totales.getNombreAutor().equals(autor) == true) {
+				if(totales.getNombreAutor().equals(autor.getNombreAutor()) == true) {
 					Sistema.sistema.getUsuarioActual().dejarDeSeguirUsuario(totales);
 					this.enviarNotificacion(totales, "El autor " + Sistema.sistema.getUsuarioActual().getNombreAutor() + " ha dejado de seguirle");
 					return Status.OK;

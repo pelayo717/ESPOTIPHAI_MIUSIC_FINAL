@@ -355,19 +355,39 @@ public class Sistema implements Serializable{
 	}
 
 	/**
-	 * Esta funcion permite a un usuario(este bloqueado o no) eliminar su cuenta como usuario del sistema
+	 * Esta funcion permite a un usuario(mientras no este bloqueado) eliminar su cuenta como usuario del sistema
+	 * Mediante su eliminacion las canciones, albumes y listas desapareceran de la aplicacion. Tambien desapareceran
+	 * (canciones y albumes) de todas las listas de otros usuarios que los contengan. Seran informados de este evento
+	 * ocurrido y del porque. Logicamente tambien informaremos a todos aquellos usuarios que siguen al usuario a eliminar
+	 * y a todos los usuarios a los que sigue. Previo a todo esto comprobaremos que el usuario a iniciado sesion y que este
+	 * no se encuentra bloqueado por el sistema.
 	 */
 	public void eliminarCuenta() {
-		if(sistema.usuario_actual != null && sistema.getAdministrador() == false) {
+		if(sistema.usuario_actual != null && sistema.getAdministrador() == false && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
 			 for(Usuario usuario:sistema.getUsuariosTotales()) {
 				 if(usuario.getNombreUsuario().equals(sistema.getUsuarioActual().getNombreUsuario()) == true && usuario.getContrasena().equals(sistema.getUsuarioActual().getContrasena()) == true) {
 					 
-					 //Compruebo quien es el usuario y elimino sus canciones
+					//elimino al usuario del array general, solo quedara una referencia al objeto y es el usuario_actual
+					 sistema.getUsuariosTotales().remove(usuario); 
+					 
+					//Informamos a los seguidos que el usuario se va a eliminar
+					 for(Usuario seguidos:usuario.getSeguidos()) {
+						 usuario.dejarDeSeguirUsuario(seguidos);
+						 usuario.enviarNotificacion(seguidos, "El usuario " + usuario.getNombreUsuario() + " le ha dejado de seguir.");
+					 }
+					 
+					//Informamos a los seguidores que el usuario se va a eliminar
+					 for(Usuario seguidores:usuario.getSeguidores()) {
+						seguidores.dejarDeSeguirUsuario(sistema.getUsuarioActual());
+						usuario.enviarNotificacion(seguidores, "El usuario " + usuario.getNombreUsuario() + " ha eliminado su cuenta.");
+					 }
+					 
+					 //elimino sus albumes e informo a los usuarios que tengan las canciones en sus listas de su eliminacion
 					 for(Cancion canciones_usuario: usuario.getCanciones()) {
 						 sistema.eliminarCancion(canciones_usuario);
 					 }
 					 
-					 //elimino sus albumes
+					 //elimino sus albumes e informo a los usuarios que tengan los albumes en sus listas de su eliminacion
 					 for(Album albumes_usuario:usuario.getAlbumes()) {
 						 sistema.eliminarAlbum(albumes_usuario);
 					 }
@@ -380,11 +400,10 @@ public class Sistema implements Serializable{
 					 //elimino sus notificaciones
 					 sistema.getUsuarioActual().eliminarNotificacionesPropias();
 					 
-					 //elimino al usuario
-					 sistema.getUsuariosTotales().remove(usuario);
 					 
 					 //Cierro la sesion para este usuario ya no existente
 					 sistema.usuario_actual = null;
+					 
 					 return;
 				 }
 			 }
@@ -399,7 +418,9 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Funcion que se ejcutara de manera periodica y que comprobara todos 
-	 * aquellos usuarios que han excedido el tiempo de usuario premium y los degrada a usuarios registrados normales
+	 * aquellos usuarios que han excedido el tiempo de usuario premium y los degrada a usuarios registrados normales.
+	 * Para todos los usuarios, mirara aquellos que son premium y conociendo el dia que se hicieron premium se 
+	 * mirara si ya han pasado 30 dias. De ser asi se les degradara y se les informara de lo sucedido.
 	 */
 	public void empeorarCuentaPrincipal() {
 
@@ -421,8 +442,12 @@ public class Sistema implements Serializable{
 	/**
 	 * Funcion que se ejecuta de manera periodica y que comprobara todos
 	 * aquellos usuarios que han superado el tiempo de bloqueo establecido procediendo al desbloqueo
+	 * Mirara para todos los usuarios aquellos que estan bloqueados con el estado de TEMPORAL.
+	 * Conociendo ademas la fecha en la que fueron bloqueados se calculara si se ha cumplido el tiempo de sancion
+	 * y de ser asi se procedera al desbloqueo.
 	 */
 	public void desbloquearUsuario() {
+		
 		LocalDate fecha_actual = LocalDate.now();
 		for(Usuario usuario: sistema.usuarios_totales) {
 			if(usuario.getEstadoBloqueado() == UsuarioBloqueado.TEMPORAL) {
@@ -439,16 +464,18 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Funcion que se ejecuta de manera periodica y que se encarga de restear
-	 * los contadores de reproducciones de los usuarios no registrados y de los usuarios registrados no premium
+	 * los contadores de reproducciones de los usuarios no registrados y de los
+	 * usuarios registrados no premium el primer dia de cada mes.
 	 */
 	private void resetearContadoresNuevoMes() {
 		
 		LocalDate fecha_actual = LocalDate.now();
 		if(fecha_actual.getDayOfMonth() == 1) {
 			
-			//Nadie ha iniciado sesion aunque seguimos poniendo el contador de contenido escuchado sin estar registrado
+			//PARA AQUELLOS QUE NO HAN INICIADO SESION
 			sistema.contenido_escuchado_sin_registrarse = 0;
 			
+			//PARA AQUELLOS QUE SI INICIARON SESION PERO NO SON PREMIUM
 			for(Usuario usuarios_totales: sistema.usuarios_totales) {
 				if(usuarios_totales.getPremium() == false) {
 					usuarios_totales.resetContenidoEscuchadosSinSerPremium();
@@ -460,8 +487,12 @@ public class Sistema implements Serializable{
 
 	/**
 	 * Funcion que se ejecuta de manera periodica y que se encarga de eliminar
-	 * aquellas canciones que no han sido modificadas por el usuario y han excedido el tiempo que se les dio
-	 * para hacerlo
+	 * aquellas canciones que no han sido modificadas por el usuario y han excedido
+	 * el tiempo que se les dio para hacerlo. Ya que una vez creadas las canciones estas
+	 * permanecen en ambos arrays de canciones(Sistema y Usuario) aunque con estado de 
+	 * PENDIENTEDEVALIDACION o PENDIENTEMODIFICACION se comprobara en el array general 
+	 * todas aquellas que cumplen los requisitos anteriores, y luego se procedera a 
+	 * eliminarlas de cada array de canciones de cada usuario.
 	 */
 	private void eliminarCancionPendienteModificacionCaducada() {
 		
@@ -492,7 +523,7 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Permite realizar una busqueda en todas las canciones al introducir una cadena
-	 * @param palabra criterio a buscar dentro del sistema
+	 * @param palabra criterio para buscar por titulo
 	 * @return retorna un arraylist de elementos de tipo cancion si se encuentra contenido igual
 	 * o que contiene la cadena introducida por parametro
 	 */
@@ -506,7 +537,9 @@ public class Sistema implements Serializable{
 		}
 		
 		if(sistema.usuario_actual != null) {
+			
 			Period intervalo = Period.between(sistema.usuario_actual.getFechaNacimiento(), fecha_actual);
+			
 			if(intervalo.getYears() >= 18) {
 				for(Cancion cancion: sistema.canciones_totales) {
 					if((cancion.getEstado() == EstadoCancion.EXPLICITA || cancion.getEstado() == EstadoCancion.VALIDA) && (cancion.getTitulo().equals(palabra) == true || cancion.getTitulo().contains(palabra) == true)) {
@@ -537,10 +570,9 @@ public class Sistema implements Serializable{
 
 	/**
 	 * Permite ralizar una busqueda en todos los albumes al introducir una cadena
-	 * @param palabra
+	 * @param palabra criterio para buscar por album
 	 * @return retorna un arraylist de elementos de tipo album si se encuentra contenido igual
-	 * o que contiene la cadena introducida por parametro
-	 * @throws NoHayElementosExcepcion 
+	 * o que contiene la cadena introducida por parametro 
 	 */
 	public ArrayList<Album> buscadorPorAlbumes(String palabra){
 		LocalDate fecha_actual = LocalDate.now();
@@ -559,7 +591,7 @@ public class Sistema implements Serializable{
 					flag = 0;
 					if(album_totales.getTitulo().equals(palabra) == true || album_totales.getTitulo().contains(palabra) == true) {
 						for(Cancion canciones_album: album_totales.getContenido()) {
-							if(canciones_album.getEstado() == EstadoCancion.ELIMINADA || canciones_album.getEstado() == EstadoCancion.PLAGIO) { //Estados de las canciones una vez fueron anyadidas al album
+							if(canciones_album.getEstado() == EstadoCancion.PLAGIO) { //Estado de la cancion que mientras no este en plagio se anyade
 								flag = 1;
 								break;
 							}
@@ -583,7 +615,7 @@ public class Sistema implements Serializable{
 			flag = 0;
 			if(album_totales.getTitulo().equals(palabra) == true || album_totales.getTitulo().contains(palabra) == true) {
 				for(Cancion canciones_album: album_totales.getContenido()) {
-					if(canciones_album.getEstado() == EstadoCancion.ELIMINADA || canciones_album.getEstado() == EstadoCancion.PLAGIO || canciones_album.getEstado() == EstadoCancion.EXPLICITA) { //Estados de las canciones una vez fueron anyadidas al album
+					if(canciones_album.getEstado() == EstadoCancion.PLAGIO || canciones_album.getEstado() == EstadoCancion.EXPLICITA) { //Estados de las canciones una vez fueron anyadidas al album
 						flag = 1;
 						break;
 					}
@@ -598,16 +630,16 @@ public class Sistema implements Serializable{
 		if(albumes_incluidas_explicitas.size() == 0) {
 			return null;
 		}
+		
 		return albumes_incluidas_explicitas;
 		
 	}
 
 	/**
 	 * Permite para un autor dado buscar todas sus canciones
-	 * @param palabra
+	 * @param palabra criterio para buscar por autor
 	 * @return retorna un arraylist de elementos de tipo cancion aplicados a un autor concreto
 	 * si se encuentra alguno mediante el parametro introducido
-	 * @throws NoHayElementosExcepcion 
 	 */
 	public ArrayList<Cancion> buscadorPorAutores_DevolvemosCanciones(String palabra){
 		
@@ -663,7 +695,7 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Permite para un autor dado buscar todos sus albumes
-	 * @param palabra
+	 * @param palabra criterio para buscar por autor
 	 * @return retorna un arraylista de elementos de tipo album aplicados a un autor concreto
 	 * si se encuentra alguno mediante el parametro introducido
 	 */
@@ -685,7 +717,7 @@ public class Sistema implements Serializable{
 			}
 		}
 		
-		if(ide == 0) {
+		if(ide == 0) { //NO SE HA ENCONTRADO NINGUN AUTOR POR EL CRITERIO INTRODUCIDO
 			return null;
 		}
 		
@@ -698,7 +730,7 @@ public class Sistema implements Serializable{
 					flag = 0;
 					if(album_totales.getAutor().getId() == ide) {
 						for(Cancion canciones_album: album_totales.getContenido()) {
-							if(canciones_album.getEstado() == EstadoCancion.ELIMINADA || canciones_album.getEstado() == EstadoCancion.PLAGIO) { //Estados de las canciones una vez fueron anyadidas al album
+							if(canciones_album.getEstado() == EstadoCancion.PLAGIO) { //Estados de las canciones una vez fueron anyadidas al album
 								flag = 1;
 								break;
 							}
@@ -722,7 +754,7 @@ public class Sistema implements Serializable{
 			flag = 0;
 			if(album_totales.getAutor().getId() == ide) {
 				for(Cancion canciones_album: album_totales.getContenido()) {
-					if(canciones_album.getEstado() == EstadoCancion.ELIMINADA || canciones_album.getEstado() == EstadoCancion.PLAGIO || canciones_album.getEstado() == EstadoCancion.EXPLICITA) { //Estados de las canciones una vez fueron anyadidas al album
+					if(canciones_album.getEstado() == EstadoCancion.PLAGIO || canciones_album.getEstado() == EstadoCancion.EXPLICITA) { //Estados de las canciones una vez fueron anyadidas al album
 						flag = 1;
 						break;
 					}
@@ -744,7 +776,7 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Buscador general de autores, se introduce una cadena y este busca canciones y albumes del autor.
-	 * @param palabra
+	 * @param palabra criterio para buscar por autor
 	 * @return retorna un arraylist de contenido si sencuentran canciones y/o albumes, sino devuelve null.
 	 */
 	public ArrayList<Contenido> buscadorPorAutores(String palabra){
@@ -807,9 +839,9 @@ public class Sistema implements Serializable{
 	 * @throws FileNotFoundException
 	 * @throws Mp3PlayerException
 	 */
-	public Cancion crearCancion(Date anyo,String titulo,String nombreMP3) throws FileNotFoundException, Mp3PlayerException{
+	public Cancion crearCancion(String titulo,String nombreMP3) throws FileNotFoundException, Mp3PlayerException{
 		//LocalDate fecha_actual = LocalDate.now();
-		if(anyo == null || titulo == null || nombreMP3 == null) {
+		if(titulo == null || nombreMP3 == null) {
 			return null;
 		}
 		
@@ -853,6 +885,7 @@ public class Sistema implements Serializable{
 	 * @return retorna ERROR si la cancion no existe o no se puede eliminar del sistema u OK si se elimina correctamente
 	 */
 	public Status eliminarCancion(Cancion cancion_eliminar) {		
+		
 		if(cancion_eliminar == null) {
 			return Status.ERROR;
 		}
@@ -892,6 +925,13 @@ public class Sistema implements Serializable{
 					
 					for(Lista lista: usuarios_totales.getListas()) {
 						lista.eliminarContenido(cancion_eliminar);
+					}
+					
+					//ENVIAMOS NOTIFICACION AL USUARIO QUE CONTENIA LA CANCION EN SUS LISTAS
+					if(sistema.getUsuariosTotales().contains(sistema.getUsuarioActual()) == false) {
+						sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado la cancion " + cancion_eliminar.getTitulo() + " ya que se ha dado de baja.");
+					}else{
+						sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado la cancion " + cancion_eliminar.getTitulo() + ".");
 					}
 				}
 				
@@ -972,6 +1012,12 @@ public class Sistema implements Serializable{
 						lista.eliminarContenido(album_eliminar);
 					}
 					
+					//ENVIAMOS NOTIFICACION AL USUARIO QUE CONTENIA EL ALBUM EN SUS LISTAS
+					if(sistema.getUsuariosTotales().contains(sistema.getUsuarioActual()) == false) {
+						sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado el album " + album_eliminar.getTitulo() + " ya que se ha dado de baja.");
+					}else {
+						sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado el album " + album_eliminar.getTitulo() + ".");
+					}
 				}
 				
 				return Status.OK;
@@ -1189,18 +1235,14 @@ public class Sistema implements Serializable{
 	 */
 	public Status guardarDatosGenerales() throws IOException {
 		try {
-			String ret = File.separator;
-			ret = System.getProperty("file.separator");
-			ret = String.valueOf(File.separatorChar);
-			String final_path = ".." + ret + "datos.obj";
-		
-			FileOutputStream fileOut = new FileOutputStream(final_path);
+			FileOutputStream fileOut = new FileOutputStream("datos.obj");
 			ObjectOutputStream oos = new ObjectOutputStream(fileOut);
 			oos.writeObject(this);
 			oos.flush();
 			oos.close();
 			fileOut.close();
 			return Status.OK;
+			
 		}catch(IOException ie) {
 			ie.toString();
 			return Status.ERROR;
@@ -1218,12 +1260,7 @@ public class Sistema implements Serializable{
 	public static Sistema cargarDatosGenerales(){
 		
 		try {
-			String ret = File.separator;
-			ret = System.getProperty("file.separator");
-			ret = String.valueOf(File.separatorChar);
-			String final_path = "..." + ret + "datos.obj";
-			
-			FileInputStream in = new FileInputStream(final_path);
+			FileInputStream in = new FileInputStream("datos.obj");
 			ObjectInputStream oin = new ObjectInputStream(in);
 			Sistema s1 = (Sistema) oin.readObject();
 			oin.close();
@@ -1426,3 +1463,6 @@ public class Sistema implements Serializable{
 	}
 	
 }
+
+
+
