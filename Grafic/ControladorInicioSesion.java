@@ -11,16 +11,29 @@ import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.Sistema;
 import ESPOTIPHAI_MIUSIC_FINAL.com.ESPOTIPHAI_MIUSIC.sistema.contenido.Cancion;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
 
+/**
+ * Clase que implementa el controlador de la vista de InicioSesion
+ */
 public class ControladorInicioSesion implements ActionListener{
 		private InicioSesion vista;
 		private int modelo;
 		
-		
+		/**
+		 * Contructor de la clase ControladorInicioSesion,
+	 	 * @param vista: vista que le se asigna cuando se crea el controlador
+		 * @param modelo: argumento de tipo int que indica en que modelo nos
+		 * encontramos
+	 	 */	
 		public ControladorInicioSesion(InicioSesion vista, int modelo) {
 			this.vista = vista;
 			this.modelo = modelo;
 		}
 	 
+		/**
+	 	 * Funcion que realiza una funcion u otra dependiendo que action pasada como 
+		 * parametro se realice
+	 	 * @param e: parametro que indica la action que se ha realizado en la pantalla 
+	 	 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (((JButton)e.getSource()).getText() == "Inicio") {
