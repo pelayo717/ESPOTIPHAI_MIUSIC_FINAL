@@ -2,9 +2,12 @@ package vista;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.util.Date;
 
 import javax.swing.*;
 
+import modelo.sistema.Sistema;
 import modelo.usuario.*;
 
 public class Perfil extends JPanel{
@@ -12,10 +15,10 @@ public class Perfil extends JPanel{
 	JButton botonNotificaciones;
 	
 	String nombre_autor;
-	String fecha_nacimiento;
+	LocalDate fecha_nacimiento;
 	String nombre_usuario;
-	String numero_seguidores;
-	String numero_seguidos;
+	int numero_seguidores;
+	int numero_seguidos;
 	
 	JLabel nombreAutor;
 	JLabel fechaNacimiento;
@@ -28,11 +31,21 @@ public class Perfil extends JPanel{
 	JButton botonHacersePRO;
 	public Perfil() {
 		
-		this.nombre_autor =  "MC Pelayo";
-		this.fecha_nacimiento =  "7/12/1996";
-		this.nombre_usuario =  "Pelayo Sanchez";
-		this.numero_seguidores =  "2000";
-		this.numero_seguidos =  "4";
+		if(Sistema.sistema.getUsuarioActual() != null) {
+			this.nombre_autor =  Sistema.sistema.getUsuarioActual().getNombreAutor();
+			this.fecha_nacimiento =  Sistema.sistema.getUsuarioActual().getFechaNacimiento();
+			this.nombre_usuario =  Sistema.sistema.getUsuarioActual().getNombreUsuario();
+			this.numero_seguidores =  Sistema.sistema.getUsuarioActual().getSeguidores().size();
+			this.numero_seguidos =  Sistema.sistema.getUsuarioActual().getSeguidos().size();
+		}else {
+			this.nombre_autor =  "";
+			this.fecha_nacimiento =  LocalDate.now();
+			this.nombre_usuario =  "";
+			this.numero_seguidores = -1;
+			this.numero_seguidos =  -1;
+		}
+		
+		
 		
 		ImageIcon icono_corchea = new ImageIcon("src/vista/photo_default.jpg");
 

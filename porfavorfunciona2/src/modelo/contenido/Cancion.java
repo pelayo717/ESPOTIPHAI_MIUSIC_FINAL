@@ -35,7 +35,7 @@ public class Cancion extends ContenidoComentable {
 	 * @throws FileNotFoundException 
 	 */
 	public Cancion(String titulo, Usuario autor,  String nombreMP3) throws FileNotFoundException, Mp3PlayerException{
-		super(null,titulo, autor, new ArrayList<Comentario>());
+		super(-1,titulo, autor, new ArrayList<Comentario>());
 		Cancion.repro_mp3 = new Mp3Player();
 		this.setNombreMP3(nombreMP3);
 		this.setDuracion(this.devolverDuracion());

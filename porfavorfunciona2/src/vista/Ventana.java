@@ -26,6 +26,7 @@ public class Ventana extends JFrame {
 	public PantallaInicio pantallaInicio;
 	public Registrarse registrarse;
 	public Perfil perfil;
+	public CrearAlbum crearAlbum;
 	public static Ventana ventana;
 	Sistema sistema;
 	
@@ -45,6 +46,7 @@ public class Ventana extends JFrame {
 		final String reproducirListaString = "Reproducir Lista";
 		final String pantallaInicioString = "Pantalla Inicio";
 		final String perfilString = "Perfil";
+		final String crearAlbumString = "Crear Album";
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setExtendedState(6);
@@ -59,6 +61,7 @@ public class Ventana extends JFrame {
 		this.inicioSesion = new InicioSesion();
 		this.registrarse = new Registrarse();
 		this.perfil = new Perfil();
+		this.crearAlbum = new CrearAlbum();
 
 		//Controladores
 		ControladorPantallaInicio controladorPantallaInicio = new ControladorPantallaInicio(pantallaInicio, 2);
@@ -68,6 +71,7 @@ public class Ventana extends JFrame {
 		ControladorInicioSesion controladorInicioSesion = new ControladorInicioSesion(inicioSesion, 2);
 		ControladorRegistrarse controladorRegistrarse = new ControladorRegistrarse(registrarse, 2);
 		ControladorPerfil controladorPerfil = new ControladorPerfil(perfil,2);
+		ControladorCrearAlbum controladorCrearAlbum = new ControladorCrearAlbum(crearAlbum,2);
 
 		// configurar la vista con el controlador
 		pantallaInicio.setControlador(controladorPantallaInicio);
@@ -77,6 +81,7 @@ public class Ventana extends JFrame {
 		inicioSesion.setControlador(controladorInicioSesion);
 		registrarse.setControlador(controladorRegistrarse);
 		perfil.setControlador(controladorPerfil);
+		crearAlbum.setControlador(controladorCrearAlbum);
 		
 		//anyadimos pantallas al contenedor
 		this.add(pantallaInicio, pantallaInicioString);
@@ -86,6 +91,7 @@ public class Ventana extends JFrame {
 		this.add(inicioSesion, inicioSesionString);
 		this.add(registrarse, registrarseString);
 		this.add(perfil, perfilString);
+		this.add(crearAlbum,crearAlbumString);
 		Ventana.ventana = this;
 		this.showPantallaInicio();
 	}
@@ -149,6 +155,12 @@ public class Ventana extends JFrame {
 		final String perfilString = "Perfil";
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), perfilString);
+	}
+	
+	public void showCrearAlbum() {
+		final String crearAlbumString = "Crear Album";
+		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
+	    cl.show(this.getContentPane(), crearAlbumString);
 	}
 
 }

@@ -16,7 +16,7 @@ public abstract class ContenidoComentable extends Contenido {
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Comentario> comentarios = new ArrayList<Comentario>();
 	
-	public ContenidoComentable (Date anyo, String titulo, Usuario autor, ArrayList<Comentario> comentarios) {
+	public ContenidoComentable (int anyo, String titulo, Usuario autor, ArrayList<Comentario> comentarios) {
 		super(anyo, titulo,autor);
 		this.setComentarios(comentarios);
 	}

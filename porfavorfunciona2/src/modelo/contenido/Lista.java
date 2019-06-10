@@ -17,7 +17,7 @@ public class Lista extends Contenido{
 	private ArrayList<Contenido> contenidos = new ArrayList<Contenido>();
 	
 	public Lista(String titulo,Usuario autor, ArrayList<Contenido> contenido) {
-		super(null, titulo,autor);
+		super(-1, titulo,autor);
 		this.setContenido(contenido);
 		this.setDuracion(this.calcularTiempo());
 

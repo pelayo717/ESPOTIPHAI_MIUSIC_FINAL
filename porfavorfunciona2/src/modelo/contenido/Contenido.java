@@ -12,7 +12,7 @@ public abstract class Contenido implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private static int nextID = 0;
-	private Date anyo;
+	private int anyo;
 	private String titulo;
 	private double duracion;
 	private int id;
@@ -23,7 +23,7 @@ public abstract class Contenido implements Serializable {
 	 *	@param estado  estado de la cancion
 	 *	@param reproducible  si la cacion es o no reproducible
 	 */
-	public Contenido(Date anyo, String titulo, Usuario autor ) {
+	public Contenido(int anyo, String titulo, Usuario autor ) {
 		this.setAutor(autor);
 		this.setAnyo(anyo);
 		this.setDuracion(0);
@@ -40,7 +40,7 @@ public abstract class Contenido implements Serializable {
 	 *	Getter de anyo
 	 * 	@return  anyo de el contenido (Date)
 	 */
-	public Date getAnyo() {
+	public int getAnyo() {
 		return anyo;
 	}
 	
@@ -49,7 +49,7 @@ public abstract class Contenido implements Serializable {
 	 *	Setter de anyo
 	 *	@param anyo (Date) anyo del contenido
 	 */
-	public void setAnyo(Date anyo) {
+	public void setAnyo(int anyo) {
 		this.anyo = anyo;
 	}
 

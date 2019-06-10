@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 import modelo.sistema.*;
 import modelo.status.*;
@@ -31,8 +32,12 @@ public class ControladorRegistrarse implements ActionListener{
 				Ventana.ventana.registrarse.limpiarVentana();
 			} else if(((JButton)e.getSource()).getText() == "Registrarse") {
 				if (Sistema.sistema.registrarse(vista.usuarioTextfield.getText(),vista.authorTextfield.getText(), LocalDate.now(), String.valueOf(vista.passwordTextfield.getPassword())) == Status.OK){
+					JOptionPane.showMessageDialog(Ventana.ventana,"Su usuario ha sido registrado correctamente en la aplicacion");
 					Ventana.ventana.showInicioSesion();
 					Ventana.ventana.registrarse.limpiarVentana();
+				}else {
+					JOptionPane.showMessageDialog(Ventana.ventana,"Su usuario no ha sido registrado correctamente, pruebe de nuevo con otros datos");
+					Ventana.ventana.showPantallaInicio();
 				}
 			}
 		}

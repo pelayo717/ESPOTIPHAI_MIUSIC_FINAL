@@ -21,7 +21,7 @@ public class Album extends ContenidoComentable {
 	 *	Constructor de Album con herencia de ContenidoComentable
 	 *	@param contenido  canciones del album
 	 */
-	public Album (Date anyo, String titulo,  Usuario autor, ArrayList<Cancion> contenido) {
+	public Album (int anyo, String titulo,  Usuario autor, ArrayList<Cancion> contenido) {
 		super(anyo, titulo, autor, new ArrayList<Comentario>());
 		this.setContenido(contenido);
 		this.setDuracion(this.calcularTiempo());

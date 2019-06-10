@@ -316,7 +316,7 @@ public class Sistema implements Serializable{
 			return Status.ERROR;
 		}
 		
-		if(nombre_usuario.equals("root1967") && contrasenia.equals("ADMINISTRADOR") == true) {
+		if(nombre_usuario.equals("admin") && contrasenia.equals("Aadmin") == true) {
 			sistema.es_administrador = true;
 			return Status.OK;
 		}
@@ -956,8 +956,8 @@ public class Sistema implements Serializable{
 	 * @param contenido
 	 * @return retorna la referencia al objeto album si se crea correctamente, sino devuelve null 
 	 */
-	public Album crearAlbum(Date anyo,String titulo) {
-		if(anyo == null || titulo == null) {
+	public Album crearAlbum(int anyo,String titulo) {
+		if(titulo == null) {
 			return null;
 		}
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {			
