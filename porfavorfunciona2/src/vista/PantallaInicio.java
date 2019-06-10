@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -13,14 +14,19 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
+import modelo.contenido.Album;
+import modelo.contenido.Cancion;
+import modelo.contenido.Lista;
+import modelo.sistema.Sistema;
+
 public class PantallaInicio extends PantallaPrincipal {
 
 	private JScrollPane canciones;
 	private JScrollPane albumes;
 	private JScrollPane listas;
-	private JList lista_canciones;
-	private JList lista_albumes;
-	private JList lista_listas;
+	public JList lista_canciones;
+	public JList lista_albumes;
+	public JList lista_listas;
 	JButton seleccionarAlbum;
 	JButton seleccionarCancion;
 	JButton seleccionarLista;
@@ -28,6 +34,10 @@ public class PantallaInicio extends PantallaPrincipal {
 	JButton crearAlbum;
 	JButton crearLista;
 	
+	public ArrayList<Cancion> misCanciones;
+	public ArrayList<Album> misAlbumes;
+	public ArrayList<Lista> misListas;
+
 	public PantallaInicio() {  //CAMBIADO, MEJORADO
 		
 		super();
@@ -120,6 +130,21 @@ public class PantallaInicio extends PantallaPrincipal {
 		this.botonIzquierdaArriba.setText("Iniciar Sesion");
 		this.botonIzquierdaMedio.setVisible(true);
 		this.botonIzquierdaAbajo.setVisible(false);
+	}
+	
+	public void actualizarCanciones(ArrayList<Cancion> canciones_propias) {
+		lista_canciones = new JList(canciones_propias.toArray());
+		canciones = new JScrollPane(lista_canciones);
+	}
+	
+	public void actualizarAlbumes(ArrayList<Album> albumes_propios) {
+		lista_albumes = new JList(albumes_propios.toArray());
+		albumes = new JScrollPane(lista_albumes);
+	}
+	
+	public void actualizarListas(ArrayList<Lista> listas_propias) {
+		lista_listas = new JList(listas_propias.toArray());
+		listas = new JScrollPane(lista_listas);
 	}
 			
 }  

@@ -41,7 +41,18 @@ public ControladorPantallaInicio(PantallaInicio x, int modelo) {
 	public void actionPerformed(ActionEvent e) { //CAMBIADO BASTANTE, MEJORADO
 		if(((JButton)e.getSource()).getText() == "Elegir cancion") {
 			if(Sistema.sistema.getUsuarioActual() != null) {
-				Ventana.ventana.showReproducirCancion();
+				if(Sistema.sistema.getUsuarioActual().getCanciones().size() > 0) {
+					Cancion[] canciones_totales = (Cancion[]) vista.misCanciones.toArray();
+					if(vista.lista_canciones.getSelectedIndex() == -1) {
+						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir cancion seleccione una primero");
+						Ventana.ventana.showPantallaInicio();
+					}else{
+						Ventana.ventana.showReproducirCancion(canciones_totales[vista.lista_canciones.getSelectedIndex()]);
+					}
+				}else {
+					JOptionPane.showMessageDialog(Ventana.ventana,"No hay canciones para seleccionar");
+					Ventana.ventana.showPantallaInicio();
+				}
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"Debe iniciar sesion para usar sus canciones");
 				Ventana.ventana.showPantallaInicio();
@@ -51,14 +62,36 @@ public ControladorPantallaInicio(PantallaInicio x, int modelo) {
 			Ventana.ventana.perfil.setInformacion(Sistema.sistema.getUsuarioActual());
 		} else if(((JButton)e.getSource()).getText() == "Elegir album") {
 			if(Sistema.sistema.getUsuarioActual() != null) {
-				Ventana.ventana.showReproducirAlbum();
+				if(Sistema.sistema.getUsuarioActual().getAlbumes().size() > 0) { //ALGUNO HAY
+					Album[] albumes_totales = (Album[]) vista.misAlbumes.toArray();
+					if(vista.lista_albumes.getSelectedIndex() == -1) { //NO HA SELECCIONADO
+						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir album seleccione uno primero");
+						Ventana.ventana.showPantallaInicio();
+					}else {
+						Ventana.ventana.showReproducirAlbum(albumes_totales[vista.lista_albumes.getSelectedIndex()]);
+					}
+				}else {
+					JOptionPane.showMessageDialog(Ventana.ventana,"No hay albumes para seleccionar");
+					Ventana.ventana.showPantallaInicio();
+				}
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"Debe iniciar sesion para usar sus albumes");
 				Ventana.ventana.showPantallaInicio();
 			}
 		} else if(((JButton)e.getSource()).getText() == "Elegir lista") {
 			if(Sistema.sistema.getUsuarioActual() != null) {
-				Ventana.ventana.showReproducirLista();
+				if(Sistema.sistema.getUsuarioActual().getListas().size() > 0) { //ALGUNO HAY
+					Lista[] listas_totales = (Lista[]) vista.misListas.toArray();
+					if(vista.lista_listas.getSelectedIndex() == -1) { //NO HA SELECCIONADO
+						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir lista seleccione una primero");
+						Ventana.ventana.showPantallaInicio();
+					}else {
+						Ventana.ventana.showReproducirLista(listas_totales[vista.lista_listas.getSelectedIndex()]);
+					}
+				}else {
+					JOptionPane.showMessageDialog(Ventana.ventana,"No hay albumes para seleccionar");
+					Ventana.ventana.showPantallaInicio();
+				}
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"Debe iniciar sesion para usar sus listas");
 				Ventana.ventana.showPantallaInicio();

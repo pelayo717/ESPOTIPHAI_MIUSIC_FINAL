@@ -2,7 +2,6 @@ package modelo.sistema;
 
 
 import modelo.contenido.*;
-import modelo.notificacion.*;
 import modelo.reporte.*;
 import modelo.status.*;
 import modelo.usuario.*;
@@ -17,8 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -316,9 +314,8 @@ public class Sistema implements Serializable{
 			return Status.ERROR;
 		}
 		
-		if(nombre_usuario.equals("admin") && contrasenia.equals("Aadmin") == true) {
+		if(nombre_usuario.equals("admin") && contrasenia.equals("admin") == true) {
 			sistema.es_administrador = true;
-			return Status.OK;
 		}
 			
 		for(Usuario usuario: sistema.usuarios_totales) {

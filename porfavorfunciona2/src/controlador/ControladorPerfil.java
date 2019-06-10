@@ -41,7 +41,7 @@ public class ControladorPerfil implements ActionListener{
 				Sistema.sistema.eliminarCuenta();
 				Ventana.ventana.showRegistrarse();
 			} else if(((JButton)e.getSource()).getText() == "Hacerse PRO") {
-				Ventana.ventana.showReproducirAlbum();
+				//Ventana.ventana.showReproducirAlbum();
 			} else {
 				System.out.println(e.getSource());
 			}

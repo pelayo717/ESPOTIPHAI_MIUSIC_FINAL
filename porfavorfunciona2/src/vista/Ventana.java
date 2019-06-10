@@ -24,10 +24,21 @@ public class Ventana extends JFrame {
 	public ReproducirAlbum reproducirAlbum;
 	public ReproducirLista reproducirLista;
 	public PantallaInicio pantallaInicio;
+	public PantallaInicioAdmin pantallaInicioAdmin;
 	public Registrarse registrarse;
 	public Perfil perfil;
 	public CrearAlbum crearAlbum;
 	public static Ventana ventana;
+	public ControladorPantallaInicio controladorPantallaInicio;
+	public ControladorReproducirCancion controladorReproducirCancion;
+	public ControladorReproducirLista controladorReproducirLista;
+	public ControladorReproducirAlbum controladorReproducirAlbum;
+	public ControladorInicioSesion controladorInicioSesion;
+	public ControladorRegistrarse controladorRegistrarse;
+	public ControladorPerfil controladorPerfil;
+	public ControladorCrearAlbum controladorCrearAlbum;
+	public ControladorPantallaInicioAdmin controladorPantallaInicioAdmin;
+	Container container;
 	Sistema sistema;
 	
 	public Ventana() throws Mp3PlayerException, IOException{ //CAMBIADO, MEJORADO
@@ -36,7 +47,7 @@ public class Ventana extends JFrame {
 		System.out.print(this.sistema.registrarse("admin", "ADMIN", LocalDate.now(), "admin"));
 		
 		//obtener contenedor, asignar layout
-		Container container = this.getContentPane();
+		container = this.getContentPane();
 		container.setLayout(new CardLayout());
 		
 		final String inicioSesionString = "Iniciar Sesion";
@@ -47,6 +58,7 @@ public class Ventana extends JFrame {
 		final String pantallaInicioString = "Pantalla Inicio";
 		final String perfilString = "Perfil";
 		final String crearAlbumString = "Crear Album";
+		final String pantallaInicioAdminString = "Pantalla Inicio Admin";
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setExtendedState(6);
@@ -62,16 +74,18 @@ public class Ventana extends JFrame {
 		this.registrarse = new Registrarse();
 		this.perfil = new Perfil();
 		this.crearAlbum = new CrearAlbum();
+		this.pantallaInicioAdmin = new PantallaInicioAdmin();
 
 		//Controladores
-		ControladorPantallaInicio controladorPantallaInicio = new ControladorPantallaInicio(pantallaInicio, 2);
-		ControladorReproducirCancion controladorReproducirCancion = new ControladorReproducirCancion(reproducirCancion, 2);
-		ControladorReproducirLista controladorReproducirLista = new ControladorReproducirLista(reproducirLista, 2);
-		ControladorReproducirAlbum controladorReproducirAlbum = new ControladorReproducirAlbum(reproducirAlbum, 2);
-		ControladorInicioSesion controladorInicioSesion = new ControladorInicioSesion(inicioSesion, 2);
-		ControladorRegistrarse controladorRegistrarse = new ControladorRegistrarse(registrarse, 2);
-		ControladorPerfil controladorPerfil = new ControladorPerfil(perfil,2);
-		ControladorCrearAlbum controladorCrearAlbum = new ControladorCrearAlbum(crearAlbum,2);
+		controladorPantallaInicio = new ControladorPantallaInicio(pantallaInicio, 2);
+		controladorReproducirCancion = new ControladorReproducirCancion(reproducirCancion, 2);
+		controladorReproducirLista = new ControladorReproducirLista(reproducirLista, 2);
+		controladorReproducirAlbum = new ControladorReproducirAlbum(reproducirAlbum, 2);
+		controladorInicioSesion = new ControladorInicioSesion(inicioSesion, 2);
+		controladorRegistrarse = new ControladorRegistrarse(registrarse, 2);
+		controladorPerfil = new ControladorPerfil(perfil,2);
+		controladorCrearAlbum = new ControladorCrearAlbum(crearAlbum,2);
+		controladorPantallaInicioAdmin = new ControladorPantallaInicioAdmin(pantallaInicioAdmin,2);
 
 		// configurar la vista con el controlador
 		pantallaInicio.setControlador(controladorPantallaInicio);
@@ -82,6 +96,7 @@ public class Ventana extends JFrame {
 		registrarse.setControlador(controladorRegistrarse);
 		perfil.setControlador(controladorPerfil);
 		crearAlbum.setControlador(controladorCrearAlbum);
+		pantallaInicioAdmin.setControlador(controladorPantallaInicioAdmin);
 		
 		//anyadimos pantallas al contenedor
 		this.add(pantallaInicio, pantallaInicioString);
@@ -92,6 +107,7 @@ public class Ventana extends JFrame {
 		this.add(registrarse, registrarseString);
 		this.add(perfil, perfilString);
 		this.add(crearAlbum,crearAlbumString);
+		this.add(pantallaInicioAdmin,pantallaInicioAdminString);
 		Ventana.ventana = this;
 		this.showPantallaInicio();
 	}
@@ -109,41 +125,70 @@ public class Ventana extends JFrame {
 	    if (Sistema.sistema.getUsuarioActual() != null) {
 	    	this.pantallaInicio.setUsuarioRegistrado();
 	    	System.out.println("registrado");
+	    	this.pantallaInicio.actualizarCanciones(Sistema.sistema.getUsuarioActual().getCanciones());
+	    	this.pantallaInicio.actualizarAlbumes(Sistema.sistema.getUsuarioActual().getAlbumes());
+	    	this.pantallaInicio.actualizarListas(Sistema.sistema.getUsuarioActual().getListas());
 	    } else {
 	    	this.pantallaInicio.setUsuarioNoRegistrado();
 	    	System.out.println("no registrado");
-
 	    }
 	}
 	
-	public void showReproducirCancion(){
+	public void showReproducirCancion(Cancion c){
+		
 		final String reproducirCancionString = "Reproducir Cancion";
+		this.remove(this.reproducirCancion);
+		this.reproducirCancion = new ReproducirCancion(c);
+		this.reproducirCancion.setControlador(this.controladorReproducirCancion);
+		this.add(reproducirCancion, reproducirCancionString);
+		
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), reproducirCancionString);
+	   
+	    
 	    if (Sistema.sistema.getUsuarioActual() != null) {
 	    	this.reproducirCancion.setUsuarioRegistrado();
 	    } else {
 	    	this.reproducirCancion.setUsuarioNoRegistrado();
 	    }
-	    this.reproducirCancion.setInformacion(Sistema.sistema.getCancionTotales().get(0));
 	}
 	
-	public void showReproducirLista(){
-		final String reproducirListaString = "Reproducir Lista";
-		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
-	    cl.show(this.getContentPane(), reproducirListaString);
-	}
-	
-	public void showReproducirAlbum(){
+	public void showReproducirAlbum(Album a){
 		final String reproducirAlbumString = "Reproducir Album";
+		this.remove(this.reproducirAlbum);
+		this.reproducirAlbum = new ReproducirAlbum(a);
+		this.reproducirAlbum.setControlador(this.controladorReproducirAlbum);
+		this.add(reproducirAlbum,reproducirAlbumString);
+		
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), reproducirAlbumString);
+	    
 	    if (Sistema.sistema.getUsuarioActual() != null) {
 	    	this.reproducirAlbum.setUsuarioRegistrado();
 	    } else {
 	    	this.reproducirAlbum.setUsuarioNoRegistrado();
 	    }
 	}
+	
+	
+	public void showReproducirLista(Lista l){
+		final String reproducirListaString = "Reproducir Lista";
+		this.remove(this.reproducirLista);
+		this.reproducirLista = new ReproducirLista(l);
+		this.reproducirLista.setControlador(this.controladorReproducirLista);
+		this.add(reproducirLista, reproducirListaString);
+		
+		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
+	    cl.show(this.getContentPane(), reproducirListaString);
+	    
+	    if (Sistema.sistema.getUsuarioActual() != null) {
+	    	this.reproducirLista.setUsuarioRegistrado();
+	    } else {
+	    	this.reproducirLista.setUsuarioNoRegistrado();
+	    }
+	}
+	
+	
 	
 	public void showRegistrarse(){
 		final String registrarseString = "Registrarse";
@@ -163,4 +208,14 @@ public class Ventana extends JFrame {
 	    cl.show(this.getContentPane(), crearAlbumString);
 	}
 
+	public void showPantallaInicioAdmin() {
+		final String pantallaInicioAdminString = "Pantalla Inicio Admin";
+		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
+	    cl.show(this.getContentPane(), pantallaInicioAdminString);
+	    if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador() == true) {
+	    	this.pantallaInicioAdmin.actualizarCanciones();
+	    	this.pantallaInicioAdmin.actualizarReportes();
+	    }
+	}
+	
 }

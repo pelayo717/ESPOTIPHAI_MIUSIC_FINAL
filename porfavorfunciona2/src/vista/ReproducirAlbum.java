@@ -24,14 +24,20 @@ public class ReproducirAlbum extends PantallaPrincipal {
 	JButton botonPause;
 	public JList lista_comentarios;
 	JScrollPane comentariosScrollPane;
-	JList lista_canciones;
+	public JList lista_canciones;
 	JScrollPane cancionesScrollPane;
 	JButton botonList;
 	JButton botonAnyadirComentario;
 	JButton botonReportar;
-	Firulais[] names;
-	public Comentario[] comentarios;
-
+	JLabel datos_album;
+	JLabel titulo_album;
+	JLabel anyo_album;
+	JLabel autor_album;
+	JLabel duracion_album;
+	JLabel comentarios_label;
+	public ArrayList<Comentario> comentarios;
+	ArrayList<Cancion> canciones;
+	
 	public ReproducirAlbum(Album album) {
 		super();
 		this.album = album;
@@ -49,28 +55,27 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		botonPlay.setIcon(icono_reproducir);
 		botonPause.setIcon(icono_parar);
 
-		JLabel datos_album = new JLabel("Datos del album", SwingConstants.CENTER);
-		JLabel titulo_album = new JLabel("Titulo:\t\t\t\t\t" ,SwingConstants.CENTER);
-		JLabel anyo_album = new JLabel("Año:\t\t\t\t\t",SwingConstants.LEFT);
-		JLabel autor_album = new JLabel("Autor:\t\t\t\t\t",SwingConstants.LEFT);
-		JLabel duracion_album = new JLabel("Duracion:\t\t\t\t\t" + " s",SwingConstants.LEFT);
-		JLabel comentarios_label = new JLabel("Comentarios de la album", SwingConstants.CENTER);
-		
-		
-		if (!Sistema.sistema.getCancionTotales().isEmpty()) {
-			ArrayList<Comentario> arrayComentarios = Sistema.sistema.getCancionTotales().get(0).getComentarios();
-			this.comentarios = arrayComentarios.toArray(new Comentario[arrayComentarios.size()]);
+		if(this.album == null) {
+			datos_album = new JLabel("Datos del album", SwingConstants.CENTER);
+			titulo_album = new JLabel("Titulo:\t\t\t\t\t" ,SwingConstants.CENTER);
+			anyo_album = new JLabel("Año:\t\t\t\t\t",SwingConstants.LEFT);
+			autor_album = new JLabel("Autor:\t\t\t\t\t",SwingConstants.LEFT);
+			duracion_album = new JLabel("Duracion:\t\t\t\t\t" + " s",SwingConstants.LEFT);
+			comentarios_label = new JLabel("Comentarios de la album", SwingConstants.CENTER);
+		}else{
+			datos_album = new JLabel("Datos del album", SwingConstants.CENTER);
+			titulo_album = new JLabel("Titulo:\t\t\t\t\t" + album.getTitulo() ,SwingConstants.CENTER);
+			anyo_album = new JLabel("Año:\t\t\t\t\t" + album.getAnyo(),SwingConstants.LEFT);
+			autor_album = new JLabel("Autor:\t\t\t\t\t" + album.getAutor(),SwingConstants.LEFT);
+			duracion_album = new JLabel("Duracion:\t\t\t\t\t" + album.getDuracion() + " s",SwingConstants.LEFT);
+			comentarios_label = new JLabel("Comentarios de la album", SwingConstants.CENTER);
+			
+			this.actualizarCanciones();
+			this.actualizarComentarios();
 		}
 		
-		System.out.println(comentarios);
-		Firulais pelayo = new Firulais("Pelayo", "Estoy haciendo el codigo");
-		Firulais manolo = new Firulais("Manuel", "Estoy jugando al Fornite");
-		names = new Firulais[2];
-		names[0] = pelayo;
-		names[1] = manolo;
-		lista_comentarios = new JList(names);
 		comentariosScrollPane = new JScrollPane(lista_comentarios);
-		lista_canciones = new JList(names);
+		
 		cancionesScrollPane = new JScrollPane(lista_canciones);
 		
 		//Style changes
@@ -162,5 +167,19 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		 this.botonAnyadirComentario.addActionListener(c);
 		 this.botonReportar.addActionListener(c);
 		 this.botonPlay.addActionListener(c);
+	 }
+	 
+	 @SuppressWarnings("unchecked")
+	public void actualizarComentarios() {
+		comentarios = album.getComentarios();
+		lista_canciones = new JList(comentarios.toArray());
+		comentariosScrollPane = new JScrollPane(lista_canciones);
+	 }
+	 
+	 @SuppressWarnings("unchecked")
+	public void actualizarCanciones() {
+		canciones = album.getContenido();
+		lista_canciones = new JList(canciones.toArray());
+		cancionesScrollPane = new JScrollPane(lista_canciones);
 	 }
 }

@@ -37,7 +37,11 @@ public class Perfil extends JPanel{
 			this.nombre_usuario =  Sistema.sistema.getUsuarioActual().getNombreUsuario();
 			this.numero_seguidores =  Sistema.sistema.getUsuarioActual().getSeguidores().size();
 			this.numero_seguidos =  Sistema.sistema.getUsuarioActual().getSeguidos().size();
-		}else {
+		}else { 
+			
+			//VALORES INICIALIZADOS UNICAMENTE PARA QUE NO HAYA PROBLEMAS AL CONSTRUIR LA VENTANA DE PERFIL,
+			//ESTOS VALORES NO SE LLEGAN A VER NUNCA
+			
 			this.nombre_autor =  "";
 			this.fecha_nacimiento =  LocalDate.now();
 			this.nombre_usuario =  "";

@@ -40,7 +40,8 @@ public class ControladorReproducirAlbum implements ActionListener{
 			} else if(((JButton)e.getSource()).getText() == "Limpiar Buscador") {
 				vista.limpiarBuscador();
 			} else if(((JButton)e.getSource()).getText() == "Ver comentario" && !vista.lista_comentarios.isSelectionEmpty()) {
-				JOptionPane.showMessageDialog(vista,"Autor: " + vista.comentarios[vista.lista_comentarios.getSelectedIndex()].getComentador() + "\n" + "Comentario: " + vista.comentarios[vista.lista_comentarios.getSelectedIndex()].getTexto());
+				Comentario[] para_ver = (Comentario[]) vista.comentarios.toArray();
+				JOptionPane.showMessageDialog(vista,"Autor: " + para_ver[vista.lista_comentarios.getSelectedIndex()].getComentador() + "\n" + "Comentario: " + para_ver[vista.lista_comentarios.getSelectedIndex()].getTexto());
 				vista.lista_comentarios.clearSelection();
 			} else if(((JButton)e.getSource()).getText() == "Añadir Comentario") {
 				String comentarioEscrito = JOptionPane.showInputDialog("Escribe tu comentario");

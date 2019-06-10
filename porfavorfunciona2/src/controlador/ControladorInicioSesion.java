@@ -35,7 +35,11 @@ public class ControladorInicioSesion implements ActionListener{
 			} else if(((JButton)e.getSource()).getText() == "Iniciar Sesion") {
 				Sistema.sistema.iniciarSesion(vista.usuarioTextfield.getText(), String.valueOf(vista.passwordTextfield.getPassword()));
 				if(Sistema.sistema.getUsuarioActual() != null) {
-					Ventana.ventana.showPantallaInicio();
+					if(Sistema.sistema.getAdministrador() == true) {
+						Ventana.ventana.showPantallaInicioAdmin();
+					}else {
+						Ventana.ventana.showPantallaInicio();
+					}
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Ha introducido incorrectamente su nombre de usuario o contraseña");
 					Ventana.ventana.inicioSesion.limpiarVentana();
