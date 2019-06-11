@@ -15,7 +15,7 @@ import modelo.contenido.*;
 
 public class ReproducirCancion extends PantallaPrincipal {
 
-	private Cancion cancion;
+	public Cancion cancion;
 	
 	JLabel datos_cancion;
 	JLabel titulo_cancion;
@@ -30,11 +30,22 @@ public class ReproducirCancion extends PantallaPrincipal {
 	JButton botonList;
 	JButton botonAnyadirComentario;
 	JButton botonReportar;
-	public ArrayList<Comentario> comentarios;
+	public Comentario[] comentarios;
+	public DefaultListModel<String> model1;
 
 	public ReproducirCancion(Cancion cancion) {
 		super();
+		
 		this.cancion = cancion;
+		
+		if(cancion != null) {
+			System.out.print(cancion.getTitulo());
+		}
+		model1 = new DefaultListModel<>();
+
+		lista_comentarios = new JList(model1);
+		
+		comentariosScrollPane = new JScrollPane(lista_comentarios);
 		
 		//Declaracion
 		ImageIcon icono_corchea = new ImageIcon("src/vista/photo_default.jpg");
@@ -56,7 +67,7 @@ public class ReproducirCancion extends PantallaPrincipal {
 		if(this.cancion != null) {
 			datos_cancion = new JLabel("Datos de la cancion", SwingConstants.CENTER);
 			titulo_cancion = new JLabel("Titulo:\t\t\t\t\t" + this.cancion.getTitulo(),SwingConstants.CENTER);
-			autor_cancion = new JLabel("Autor:\t\t\t\t\t" + this.cancion.getAutor(),SwingConstants.CENTER);
+			autor_cancion = new JLabel("Autor:\t\t\t\t\t" + this.cancion.getAutor().getNombreAutor(),SwingConstants.CENTER);
 			duracion_cancion = new JLabel("Duracion:\t\t\t\t\t" + this.cancion.getDuracion() + " s",SwingConstants.CENTER);
 			comentarios_label = new JLabel("Comentarios de la cancion", SwingConstants.CENTER);
 			this.actualizarComentarios();
@@ -70,7 +81,6 @@ public class ReproducirCancion extends PantallaPrincipal {
 		
 		
 		
-		comentariosScrollPane = new JScrollPane(lista_comentarios);
 
 		
 		//Style changes
@@ -98,11 +108,11 @@ public class ReproducirCancion extends PantallaPrincipal {
 		//Distribucion
 		datos_cancion.setBounds(screenSize.width/2 + 125, 170, 200, 50);
 		titulo_cancion.setBounds(screenSize.width/2 + 50, 210, 200, 50);
-		autor_cancion.setBounds(screenSize.width/2 + 50,290,150,50);
-		duracion_cancion.setBounds(screenSize.width/2 + 50,330,180,50);
-		comentarios_label.setBounds(screenSize.width/2 + 105, 370, 250, 50);
-		comentariosScrollPane.setBounds(screenSize.width/2 + 80, 420, 300, 200);
-		botonList.setBounds(screenSize.width/2 + 150, 630, 150, 30);
+		autor_cancion.setBounds(screenSize.width/2 + 50,250,250,50);
+		duracion_cancion.setBounds(screenSize.width/2 + 50,290,250,50);
+		comentarios_label.setBounds(screenSize.width/2 + 105, 330, 250, 50);
+		comentariosScrollPane.setBounds(screenSize.width/2 + 80, 370, 300, 200);
+		botonList.setBounds(screenSize.width/2 + 150, 600, 150, 30);
 		botonAnyadirComentario.setBounds(screenSize.width/2 + 80, 670, 150, 30);
 		botonReportar.setBounds(screenSize.width/2 + 230, 670, 150, 30);
 
@@ -156,8 +166,20 @@ public class ReproducirCancion extends PantallaPrincipal {
 	 
 	 @SuppressWarnings("unchecked")
 		public void actualizarComentarios() {
-			comentarios = cancion.getComentarios();
-			lista_comentarios = new JList(comentarios.toArray());
-			comentariosScrollPane = new JScrollPane(lista_comentarios);
+		 	model1.clear();
+			comentarios = cancion.getComentarios().toArray(new Comentario[cancion.getComentarios().size()]);
+			if(comentarios != null) {
+				for(int i=0; i < comentarios.length;i++) {
+					model1.addElement(comentarios[i].getTexto());
+				}
+			}
 		 }
+
+	public void insertarComentario(Comentario nuevoComentario) {
+		if(this.cancion != null) {
+			cancion.anyadirComentario(nuevoComentario);
+		}
+	}
+	
+	
 }

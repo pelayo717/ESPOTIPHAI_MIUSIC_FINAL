@@ -113,29 +113,33 @@ public class Ventana extends JFrame {
 	}
 	
 	public void showInicioSesion(){
+		
 		final String inicioSesionString = "Iniciar Sesion";
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), inicioSesionString);
+	    
 	}
 	
 	public void showPantallaInicio(){
+		
 		final String pantallaInicioString = "Pantalla Inicio";
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), pantallaInicioString);
+	    
 	    if (Sistema.sistema.getUsuarioActual() != null) {
 	    	this.pantallaInicio.setUsuarioRegistrado();
-	    	System.out.println("registrado");
 	    	this.pantallaInicio.actualizarCanciones(Sistema.sistema.getUsuarioActual().getCanciones());
 	    	this.pantallaInicio.actualizarAlbumes(Sistema.sistema.getUsuarioActual().getAlbumes());
 	    	this.pantallaInicio.actualizarListas(Sistema.sistema.getUsuarioActual().getListas());
 	    } else {
 	    	this.pantallaInicio.setUsuarioNoRegistrado();
-	    	System.out.println("no registrado");
+	    	this.pantallaInicio.limpiarDatos();
 	    }
 	}
 	
 	public void showReproducirCancion(Cancion c){
 		
+		System.out.print(c.getTitulo());
 		final String reproducirCancionString = "Reproducir Cancion";
 		this.remove(this.reproducirCancion);
 		this.reproducirCancion = new ReproducirCancion(c);
@@ -145,6 +149,7 @@ public class Ventana extends JFrame {
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), reproducirCancionString);
 	   
+	    System.out.print(this.reproducirCancion.titulo_cancion.getText());
 	    
 	    if (Sistema.sistema.getUsuarioActual() != null) {
 	    	this.reproducirCancion.setUsuarioRegistrado();

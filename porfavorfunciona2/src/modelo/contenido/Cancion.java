@@ -52,6 +52,8 @@ public class Cancion extends ContenidoComentable {
 	 */
 	public void anyadirCola() {
 		try {
+			System.out.print("\n\n\n");
+			System.out.print(this.nombreMP3);
 			Cancion.repro_mp3.add(this.nombreMP3);
 			return;
 		}catch(Mp3InvalidFileException ie) {
@@ -245,13 +247,23 @@ public class Cancion extends ContenidoComentable {
 	public void reproducirCancion() throws InterruptedException { //se supone que la cancion ha sido subida, valida y a la hora de buscar se devuelve en base a criterios ya comprobados
 			LocalDate fecha_actual = LocalDate.now();
 			
-			if(this.getEstado() == EstadoCancion.PLAGIO) {
+			if(this.getEstado() == EstadoCancion.PLAGIO || this.getEstado() == EstadoCancion.ELIMINADA) {
 				return;
 			}
 			
-			if(Sistema.sistema.getUsuarioActual() != null && (Sistema.sistema.getAdministrador() == true || Sistema.sistema.getUsuarioActual().getPremium() == true)) {
+			if(Sistema.sistema.getUsuarioActual() != null && ((Sistema.sistema.getAdministrador() == true || Sistema.sistema.getUsuarioActual().getPremium() == true))){
+				
 				Period intervalo = Period.between(Sistema.sistema.getUsuarioActual().getFechaNacimiento(), fecha_actual);
 				if(intervalo.getYears() < 18 && this.getEstado() == EstadoCancion.EXPLICITA) {
+					return;
+				}
+				
+				if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) == true && (this.getEstado() == EstadoCancion.PENDIENTEAPROBACION || this.getEstado() == EstadoCancion.PENDIENTEMODIFICACION )) {
+					Sistema.sistema.setCancionReproduciendo(this);
+					Sistema.sistema.getCancionReproduciendo().anyadirCola();
+					Sistema.sistema.getCancionReproduciendo().reproducir();
+					Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
+				}else if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) == false && (this.getEstado() == EstadoCancion.PENDIENTEAPROBACION || this.getEstado() == EstadoCancion.PENDIENTEMODIFICACION)){
 					return;
 				}
 				
@@ -273,6 +285,16 @@ public class Cancion extends ContenidoComentable {
 						return;
 					}
 					
+					if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) == true && (this.getEstado() == EstadoCancion.PENDIENTEAPROBACION || this.getEstado() == EstadoCancion.PENDIENTEMODIFICACION )) {
+						Sistema.sistema.setCancionReproduciendo(this);
+						Sistema.sistema.getCancionReproduciendo().anyadirCola();
+						Sistema.sistema.getCancionReproduciendo().reproducir();
+						Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
+						Sistema.sistema.getUsuarioActual().addContenidoEscuchadoSinSerPremium();
+					}else if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) == false && (this.getEstado() == EstadoCancion.PENDIENTEAPROBACION || this.getEstado() == EstadoCancion.PENDIENTEMODIFICACION)){
+						return;
+					}
+					
 					Sistema.sistema.setCancionReproduciendo(this);
 					Sistema.sistema.getCancionReproduciendo().anyadirCola();
 					Sistema.sistema.getCancionReproduciendo().reproducir();
@@ -285,7 +307,7 @@ public class Cancion extends ContenidoComentable {
 					
 				}else if(Sistema.sistema.getContenidoEscuchadoSinRegistrarse() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
 					
-					if(this.getEstado() == EstadoCancion.EXPLICITA ||  Sistema.sistema.getContenidoEscuchadoSinRegistrarse() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()) {
+					if(this.getEstado() == EstadoCancion.EXPLICITA ||  Sistema.sistema.getContenidoEscuchadoSinRegistrarse() >= Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()) {
 						return;
 					}
 					

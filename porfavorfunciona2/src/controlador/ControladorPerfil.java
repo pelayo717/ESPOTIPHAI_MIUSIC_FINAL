@@ -38,10 +38,17 @@ public class ControladorPerfil implements ActionListener{
 					System.out.println(e1.toString());
 				}
 			} else if(((JButton)e.getSource()).getText() == "Eliminar Cuenta") {
-				Sistema.sistema.eliminarCuenta();
-				Ventana.ventana.showRegistrarse();
+				int a=JOptionPane.showConfirmDialog(Ventana.ventana,"¿Esta seguro que desea eliminar su cuenta?","Alert",JOptionPane.WARNING_MESSAGE);  
+				if(a == JOptionPane.YES_OPTION) {
+					Sistema.sistema.eliminarCuenta();
+					Ventana.ventana.showPantallaInicio();
+				}else {
+					Ventana.ventana.showPerfil();
+				}
 			} else if(((JButton)e.getSource()).getText() == "Hacerse PRO") {
-				//Ventana.ventana.showReproducirAlbum();
+
+			
+			
 			} else {
 				System.out.println(e.getSource());
 			}

@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -34,13 +35,25 @@ public class PantallaInicio extends PantallaPrincipal {
 	JButton crearAlbum;
 	JButton crearLista;
 	
-	public ArrayList<Cancion> misCanciones;
-	public ArrayList<Album> misAlbumes;
-	public ArrayList<Lista> misListas;
-
+	public Cancion[] misCanciones;
+	public Album[] misAlbumes;
+	public Lista[] misListas;
+	public DefaultListModel<String> model1;
+	public DefaultListModel<String> model2;
+	public DefaultListModel<String> model3;
+	
 	public PantallaInicio() {  //CAMBIADO, MEJORADO
 		
 		super();
+		
+		model1 = new DefaultListModel<>();
+		model2 = new DefaultListModel<>();
+		model3 = new DefaultListModel<>();
+		
+		
+		lista_canciones = new JList(model1);
+		lista_albumes = new JList(model2);
+		lista_listas = new JList(model3);
 		
 		canciones = new JScrollPane(lista_canciones);
 		albumes = new JScrollPane(lista_albumes);
@@ -133,18 +146,35 @@ public class PantallaInicio extends PantallaPrincipal {
 	}
 	
 	public void actualizarCanciones(ArrayList<Cancion> canciones_propias) {
-		lista_canciones = new JList(canciones_propias.toArray());
-		canciones = new JScrollPane(lista_canciones);
+		model1.clear();
+		misCanciones = canciones_propias.toArray(new Cancion[canciones_propias.size()]);
+		for(int i=0; i < misCanciones.length; i++) {
+			model1.addElement(misCanciones[i].getTitulo());
+		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void actualizarAlbumes(ArrayList<Album> albumes_propios) {
-		lista_albumes = new JList(albumes_propios.toArray());
-		albumes = new JScrollPane(lista_albumes);
+		model2.clear();
+		misAlbumes = albumes_propios.toArray(new Album[albumes_propios.size()]);
+		for(int i=0; i < misAlbumes.length; i++) {
+			model2.addElement(misAlbumes[i].getTitulo());
+		}
 	}
 	
 	public void actualizarListas(ArrayList<Lista> listas_propias) {
-		lista_listas = new JList(listas_propias.toArray());
-		listas = new JScrollPane(lista_listas);
+		model3.clear();
+		misListas = listas_propias.toArray(new Lista[listas_propias.size()]);
+		for(int i=0; i < misListas.length; i++) {
+			model3.addElement(misListas[i].getTitulo());
+		}
+	}
+
+
+	public void limpiarDatos() {
+		model1.clear();
+		model2.clear();
+		model3.clear();
 	}
 			
 }  

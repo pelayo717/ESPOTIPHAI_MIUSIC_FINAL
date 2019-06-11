@@ -26,7 +26,10 @@ public abstract class ContenidoComentable extends Contenido {
 	 * 	@return  OK si no hay errores y ERROR de lo contrario
 	 */
 	public Status anyadirComentario(Comentario comentario) {
-		if (this.comentarios.add(comentario)) {
+		if(comentario == null) {
+			System.out.print("adei");
+		}
+		if (this.comentarios.add(comentario) == true) {
 			return Status.OK;
 		} else {
 			return Status.ERROR;

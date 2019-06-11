@@ -36,34 +36,54 @@ public class ControladorReproducirCancion implements ActionListener{
 			}  else if(((JButton)e.getSource()).getText() == "Registro") {
 				Ventana.ventana.showRegistrarse();
 			} else if(((JButton)e.getSource()).getText() == "Buscar") {
-				System.out.println("buscar");
+				
+				/*************************************/
+				/*************************************/
+				/*************************************/
+				/*************************************/
+				/*************************************/
+				
 			} else if(((JButton)e.getSource()).getText() == "Limpiar Buscador") {
-				vista.limpiarBuscador();
-			} else if(((JButton)e.getSource()).getText() == "Ver comentario" && !vista.lista_comentarios.isSelectionEmpty()) {
-				Comentario[] para_ver = (Comentario[]) vista.comentarios.toArray();
-				JOptionPane.showMessageDialog(vista,"Autor: " + para_ver[vista.lista_comentarios.getSelectedIndex()].getComentador() + "\n" + "Comentario: " + para_ver[vista.lista_comentarios.getSelectedIndex()].getTexto());
-				vista.lista_comentarios.clearSelection();
+				Ventana.ventana.reproducirCancion.limpiarBuscador();
+			} else if((((JButton)e.getSource()).getText() == "Ver comentario")) {
+				if(Ventana.ventana.reproducirCancion.lista_comentarios.getSelectedIndex() != -1) {
+					Comentario[] para_ver = Ventana.ventana.reproducirCancion.comentarios;
+					JOptionPane.showMessageDialog(Ventana.ventana,"Autor: " + para_ver[Ventana.ventana.reproducirCancion.lista_comentarios.getSelectedIndex()].getComentador().getNombreUsuario() + "\n" + "Comentario: " + para_ver[Ventana.ventana.reproducirCancion.lista_comentarios.getSelectedIndex()].getTexto());
+					Ventana.ventana.reproducirCancion.lista_comentarios.clearSelection();
+				}else {
+					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Ver comentario seleccione uno primero");
+				}
+				
 			} else if(((JButton)e.getSource()).getText() == "Añadir Comentario") {
 				String comentarioEscrito = JOptionPane.showInputDialog("Escribe tu comentario");
 				Comentario nuevoComentario = new Comentario( new Date() , comentarioEscrito, Sistema.sistema.getUsuarioActual());
-				Sistema.sistema.getCancionTotales().get(0).anyadirComentario(nuevoComentario);
-				vista.actualizarComentarios();
+				Ventana.ventana.reproducirCancion.insertarComentario(nuevoComentario);
+				Ventana.ventana.reproducirCancion.actualizarComentarios();
 			} else if(((JButton)e.getSource()).getText() == "Reportar") {
-				vista.limpiarBuscador();
+				
+				/*************************************/
+				/*************************************/
+				/*************************************/
+				/*************************************/
+				/*************************************/
+				/*************************************/
+			
 			}else if(((JButton)e.getSource()).getText() == "play") {
 				try {
-					Sistema.sistema.getCancionTotales().get(0).reproducirCancion();
+					Ventana.ventana.reproducirCancion.cancion.reproducirCancion();
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			} else if(((JButton)e.getSource()).getText() == "pause") {
+				
 				try {
 					Sistema.sistema.pararReproductor();
 				} catch (FileNotFoundException | Mp3PlayerException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				
 			} else {
 				System.out.println(vista.lista_comentarios.isSelectionEmpty());
 				System.out.println(e.getSource());

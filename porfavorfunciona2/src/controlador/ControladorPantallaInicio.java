@@ -42,7 +42,7 @@ public ControladorPantallaInicio(PantallaInicio x, int modelo) {
 		if(((JButton)e.getSource()).getText() == "Elegir cancion") {
 			if(Sistema.sistema.getUsuarioActual() != null) {
 				if(Sistema.sistema.getUsuarioActual().getCanciones().size() > 0) {
-					Cancion[] canciones_totales = (Cancion[]) vista.misCanciones.toArray();
+					Cancion[] canciones_totales = vista.misCanciones;
 					if(vista.lista_canciones.getSelectedIndex() == -1) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir cancion seleccione una primero");
 						Ventana.ventana.showPantallaInicio();
@@ -63,7 +63,7 @@ public ControladorPantallaInicio(PantallaInicio x, int modelo) {
 		} else if(((JButton)e.getSource()).getText() == "Elegir album") {
 			if(Sistema.sistema.getUsuarioActual() != null) {
 				if(Sistema.sistema.getUsuarioActual().getAlbumes().size() > 0) { //ALGUNO HAY
-					Album[] albumes_totales = (Album[]) vista.misAlbumes.toArray();
+					Album[] albumes_totales = vista.misAlbumes;
 					if(vista.lista_albumes.getSelectedIndex() == -1) { //NO HA SELECCIONADO
 						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir album seleccione uno primero");
 						Ventana.ventana.showPantallaInicio();
@@ -81,7 +81,7 @@ public ControladorPantallaInicio(PantallaInicio x, int modelo) {
 		} else if(((JButton)e.getSource()).getText() == "Elegir lista") {
 			if(Sistema.sistema.getUsuarioActual() != null) {
 				if(Sistema.sistema.getUsuarioActual().getListas().size() > 0) { //ALGUNO HAY
-					Lista[] listas_totales = (Lista[]) vista.misListas.toArray();
+					Lista[] listas_totales = vista.misListas;
 					if(vista.lista_listas.getSelectedIndex() == -1) { //NO HA SELECCIONADO
 						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir lista seleccione una primero");
 						Ventana.ventana.showPantallaInicio();
@@ -144,13 +144,19 @@ public ControladorPantallaInicio(PantallaInicio x, int modelo) {
 				 JFileChooser file=new JFileChooser();
 				 file.showOpenDialog(Ventana.ventana);
 				 File escogido = file.getSelectedFile();
+				 
+				// escogido.renameTo(new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName()));
+				 //System.out.print(System.getProperty("user.dir") + System.getProperty("file.separator") + "src" + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName());
 				 try {
 					 Cancion c;
 					if((c = Sistema.sistema.crearCancion(titulo, escogido.getAbsolutePath())) != null) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"La cancion " + c.getTitulo() + " se ha creado correctamente");
+						vista.actualizarCanciones(Sistema.sistema.getUsuarioActual().getCanciones());
 						Ventana.ventana.showPantallaInicio();
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"La cancion no se ha creado correctamente");
+						vista.actualizarCanciones(Sistema.sistema.getUsuarioActual().getCanciones());
+
 						Ventana.ventana.showPantallaInicio();
 					}
 					
