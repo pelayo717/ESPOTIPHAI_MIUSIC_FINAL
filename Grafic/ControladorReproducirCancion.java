@@ -50,7 +50,7 @@ public class ControladorReproducirCancion implements ActionListener{
 				vista.limpiarBuscador();
 			}else if(((JButton)e.getSource()).getText() == "play") {
 				try {
-					vista.cancion.reproducirCancion();
+					Sistema.sistema.getCancionTotales().get(0).reproducirCancion();
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

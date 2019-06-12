@@ -56,7 +56,6 @@ public class Cancion extends ContenidoComentable {
 	 */
 	public void anyadirCola() {
 		try {
-			System.out.println(this.nombreMP3);
 			Cancion.repro_mp3.add(this.nombreMP3);
 			return;
 		}catch(Mp3InvalidFileException ie) {
