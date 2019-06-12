@@ -1,9 +1,11 @@
 package modelo.contenido;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 import modelo.sistema.Sistema;
 import modelo.status.*;
 import modelo.usuario.*;
+import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 /**
  *	Clase Lista con herencia de Contenido
@@ -127,9 +129,11 @@ public class Lista extends Contenido{
 	 * @param l
 	 * @throws ExcesoReproduccionesExcepcion 
 	 * @throws InterruptedException 
+	 * @throws Mp3PlayerException 
+	 * @throws FileNotFoundException 
 	 */
 	
-	public void reproducirLista() throws InterruptedException {
+	public void reproducirLista() throws InterruptedException, FileNotFoundException, Mp3PlayerException {
 		
 		if(Sistema.sistema.getUsuarioActual() != null && (Sistema.sistema.getAdministrador() == true || Sistema.sistema.getUsuarioActual().getPremium() == true)) {
 			for(Contenido contenido_reproduciendose:this.getContenido()) {

@@ -37,7 +37,7 @@ public class Cancion extends ContenidoComentable {
 	public Cancion(String titulo, Usuario autor,  String nombreMP3) throws FileNotFoundException, Mp3PlayerException{
 		super(-1,titulo, autor, new ArrayList<Comentario>());
 		Cancion.repro_mp3 = new Mp3Player();
-		this.setNombreMP3(nombreMP3);
+		this.setNombreMP3(nombreMP3);		
 		this.setDuracion(this.devolverDuracion());
 		this.setEstado(EstadoCancion.PENDIENTEAPROBACION);
 		this.fecha_modificar = LocalDate.now();
@@ -52,6 +52,9 @@ public class Cancion extends ContenidoComentable {
 	 */
 	public void anyadirCola() {
 		try {
+			if(Cancion.repro_mp3 == null) {
+				System.out.print("puuta1");
+			}
 			Cancion.repro_mp3.add(this.nombreMP3);
 			return;
 		}catch(Mp3InvalidFileException ie) {
@@ -103,7 +106,7 @@ public class Cancion extends ContenidoComentable {
 	 */
 	public double devolverDuracion() {
 		try {
-			double duracion = Mp3Player.getDuration(this.nombreMP3);
+			double duracion = Mp3Player.getDuration(this.nombreMP3);			
 			return duracion;
 		}catch(FileNotFoundException fe) {
 			fe.toString();
@@ -240,10 +243,18 @@ public class Cancion extends ContenidoComentable {
 	 * Esta funcion permite a cualquier usuario reproducir una cancion que se pase como argumento
 	 * @param c
 	 * @throws InterruptedException ExcesoReproduccionesExcepcion
+	 * @throws Mp3PlayerException 
+	 * @throws FileNotFoundException 
 	 */
 	
-	public void reproducirCancion() throws InterruptedException { //se supone que la cancion ha sido subida, valida y a la hora de buscar se devuelve en base a criterios ya comprobados
-			LocalDate fecha_actual = LocalDate.now();
+	public void reproducirCancion() throws InterruptedException, FileNotFoundException, Mp3PlayerException { //se supone que la cancion ha sido subida, valida y a la hora de buscar se devuelve en base a criterios ya comprobados
+		
+		if(Cancion.repro_mp3 == null) {
+			this.setMp3Player();
+		}
+		
+		
+		LocalDate fecha_actual = LocalDate.now();
 			
 			if(this.getEstado() == EstadoCancion.PLAGIO || this.getEstado() == EstadoCancion.ELIMINADA) {
 				return;
@@ -251,27 +262,37 @@ public class Cancion extends ContenidoComentable {
 			
 			if(Sistema.sistema.getUsuarioActual() != null && ((Sistema.sistema.getAdministrador() == true || Sistema.sistema.getUsuarioActual().getPremium() == true))){
 				
-				Period intervalo = Period.between(Sistema.sistema.getUsuarioActual().getFechaNacimiento(), fecha_actual);
-				if(intervalo.getYears() < 18 && this.getEstado() == EstadoCancion.EXPLICITA) {
-					return;
-				}
-				
-				if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) == true && (this.getEstado() == EstadoCancion.PENDIENTEAPROBACION || this.getEstado() == EstadoCancion.PENDIENTEMODIFICACION )) {
+				if(Sistema.sistema.getAdministrador() == true) {
 					Sistema.sistema.setCancionReproduciendo(this);
 					Sistema.sistema.getCancionReproduciendo().anyadirCola();
 					Sistema.sistema.getCancionReproduciendo().reproducir();
 					Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
-				}else if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) == false && (this.getEstado() == EstadoCancion.PENDIENTEAPROBACION || this.getEstado() == EstadoCancion.PENDIENTEMODIFICACION)){
-					return;
-				}
-				
-				Sistema.sistema.setCancionReproduciendo(this);
-				Sistema.sistema.getCancionReproduciendo().anyadirCola();
-				Sistema.sistema.getCancionReproduciendo().reproducir();
-				Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
-				
-				if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) != true) {
 					Sistema.sistema.getCancionReproduciendo().getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());
+				}else {
+				
+					Period intervalo = Period.between(Sistema.sistema.getUsuarioActual().getFechaNacimiento(), fecha_actual);
+					if(intervalo.getYears() < 18 && this.getEstado() == EstadoCancion.EXPLICITA) {
+						return;
+					}
+					
+					if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) == true && (this.getEstado() == EstadoCancion.PENDIENTEAPROBACION || this.getEstado() == EstadoCancion.PENDIENTEMODIFICACION )) {
+						Sistema.sistema.setCancionReproduciendo(this);
+						Sistema.sistema.getCancionReproduciendo().anyadirCola();
+						Sistema.sistema.getCancionReproduciendo().reproducir();
+						Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
+					}else if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) == false && (this.getEstado() == EstadoCancion.PENDIENTEAPROBACION || this.getEstado() == EstadoCancion.PENDIENTEMODIFICACION)){
+						return;
+					}
+					
+					Sistema.sistema.setCancionReproduciendo(this);
+					Sistema.sistema.getCancionReproduciendo().anyadirCola();
+					Sistema.sistema.getCancionReproduciendo().reproducir();
+					Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
+					
+					if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) != true) {
+						Sistema.sistema.getCancionReproduciendo().getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());
+					}
+				
 				}
 				
 			}else{

@@ -4,6 +4,7 @@ package controlador;
 import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.*;
@@ -36,7 +37,90 @@ public class ControladorReproducirAlbum implements ActionListener{
 			} else if(((JButton)e.getSource()).getText() == "Registro") {
 				Ventana.ventana.showRegistrarse();
 			}else if(((JButton)e.getSource()).getText() == "Buscar") {
-				System.out.println("buscar");
+				
+				if(Ventana.ventana.reproducirAlbum.getOpcion1().isSelected() == true) {
+					if(Ventana.ventana.reproducirAlbum.getCriterioBusqueda().getText().isEmpty() != true) {
+						ArrayList<Cancion>  retornadas = Sistema.sistema.buscadorPorTitulos(Ventana.ventana.reproducirAlbum.getCriterioBusqueda().getText());
+						if(retornadas != null) { //ALGO HAY
+							Ventana.ventana.showBuscadorCanciones(retornadas.toArray(new Cancion[retornadas.size()]));
+						}else {
+							JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado canciones por ese parametro");
+							if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador()== true) {
+								Ventana.ventana.showPantallaInicioAdmin();
+							}else {
+								Ventana.ventana.showPantallaInicio();
+							}
+						}
+					}else {
+						JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
+						if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador()== true) {
+							Ventana.ventana.showPantallaInicioAdmin();
+						}else {
+							Ventana.ventana.showPantallaInicio();
+						}
+					}
+				}else if(Ventana.ventana.reproducirAlbum.getOpcion2().isSelected() == true){
+					if(Ventana.ventana.reproducirAlbum.getCriterioBusqueda().getText().isEmpty() != true) {
+						ArrayList<Album> retornadas = Sistema.sistema.buscadorPorAlbumes(Ventana.ventana.reproducirAlbum.getCriterioBusqueda().getText());
+						if(retornadas != null) { //ALGO HAY
+							Ventana.ventana.showBuscadorAlbumes(retornadas.toArray(new Album[retornadas.size()]));
+						}else {
+							
+							JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado albumes por ese parametro");
+							if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador()== true) {
+								Ventana.ventana.showPantallaInicioAdmin();
+							}else {
+								Ventana.ventana.showPantallaInicio();
+							}
+						}
+					}else {
+						JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
+						if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador()== true) {
+							Ventana.ventana.showPantallaInicioAdmin();
+						}else {
+							Ventana.ventana.showPantallaInicio();
+						}
+					}
+				}else if(Ventana.ventana.reproducirAlbum.getOpcion3().isSelected() == true) {
+					if(Ventana.ventana.reproducirAlbum.getCriterioBusqueda().getText().isEmpty() != true) {
+						ArrayList<Contenido> retornadas = Sistema.sistema.buscadorPorAutores(Ventana.ventana.reproducirAlbum.getCriterioBusqueda().getText());
+						if(retornadas != null) { //ALGO HAY
+							Ventana.ventana.showBuscadorAutores(retornadas.toArray(new Album[retornadas.size()]));
+						}else {
+							JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado autores por ese parametro");
+							if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador()== true) {
+								Ventana.ventana.showPantallaInicioAdmin();
+							}else {
+								Ventana.ventana.showPantallaInicio();
+							}
+						}
+					}else {
+						JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
+						if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador()== true) {
+							Ventana.ventana.showPantallaInicioAdmin();
+						}else {
+							Ventana.ventana.showPantallaInicio();
+						}
+					}
+				}else {
+					if(Ventana.ventana.reproducirAlbum.getCriterioBusqueda().getText().isEmpty() == true) {
+						JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda y seleccione un criterio para realizar la busqueda");
+						if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador()== true) {
+							Ventana.ventana.showPantallaInicioAdmin();
+						}else {
+							Ventana.ventana.showPantallaInicio();
+						}
+					}else {
+						JOptionPane.showMessageDialog(Ventana.ventana,"Debe seleccionar un criterio para poder realizar la busqueda");
+						if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador()== true) {
+							Ventana.ventana.showPantallaInicioAdmin();
+						}else {
+							Ventana.ventana.showPantallaInicio();
+						}
+					}
+				}
+				
+				
 			} else if(((JButton)e.getSource()).getText() == "Limpiar Buscador") {
 				vista.limpiarBuscador();
 			} else if(((JButton)e.getSource()).getText() == "Ver comentario" && !vista.lista_comentarios.isSelectionEmpty()) {
@@ -53,7 +137,10 @@ public class ControladorReproducirAlbum implements ActionListener{
 				try {
 					Sistema.sistema.getCancionTotales().get(0).reproducirCancion();
 				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (Mp3PlayerException e1) {
 					e1.printStackTrace();
 				}
 			} else if(((JButton)e.getSource()).getText() == "pause") {

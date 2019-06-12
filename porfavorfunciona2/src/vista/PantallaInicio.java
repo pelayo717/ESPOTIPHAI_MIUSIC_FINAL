@@ -36,6 +36,9 @@ public class PantallaInicio extends PantallaPrincipal {
 	JButton crearCancion;
 	JButton crearAlbum;
 	JButton crearLista;
+	JButton eliminarCancion;
+	JButton eliminarAlbum;
+	JButton eliminarLista;
 	
 	JLabel susCanciones;
 	JLabel susAlbumes;
@@ -77,6 +80,11 @@ public class PantallaInicio extends PantallaPrincipal {
 		crearAlbum = new JButton("Crear album");
 		crearLista = new JButton("Crear lista");
 		
+		eliminarCancion = new JButton("Eliminar cancion");
+		eliminarAlbum = new JButton("Eliminar album");
+		eliminarLista = new JButton("Eliminar lista");
+		
+		
 		//Cambio de estilo en los JLabel
 		Font susCancionesFont = new Font(susCanciones.getFont().getName(), Font.BOLD, 16);
 		Font susAlbumesFont = new Font(susAlbumes.getFont().getName(), Font.BOLD, 16);
@@ -106,6 +114,9 @@ public class PantallaInicio extends PantallaPrincipal {
 		crearAlbum.setBounds(screenSize.width/2 - 170, 500, 250, 30);
 		crearLista.setBounds(screenSize.width/2 + 190, 500, 250, 30);
 		
+		eliminarCancion.setBounds(screenSize.width/2 - 530, 530, 250, 30);
+		eliminarAlbum.setBounds(screenSize.width/2 - 170, 530, 250, 30);
+		eliminarLista.setBounds(screenSize.width/2 + 190, 530, 250, 30);
 		
 		//Anyadimos los elementos a la pantalla principal
 		this.add(albumes);
@@ -120,6 +131,9 @@ public class PantallaInicio extends PantallaPrincipal {
 		this.add(crearAlbum);
 		this.add(crearCancion);
 		this.add(crearLista);
+		this.add(eliminarCancion);
+		this.add(eliminarAlbum);
+		this.add(eliminarLista);
 	}
 		
 	
@@ -135,6 +149,9 @@ public class PantallaInicio extends PantallaPrincipal {
 		this.crearAlbum.addActionListener(c);
 		this.crearCancion.addActionListener(c);
 		this.crearLista.addActionListener(c);
+		this.eliminarCancion.addActionListener(c);
+		this.eliminarAlbum.addActionListener(c);
+		this.eliminarLista.addActionListener(c);
 	}
 		 
 	public void setUsuarioRegistrado() {
@@ -153,7 +170,7 @@ public class PantallaInicio extends PantallaPrincipal {
 		model1.clear();
 		misCanciones = canciones_propias.toArray(new Cancion[canciones_propias.size()]);
 		for(int i=0; i < misCanciones.length; i++) {
-			model1.addElement(misCanciones[i].getTitulo() + " // " + String.format("%.2f",misCanciones[i].getDuracion()));
+			model1.addElement("Titulo: " + misCanciones[i].getTitulo() + " // Duracion: " + String.format("%.2f",misCanciones[i].getDuracion()));
 		}
 	}
 	
@@ -161,7 +178,7 @@ public class PantallaInicio extends PantallaPrincipal {
 		model2.clear();
 		misAlbumes = albumes_propios.toArray(new Album[albumes_propios.size()]);
 		for(int i=0; i < misAlbumes.length; i++) {
-			model2.addElement(misAlbumes[i].getTitulo());
+			model2.addElement("Titulo: " + misAlbumes[i].getTitulo() + " // Num.Canciones: " + misAlbumes[i].getContenido().size() + " // Duracion: " + String.format("%.2f",misAlbumes[i].getDuracion()));
 		}
 	}
 	

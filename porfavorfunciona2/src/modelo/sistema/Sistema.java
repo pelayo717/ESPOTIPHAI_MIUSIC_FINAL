@@ -845,7 +845,7 @@ public class Sistema implements Serializable{
 		
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
 			//Period intervalo = Period.between(sistema.usuario_actual.getFechaNacimiento(), fecha_actual);
-			
+					
 			Cancion c = new Cancion(titulo,sistema.usuario_actual,nombreMP3);
 			
 			for(Cancion cancion:sistema.usuario_actual.getCanciones()) {
@@ -861,6 +861,10 @@ public class Sistema implements Serializable{
 				}
 			}
 			
+			//MIRAMOS LA DURACION DE LA CANCION
+			if(c.getDuracion() > 1800) {
+				return null;
+			}
 			
 			//Lo introducimos en el array de canciones personales al cearla
 			sistema.usuario_actual.anyadirACancionesPersonales(c);
@@ -1124,10 +1128,10 @@ public class Sistema implements Serializable{
 	 * @param contenido
 	 * @return retorna la referencia al objeto lista si se creo correctamente, y de lo contrario devolvera null
 	 */
-	public Lista crearLista(Date anyo, String titulo) {
+	public Lista crearLista(String titulo) {
 		
 		boolean lista_repetida_en_usuario = false; 
-		if(anyo == null || titulo == null) {
+		if(titulo == null || titulo.equals("") == true) {
 			return null;
 		}
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
@@ -1390,7 +1394,7 @@ public class Sistema implements Serializable{
 	public void pararReproductor() throws FileNotFoundException, Mp3PlayerException {
 		if(sistema.cancion_reproduciendose != null) {
 			sistema.cancion_reproduciendose.parar();
-			sistema.cancion_reproduciendose.setMp3Player();
+			//sistema.cancion_reproduciendose.setMp3Player();
 		}
 	}
 	
@@ -1452,12 +1456,15 @@ public class Sistema implements Serializable{
 		}
 	}
 	
-	public void modificarCriteriosAplicacion(int u_r,double p_p, int m_r) {
+	public Status modificarCriteriosAplicacion(int u_r,double p_p, int m_r) {
 		if(sistema.getUsuarioActual() != null && sistema.es_administrador == true) {
 			sistema.setPrecioPremium(p_p);
 			sistema.setUmbralReproducciones(u_r);
 			sistema.setMaxReproduccionesUsuarioNoPremium(m_r);
+			return Status.OK;
 		}
+		
+		return Status.ERROR;
 	}
 	
 }

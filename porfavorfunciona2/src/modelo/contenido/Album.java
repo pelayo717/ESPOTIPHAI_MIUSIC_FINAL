@@ -1,11 +1,13 @@
 package modelo.contenido;
 
 
+import java.io.FileNotFoundException;
 import java.util.*;
 
 import modelo.sistema.Sistema;
 import modelo.status.*;
 import modelo.usuario.*;
+import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 /**
  *	Clase Album con herencia de ContenidoComentable
@@ -117,42 +119,49 @@ public class Album extends ContenidoComentable {
 	 * Esta funcion permite a cualquier usuario reproducir un album de cancion en cancion si es un usuario premium el que lo realiza o de manera limita si no lo es
 	 * @param a
 	 * @throws InterruptedException
+	 * @throws Mp3PlayerException 
+	 * @throws FileNotFoundException 
 	 * @throws ExcesoReproduccionesExcepcion
 	 */
 	
-	public void reproducirAlbum() throws InterruptedException{
+	public void reproducirAlbum() throws InterruptedException, FileNotFoundException, Mp3PlayerException{
 		
-		if(Sistema.sistema.getUsuarioActual() != null && (Sistema.sistema.getAdministrador() == true || Sistema.sistema.getUsuarioActual().getPremium() == true)) {
-			for(Cancion canciones_reproduciendose:this.getContenido()) {
-				canciones_reproduciendose.reproducirCancion();
-			}
-			
-			return;
-								
-		}else {
-			if(Sistema.sistema.getUsuarioActual() != null) {
-				if(Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
-					for(Cancion canciones_reproduciendose:this.getContenido()) {
-						if(Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium() == Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()) {
-							return;
-						}
-						canciones_reproduciendose.reproducirCancion();
-					}
-					
-					return;				
+		try {
+			if(Sistema.sistema.getUsuarioActual() != null && (Sistema.sistema.getAdministrador() == true || Sistema.sistema.getUsuarioActual().getPremium() == true)) {
+				for(Cancion canciones_reproduciendose:this.getContenido()) {
+					canciones_reproduciendose.reproducirCancion();
 				}
+				
+				return;
+									
 			}else {
-				if(Sistema.sistema.getContenidoEscuchadoSinRegistrarse() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
-					for(Cancion canciones_reproduciendose:this.getContenido()) {
-						if(Sistema.sistema.getContenidoEscuchadoSinRegistrarse() == Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()) {
-							return;
+				if(Sistema.sistema.getUsuarioActual() != null) {
+					if(Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
+						for(Cancion canciones_reproduciendose:this.getContenido()) {
+							if(Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium() == Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()) {
+								return;
+							}
+							canciones_reproduciendose.reproducirCancion();
 						}
-						canciones_reproduciendose.reproducirCancion();
+						
+						return;				
 					}
-					
-					return;				
+				}else {
+					if(Sistema.sistema.getContenidoEscuchadoSinRegistrarse() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
+						for(Cancion canciones_reproduciendose:this.getContenido()) {
+							if(Sistema.sistema.getContenidoEscuchadoSinRegistrarse() == Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()) {
+								return;
+							}
+							canciones_reproduciendose.reproducirCancion();
+						}
+						
+						return;				
+					}
 				}
 			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	

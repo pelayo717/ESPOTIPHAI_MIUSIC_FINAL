@@ -34,6 +34,11 @@ public class ReproducirCancion extends PantallaPrincipal {
 	JButton botonList;
 	JButton botonAnyadirComentario;
 	JButton botonReportar;
+	
+	JButton anyadirAlbum;
+	JButton anyadirLista;
+	
+	
 	public Comentario[] comentarios;
 	public DefaultListModel<String> model1;
 
@@ -41,10 +46,6 @@ public class ReproducirCancion extends PantallaPrincipal {
 		super();
 		
 		this.cancion = cancion;
-		
-		if(cancion != null) {
-			System.out.print(cancion.getTitulo());
-		}
 		model1 = new DefaultListModel<>();
 
 		lista_comentarios = new JList<String>(model1);
@@ -62,8 +63,10 @@ public class ReproducirCancion extends PantallaPrincipal {
 		this.botonPlay = new JButton("play");
 		this.botonPause = new JButton("pause");
 		this.botonList = new JButton("Ver comentario");
-		this.botonAnyadirComentario = new JButton("Añadir Comentario");
+		this.botonAnyadirComentario = new JButton("Añadir omentario");
 		this.botonReportar = new JButton("Reportar");
+		this.anyadirAlbum = new JButton("Añadir a Album");
+		this.anyadirLista = new JButton("Añadir a Lista");
 		botonPlay.setIcon(icono_reproducir);
 		botonPause.setIcon(icono_parar);
 
@@ -139,7 +142,8 @@ public class ReproducirCancion extends PantallaPrincipal {
 		imagen_reproduccion.setBounds(screenSize.width/2 - 350, 190, 300, 300);
 		botonPlay.setBounds(screenSize.width/2 - 280, 500, 60, 60);
 		botonPause.setBounds(screenSize.width/2 - 210, 500, 60, 60);
-
+		anyadirAlbum.setBounds(screenSize.width/2 - 370, 600, 150, 30);
+		anyadirLista.setBounds(screenSize.width/2 - 210, 600, 150, 30);
 	
 		
 		//Añadimos
@@ -156,18 +160,24 @@ public class ReproducirCancion extends PantallaPrincipal {
 		this.add(imagen_reproduccion);
 		this.add(botonPlay);
 		this.add(botonPause);
+		this.add(anyadirAlbum);
+		this.add(anyadirLista);
 	}
 	
 	public void setUsuarioRegistrado() {
 		this.botonIzquierdaArriba.setText("Ver Perfil");
 		this.botonIzquierdaMedio.setText("Inicio");
 		this.botonIzquierdaAbajo.setVisible(false);
+		this.anyadirAlbum.setVisible(true);
+		this.anyadirLista.setVisible(true);
 	}
 	
 	public void setUsuarioNoRegistrado() {
 		this.botonIzquierdaArriba.setText("Iniciar Sesion");
 		this.botonIzquierdaMedio.setText("Registro");
 		this.botonIzquierdaAbajo.setVisible(true);
+		this.anyadirAlbum.setVisible(true);
+		this.anyadirLista.setVisible(true);
 	}
 	
 	 // método para asignar un controlador al botón
@@ -182,6 +192,8 @@ public class ReproducirCancion extends PantallaPrincipal {
 		 this.botonReportar.addActionListener(c);
 		 this.botonPlay.addActionListener(c);
 		 this.botonPause.addActionListener(c);
+		 this.anyadirAlbum.addActionListener(c);
+		 this.anyadirLista.addActionListener(c);
 	 }
 	 
 	public void actualizarComentarios() {
@@ -203,6 +215,14 @@ public class ReproducirCancion extends PantallaPrincipal {
 	public void limpiarBuscador(){
 		this.busquedaTextfield.setText("");
 		this.grupo_eleccion.clearSelection();
+	}
+
+	public void setAdministrador() {
+		this.botonIzquierdaArriba.setText("Ver Perfil");
+		this.botonIzquierdaMedio.setText("Inicio");
+		this.botonIzquierdaAbajo.setVisible(false);
+		this.anyadirAlbum.setVisible(false);
+		this.anyadirLista.setVisible(false);
 	}
 	
 	

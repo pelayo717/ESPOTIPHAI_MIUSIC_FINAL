@@ -33,10 +33,10 @@ public class ControladorPantallaInicio implements ActionListener{
 	private PantallaInicio vista;
 	private int modelo;
 
-public ControladorPantallaInicio(PantallaInicio x, int modelo) {
-	this.modelo = modelo;
-	this.vista = x;
-}
+	public ControladorPantallaInicio(PantallaInicio x, int modelo) {
+		this.modelo = modelo;
+		this.vista = x;
+	}
 
 @Override
 	public void actionPerformed(ActionEvent e) { //CAMBIADO BASTANTE, MEJORADO
@@ -105,27 +105,45 @@ public ControladorPantallaInicio(PantallaInicio x, int modelo) {
 			if(Ventana.ventana.pantallaInicio.getOpcion1().isSelected() == true) {
 				if(Ventana.ventana.pantallaInicio.getCriterioBusqueda().getText().isEmpty() != true) {
 					ArrayList<Cancion>  retornadas = Sistema.sistema.buscadorPorTitulos(Ventana.ventana.pantallaInicio.getCriterioBusqueda().getText());
+					if(retornadas != null) { //ALGO HAY
+						Ventana.ventana.showBuscadorCanciones(retornadas.toArray(new Cancion[retornadas.size()]));
+					}else {
+						JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado canciones por ese parametro");
+						Ventana.ventana.showPantallaInicio();
+					}
 				}else {
-					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un criterio de busqueda");
+					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
 					Ventana.ventana.showPantallaInicio();
 				}
 			}else if(Ventana.ventana.pantallaInicio.getOpcion2().isSelected() == true){
 				if(Ventana.ventana.pantallaInicio.getCriterioBusqueda().getText().isEmpty() != true) {
-					ArrayList<Album> retonadas = Sistema.sistema.buscadorPorAlbumes(Ventana.ventana.pantallaInicio.getCriterioBusqueda().getText());
+					ArrayList<Album> retornadas = Sistema.sistema.buscadorPorAlbumes(Ventana.ventana.pantallaInicio.getCriterioBusqueda().getText());
+					if(retornadas != null) { //ALGO HAY
+						Ventana.ventana.showBuscadorAlbumes(retornadas.toArray(new Album[retornadas.size()]));
+					}else {
+						JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado albumes por ese parametro");
+						Ventana.ventana.showPantallaInicio();
+					}
 				}else {
-					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un criterio de busqueda");
+					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
 					Ventana.ventana.showPantallaInicio();
 				}
 			}else if(Ventana.ventana.pantallaInicio.getOpcion3().isSelected() == true) {
 				if(Ventana.ventana.pantallaInicio.getCriterioBusqueda().getText().isEmpty() != true) {
 					ArrayList<Contenido> retornadas = Sistema.sistema.buscadorPorAutores(Ventana.ventana.pantallaInicio.getCriterioBusqueda().getText());
+					if(retornadas != null) { //ALGO HAY
+						Ventana.ventana.showBuscadorAutores(retornadas.toArray(new Album[retornadas.size()]));
+					}else {
+						JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado autores por ese parametro");
+						Ventana.ventana.showPantallaInicio();
+					}
 				}else {
-					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un criterio de busqueda");
+					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
 					Ventana.ventana.showPantallaInicio();
 				}
 			}else {
 				if(Ventana.ventana.pantallaInicio.getCriterioBusqueda().getText().isEmpty() == true) {
-					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un criterio de busqueda y seleccione un criterio para realizar la busqueda");
+					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda y seleccione un criterio para realizar la busqueda");
 					Ventana.ventana.showPantallaInicio();
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Debe seleccionar un criterio para poder realizar la busqueda");
@@ -155,7 +173,7 @@ public ControladorPantallaInicio(PantallaInicio x, int modelo) {
 						vista.actualizarCanciones(Sistema.sistema.getUsuarioActual().getCanciones());
 						Ventana.ventana.showPantallaInicio();
 					}else {
-						JOptionPane.showMessageDialog(Ventana.ventana,"La cancion no se ha creado correctamente");
+						JOptionPane.showMessageDialog(Ventana.ventana,"La cancion no se ha creado");
 						vista.actualizarCanciones(Sistema.sistema.getUsuarioActual().getCanciones());
 
 						Ventana.ventana.showPantallaInicio();
@@ -181,7 +199,17 @@ public ControladorPantallaInicio(PantallaInicio x, int modelo) {
 				
 				int option = JOptionPane.showConfirmDialog(null, message, "Crear Album", JOptionPane.OK_CANCEL_OPTION);
 				if (option == JOptionPane.OK_OPTION) {
-				    Sistema.sistema.crearAlbum(Integer.parseInt(anyo.getText()), titulo.getText());
+				    try {
+						if(Sistema.sistema.crearAlbum(Integer.parseInt(anyo.getText()), titulo.getText()) != null) {
+					    	JOptionPane.showMessageDialog(Ventana.ventana,"El album " + titulo.getText() +" se ha creado correctamente");
+					    }else{
+					    	JOptionPane.showMessageDialog(Ventana.ventana,"El album no se ha creado");
+					    }
+				    }catch(NumberFormatException f1) {
+				    	//f1.printStackTrace();
+				    	JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca correctamente los parametros del album");
+
+				    }
 				}
 				Ventana.ventana.showPantallaInicio();
 				
@@ -190,9 +218,104 @@ public ControladorPantallaInicio(PantallaInicio x, int modelo) {
 				Ventana.ventana.showPantallaInicio();
 			}
 		}else if(((JButton)e.getSource()).getText() == "Crear lista") {
-	
-				//FALTA LA PARTE DE CREAR LISTA
-		
+			 
+			if(Sistema.sistema.getUsuarioActual()!= null) {
+				String titulo = JOptionPane.showInputDialog("Introduzca el titulo de la clista:","Crear Lista");
+				Sistema.sistema.crearLista(titulo);
+				JOptionPane.showMessageDialog(Ventana.ventana,"La lista " + titulo + " se ha creado correctamente");
+				Ventana.ventana.showPantallaInicio();
+			 }else {
+				 JOptionPane.showMessageDialog(Ventana.ventana,"Debe iniciar sesion para crear listas");
+				 Ventana.ventana.showPantallaInicio();
+			 }
+			
+		}else if(((JButton)e.getSource()).getText() == "Eliminar cancion") {
+			
+			if(Sistema.sistema.getUsuarioActual()!= null) {
+				Cancion[] canciones_totales = vista.misCanciones;
+				if(canciones_totales.length > 0) {
+					
+					if(vista.lista_canciones.getSelectedIndex() == -1) {
+						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Eliminar cancion seleccione una primero");
+						Ventana.ventana.showPantallaInicio();
+					}else{
+						int indice = vista.lista_canciones.getSelectedIndex();
+						int a=JOptionPane.showConfirmDialog(Ventana.ventana,"¿Esta seguro que desea eliminar " + canciones_totales[indice].getTitulo()  + " ?","Alert",JOptionPane.WARNING_MESSAGE);  
+						if(a == JOptionPane.YES_OPTION) {
+							Sistema.sistema.eliminarCancion(canciones_totales[indice]);
+							Ventana.ventana.showPantallaInicio();
+						}else {
+							Ventana.ventana.showPantallaInicio();
+						}
+					}
+				}else {
+
+					JOptionPane.showMessageDialog(Ventana.ventana,"No hay canciones para seleccionar");
+					Ventana.ventana.showPantallaInicio();
+				}
+			 }else {
+				 JOptionPane.showMessageDialog(Ventana.ventana,"Debe iniciar sesion para eliminar canciones");
+				 Ventana.ventana.showPantallaInicio();
+			 }
+			
+		}else if(((JButton)e.getSource()).getText() == "Eliminar album") {
+			
+			if(Sistema.sistema.getUsuarioActual()!= null) {
+				Album[] albumes_totales = vista.misAlbumes;
+				if(albumes_totales.length > 0) {
+					
+					if(vista.lista_albumes.getSelectedIndex() == -1) {
+						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Eliminar album seleccione uno primero");
+						Ventana.ventana.showPantallaInicio();
+					}else{
+						int indice = vista.lista_albumes.getSelectedIndex();
+						int a = JOptionPane.showConfirmDialog(Ventana.ventana,"¿Esta seguro que desea eliminar " + albumes_totales[indice].getTitulo()  + " ?","Alert",JOptionPane.WARNING_MESSAGE);  
+						if(a == JOptionPane.YES_OPTION) {
+							Sistema.sistema.eliminarAlbum(albumes_totales[indice]);
+							Ventana.ventana.showPantallaInicio();
+						}else {
+							Ventana.ventana.showPantallaInicio();
+						}
+					}
+				}else {
+
+					JOptionPane.showMessageDialog(Ventana.ventana,"No hay albumes para seleccionar");
+					Ventana.ventana.showPantallaInicio();
+				}
+			 }else {
+				 JOptionPane.showMessageDialog(Ventana.ventana,"Debe iniciar sesion para eliminar albumes");
+				 Ventana.ventana.showPantallaInicio();
+			 }
+			
+		}else if(((JButton)e.getSource()).getText() == "Eliminar lista") {
+			
+			if(Sistema.sistema.getUsuarioActual()!= null) {
+				Lista[]	listas_totales = vista.misListas;
+				if(listas_totales.length > 0) {
+					
+					if(vista.lista_listas.getSelectedIndex() == -1) {
+						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Eliminar lista seleccione una primero");
+						Ventana.ventana.showPantallaInicio();
+					}else{
+						int indice = vista.lista_listas.getSelectedIndex();
+						int a = JOptionPane.showConfirmDialog(Ventana.ventana,"¿Esta seguro que desea eliminar " + listas_totales[indice].getTitulo()  + " ?","Alert",JOptionPane.WARNING_MESSAGE);  
+						if(a == JOptionPane.YES_OPTION) {
+							Sistema.sistema.eliminarLista(listas_totales[indice]);
+							Ventana.ventana.showPantallaInicio();
+						}else {
+							Ventana.ventana.showPantallaInicio();
+						}
+					}
+				}else {
+
+					JOptionPane.showMessageDialog(Ventana.ventana,"No hay listas para seleccionar");
+					Ventana.ventana.showPantallaInicio();
+				}
+			 }else {
+				 JOptionPane.showMessageDialog(Ventana.ventana,"Debe iniciar sesion para eliminar listas");
+				 Ventana.ventana.showPantallaInicio();
+			 }
+			
 		}else {
 			System.out.println(e.getSource());
 		}

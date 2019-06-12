@@ -42,9 +42,9 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 	JButton seleccionarReporte;
 	
 	JButton cambiarCriterios;
-	JTextField campoUmbral;
-	JTextField campoPrecio;
-	JTextField campoReproducciones;
+	public JTextField campoUmbral;
+	public JTextField campoPrecio;
+	public JTextField campoReproducciones;
 	
 	JLabel susCanciones;
 	JLabel susReportes;
@@ -188,6 +188,7 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 			this.aceptarReporte.addActionListener(c);
 			this.denegarReporte.addActionListener(c);
 			this.seleccionarReporte.addActionListener(c);
+			this.cambiarCriterios.addActionListener(c);
 			
 		}
 		
