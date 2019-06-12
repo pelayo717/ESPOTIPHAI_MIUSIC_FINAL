@@ -842,7 +842,6 @@ public class Sistema implements Serializable{
 			return null;
 		}
 		
-		System.out.print(nombreMP3);
 		
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
 			//Period intervalo = Period.between(sistema.usuario_actual.getFechaNacimiento(), fecha_actual);

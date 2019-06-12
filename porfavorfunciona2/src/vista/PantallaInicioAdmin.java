@@ -4,8 +4,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -19,11 +19,15 @@ import modelo.sistema.Sistema;
 
 public class PantallaInicioAdmin extends PantallaPrincipal{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JScrollPane reportes;
 	private JScrollPane canciones;
 	
-	private JList lista_reportes;
-	private JList lista_canciones;
+	public JList<String> lista_reportes;
+	public JList<String> lista_canciones;
 	
 	JButton modificarCriterios;
 	
@@ -31,9 +35,11 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 	JButton explicita;
 	JButton pendienteModificacion;
 	JButton eliminada;
+	JButton seleccionarCancion;
 	
 	JButton aceptarReporte;
 	JButton denegarReporte;
+	JButton seleccionarReporte;
 	
 	JButton cambiarCriterios;
 	JTextField campoUmbral;
@@ -45,19 +51,29 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 	JLabel precio;
 	JLabel umbral;
 	JLabel reproducciones;
-	ArrayList<Cancion> para_validar;
-	ArrayList<Reporte> para_reportar;
+	
+	public Cancion[] aValidar;
+	public Reporte[] aReportar;
+	
+	public DefaultListModel<String> model1;
+	public DefaultListModel<String> model2;
 	
 	public PantallaInicioAdmin () {
 		
 		super();
 		
+		model1 = new DefaultListModel<>();
+		model2 = new DefaultListModel<>();
+		
+		lista_reportes = new JList<String>(model1);
+		lista_canciones = new JList<String>(model2);
+		
+		canciones = new JScrollPane(lista_canciones);
+		reportes = new JScrollPane(lista_reportes);
+		
 		botonIzquierdaArriba.setText("Ver Perfil");
 		botonIzquierdaMedio.setVisible(false);
 		botonIzquierdaAbajo.setVisible(false);
-		
-		
-		
 		
 		susCanciones = new JLabel("Canciones a validar",  SwingConstants.CENTER);
 		susReportes = new JLabel("Reportes a revisar",  SwingConstants.CENTER);	
@@ -68,10 +84,12 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 		
 		valida = new JButton("Valida");
 		explicita = new JButton("Explicita");
-		pendienteModificacion = new JButton("Pendiente Modificacion");
+		pendienteModificacion = new JButton("Pendiente");
 		eliminada = new JButton("Eliminada");
+		seleccionarCancion = new JButton("Seleccionar Cancion");
 		aceptarReporte = new JButton("Aceptar");
 		denegarReporte = new JButton("Denegar");
+		seleccionarReporte = new JButton("Seleccionar Reporte");
 		cambiarCriterios = new JButton("Cambiar Criterios");
 
 		campoUmbral = new JTextField(20);
@@ -84,6 +102,12 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 		Font precioFont = new Font(precio.getFont().getName(), Font.BOLD, 16);
 		Font umbralFont = new Font(umbral.getFont().getName(), Font.BOLD, 16);
 		Font reproduccionesFont = new Font(reproducciones.getFont().getName(), Font.BOLD, 16);
+		
+		this.susCanciones.setFont(susCancionesFont);
+		this.susReportes.setFont(susReportesFont);
+		this.umbral.setFont(umbralFont);
+		this.precio.setFont(precioFont);
+		this.reproducciones.setFont(reproduccionesFont);
 		
 		canciones = new JScrollPane(lista_canciones);
 		reportes = new JScrollPane(lista_reportes);
@@ -107,12 +131,14 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 		explicita.setBounds(screenSize.width/2 - 300, 310, 100, 30);
 		pendienteModificacion.setBounds(screenSize.width/2 - 300, 360, 100, 30);
 		eliminada.setBounds(screenSize.width/2 - 300, 410, 100, 30);
+		seleccionarCancion.setBounds(screenSize.width/2 - 525, 470, 150, 30);
 		
 		susReportes.setBounds(screenSize.width/2 - 100, 200, 290, 30);
 		reportes.setBounds(screenSize.width/2 - 100, 250, 290, 200);
 
 		aceptarReporte.setBounds(screenSize.width/2 + 200, 300, 100, 30);
 		denegarReporte.setBounds(screenSize.width/2 + 200, 350, 100, 30);
+		seleccionarReporte.setBounds(screenSize.width/2 -25 , 470, 150, 30);
 		
 		precio.setBounds(screenSize.width/2 + 350, 200, 200, 30);
 		umbral.setBounds(screenSize.width/2 + 350, 275, 200, 30);
@@ -144,6 +170,8 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 		this.add(umbral);
 		this.add(precio);
 		this.add(reproducciones);
+		this.add(seleccionarCancion);
+		this.add(seleccionarReporte);
 	}
 	
 	// metodo para asignar un controlador al boton
@@ -156,21 +184,27 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 			this.botonBuscar.addActionListener(c);
 			this.botonLimpiarBuscador.addActionListener(c);
 			this.eliminada.addActionListener(c);
+			this.seleccionarCancion.addActionListener(c);
+			this.aceptarReporte.addActionListener(c);
+			this.denegarReporte.addActionListener(c);
+			this.seleccionarReporte.addActionListener(c);
 			
 		}
 		
-		@SuppressWarnings("unchecked")
 		public void actualizarCanciones() {
-			para_validar = Sistema.sistema.getCancionesPendientesValidacion();
-			lista_canciones = new JList(para_validar.toArray());
-			canciones = new JScrollPane(lista_canciones);
+			model2.clear();
+			aValidar = Sistema.sistema.getCancionesPendientesValidacion().toArray(new Cancion[Sistema.sistema.getCancionesPendientesValidacion().size()]);
+			for(int i=0;i< aValidar.length; i++) {
+				model2.addElement(aValidar[i].getTitulo() + " // " + aValidar[i].getAutor().getNombreAutor());
+			}
 		}
 		
-		@SuppressWarnings("unchecked")
 		public void actualizarReportes() {
-			para_reportar = Sistema.sistema.getReportesTotales();
-			lista_reportes = new JList(para_reportar.toArray());
-			reportes = new JScrollPane(lista_reportes);
+			model1.clear();
+			aReportar = Sistema.sistema.getReportesTotales().toArray(new Reporte[Sistema.sistema.getReportesTotales().size()]);
+			for(int i=0; i < aReportar.length; i++) {
+				model1.addElement(aReportar[i].getCancionReportada().getTitulo() + " // " + aReportar[i].getUsuarioReportador().getNombreUsuario());
+			}
 		}
 	
 }

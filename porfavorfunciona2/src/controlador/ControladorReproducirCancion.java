@@ -44,7 +44,8 @@ public class ControladorReproducirCancion implements ActionListener{
 				/*************************************/
 				
 			} else if(((JButton)e.getSource()).getText() == "Limpiar Buscador") {
-				Ventana.ventana.reproducirCancion.limpiarBuscador();
+				vista.limpiarBuscador();
+				//Ventana.ventana.reproducirCancion.limpiarBuscador();
 			} else if((((JButton)e.getSource()).getText() == "Ver comentario")) {
 				if(Ventana.ventana.reproducirCancion.lista_comentarios.getSelectedIndex() != -1) {
 					Comentario[] para_ver = Ventana.ventana.reproducirCancion.comentarios;

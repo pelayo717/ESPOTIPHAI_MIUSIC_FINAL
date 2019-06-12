@@ -4,6 +4,10 @@ import java.awt.*;
 import javax.swing.*;
 
 public class PantallaPrincipal extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public JButton botonIzquierdaArriba;
 	public JButton botonIzquierdaMedio;
 	public JButton botonIzquierdaAbajo;

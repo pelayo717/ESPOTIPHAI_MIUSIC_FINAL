@@ -6,19 +6,27 @@ import javax.swing.*;
 
 
 public class Registrarse extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	JButton botonInicio;
+	JButton botonIniciarSesion ;
+	JButton botonRegistrarse;
+	
 	JLabel titulo;
 	JLabel usuarioLabel;
-	public JTextField usuarioTextfield;
 	JLabel authorLabel;
-	public JTextField authorTextfield ;
 	JLabel birthLabel;
-	JTextField birthTextfield ;
 	JLabel passwordLabel;
-	public JPasswordField passwordTextfield ;
-	JButton botonIniciarSesion ;
 	JLabel preguntaLabel;
-	JButton botonRegistrarse;
+
+	public JTextField usuarioTextfield;
+	public JTextField authorTextfield ;
+	public JTextField birthTextfield ;
+
+	public JPasswordField passwordTextfield ;
+	
 	
 	public Registrarse() {
 		

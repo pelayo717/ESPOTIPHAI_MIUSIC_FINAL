@@ -6,15 +6,20 @@ import javax.swing.*;
 
 
 public class InicioSesion extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	JButton botonInicio;
+	JButton botonIniciarSesion;
+	JButton botonRegistrarse;
 	JLabel titulo ;
 	JLabel usuarioLabel;
-	public JTextField usuarioTextfield;
 	JLabel passwordLabel;
-	public JPasswordField passwordTextfield;
-	JButton botonIniciarSesion;
 	JLabel preguntaLabel;
-	JButton botonRegistrarse;;
+	public JTextField usuarioTextfield;
+	public JPasswordField passwordTextfield;
+	
 	
 	public InicioSesion() {
 		

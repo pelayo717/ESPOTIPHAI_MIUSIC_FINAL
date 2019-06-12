@@ -3,16 +3,21 @@ package vista;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
-import java.util.Date;
 
 import javax.swing.*;
 
-import modelo.sistema.Sistema;
 import modelo.usuario.*;
 
 public class Perfil extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	JButton botonInicio;
 	JButton botonNotificaciones;
+	JButton botonCerrarSesion;
+	JButton botonEliminarCuenta;
+	JButton botonHacersePRO;
 	
 	String nombre_autor;
 	LocalDate fecha_nacimiento;
@@ -26,28 +31,21 @@ public class Perfil extends JPanel{
 	JLabel numeroSeguidores;
 	JLabel numeroSeguidos;
 	
-	JButton botonCerrarSesion;
-	JButton botonEliminarCuenta;
-	JButton botonHacersePRO;
+	
 	public Perfil() {
 		
-		if(Sistema.sistema.getUsuarioActual() != null) {
-			this.nombre_autor =  Sistema.sistema.getUsuarioActual().getNombreAutor();
-			this.fecha_nacimiento =  Sistema.sistema.getUsuarioActual().getFechaNacimiento();
-			this.nombre_usuario =  Sistema.sistema.getUsuarioActual().getNombreUsuario();
-			this.numero_seguidores =  Sistema.sistema.getUsuarioActual().getSeguidores().size();
-			this.numero_seguidos =  Sistema.sistema.getUsuarioActual().getSeguidos().size();
-		}else { 
+		
+	
 			
-			//VALORES INICIALIZADOS UNICAMENTE PARA QUE NO HAYA PROBLEMAS AL CONSTRUIR LA VENTANA DE PERFIL,
-			//ESTOS VALORES NO SE LLEGAN A VER NUNCA
-			
-			this.nombre_autor =  "";
-			this.fecha_nacimiento =  LocalDate.now();
-			this.nombre_usuario =  "";
-			this.numero_seguidores = -1;
-			this.numero_seguidos =  -1;
-		}
+		//VALORES INICIALIZADOS UNICAMENTE PARA QUE NO HAYA PROBLEMAS AL CONSTRUIR LA VENTANA DE PERFIL,
+		//ESTOS VALORES NO SE LLEGAN A VER NUNCA
+		
+		this.nombre_autor =  "";
+		this.fecha_nacimiento =  LocalDate.now();
+		this.nombre_usuario =  "";
+		this.numero_seguidores = -1;
+		this.numero_seguidos =  -1;
+	
 		
 		
 		
@@ -134,18 +132,32 @@ public class Perfil extends JPanel{
 		
 	}
 	
+	public void setUsuario() {
+		this.botonEliminarCuenta.setVisible(true);
+		this.botonHacersePRO.setVisible(true);
+		this.numeroSeguidos.setVisible(true);
+		this.numeroSeguidores.setVisible(true);
+	}
+			
+	public void setAsministrador() {
+		this.numeroSeguidos.setVisible(false);
+		this.numeroSeguidores.setVisible(false);
+		this.botonEliminarCuenta.setVisible(false);
+		this.botonHacersePRO.setVisible(false);
+	}
+	
 	// método para asignar un controlador al botón
 	public void setControlador(ActionListener c) {
-			 this.botonInicio.addActionListener(c);
-			 this.botonNotificaciones.addActionListener(c);
-			 this.botonCerrarSesion.addActionListener(c);
-			 this.botonEliminarCuenta.addActionListener(c);
-			 this.botonHacersePRO.addActionListener(c);
+		 this.botonInicio.addActionListener(c);
+		 this.botonNotificaciones.addActionListener(c);
+		 this.botonCerrarSesion.addActionListener(c);
+		 this.botonEliminarCuenta.addActionListener(c);
+		 this.botonHacersePRO.addActionListener(c);
 	}
 		 
 	public void setInformacion(Usuario usuario) {
 		this.nombreAutor.setText("Nombre de autor:\t\t " + usuario.getNombreAutor());
-		this.fechaNacimiento.setText("F. de nacimiento:\t\t" + "7/12/1996");
+		this.fechaNacimiento.setText("F. de nacimiento:\t\t" + usuario.getFechaNacimiento());
 		this.nombreUsuario.setText("Nombre de usuario:\t\t" + usuario.getNombreUsuario());
 		this.numeroSeguidores.setText("Numero de seguidores:\t\t"+ usuario.getSeguidores().size());
 		this.numeroSeguidos.setText("Numero de seguidos:\t\t" + usuario.getSeguidos().size());

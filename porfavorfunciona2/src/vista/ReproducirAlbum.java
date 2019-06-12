@@ -182,4 +182,6 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		lista_canciones = new JList(canciones.toArray());
 		cancionesScrollPane = new JScrollPane(lista_canciones);
 	 }
+	 
+	 
 }

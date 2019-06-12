@@ -11,29 +11,35 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import modelo.contenido.Album;
 import modelo.contenido.Cancion;
 import modelo.contenido.Lista;
-import modelo.sistema.Sistema;
 
 public class PantallaInicio extends PantallaPrincipal {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JScrollPane canciones;
 	private JScrollPane albumes;
 	private JScrollPane listas;
-	public JList lista_canciones;
-	public JList lista_albumes;
-	public JList lista_listas;
+	public JList<String> lista_canciones;
+	public JList<String> lista_albumes;
+	public JList<String> lista_listas;
 	JButton seleccionarAlbum;
 	JButton seleccionarCancion;
 	JButton seleccionarLista;
 	JButton crearCancion;
 	JButton crearAlbum;
 	JButton crearLista;
+	
+	JLabel susCanciones;
+	JLabel susAlbumes;
+	JLabel susListas;
 	
 	public Cancion[] misCanciones;
 	public Album[] misAlbumes;
@@ -51,17 +57,17 @@ public class PantallaInicio extends PantallaPrincipal {
 		model3 = new DefaultListModel<>();
 		
 		
-		lista_canciones = new JList(model1);
-		lista_albumes = new JList(model2);
-		lista_listas = new JList(model3);
+		lista_canciones = new JList<String>(model1);
+		lista_albumes = new JList<String>(model2);
+		lista_listas = new JList<String>(model3);
 		
 		canciones = new JScrollPane(lista_canciones);
 		albumes = new JScrollPane(lista_albumes);
 		listas = new JScrollPane(lista_listas);
 		
-		JLabel susCanciones = new JLabel("Sus canciones",  SwingConstants.CENTER);
-		JLabel susAlbumes = new JLabel("Sus albumes",  SwingConstants.CENTER);	
-		JLabel susListas = new JLabel("Sus listas", SwingConstants.CENTER);
+		susCanciones = new JLabel("Sus canciones",  SwingConstants.CENTER);
+		susAlbumes = new JLabel("Sus albumes",  SwingConstants.CENTER);	
+		susListas = new JLabel("Sus listas", SwingConstants.CENTER);
 		
 		seleccionarAlbum = new JButton("Elegir album");
 		seleccionarCancion = new JButton("Elegir cancion");
@@ -79,13 +85,11 @@ public class PantallaInicio extends PantallaPrincipal {
 		albumes.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		listas.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
+		this.susCanciones.setFont(susCancionesFont);
+		this.susAlbumes.setFont(susAlbumesFont);
+		this.susListas.setFont(susListasFont);
 		
-		
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		//Distribucion en la pantalla
-		//Manual Constraints
-		//x axis, y axis, width, height 
-				
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();				
 		
 		susCanciones.setBounds(screenSize.width/2 - 550, 200, 290, 30);
 		susAlbumes.setBounds(screenSize.width/2 - 190, 200, 290, 30);
@@ -149,11 +153,10 @@ public class PantallaInicio extends PantallaPrincipal {
 		model1.clear();
 		misCanciones = canciones_propias.toArray(new Cancion[canciones_propias.size()]);
 		for(int i=0; i < misCanciones.length; i++) {
-			model1.addElement(misCanciones[i].getTitulo());
+			model1.addElement(misCanciones[i].getTitulo() + " // " + String.format("%.2f",misCanciones[i].getDuracion()));
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void actualizarAlbumes(ArrayList<Album> albumes_propios) {
 		model2.clear();
 		misAlbumes = albumes_propios.toArray(new Album[albumes_propios.size()]);

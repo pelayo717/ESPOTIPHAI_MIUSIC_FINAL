@@ -83,7 +83,6 @@ public class Usuario implements Serializable{
 		this.nombre_usuario = nombre_usuario;
 		this.nombre_autor = nombre_autor;
 		this.contrasena = contrasena;
-		
 		this.fecha_nacimiento = fecha_nacimiento;
 		this.fecha_registro = LocalDate.now();
 		this.fecha_inicio_pro = null; 		//No hay fecha de inicio de premium

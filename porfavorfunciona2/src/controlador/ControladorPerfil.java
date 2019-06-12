@@ -23,7 +23,11 @@ public class ControladorPerfil implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (((JButton)e.getSource()).getText() == "Inicio") {
-				Ventana.ventana.showPantallaInicio();
+				if(Sistema.sistema.getAdministrador() == false) {
+					Ventana.ventana.showPantallaInicio();
+				}else {
+					Ventana.ventana.showPantallaInicioAdmin();
+				}
 			} else if(((JButton)e.getSource()).getText() == "Cerrar Sesion") { //CAMBIADO, MEJORADO
 				try {
 					int a=JOptionPane.showConfirmDialog(Ventana.ventana,"¿Esta seguro que desea cerra la sesion?","Alert",JOptionPane.WARNING_MESSAGE);  

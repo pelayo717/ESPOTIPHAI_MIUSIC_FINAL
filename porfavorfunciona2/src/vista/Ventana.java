@@ -2,10 +2,8 @@ package vista;
 
 
 import java.awt.*;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Date;
 
 import javax.swing.*;
 
@@ -27,7 +25,6 @@ public class Ventana extends JFrame {
 	public PantallaInicioAdmin pantallaInicioAdmin;
 	public Registrarse registrarse;
 	public Perfil perfil;
-	public CrearAlbum crearAlbum;
 	public static Ventana ventana;
 	public ControladorPantallaInicio controladorPantallaInicio;
 	public ControladorReproducirCancion controladorReproducirCancion;
@@ -36,7 +33,6 @@ public class Ventana extends JFrame {
 	public ControladorInicioSesion controladorInicioSesion;
 	public ControladorRegistrarse controladorRegistrarse;
 	public ControladorPerfil controladorPerfil;
-	public ControladorCrearAlbum controladorCrearAlbum;
 	public ControladorPantallaInicioAdmin controladorPantallaInicioAdmin;
 	Container container;
 	Sistema sistema;
@@ -73,7 +69,6 @@ public class Ventana extends JFrame {
 		this.inicioSesion = new InicioSesion();
 		this.registrarse = new Registrarse();
 		this.perfil = new Perfil();
-		this.crearAlbum = new CrearAlbum();
 		this.pantallaInicioAdmin = new PantallaInicioAdmin();
 
 		//Controladores
@@ -84,7 +79,6 @@ public class Ventana extends JFrame {
 		controladorInicioSesion = new ControladorInicioSesion(inicioSesion, 2);
 		controladorRegistrarse = new ControladorRegistrarse(registrarse, 2);
 		controladorPerfil = new ControladorPerfil(perfil,2);
-		controladorCrearAlbum = new ControladorCrearAlbum(crearAlbum,2);
 		controladorPantallaInicioAdmin = new ControladorPantallaInicioAdmin(pantallaInicioAdmin,2);
 
 		// configurar la vista con el controlador
@@ -95,7 +89,6 @@ public class Ventana extends JFrame {
 		inicioSesion.setControlador(controladorInicioSesion);
 		registrarse.setControlador(controladorRegistrarse);
 		perfil.setControlador(controladorPerfil);
-		crearAlbum.setControlador(controladorCrearAlbum);
 		pantallaInicioAdmin.setControlador(controladorPantallaInicioAdmin);
 		
 		//anyadimos pantallas al contenedor
@@ -106,7 +99,6 @@ public class Ventana extends JFrame {
 		this.add(inicioSesion, inicioSesionString);
 		this.add(registrarse, registrarseString);
 		this.add(perfil, perfilString);
-		this.add(crearAlbum,crearAlbumString);
 		this.add(pantallaInicioAdmin,pantallaInicioAdminString);
 		Ventana.ventana = this;
 		this.showPantallaInicio();
@@ -205,12 +197,12 @@ public class Ventana extends JFrame {
 		final String perfilString = "Perfil";
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), perfilString);
-	}
-	
-	public void showCrearAlbum() {
-		final String crearAlbumString = "Crear Album";
-		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
-	    cl.show(this.getContentPane(), crearAlbumString);
+    	this.perfil.setInformacion(Sistema.sistema.getUsuarioActual());
+	    if(Sistema.sistema.getAdministrador() == true) {
+	    	this.perfil.setAsministrador();	
+	    }else {
+	    	this.perfil.setUsuario();
+	    }
 	}
 
 	public void showPantallaInicioAdmin() {

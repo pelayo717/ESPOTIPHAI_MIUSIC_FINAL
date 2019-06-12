@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import modelo.contenido.Album;
 import modelo.contenido.Cancion;
@@ -132,12 +133,11 @@ public ControladorPantallaInicio(PantallaInicio x, int modelo) {
 				}
 			}
 			
-			System.out.println("buscar");
 		} else if(((JButton)e.getSource()).getText() == "Limpiar Buscador") {
 			vista.limpiarBuscador();
 		} else if(((JButton)e.getSource()).getText() == "Crear cancion") {
 			 if(Sistema.sistema.getUsuarioActual()!= null) {
-				 String titulo = JOptionPane.showInputDialog("Introduzca el titulo de la cancion:"); 
+				 String titulo = JOptionPane.showInputDialog("Introduzca el titulo de la cancion:","Crear Cancion"); 
 				 if(titulo == null || titulo.equals("")) { //POR SI QUIERE CANCELAR LA SUBIDA
 					 return;
 				 }
@@ -145,8 +145,9 @@ public ControladorPantallaInicio(PantallaInicio x, int modelo) {
 				 file.showOpenDialog(Ventana.ventana);
 				 File escogido = file.getSelectedFile();
 				 
-				// escogido.renameTo(new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName()));
+				 //escogido.renameTo(new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName()));
 				 //System.out.print(System.getProperty("user.dir") + System.getProperty("file.separator") + "src" + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName());
+				 
 				 try {
 					 Cancion c;
 					if((c = Sistema.sistema.crearCancion(titulo, escogido.getAbsolutePath())) != null) {
@@ -169,12 +170,25 @@ public ControladorPantallaInicio(PantallaInicio x, int modelo) {
 				 Ventana.ventana.showPantallaInicio();
 			 }
 		}else if(((JButton)e.getSource()).getText() == "Crear album") {
+			
 			if(Sistema.sistema.getUsuarioActual()!= null) {
-				Ventana.ventana.showCrearAlbum();
+				JTextField titulo = new JTextField();
+				JTextField anyo = new JTextField();
+				Object[] message = {
+				    "Titulo:", titulo,
+				    "Año:", anyo
+				};
+				
+				int option = JOptionPane.showConfirmDialog(null, message, "Crear Album", JOptionPane.OK_CANCEL_OPTION);
+				if (option == JOptionPane.OK_OPTION) {
+				    Sistema.sistema.crearAlbum(Integer.parseInt(anyo.getText()), titulo.getText());
+				}
+				Ventana.ventana.showPantallaInicio();
+				
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"Debe iniciar sesion para crear albumes");
 				Ventana.ventana.showPantallaInicio();
-			 }
+			}
 		}else if(((JButton)e.getSource()).getText() == "Crear lista") {
 	
 				//FALTA LA PARTE DE CREAR LISTA

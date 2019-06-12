@@ -3,6 +3,7 @@ package controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -31,7 +32,12 @@ public class ControladorRegistrarse implements ActionListener{
 				Ventana.ventana.showInicioSesion();
 				Ventana.ventana.registrarse.limpiarVentana();
 			} else if(((JButton)e.getSource()).getText() == "Registrarse") {
-				if (Sistema.sistema.registrarse(vista.usuarioTextfield.getText(),vista.authorTextfield.getText(), LocalDate.now(), String.valueOf(vista.passwordTextfield.getPassword())) == Status.OK){
+				
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+				String date = vista.birthTextfield.getText();
+				LocalDate localDate = LocalDate.parse(date, formatter);
+
+				if (Sistema.sistema.registrarse(vista.usuarioTextfield.getText(),vista.authorTextfield.getText(), localDate, String.valueOf(vista.passwordTextfield.getPassword())) == Status.OK){
 					JOptionPane.showMessageDialog(Ventana.ventana,"Su usuario ha sido registrado correctamente en la aplicacion");
 					Ventana.ventana.showInicioSesion();
 					Ventana.ventana.registrarse.limpiarVentana();
