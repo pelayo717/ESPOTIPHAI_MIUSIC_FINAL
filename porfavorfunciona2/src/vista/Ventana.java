@@ -44,7 +44,6 @@ public class Ventana extends JFrame {
 	public Ventana() throws Mp3PlayerException, IOException{ //CAMBIADO, MEJORADO
 		
 		this.sistema = Sistema.getSistema();
-		System.out.print(this.sistema.registrarse("admin", "ADMIN", LocalDate.now(), "admin"));
 		
 		//obtener contenedor, asignar layout
 		container = this.getContentPane();
@@ -217,7 +216,11 @@ public class Ventana extends JFrame {
 	    if(Sistema.sistema.getAdministrador() == true) {
 	    	this.perfil.setAsministrador();	
 	    }else {
-	    	this.perfil.setUsuario();
+	    	if(Sistema.sistema.getUsuarioActual().getPremium() == true) {
+	    		this.perfil.setUsuarioPremium();
+	    	}else{
+	    		this.perfil.setUsuario();
+	    	}
 	    }
 	}
 

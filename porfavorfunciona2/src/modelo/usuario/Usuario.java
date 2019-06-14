@@ -439,6 +439,9 @@ public class Usuario implements Serializable{
 	public void mejorarCuentaPorReproducciones() {
 		fecha_inicio_pro = LocalDate.now();
 		premium = true;
+		Notificacion n = new Notificacion(this,"Felicidades, el numero de reproducciones de sus temas ha superando el umbral y ha pasado a ser un usuario Premium",Sistema.sistema.getUsuariosTotales().get(0));
+		this.notificaciones_propias.add(n);
+		Sistema.sistema.getUsuariosTotales().get(0).notificaciones_propias.add(n);
 	}
 	
 	/**
@@ -451,7 +454,10 @@ public class Usuario implements Serializable{
 		try {
 			TeleChargeAndPaySystem.charge(numero_tarjeta, "Mejora de la cuenta a estado PREMIUM", Sistema.sistema.getPrecioPremium());
 			this.premium = true;
-			this.fecha_inicio_pro = LocalDate.now();			
+			this.fecha_inicio_pro = LocalDate.now();
+			Notificacion n = new Notificacion(this,"Felicidades, ahora usted puede disfrutar de las ventajas de ser PRO durante 1 mes",Sistema.sistema.getUsuariosTotales().get(0));
+			this.notificaciones_propias.add(n);
+			Sistema.sistema.getUsuariosTotales().get(0).notificaciones_propias.add(n);
 			return Status.OK;
 		}catch(FailedInternetConnectionException fe) {
 			fe.toString();

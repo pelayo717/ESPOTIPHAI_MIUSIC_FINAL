@@ -52,9 +52,6 @@ public class Cancion extends ContenidoComentable {
 	 */
 	public void anyadirCola() {
 		try {
-			if(Cancion.repro_mp3 == null) {
-				System.out.print("puuta1");
-			}
 			Cancion.repro_mp3.add(this.nombreMP3);
 			return;
 		}catch(Mp3InvalidFileException ie) {
@@ -242,22 +239,20 @@ public class Cancion extends ContenidoComentable {
 	/**
 	 * Esta funcion permite a cualquier usuario reproducir una cancion que se pase como argumento
 	 * @param c
+	 * @return 
 	 * @throws InterruptedException ExcesoReproduccionesExcepcion
 	 * @throws Mp3PlayerException 
 	 * @throws FileNotFoundException 
 	 */
 	
-	public void reproducirCancion() throws InterruptedException, FileNotFoundException, Mp3PlayerException { //se supone que la cancion ha sido subida, valida y a la hora de buscar se devuelve en base a criterios ya comprobados
+	public EstadoReproduccion reproducirCancion() throws InterruptedException, FileNotFoundException, Mp3PlayerException { //se supone que la cancion ha sido subida, valida y a la hora de buscar se devuelve en base a criterios ya comprobados
 		
-		if(Cancion.repro_mp3 == null) {
 			this.setMp3Player();
-		}
-		
-		
-		LocalDate fecha_actual = LocalDate.now();
+			
+			LocalDate fecha_actual = LocalDate.now();
 			
 			if(this.getEstado() == EstadoCancion.PLAGIO || this.getEstado() == EstadoCancion.ELIMINADA) {
-				return;
+				return EstadoReproduccion.OTRO;
 			}
 			
 			if(Sistema.sistema.getUsuarioActual() != null && ((Sistema.sistema.getAdministrador() == true || Sistema.sistema.getUsuarioActual().getPremium() == true))){
@@ -269,40 +264,47 @@ public class Cancion extends ContenidoComentable {
 					Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
 					Sistema.sistema.getCancionReproduciendo().getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());
 				}else {
-				
+					
 					Period intervalo = Period.between(Sistema.sistema.getUsuarioActual().getFechaNacimiento(), fecha_actual);
 					if(intervalo.getYears() < 18 && this.getEstado() == EstadoCancion.EXPLICITA) {
-						return;
+						return EstadoReproduccion.MENOR;
 					}
 					
 					if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) == true && (this.getEstado() == EstadoCancion.PENDIENTEAPROBACION || this.getEstado() == EstadoCancion.PENDIENTEMODIFICACION )) {
+		
 						Sistema.sistema.setCancionReproduciendo(this);
 						Sistema.sistema.getCancionReproduciendo().anyadirCola();
 						Sistema.sistema.getCancionReproduciendo().reproducir();
 						Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
-					}else if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) == false && (this.getEstado() == EstadoCancion.PENDIENTEAPROBACION || this.getEstado() == EstadoCancion.PENDIENTEMODIFICACION)){
-						return;
-					}
+					}else {
 					
-					Sistema.sistema.setCancionReproduciendo(this);
-					Sistema.sistema.getCancionReproduciendo().anyadirCola();
-					Sistema.sistema.getCancionReproduciendo().reproducir();
-					Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
+						Sistema.sistema.setCancionReproduciendo(this);
+						Sistema.sistema.getCancionReproduciendo().anyadirCola();
+						Sistema.sistema.getCancionReproduciendo().reproducir();
+						Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
+						
+						if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) != true) {
+							Sistema.sistema.getCancionReproduciendo().getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());
+						}
 					
-					if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) != true) {
-						Sistema.sistema.getCancionReproduciendo().getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());
 					}
 				
 				}
 				
 			}else{
 				
+				System.out.print("SIN REGISTRARSE: " + Sistema.sistema.getContenidoEscuchadoSinRegistrarse());
+				
 				if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
+					
+					System.out.print("REGISTRADO: " + Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium());
+
 					
 					Period intervalo = Period.between(Sistema.sistema.getUsuarioActual().getFechaNacimiento(), fecha_actual);
 					if(intervalo.getYears() < 18 && this.getEstado() == EstadoCancion.EXPLICITA) {
-						return;
+						return EstadoReproduccion.MENOR;
 					}
+					
 					
 					if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) == true && (this.getEstado() == EstadoCancion.PENDIENTEAPROBACION || this.getEstado() == EstadoCancion.PENDIENTEMODIFICACION )) {
 						Sistema.sistema.setCancionReproduciendo(this);
@@ -310,43 +312,58 @@ public class Cancion extends ContenidoComentable {
 						Sistema.sistema.getCancionReproduciendo().reproducir();
 						Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
 						Sistema.sistema.getUsuarioActual().addContenidoEscuchadoSinSerPremium();
-					}else if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) == false && (this.getEstado() == EstadoCancion.PENDIENTEAPROBACION || this.getEstado() == EstadoCancion.PENDIENTEMODIFICACION)){
-						return;
+					}else {
+												
+						Sistema.sistema.setCancionReproduciendo(this);
+						Sistema.sistema.getCancionReproduciendo().anyadirCola();
+						Sistema.sistema.getCancionReproduciendo().reproducir();
+						Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
+						Sistema.sistema.getUsuarioActual().addContenidoEscuchadoSinSerPremium();
+						
+						if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) != true) {
+							Sistema.sistema.getCancionReproduciendo().getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());						
+						}
 					}
-					
-					Sistema.sistema.setCancionReproduciendo(this);
-					Sistema.sistema.getCancionReproduciendo().anyadirCola();
-					Sistema.sistema.getCancionReproduciendo().reproducir();
-					Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
-					Sistema.sistema.getUsuarioActual().addContenidoEscuchadoSinSerPremium();
-					
-					if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) != true) {
-						Sistema.sistema.getCancionReproduciendo().getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());						
-					}
-					
 				}else if(Sistema.sistema.getContenidoEscuchadoSinRegistrarse() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
 					
-					if(this.getEstado() == EstadoCancion.EXPLICITA ||  Sistema.sistema.getContenidoEscuchadoSinRegistrarse() >= Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()) {
-						return;
+					if(this.getEstado() == EstadoCancion.EXPLICITA ) { 
+						return EstadoReproduccion.USUARIO_SR;
 					}
 					
+					System.out.print(" ME REPRODUZCO ");
+					
 					Sistema.sistema.setCancionReproduciendo(this);
+					
+					System.out.print(" ME REPRODUZCO 1 ");
+
 					Sistema.sistema.getCancionReproduciendo().anyadirCola();
+					
+					System.out.print(" ME REPRODUZCO 2 ");
+
 					Sistema.sistema.getCancionReproduciendo().reproducir();
+					
+					System.out.print(" ME REPRODUZCO 3 ");
+					
 					Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
+					
+					System.out.print(" ME REPRODUZCO 4 ");
+					
 					Sistema.sistema.getCancionReproduciendo().getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());
 					Sistema.sistema.addContenidoEscuchadoSinRegistrarse();
 					
+				}else {
+					return EstadoReproduccion.REPRODUCCIONES_AGOTADAS;
 				}
 			}
-			
+			return null;
+						
 		}
 	
 	/**
 	 * Esta funcion que la puede utilizar los usuarios registrados les permite escribir un comentario sobre una cancion
 	 * @param comentario
 	 * @param cancion
-	 * @return OK si se a�adio correctamente a la cancion o ERROR si no fue asi
+	 * @return OK si se anyadio correctamente a la cancion o ERROR si no fue asi
 	 */
 	public Status anyadirComentarioCancion(Comentario comentario) {
 		if((comentario == null) && (Sistema.sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO && Sistema.sistema.getUsuarioActual() != null)) {

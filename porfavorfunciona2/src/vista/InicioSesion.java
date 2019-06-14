@@ -77,21 +77,6 @@ public class InicioSesion extends JPanel{
 		this.add(preguntaLabel);
 		this.add(botonRegistrarse);
 		
-		/*
-		layout.setHorizontalGroup(
-		   layout.createSequentialGroup()
-		      .addComponent(botonInicio)
-		      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-		           .addComponent(titulo)
-		           .addComponent(campo))
-		);
-		layout.setVerticalGroup(
-		   layout.createSequentialGroup()
-		      .addComponent(botonInicio)
-		      .addComponent(titulo)
-		      .addComponent(campo)
-		);
-		*/
 	}
 	
 	public void limpiarVentana(){

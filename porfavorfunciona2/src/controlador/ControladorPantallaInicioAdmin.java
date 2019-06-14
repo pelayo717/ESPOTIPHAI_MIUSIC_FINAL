@@ -46,6 +46,13 @@ public class ControladorPantallaInicioAdmin implements ActionListener{
 					int indice = Ventana.ventana.pantallaInicioAdmin.lista_canciones.getSelectedIndex();
 					int a = JOptionPane.showOptionDialog(Ventana.ventana,"Titulo: " + canciones_totales[indice].getTitulo() + " Autor: " + canciones_totales[indice].getAutor().getNombreAutor(),"Cancion Seleccionada",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);  
 					if(a == 0){
+						
+						try {
+							Sistema.sistema.pararReproductor();
+						} catch (FileNotFoundException | Mp3PlayerException e1) {
+							e1.printStackTrace();
+						}  //POR SI SE SIGUIESE REPRODUCIENDO ANTES DE SALIR PARARLO TEMPORAL
+						
 						try {
 							canciones_totales[indice].reproducirCancion();
 						} catch (InterruptedException e1) {
@@ -66,6 +73,8 @@ public class ControladorPantallaInicioAdmin implements ActionListener{
 							e1.printStackTrace();
 						}
 					}
+					
+					Ventana.ventana.pantallaInicioAdmin.lista_canciones.clearSelection();
 				}
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"No hay canciones para seleccionar");
@@ -192,15 +201,17 @@ public class ControladorPantallaInicioAdmin implements ActionListener{
 						
 		} else if(((JButton)e.getSource()).getText() == "Aceptar") {
 			
-			if(Sistema.sistema.getCancionesPendientesValidacion().size() > 0) {
+			Reporte[] reportes_totales = Ventana.ventana.pantallaInicioAdmin.aReportar;
+			
+			if(reportes_totales.length > 0) {
 				
-				Reporte[] reportes_totales = Ventana.ventana.pantallaInicioAdmin.aReportar;
 				if(Ventana.ventana.pantallaInicioAdmin.lista_reportes.getSelectedIndex() == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Aceptar seleccione uno primero");
 					Ventana.ventana.showPantallaInicioAdmin();
 				}else{
 					int indice = Ventana.ventana.pantallaInicioAdmin.lista_reportes.getSelectedIndex();
 					Sistema.sistema.gestionarReportes(reportes_totales[indice], true);
+					Ventana.ventana.showPantallaInicioAdmin();
 				}
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"No hay reportes para valorar");
@@ -229,13 +240,16 @@ public class ControladorPantallaInicioAdmin implements ActionListener{
 			if(Sistema.sistema.getReportesTotales().size() > 0) {
 				
 				Reporte[] reportes_totales = Ventana.ventana.pantallaInicioAdmin.aReportar;
-				if(Ventana.ventana.pantallaInicioAdmin.lista_reportes.getSelectedIndex() == -1) {
+				int indice = Ventana.ventana.pantallaInicioAdmin.lista_reportes.getSelectedIndex();
+				if(indice == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Seleccionar Reporte seleccione uno primero");
-					Ventana.ventana.showPantallaInicioAdmin();
 				}else{
-					int indice = Ventana.ventana.pantallaInicioAdmin.lista_canciones.getSelectedIndex();
 					JOptionPane.showMessageDialog(Ventana.ventana,"Titulo: " + reportes_totales[indice].getCancionReportada().getTitulo() + " Reportador: " + reportes_totales[indice].getUsuarioReportador().getNombreUsuario());  
 				}
+				
+				Ventana.ventana.pantallaInicioAdmin.lista_reportes.clearSelection();
+				Ventana.ventana.showPantallaInicioAdmin();
+
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"No hay reportes para seleccionar");
 				Ventana.ventana.showPantallaInicioAdmin();

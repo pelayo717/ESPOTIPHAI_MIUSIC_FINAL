@@ -308,13 +308,13 @@ public class Sistema implements Serializable{
 	 * @param contrasenia cadena, contrasenya necesario para el login
 	 * @return devuelve OK si se inicio correctamente la sesion como usuario o ERROR si no se consiguio
 	 */
-	public Status iniciarSesion(String nombre_usuario, String contrasenia) {
+	public EstadoInicioSesion iniciarSesion(String nombre_usuario, String contrasenia) {
 
 		if(nombre_usuario == null || contrasenia == null) {
-			return Status.ERROR;
+			return EstadoInicioSesion.DATOS_INCORRECTOS;
 		}
 		
-		if(nombre_usuario.equals("admin") && contrasenia.equals("admin") == true) {
+		if(nombre_usuario.equals("root1967") && contrasenia.equals("ADMINISTRADOR") == true) {
 			sistema.es_administrador = true;
 		}
 			
@@ -322,15 +322,15 @@ public class Sistema implements Serializable{
 			if(usuario.getNombreUsuario().equals(nombre_usuario) == true && usuario.getContrasena().equals(contrasenia)== true) {
 				if(usuario.getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
 					sistema.usuario_actual = usuario;
-					return Status.OK;
+					return EstadoInicioSesion.CORRECTO;
 				}else {
-					break;
+					return EstadoInicioSesion.BLOQUEADO;
 				}
 			}
 			
 		}
 			
-		return Status.ERROR;
+		return EstadoInicioSesion.DATOS_INCORRECTOS;
 	}
 	
 	/**
@@ -1335,9 +1335,10 @@ public class Sistema implements Serializable{
 		ArrayList<Cancion> para_validar = new ArrayList<Cancion>();
 		
 		for(Cancion c_t:sistema.getCancionTotales()) {
+			
 			if(c_t.getEstado() == EstadoCancion.PENDIENTEAPROBACION) {
 				para_validar.add(c_t);
-			}else if(c_t.getEstado() == EstadoCancion.PENDIENTEMODIFICACION && c_t.getFechaModificacion().minusDays(3).isEqual(LocalDate.now()) == true) {
+			}else if(c_t.getEstado() == EstadoCancion.PENDIENTEMODIFICACION && (c_t.getFechaModificacion().minusDays(3).isEqual(LocalDate.now()) == true || c_t.getFechaModificacion().minusDays(3).isBefore(LocalDate.now()) == true)) {
 				para_validar.add(c_t);
 			}
 		}
@@ -1359,7 +1360,7 @@ public class Sistema implements Serializable{
 				if(estado == EstadoCancion.VALIDA) {
 					sistema.getUsuarioActual().enviarNotificacion(c.getAutor(), "Su cancion " + c.getTitulo() + " ha sido validada correctamente.");
 				}else if(estado == EstadoCancion.EXPLICITA) {
-					sistema.getUsuarioActual().enviarNotificacion(c.getAutor(), "Su cancion " + c.getTitulo() + " ha sido validada correctamente con contenido explicito.");
+					sistema.getUsuarioActual().enviarNotificacion(c.getAutor(), "Su cancion " + c.getTitulo() + " ha sido validada correctamente considerada explicita.");
 				}
 				
 				for(Usuario u_t:sistema.getUsuariosTotales()) {
@@ -1394,7 +1395,7 @@ public class Sistema implements Serializable{
 	public void pararReproductor() throws FileNotFoundException, Mp3PlayerException {
 		if(sistema.cancion_reproduciendose != null) {
 			sistema.cancion_reproduciendose.parar();
-			//sistema.cancion_reproduciendose.setMp3Player();
+			sistema.cancion_reproduciendose.setMp3Player();
 		}
 	}
 	
@@ -1402,22 +1403,26 @@ public class Sistema implements Serializable{
 	/*=================FUNCIONES RELACIONADAS CON DENUNCIAS============================*/
 	/*=================================================================================*/
 	
-	public void denunciarPlagio(Cancion c) {
-		
-		if(sistema.getUsuarioActual()!= null && sistema.es_administrador == false && sistema.getUsuarioActual().getEstadoBloqueado() != UsuarioBloqueado.NOBLOQUEADO) {
+	public Status denunciarPlagio(Cancion c) {
+				
+		if(sistema.getUsuarioActual()!= null && sistema.es_administrador == false && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
 			
 			Reporte r = new Reporte(sistema.getUsuarioActual(),c);
 			if(sistema.getReportesTotales().contains(r)) {
-				return; //REPORTE YA REALIZADO POR LA MISMA PERSONA CON LA MISMA CANCION
+				return Status.ERROR; //REPORTE YA REALIZADO POR LA MISMA PERSONA CON LA MISMA CANCION
 			}
-						
+			
 			c.setEstado(EstadoCancion.PLAGIO);
 			c.getAutor().bloquearCuentaTemporal();
 			sistema.getUsuariosTotales().get(0).enviarNotificacion(c.getAutor(), "Su cancion " + c.getTitulo() + " ha sido bloqueada por un reporte y usted de manera temporal. Comprobaremos esta informacion con la mayor brevedad porsible.");
 			sistema.getUsuarioActual().enviarNotificacion(sistema.getUsuariosTotales().get(0), "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha reportado la cancion " + c.getTitulo() + ".");
 			
 			sistema.getReportesTotales().add(r);
+			
+			return Status.OK;
 		}
+		
+		return Status.ERROR;
 		
 	}
 	

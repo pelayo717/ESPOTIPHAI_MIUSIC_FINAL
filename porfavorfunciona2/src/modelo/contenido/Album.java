@@ -124,45 +124,47 @@ public class Album extends ContenidoComentable {
 	 * @throws ExcesoReproduccionesExcepcion
 	 */
 	
-	public void reproducirAlbum() throws InterruptedException, FileNotFoundException, Mp3PlayerException{
+	public EstadoReproduccion reproducirAlbum() throws InterruptedException, FileNotFoundException, Mp3PlayerException{
+		
+		EstadoReproduccion variable;
 		
 		try {
 			if(Sistema.sistema.getUsuarioActual() != null && (Sistema.sistema.getAdministrador() == true || Sistema.sistema.getUsuarioActual().getPremium() == true)) {
 				for(Cancion canciones_reproduciendose:this.getContenido()) {
-					canciones_reproduciendose.reproducirCancion();
+					
+					variable = canciones_reproduciendose.reproducirCancion();
+					if(variable != null) {
+						return variable;
+					}
 				}
-				
-				return;
-									
+													
 			}else {
 				if(Sistema.sistema.getUsuarioActual() != null) {
 					if(Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
 						for(Cancion canciones_reproduciendose:this.getContenido()) {
-							if(Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium() == Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()) {
-								return;
+							variable = canciones_reproduciendose.reproducirCancion();
+							if(variable != null) {
+								return variable;
 							}
-							canciones_reproduciendose.reproducirCancion();
-						}
-						
-						return;				
+						}						
 					}
 				}else {
 					if(Sistema.sistema.getContenidoEscuchadoSinRegistrarse() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
 						for(Cancion canciones_reproduciendose:this.getContenido()) {
-							if(Sistema.sistema.getContenidoEscuchadoSinRegistrarse() == Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()) {
-								return;
+							variable = canciones_reproduciendose.reproducirCancion();
+							if(variable != null) {
+								return variable;
 							}
-							canciones_reproduciendose.reproducirCancion();
-						}
-						
-						return;				
+						}				
 					}
 				}
 			}
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
 	}
 	
 	

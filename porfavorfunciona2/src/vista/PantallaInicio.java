@@ -1,13 +1,17 @@
 package vista;
 
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -16,6 +20,7 @@ import javax.swing.SwingConstants;
 
 import modelo.contenido.Album;
 import modelo.contenido.Cancion;
+import modelo.contenido.EstadoCancion;
 import modelo.contenido.Lista;
 
 public class PantallaInicio extends PantallaPrincipal {
@@ -39,6 +44,7 @@ public class PantallaInicio extends PantallaPrincipal {
 	JButton eliminarCancion;
 	JButton eliminarAlbum;
 	JButton eliminarLista;
+	JButton modificarCancion;
 	
 	JLabel susCanciones;
 	JLabel susAlbumes;
@@ -61,6 +67,7 @@ public class PantallaInicio extends PantallaPrincipal {
 		
 		
 		lista_canciones = new JList<String>(model1);
+		lista_canciones.setCellRenderer( new RowColor());
 		lista_albumes = new JList<String>(model2);
 		lista_listas = new JList<String>(model3);
 		
@@ -84,6 +91,7 @@ public class PantallaInicio extends PantallaPrincipal {
 		eliminarAlbum = new JButton("Eliminar album");
 		eliminarLista = new JButton("Eliminar lista");
 		
+		modificarCancion = new JButton("Modificar cancion");
 		
 		//Cambio de estilo en los JLabel
 		Font susCancionesFont = new Font(susCanciones.getFont().getName(), Font.BOLD, 16);
@@ -170,7 +178,7 @@ public class PantallaInicio extends PantallaPrincipal {
 		model1.clear();
 		misCanciones = canciones_propias.toArray(new Cancion[canciones_propias.size()]);
 		for(int i=0; i < misCanciones.length; i++) {
-			model1.addElement("Titulo: " + misCanciones[i].getTitulo() + " // Duracion: " + String.format("%.2f",misCanciones[i].getDuracion()));
+			model1.addElement("Titulo: " + misCanciones[i].getTitulo() + " // Duracion: " + String.format("%.2f",misCanciones[i].getDuracion()) + " // Estado: " + misCanciones[i].getEstado().name());
 		}
 	}
 	
@@ -186,7 +194,7 @@ public class PantallaInicio extends PantallaPrincipal {
 		model3.clear();
 		misListas = listas_propias.toArray(new Lista[listas_propias.size()]);
 		for(int i=0; i < misListas.length; i++) {
-			model3.addElement(misListas[i].getTitulo());
+			model3.addElement("Titulo: " + misListas[i].getTitulo() + " // Num.Contenido: "  + misListas[i].getContenido().size() + " // Duracion: " + String.format("%.2f",misListas[i].getDuracion()));
 		}
 	}
 
@@ -195,6 +203,28 @@ public class PantallaInicio extends PantallaPrincipal {
 		model1.clear();
 		model2.clear();
 		model3.clear();
+	}
+	
+	
+	private class RowColor extends DefaultListCellRenderer{
+		
+		private static final long serialVersionUID = 1L;
+
+		public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+            Component c = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
+            if (misCanciones[index].getEstado() == EstadoCancion.VALIDA || misCanciones[index].getEstado() == EstadoCancion.EXPLICITA) {
+                c.setBackground( Color.green); 
+                c.setForeground( Color.black );
+            }else if(misCanciones[index].getEstado() == EstadoCancion.PENDIENTEAPROBACION){ //LAS PENDIENTES DE MODIFICACION
+                c.setBackground( Color.cyan );
+                c.setForeground( Color.black );
+            }else if(misCanciones[index].getEstado() == EstadoCancion.PENDIENTEMODIFICACION) {
+                c.setBackground( Color.orange );
+                c.setForeground( Color.black );
+            }
+            return c;
+        }
+		
 	}
 			
 }  

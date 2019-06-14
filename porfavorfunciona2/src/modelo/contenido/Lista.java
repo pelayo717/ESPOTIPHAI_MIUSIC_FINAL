@@ -133,41 +133,48 @@ public class Lista extends Contenido{
 	 * @throws FileNotFoundException 
 	 */
 	
-	public void reproducirLista() throws InterruptedException, FileNotFoundException, Mp3PlayerException {
+	public EstadoReproduccion reproducirLista() throws InterruptedException, FileNotFoundException, Mp3PlayerException {
+		
+		EstadoReproduccion variable = null;
 		
 		if(Sistema.sistema.getUsuarioActual() != null && (Sistema.sistema.getAdministrador() == true || Sistema.sistema.getUsuarioActual().getPremium() == true)) {
 			for(Contenido contenido_reproduciendose:this.getContenido()) {
 				if(contenido_reproduciendose instanceof Cancion) {
-					((Cancion) contenido_reproduciendose).reproducirCancion();
+					variable = ((Cancion) contenido_reproduciendose).reproducirCancion();
 				}else if(contenido_reproduciendose instanceof Album) {
-					((Album) contenido_reproduciendose).reproducirAlbum();
+					variable = ((Album) contenido_reproduciendose).reproducirAlbum();
 				}else if(contenido_reproduciendose instanceof Lista) {
-					((Lista) contenido_reproduciendose).reproducirLista();
+					variable = ((Lista) contenido_reproduciendose).reproducirLista();
 				}
+				
+				if(variable != null) {
+					return variable;
+				}
+				
 			}	
-			return;
 				
 		}else {
 			if(Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
 				
 				for(Contenido contenido_total:this.getContenido()) {
 					
-					if(Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium() == Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()) {
-						return;
+					if(contenido_total instanceof Cancion) {
+						variable = ((Cancion) contenido_total).reproducirCancion();
+					}else if(contenido_total instanceof Album) {
+						variable = ((Album) contenido_total).reproducirAlbum();
+					}else if(contenido_total instanceof Lista) {
+						variable = ((Lista) contenido_total).reproducirLista();
 					}
 					
-					if(contenido_total instanceof Cancion) {
-						((Cancion) contenido_total).reproducirCancion();
-					}else if(contenido_total instanceof Album) {
-						((Album) contenido_total).reproducirAlbum();
-					}else if(contenido_total instanceof Lista) {
-						((Lista) contenido_total).reproducirLista();
+					if(variable != null) {
+						return variable;
 					}
 				}
 				
-				return;
 			}
 		}
+		
+		return null;
 	}
 	
 

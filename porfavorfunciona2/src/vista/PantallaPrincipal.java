@@ -49,10 +49,7 @@ public class PantallaPrincipal extends JPanel{
 		this.setLayout(layout);
 		
 		
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-		//Manual Constraints
-		//x axis, y axis, width, height  
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();  
 		
 		botonIzquierdaArriba.setBounds(10, 10, 150, 30);
 		botonIzquierdaMedio.setBounds(10, 50, 150, 30);

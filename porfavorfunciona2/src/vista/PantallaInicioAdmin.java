@@ -1,10 +1,14 @@
 package vista;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import modelo.contenido.Cancion;
+import modelo.contenido.EstadoCancion;
 import modelo.reporte.Reporte;
 import modelo.sistema.Sistema;
 
@@ -68,6 +73,8 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 		lista_reportes = new JList<String>(model1);
 		lista_canciones = new JList<String>(model2);
 		
+		lista_canciones.setCellRenderer(new RowColor());
+		
 		canciones = new JScrollPane(lista_canciones);
 		reportes = new JScrollPane(lista_reportes);
 		
@@ -78,7 +85,7 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 		susCanciones = new JLabel("Canciones a validar",  SwingConstants.CENTER);
 		susReportes = new JLabel("Reportes a revisar",  SwingConstants.CENTER);	
 		
-		precio = new JLabel("Precio Premium",  SwingConstants.CENTER);
+		precio = new JLabel("Precio PRO",  SwingConstants.CENTER);
 		umbral = new JLabel("Umbral Reproducciones",  SwingConstants.CENTER);
 		reproducciones = new JLabel("Reproducciones Maximas",  SwingConstants.CENTER);
 		
@@ -196,7 +203,13 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 			model2.clear();
 			aValidar = Sistema.sistema.getCancionesPendientesValidacion().toArray(new Cancion[Sistema.sistema.getCancionesPendientesValidacion().size()]);
 			for(int i=0;i< aValidar.length; i++) {
-				model2.addElement(aValidar[i].getTitulo() + " // " + aValidar[i].getAutor().getNombreAutor());
+				if(aValidar[i].getEstado() == EstadoCancion.PENDIENTEMODIFICACION) {
+					LocalDate a = aValidar[i].getFechaModificacion();
+					a = a.plusDays(3);
+					model2.addElement("Titulo: " + aValidar[i].getTitulo() + " // Autor: " + aValidar[i].getAutor().getNombreAutor() + " // Fecha FIN Modificacion: " + a.toString());
+				}else {
+					model2.addElement("Titulo: " + aValidar[i].getTitulo() + " // Autor: " + aValidar[i].getAutor().getNombreAutor());
+				}
 			}
 		}
 		
@@ -204,8 +217,27 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 			model1.clear();
 			aReportar = Sistema.sistema.getReportesTotales().toArray(new Reporte[Sistema.sistema.getReportesTotales().size()]);
 			for(int i=0; i < aReportar.length; i++) {
-				model1.addElement(aReportar[i].getCancionReportada().getTitulo() + " // " + aReportar[i].getUsuarioReportador().getNombreUsuario());
+				model1.addElement("Cancion: " + aReportar[i].getCancionReportada().getTitulo() + " // Reportador: " + aReportar[i].getUsuarioReportador().getNombreUsuario());
 			}
+		}
+		
+		
+		private class RowColor extends DefaultListCellRenderer{
+			
+			private static final long serialVersionUID = 1L;
+
+			public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+	            Component c = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
+	            if(aValidar[index].getEstado() == EstadoCancion.PENDIENTEAPROBACION){ //LAS PENDIENTES DE MODIFICACION
+	                c.setBackground( Color.white );
+	                c.setForeground( Color.black );
+	            }else if(aValidar[index].getEstado() == EstadoCancion.PENDIENTEMODIFICACION) {
+	                c.setBackground( Color.yellow );
+	                c.setForeground( Color.black );
+	            }
+	            return c;
+	        }
+			
 		}
 	
 }

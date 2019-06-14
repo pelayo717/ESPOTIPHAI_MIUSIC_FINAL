@@ -57,6 +57,12 @@ public class ControladorBuscadorCanciones implements ActionListener {
 			Ventana.ventana.showInicioSesion();
 		} else if(((JButton)e.getSource()).getText() == "Registro") {
 			Ventana.ventana.showRegistrarse();
+		} else if(((JButton)e.getSource()).getText() == "Inicio") {
+			if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador()== true) {
+				Ventana.ventana.showPantallaInicioAdmin();
+			}else {
+				Ventana.ventana.showPantallaInicio();
+			}
 		} else if(((JButton)e.getSource()).getText() == "Buscar") {
 			if(Ventana.ventana.buscadorCanciones.getOpcion1().isSelected() == true) {
 				if(Ventana.ventana.buscadorCanciones.getCriterioBusqueda().getText().isEmpty() != true) {

@@ -87,6 +87,7 @@ public class BuscadorCanciones extends PantallaPrincipal{
 		this.botonIzquierdaArriba.addActionListener(c);
 		this.botonIzquierdaMedio.addActionListener(c);
 		this.seleccionarCancion.addActionListener(c);
+		this.botonIzquierdaAbajo.addActionListener(c);
 		this.botonBuscar.addActionListener(c);
 		this.botonLimpiarBuscador.addActionListener(c);
 	}
@@ -99,7 +100,7 @@ public class BuscadorCanciones extends PantallaPrincipal{
 			
 	public void setUsuarioNoRegistrado() {
 		this.botonIzquierdaArriba.setText("Iniciar Sesion");
-		this.botonIzquierdaMedio.setVisible(true);
+		this.botonIzquierdaMedio.setText("Registro");
 		this.botonIzquierdaAbajo.setVisible(true);
 	}
 	

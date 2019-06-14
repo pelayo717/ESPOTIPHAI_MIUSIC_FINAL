@@ -33,13 +33,19 @@ public class ControladorInicioSesion implements ActionListener{
 				Ventana.ventana.inicioSesion.limpiarVentana();
 				Ventana.ventana.showRegistrarse();
 			} else if(((JButton)e.getSource()).getText() == "Iniciar Sesion") {
-				Sistema.sistema.iniciarSesion(vista.usuarioTextfield.getText(), String.valueOf(vista.passwordTextfield.getPassword()));
-				if(Sistema.sistema.getUsuarioActual() != null) {
+				EstadoInicioSesion variable = Sistema.sistema.iniciarSesion(vista.usuarioTextfield.getText(), String.valueOf(vista.passwordTextfield.getPassword()));
+				if(variable == EstadoInicioSesion.CORRECTO) {
 					if(Sistema.sistema.getAdministrador() == true) {
+						Ventana.ventana.inicioSesion.limpiarVentana();
 						Ventana.ventana.showPantallaInicioAdmin();
 					}else {
+						Ventana.ventana.inicioSesion.limpiarVentana();
 						Ventana.ventana.showPantallaInicio();
 					}
+				}else if(variable == EstadoInicioSesion.BLOQUEADO) {
+					JOptionPane.showMessageDialog(Ventana.ventana,"Su usuario esta bloqueado y no puede acceder a sus sesion propia");
+					Ventana.ventana.inicioSesion.limpiarVentana();
+					Ventana.ventana.showInicioSesion();
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Ha introducido incorrectamente su nombre de usuario o contraseña");
 					Ventana.ventana.inicioSesion.limpiarVentana();
