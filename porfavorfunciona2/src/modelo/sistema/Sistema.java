@@ -11,7 +11,7 @@ import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.Iterator;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -342,11 +342,12 @@ public class Sistema implements Serializable{
 	 */
 	public void eliminarCuenta() {
 		if(sistema.usuario_actual != null && sistema.getAdministrador() == false && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
-			 for(Usuario usuario:sistema.getUsuariosTotales()) {
+			 for(Iterator<Usuario> iteratorUsuario = sistema.getUsuariosTotales().iterator(); iteratorUsuario.hasNext();) {
+				 Usuario usuario = iteratorUsuario.next();
 				 if(usuario.getNombreUsuario().equals(sistema.getUsuarioActual().getNombreUsuario()) == true && usuario.getContrasena().equals(sistema.getUsuarioActual().getContrasena()) == true) {
 					 
 					//elimino al usuario del array general, solo quedara una referencia al objeto y es el usuario_actual
-					 sistema.getUsuariosTotales().remove(usuario); 
+					 iteratorUsuario.remove(); 
 					 
 					//Informamos a los seguidos que el usuario se va a eliminar
 					 for(Usuario seguidos:usuario.getSeguidos()) {
@@ -366,13 +367,15 @@ public class Sistema implements Serializable{
 					 }
 					 
 					 //elimino sus albumes e informo a los usuarios que tengan los albumes en sus listas de su eliminacion
-					 for(Album albumes_usuario:usuario.getAlbumes()) {
+					 for(Iterator<Album> iteratorAlbum = usuario.getAlbumes().iterator(); iteratorAlbum.hasNext();) {
+						 Album albumes_usuario = iteratorAlbum.next();
 						 sistema.eliminarAlbum(albumes_usuario);
 					 }
 					 
 					 //elimino sus listas
-					 for(Lista listas_usuario:usuario.getListas()) {
-						 sistema.eliminarLista(listas_usuario);
+					 for(Iterator<Lista> iteratorAlbum = usuario.getListas().iterator(); iteratorAlbum.hasNext();) {
+						 Lista listas_usuario = iteratorAlbum.next();
+						 /*sistema.eliminarLista(listas_usuario);*/
 					 }
 					 
 					 //elimino sus notificaciones
@@ -981,7 +984,7 @@ public class Sistema implements Serializable{
 
 				
 				//ELIMINAMOS DE ALBUMES DEL AUTOR
-				sistema.getUsuarioActual().eliminarDeAlbumesPersonales(album_eliminar);
+				/*sistema.getUsuarioActual().eliminarDeAlbumesPersonales(album_eliminar);*/
 
 				//ELIMINAMOS DE LAS LISTAS EN LAS QUE SE ENCUENTRE
 				for(Usuario usuarios_totales:sistema.getUsuariosTotales()) {
@@ -1151,9 +1154,9 @@ public class Sistema implements Serializable{
 				
 				//LISTA PROPIA
 				sistema.getUsuarioActual().eliminarDeListasPersonales(lista_eliminar);
-				
-				for(Lista l_c:sistema.getUsuarioActual().getListas()) {
-						l_c.eliminarContenido(lista_eliminar);
+				for(Iterator<Lista> iterator = sistema.getUsuarioActual().getListas().iterator(); iterator.hasNext();) {
+					Lista l_c = iterator.next();
+					l_c.eliminarContenido(lista_eliminar);
 				}
 				
 				return Status.OK;

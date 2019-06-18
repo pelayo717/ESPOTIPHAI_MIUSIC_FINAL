@@ -167,7 +167,8 @@ public class Ventana extends JFrame {
 							System.out.println(exception.toString());
 						}
 			            System.exit(0);
-			        }				
+			        }	
+				System.exit(1);
 			}
 			
 			@Override
