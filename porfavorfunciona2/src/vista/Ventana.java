@@ -2,7 +2,7 @@ package vista;
 
 
 import java.awt.*;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -129,33 +129,8 @@ public class Ventana extends JFrame {
 		this.add(buscadorAutores,buscadorAutoresString);
 		Ventana.ventana = this;
 		this.showPantallaInicio();
-		
-		this.addWindowListener(new java.awt.event.WindowListener(){
-			
-			@Override
-			public void windowOpened(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void windowIconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void windowDeiconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void windowDeactivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.addWindowListener(new WindowAdapter(){
 			@Override
 			public void windowClosing(WindowEvent e) {
 				if (JOptionPane.showConfirmDialog(Ventana.ventana,  "Estas seguro de que quieres cerrar ESPOTIPHAIMUSIC?", "Cerrar ESPOTIPHAIMUSIC?", 
@@ -168,19 +143,6 @@ public class Ventana extends JFrame {
 						}
 			            System.exit(0);
 			        }	
-				System.exit(1);
-			}
-			
-			@Override
-			public void windowClosed(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void windowActivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 		

@@ -373,9 +373,10 @@ public class Sistema implements Serializable{
 					 }
 					 
 					 //elimino sus listas
-					 for(Iterator<Lista> iteratorAlbum = usuario.getListas().iterator(); iteratorAlbum.hasNext();) {
-						 Lista listas_usuario = iteratorAlbum.next();
-						 /*sistema.eliminarLista(listas_usuario);*/
+					 for(Iterator<Lista> iteratorLista = usuario.getListas().iterator(); iteratorLista.hasNext();) {
+						 Lista listas_usuario = iteratorLista.next();
+						 iteratorLista.remove();
+						 sistema.eliminarLista(listas_usuario);
 					 }
 					 
 					 //elimino sus notificaciones
@@ -1154,10 +1155,6 @@ public class Sistema implements Serializable{
 				
 				//LISTA PROPIA
 				sistema.getUsuarioActual().eliminarDeListasPersonales(lista_eliminar);
-				for(Iterator<Lista> iterator = sistema.getUsuarioActual().getListas().iterator(); iterator.hasNext();) {
-					Lista l_c = iterator.next();
-					l_c.eliminarContenido(lista_eliminar);
-				}
 				
 				return Status.OK;
 			}else {
