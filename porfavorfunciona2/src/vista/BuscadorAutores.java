@@ -235,5 +235,11 @@ public class BuscadorAutores extends PantallaPrincipal {
 		model2.clear();
 	}
 
+
+	public Contenido[] getContenido() {
+		// TODO Auto-generated method stub
+		return this.losContenidos;
+	}
+
 	
 }

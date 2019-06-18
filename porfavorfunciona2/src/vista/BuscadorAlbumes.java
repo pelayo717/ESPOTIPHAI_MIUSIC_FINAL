@@ -79,9 +79,7 @@ public class BuscadorAlbumes extends PantallaPrincipal{
 		this.add(seleccionarAlbum);
 	}
 	
-	
-	//PIILAYO
-	
+		
 	public void setControlador(ActionListener c) {
 		this.botonIzquierdaArriba.addActionListener(c);
 		this.botonIzquierdaMedio.addActionListener(c);
@@ -118,6 +116,16 @@ public class BuscadorAlbumes extends PantallaPrincipal{
 	
 	public void limpiarDatos() {
 		model1.clear();
+	}
+
+
+	public Album[] getAlbum() {
+		return this.losAlbumes;
+	}
+
+
+	public JList<String> getListAlbum() {
+		return this.lista_albumes;
 	}
 
 }

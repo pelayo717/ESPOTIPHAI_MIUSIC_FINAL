@@ -13,7 +13,6 @@ import modelo.contenido.Contenido;
 import modelo.sistema.Sistema;
 import modelo.status.Status;
 import modelo.usuario.Usuario;
-import vista.BuscadorAlbumes;
 import vista.BuscadorAutores;
 import vista.Ventana;
 
@@ -21,6 +20,7 @@ public class ControladorBuscadorAutores implements ActionListener{
 
 
 	private BuscadorAutores vista;
+	@SuppressWarnings("unused")
 	private int modelo;
 
 	public ControladorBuscadorAutores(BuscadorAutores x, int modelo) {
@@ -30,9 +30,11 @@ public class ControladorBuscadorAutores implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(((JButton)e.getSource()).getText() == "Elegir contenido") {		
-			if(Ventana.ventana.buscadorAutores.losContenidos.length > 0) {
-				Contenido[] contenidos_totales = Ventana.ventana.buscadorAutores.losContenidos;
+		
+		if(((JButton)e.getSource()).getText() == "Elegir contenido") {
+			
+			if(vista.getContenido().length > 0) {
+				Contenido[] contenidos_totales = vista
 				int indice = Ventana.ventana.buscadorAutores.lista_contenidos.getSelectedIndex();
 				if(indice == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir contenido seleccione uno primero");
