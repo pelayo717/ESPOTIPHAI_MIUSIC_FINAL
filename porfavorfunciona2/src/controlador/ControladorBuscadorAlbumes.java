@@ -15,16 +15,33 @@ import vista.BuscadorAlbumes;
 import vista.PantallaInicio;
 import vista.Ventana;
 
+/**
+ * Funcion que implementa el controlador de la clase BuscadorAlbumes
+ * 
+ */
 public class ControladorBuscadorAlbumes implements ActionListener {
 
 	private BuscadorAlbumes vista;
 	private int modelo;
 
+	/**
+	 * Constructor de la clase en la que se inicializan todos 
+	 * los atributos con los valores correspondientes
+	 * @param x: vista que se le pasa como argumento
+	 * @param modelo: argumento de tipo entero que representa el modelo
+	 * que estamos usando
+	 */
 	public ControladorBuscadorAlbumes(BuscadorAlbumes x, int modelo) {
 		this.modelo = modelo;
 		this.vista = x;
 	}
 	
+	/**
+	 * Funcion que asigna un controlador al boton o la accion que realiza
+	 * el usuario 
+	 * @param e: boton o accion que el usuario ha pulsado, al que se le va a asignar
+	 * el controlador necesario para que realice la accion correctamente
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(((JButton)e.getSource()).getText() == "Elegir album") {		
