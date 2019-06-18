@@ -113,25 +113,25 @@ public class BuscadorAutores extends PantallaPrincipal {
 	
 	
 	public void setControlador(ActionListener c) {
-		this.botonIzquierdaArriba.addActionListener(c);
-		this.botonIzquierdaMedio.addActionListener(c);
+		this.getBotonIzquierdaArriba().addActionListener(c);
+		this.getBotonIzquierdaMedio().addActionListener(c);
 		this.seleccionarAutor.addActionListener(c);
 		this.seleccionarContenido.addActionListener(c);
-		this.botonIzquierdaAbajo.addActionListener(c);
-		this.botonBuscar.addActionListener(c);
-		this.botonLimpiarBuscador.addActionListener(c);
+		this.getBotonIzquierdaAbajo().addActionListener(c);
+		this.getBotonBuscar().addActionListener(c);
+		this.getBotonLimpiarBuscador().addActionListener(c);
 	}
 	
 	public void setUsuarioRegistrado() {
-		this.botonIzquierdaArriba.setText("Ver Perfil");
-		this.botonIzquierdaMedio.setText("Inicio");
-		this.botonIzquierdaAbajo.setVisible(false);
+		this.getBotonIzquierdaArriba().setText("Ver Perfil");
+		this.getBotonIzquierdaMedio().setText("Inicio");
+		this.getBotonIzquierdaAbajo().setVisible(false);
 	}
 			
 	public void setUsuarioNoRegistrado() {
-		this.botonIzquierdaArriba.setText("Iniciar Sesion");
-		this.botonIzquierdaMedio.setText("Registro");
-		this.botonIzquierdaAbajo.setVisible(true);
+		this.getBotonIzquierdaArriba().setText("Iniciar Sesion");
+		this.getBotonIzquierdaMedio().setText("Registro");
+		this.getBotonIzquierdaAbajo().setVisible(true);
 	}
 	
 	public static long getSerialversionuid() {
