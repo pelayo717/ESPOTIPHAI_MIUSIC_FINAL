@@ -43,9 +43,15 @@ public class ControladorInicioSesion implements ActionListener{
 						Ventana.ventana.showPantallaInicio();
 					}
 				}else if(variable == EstadoInicioSesion.BLOQUEADO) {
-					JOptionPane.showMessageDialog(Ventana.ventana,"Su usuario esta bloqueado y no puede acceder a sus sesion propia");
+					JOptionPane.showMessageDialog(Ventana.ventana,"Su usuario esta bloqueado de manera indefinida");
 					Ventana.ventana.inicioSesion.limpiarVentana();
 					Ventana.ventana.showInicioSesion();
+				
+				}else if(variable == EstadoInicioSesion.TEMPORAL) {
+					JOptionPane.showMessageDialog(Ventana.ventana,"Su usuario esta bloqueado durante 30 dias");
+					Ventana.ventana.inicioSesion.limpiarVentana();
+					Ventana.ventana.showInicioSesion();
+				
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Ha introducido incorrectamente su nombre de usuario o contraseña");
 					Ventana.ventana.inicioSesion.limpiarVentana();

@@ -1,5 +1,7 @@
 package modelo.contenido;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import modelo.usuario.*;
@@ -12,19 +14,26 @@ public class Comentario implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Date fecha;
+	private LocalDate fecha;
 	private String texto;
 	private Usuario comentador;
+	private int hora;
+	private int minuto;
+	private int segundo;
 	
 	/**
 	 *	Constructor de Comentario
 	 *	@param fecha  fecha del comentario (Date)
 	 *	@param texto  texto del comentario (String)
 	 */
-	public Comentario(Date fecha,String texto,Usuario comentador) {
-		this.setFecha(fecha);
+	public Comentario(String texto,Usuario comentador) {
+		this.fecha = LocalDate.now();
 		this.setTexto(texto);
 		this.setComentador(comentador);
+		LocalDateTime tiempo = LocalDateTime.now();
+		this.hora  = tiempo.getHour();
+		this.minuto = tiempo.getMinute();
+		this.segundo = tiempo.getSecond();
 	}
 	
 	
@@ -53,16 +62,16 @@ public class Comentario implements Serializable{
 	 * Getter de fecha
 	 * @return the fecha
 	 */
-	public Date getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
 
 	/**
 	 * Setter de fecha
-	 * @param fecha del comentario
+	 * @param fecha2 del comentario
 	 */
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
+	public void setFecha(LocalDate fecha2) {
+		this.fecha = fecha2;
 	}
 
 
@@ -83,6 +92,17 @@ public class Comentario implements Serializable{
 		this.texto = texto;
 	}
 	
+	public int getHora() {
+		return this.hora;
+	}
+	
+	public int getMinuto() {
+		return this.minuto;
+	}
+	
+	public int getSegundo() {
+		return this.segundo;
+	}
 
 	
 	

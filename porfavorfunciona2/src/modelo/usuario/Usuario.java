@@ -620,8 +620,10 @@ public class Usuario implements Serializable{
 			
 			for(Usuario totales:Sistema.sistema.getUsuariosTotales()) {
 				if(totales.getNombreAutor().equals(autor.getNombreAutor()) == true) {
-					Sistema.sistema.getUsuarioActual().seguirUsuario(totales);
-					this.enviarNotificacion(totales, "El autor " + Sistema.sistema.getUsuarioActual().getNombreAutor() + " ha comenzado a seguirle");
+					if(Sistema.sistema.getUsuarioActual().seguirUsuario(totales) == false) {
+						return Status.ERROR;
+					}
+					this.enviarNotificacion(totales,Sistema.sistema.getUsuarioActual().getNombreAutor() + " ha comenzado a seguir " + totales.getNombreAutor());
 					return Status.OK;
 				}
 			}
@@ -642,8 +644,10 @@ public class Usuario implements Serializable{
 		if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador() == false && Sistema.sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
 			for(Usuario totales:Sistema.sistema.getUsuariosTotales()) {
 				if(totales.getNombreAutor().equals(autor.getNombreAutor()) == true) {
-					Sistema.sistema.getUsuarioActual().dejarDeSeguirUsuario(totales);
-					this.enviarNotificacion(totales, "El autor " + Sistema.sistema.getUsuarioActual().getNombreAutor() + " ha dejado de seguirle");
+					if(Sistema.sistema.getUsuarioActual().dejarDeSeguirUsuario(totales) == false) {
+						return Status.ERROR;
+					}
+					this.enviarNotificacion(totales,Sistema.sistema.getUsuarioActual().getNombreAutor() + " ha dejado de seguir a " + totales.getNombreAutor());
 					return Status.OK;
 				}
 			}

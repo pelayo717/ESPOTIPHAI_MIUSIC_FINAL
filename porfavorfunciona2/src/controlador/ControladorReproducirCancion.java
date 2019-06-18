@@ -2,6 +2,7 @@ package controlador;
 
 
 import java.awt.event.*;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -50,19 +51,9 @@ public class ControladorReproducirCancion implements ActionListener{
 							Ventana.ventana.showBuscadorCanciones(retornadas.toArray(new Cancion[retornadas.size()]));
 						}else {
 							JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado canciones por ese parametro");
-							if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador()== true) {
-								Ventana.ventana.showPantallaInicioAdmin();
-							}else {
-								Ventana.ventana.showPantallaInicio();
-							}
 						}
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
-						if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador()== true) {
-							Ventana.ventana.showPantallaInicioAdmin();
-						}else {
-							Ventana.ventana.showPantallaInicio();
-						}
 					}
 				}else if(Ventana.ventana.reproducirCancion.getOpcion2().isSelected() == true){
 					if(Ventana.ventana.reproducirCancion.getCriterioBusqueda().getText().isEmpty() != true) {
@@ -72,58 +63,30 @@ public class ControladorReproducirCancion implements ActionListener{
 						}else {
 							
 							JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado albumes por ese parametro");
-							if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador()== true) {
-								Ventana.ventana.showPantallaInicioAdmin();
-							}else {
-								Ventana.ventana.showPantallaInicio();
-							}
 						}
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
-						if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador()== true) {
-							Ventana.ventana.showPantallaInicioAdmin();
-						}else {
-							Ventana.ventana.showPantallaInicio();
-						}
 					}
 				}else if(Ventana.ventana.reproducirCancion.getOpcion3().isSelected() == true) {
 					if(Ventana.ventana.reproducirCancion.getCriterioBusqueda().getText().isEmpty() != true) {
 						ArrayList<Contenido> retornadas = Sistema.sistema.buscadorPorAutores(Ventana.ventana.reproducirCancion.getCriterioBusqueda().getText());
 						if(retornadas != null) { //ALGO HAY
-							Ventana.ventana.showBuscadorAutores(retornadas.toArray(new Album[retornadas.size()]));
+							Ventana.ventana.showBuscadorAutores(retornadas.toArray(new Contenido[retornadas.size()]));
 						}else {
 							JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado autores por ese parametro");
-							if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador()== true) {
-								Ventana.ventana.showPantallaInicioAdmin();
-							}else {
-								Ventana.ventana.showPantallaInicio();
-							}
 						}
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
-						if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador()== true) {
-							Ventana.ventana.showPantallaInicioAdmin();
-						}else {
-							Ventana.ventana.showPantallaInicio();
-						}
 					}
 				}else {
 					if(Ventana.ventana.reproducirCancion.getCriterioBusqueda().getText().isEmpty() == true) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda y seleccione un criterio para realizar la busqueda");
-						if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador()== true) {
-							Ventana.ventana.showPantallaInicioAdmin();
-						}else {
-							Ventana.ventana.showPantallaInicio();
-						}
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Debe seleccionar un criterio para poder realizar la busqueda");
-						if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador()== true) {
-							Ventana.ventana.showPantallaInicioAdmin();
-						}else {
-							Ventana.ventana.showPantallaInicio();
-						}
 					}
 				}
+				
+			vista.limpiarBuscador();
 				
 	
 			} else if(((JButton)e.getSource()).getText() == "Limpiar Buscador") {
@@ -134,9 +97,9 @@ public class ControladorReproducirCancion implements ActionListener{
 					Comentario[] para_ver = Ventana.ventana.reproducirCancion.comentarios;
 					int indice = Ventana.ventana.reproducirCancion.lista_comentarios.getSelectedIndex();
 					if(para_ver[indice].getComentador() == null) {
-						JOptionPane.showMessageDialog(Ventana.ventana,"Autor: Desconocido" + "\n" + "Comentario: " + para_ver[Ventana.ventana.reproducirCancion.lista_comentarios.getSelectedIndex()].getTexto());
+						JOptionPane.showMessageDialog(Ventana.ventana,"Autor: Desconocido" + "\nComentario: " + para_ver[indice].getTexto() + "\nFecha: " + para_ver[indice].getFecha() + "\nHora/Minuto/Segundo: " + para_ver[indice].getHora() + "/" + para_ver[indice].getMinuto() + "/" + para_ver[indice].getSegundo());  
 					}else {
-						JOptionPane.showMessageDialog(Ventana.ventana,"Autor: " + para_ver[indice].getComentador().getNombreUsuario() + "\n" + "Comentario: " + para_ver[indice].getTexto());
+						JOptionPane.showMessageDialog(Ventana.ventana,"Autor: " + para_ver[indice].getComentador().getNombreUsuario() + "\n" + "Comentario: " + para_ver[indice].getTexto() + "\nFecha: " + para_ver[indice].getFecha() + "\nHora/Minuto/Segundo: " + para_ver[indice].getHora() + "/" + para_ver[indice].getMinuto() + "/" + para_ver[indice].getSegundo());
 					}
 					Ventana.ventana.reproducirCancion.lista_comentarios.clearSelection();
 				}else {
@@ -145,7 +108,7 @@ public class ControladorReproducirCancion implements ActionListener{
 				
 			} else if(((JButton)e.getSource()).getText() == "Añadir comentario") {
 				String comentarioEscrito = JOptionPane.showInputDialog("Escribe tu comentario");
-				Comentario nuevoComentario = new Comentario( new Date() , comentarioEscrito, Sistema.sistema.getUsuarioActual());
+				Comentario nuevoComentario = new Comentario(comentarioEscrito, Sistema.sistema.getUsuarioActual());
 				Ventana.ventana.reproducirCancion.insertarComentario(nuevoComentario);
 				Ventana.ventana.reproducirCancion.actualizarComentarios();
 			} else if(((JButton)e.getSource()).getText() == "Reportar") {
@@ -167,7 +130,8 @@ public class ControladorReproducirCancion implements ActionListener{
 			
 			}else if(((JButton)e.getSource()).getText() == "play") {
 				try {
-					
+					Ventana.ventana.reproducirCancion.cancion.parar();
+					Ventana.ventana.reproducirCancion.cancion.setMp3Player();
 					EstadoReproduccion  variable = Ventana.ventana.reproducirCancion.cancion.reproducirCancion();
 					if( variable == EstadoReproduccion.MENOR) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Esta cancion esta categorizada de Explicita y usted no tiene la edad suficiente para escucharla");
@@ -189,11 +153,7 @@ public class ControladorReproducirCancion implements ActionListener{
 				}
 			} else if(((JButton)e.getSource()).getText() == "pause") {
 				
-				try {
-					Sistema.sistema.pararReproductor();
-				} catch (FileNotFoundException | Mp3PlayerException e1) {
-					e1.printStackTrace();
-				}
+				Ventana.ventana.reproducirCancion.cancion.parar();
 			} else if(((JButton)e.getSource()).getText() == "Añadir a Album") {
 				
 				if(Sistema.sistema.getUsuarioActual() != null) {
@@ -252,7 +212,24 @@ public class ControladorReproducirCancion implements ActionListener{
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Debe iniciar sesion para añadir la cancion a una lista");
 				}
+			
+			} else if(((JButton)e.getSource()).getText() == "Modificar cancion") {
 				
+				 JFileChooser file=new JFileChooser();
+				 file.showOpenDialog(Ventana.ventana);
+				 File escogido = file.getSelectedFile();
+				 
+				 //escogido.renameTo(new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName()));
+				 //System.out.print(System.getProperty("user.dir") + System.getProperty("file.separator") + "src" + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName());
+				 
+				 //POR EL MOMENTO SUPONEMOS QUE SOLO ES COSA DEL MP3
+				 Cancion c = Ventana.ventana.reproducirCancion.cancion;
+				if(Sistema.sistema.modificarCancion(c, escogido.getAbsolutePath()) == Status.OK) {
+					JOptionPane.showMessageDialog(Ventana.ventana,"La cancion " + c.getTitulo() + " ha sido modificada correctamente");
+					Ventana.ventana.showReproducirCancion(c);
+				}else {
+					JOptionPane.showMessageDialog(Ventana.ventana,"La cancion no se ha podido modificar");
+				}
 			
 			} else {
 				System.out.println(vista.lista_comentarios.isSelectionEmpty());

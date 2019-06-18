@@ -85,9 +85,9 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 		susCanciones = new JLabel("Canciones a validar",  SwingConstants.CENTER);
 		susReportes = new JLabel("Reportes a revisar",  SwingConstants.CENTER);	
 		
-		precio = new JLabel("Precio PRO",  SwingConstants.CENTER);
-		umbral = new JLabel("Umbral Reproducciones",  SwingConstants.CENTER);
-		reproducciones = new JLabel("Reproducciones Maximas",  SwingConstants.CENTER);
+		precio = new JLabel("Precio PRO => " + Sistema.sistema.getPrecioPremium() + " €" ,  SwingConstants.CENTER);
+		umbral = new JLabel("Umbral Reproducciones => " + Sistema.sistema.getUmbralReproducciones(),  SwingConstants.CENTER);
+		reproducciones = new JLabel("Reproducciones Maximas => " + Sistema.sistema.getMaxReproduccionesUsuariosNoPremium() ,  SwingConstants.CENTER);
 		
 		valida = new JButton("Valida");
 		explicita = new JButton("Explicita");
@@ -123,14 +123,8 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 		
 		reportes.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-		
-		
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		//Distribucion en la pantalla
-		//Manual Constraints
-		//x axis, y axis, width, height 
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); 
 				
-		
 		susCanciones.setBounds(screenSize.width/2 - 600, 200, 290, 30);
 		canciones.setBounds(screenSize.width/2 - 600, 250, 290, 200);
 
@@ -148,8 +142,8 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 		seleccionarReporte.setBounds(screenSize.width/2 -25 , 470, 150, 30);
 		
 		precio.setBounds(screenSize.width/2 + 350, 200, 200, 30);
-		umbral.setBounds(screenSize.width/2 + 350, 275, 200, 30);
-		reproducciones.setBounds(screenSize.width/2 + 350, 350, 200, 30);
+		umbral.setBounds(screenSize.width/2 + 300, 275, 300, 30);
+		reproducciones.setBounds(screenSize.width/2 + 300, 350, 300, 30);
 		
 		campoPrecio.setBounds(screenSize.width/2 + 350, 225, 200, 30);
 		campoUmbral.setBounds(screenSize.width/2 + 350, 300, 200, 30);
@@ -203,12 +197,15 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 			model2.clear();
 			aValidar = Sistema.sistema.getCancionesPendientesValidacion().toArray(new Cancion[Sistema.sistema.getCancionesPendientesValidacion().size()]);
 			for(int i=0;i< aValidar.length; i++) {
+				int horas = (int) (aValidar[i].getDuracion() / 3600);
+			    int minutos = (int) ((aValidar[i].getDuracion()-horas*3600)/60);
+			    int segundos = (int) (aValidar[i].getDuracion()-(horas*3600+minutos*60));
 				if(aValidar[i].getEstado() == EstadoCancion.PENDIENTEMODIFICACION) {
 					LocalDate a = aValidar[i].getFechaModificacion();
 					a = a.plusDays(3);
-					model2.addElement("Titulo: " + aValidar[i].getTitulo() + " // Autor: " + aValidar[i].getAutor().getNombreAutor() + " // Fecha FIN Modificacion: " + a.toString());
+					model2.addElement("Titulo: " + aValidar[i].getTitulo() + " // Autor: " + aValidar[i].getAutor().getNombreAutor() + " // Fecha FIN Modificacion: " + a.toString() + " // Duracion HH/MM/SS: " + horas + "/" + minutos + "/" + segundos);
 				}else {
-					model2.addElement("Titulo: " + aValidar[i].getTitulo() + " // Autor: " + aValidar[i].getAutor().getNombreAutor());
+					model2.addElement("Titulo: " + aValidar[i].getTitulo() + " // Autor: " + aValidar[i].getAutor().getNombreAutor() + " // Duracion HH-MM-SS: " + horas + "-" + minutos + "-" + segundos);
 				}
 			}
 		}
@@ -222,11 +219,17 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 		}
 		
 		
+		public void actualizarCriterios() {	
+			precio.setText("Precio PRO => " + Sistema.sistema.getPrecioPremium() + " €");
+			umbral.setText("Umbral Reproducciones => " + Sistema.sistema.getUmbralReproducciones());
+			reproducciones.setText("Reproducciones Maximas => " + Sistema.sistema.getMaxReproduccionesUsuariosNoPremium());			
+		}
+		
 		private class RowColor extends DefaultListCellRenderer{
 			
 			private static final long serialVersionUID = 1L;
 
-			public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+			public Component getListCellRendererComponent( JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 	            Component c = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
 	            if(aValidar[index].getEstado() == EstadoCancion.PENDIENTEAPROBACION){ //LAS PENDIENTES DE MODIFICACION
 	                c.setBackground( Color.white );
@@ -237,6 +240,13 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 	            }
 	            return c;
 	        }
+			
+		}
+
+		public void limpiarCriterios() {
+			this.campoPrecio.setText("");
+			this.campoReproducciones.setText("");
+			this.campoUmbral.setText("");
 			
 		}
 	

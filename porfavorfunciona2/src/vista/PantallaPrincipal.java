@@ -11,12 +11,15 @@ public class PantallaPrincipal extends JPanel{
 	public JButton botonIzquierdaArriba;
 	public JButton botonIzquierdaMedio;
 	public JButton botonIzquierdaAbajo;
+	public JButton botonBuscar;
+	public JButton botonLimpiarBuscador;
+	
 	JTextField busquedaTextfield;
-	JButton botonBuscar;
-	JButton botonLimpiarBuscador;
+
 	JRadioButton opcion1;
 	JRadioButton opcion2;
 	JRadioButton opcion3;
+	
 	ButtonGroup grupo_eleccion;
 	
 	public PantallaPrincipal() { //CAMBIADO, MEJORADO

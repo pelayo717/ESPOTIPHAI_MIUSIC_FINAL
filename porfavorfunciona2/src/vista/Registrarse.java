@@ -100,23 +100,14 @@ public class Registrarse extends JPanel{
 		this.add(preguntaLabel);
 		this.add(botonRegistrarse);
 		
-		/*
-		layout.setHorizontalGroup(
-		   layout.createSequentialGroup()
-		      .addComponent(botonInicio)
-		      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-		           .addComponent(titulo)
-		           .addComponent(campo))
-		);
-		layout.setVerticalGroup(
-		   layout.createSequentialGroup()
-		      .addComponent(botonInicio)
-		      .addComponent(titulo)
-		      .addComponent(campo)
-		);
-		*/
 	}
 	
+	 public void setControlador(ActionListener c) {
+		 this.botonInicio.addActionListener(c);
+		 this.botonIniciarSesion.addActionListener(c);
+		 this.botonRegistrarse.addActionListener(c);
+	 }
+		 
 	public void limpiarVentana(){
 		this.passwordTextfield.setText("");
 		this.authorTextfield.setText("");
@@ -124,12 +115,7 @@ public class Registrarse extends JPanel{
 		this.usuarioTextfield.setText("");
 	}
 	
-	 // método para asignar un controlador al botón
-	 public void setControlador(ActionListener c) {
-		 this.botonInicio.addActionListener(c);
-		 this.botonIniciarSesion.addActionListener(c);
-		 this.botonRegistrarse.addActionListener(c);
-	 }
+	 
 	 
 }
 

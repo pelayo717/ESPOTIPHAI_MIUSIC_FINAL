@@ -40,20 +40,22 @@ public class ControladorPantallaInicioAdmin implements ActionListener{
 				Cancion[] canciones_totales = Ventana.ventana.pantallaInicioAdmin.aValidar;
 				if(Ventana.ventana.pantallaInicioAdmin.lista_canciones.getSelectedIndex() == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Seleccionar Cancion seleccione una primero");
-					Ventana.ventana.showPantallaInicioAdmin();
 				}else{
 					String[] options = {"Reproducir","Parar"};
 					int indice = Ventana.ventana.pantallaInicioAdmin.lista_canciones.getSelectedIndex();
-					int a = JOptionPane.showOptionDialog(Ventana.ventana,"Titulo: " + canciones_totales[indice].getTitulo() + " Autor: " + canciones_totales[indice].getAutor().getNombreAutor(),"Cancion Seleccionada",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);  
+					int horas = (int) (canciones_totales[indice].getDuracion() / 3600);
+				    int minutos = (int) ((canciones_totales[indice].getDuracion()-horas*3600)/60);
+				    int segundos = (int) (canciones_totales[indice].getDuracion()-(horas*3600+minutos*60));
+					int a = JOptionPane.showOptionDialog(Ventana.ventana,"Titulo: " + canciones_totales[indice].getTitulo() + "\nAutor: " + canciones_totales[indice].getAutor().getNombreAutor() + "\nDuracion HH/MM/SS: " + horas + "/" + minutos + "/" + segundos,"Cancion Seleccionada",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);  
 					if(a == 0){
 						
-						try {
-							Sistema.sistema.pararReproductor();
-						} catch (FileNotFoundException | Mp3PlayerException e1) {
-							e1.printStackTrace();
-						}  //POR SI SE SIGUIESE REPRODUCIENDO ANTES DE SALIR PARARLO TEMPORAL
+						//ARREGLAR LO DE PARAR ANTES
 						
 						try {
+							for(int i=0; i < canciones_totales.length; i++) {
+								canciones_totales[indice].parar();
+							}
+							canciones_totales[indice].setMp3Player();
 							canciones_totales[indice].reproducirCancion();
 						} catch (InterruptedException e1) {
 							// TODO Auto-generated catch block
@@ -66,37 +68,33 @@ public class ControladorPantallaInicioAdmin implements ActionListener{
 							e1.printStackTrace();
 						}
 					}else {
-						try {
-							Sistema.sistema.pararReproductor();
-						} catch (FileNotFoundException | Mp3PlayerException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
+						canciones_totales[indice].parar();
 					}
 					
 					Ventana.ventana.pantallaInicioAdmin.lista_canciones.clearSelection();
 				}
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"No hay canciones para seleccionar");
-				Ventana.ventana.showPantallaInicioAdmin();
 			}
 		
+			
+			Ventana.ventana.showPantallaInicioAdmin();
+			
 		} else if(((JButton)e.getSource()).getText() == "Valida") {
 			
 			if(Sistema.sistema.getCancionesPendientesValidacion().size() > 0) {
 				Cancion[] canciones_totales = Ventana.ventana.pantallaInicioAdmin.aValidar;
 				if(Ventana.ventana.pantallaInicioAdmin.lista_canciones.getSelectedIndex() == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Valida seleccione una primero");
-					Ventana.ventana.showPantallaInicioAdmin();
 				}else{
 					int indice = Ventana.ventana.pantallaInicioAdmin.lista_canciones.getSelectedIndex();
 					Sistema.sistema.gestionarCancionesPendientesValidacion_Modificacion(canciones_totales[indice], EstadoCancion.VALIDA);
-					Ventana.ventana.showPantallaInicioAdmin();
 				}
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"No hay canciones para validar");
-				Ventana.ventana.showPantallaInicioAdmin();
 			}
+			
+			Ventana.ventana.showPantallaInicioAdmin();
 			
 		} else if(((JButton)e.getSource()).getText() == "Explicita") {
 			
@@ -104,16 +102,15 @@ public class ControladorPantallaInicioAdmin implements ActionListener{
 				Cancion[] canciones_totales = Ventana.ventana.pantallaInicioAdmin.aValidar;
 				if(Ventana.ventana.pantallaInicioAdmin.lista_canciones.getSelectedIndex() == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Explicita seleccione una primero");
-					Ventana.ventana.showPantallaInicioAdmin();
 				}else{
 					int indice = Ventana.ventana.pantallaInicioAdmin.lista_canciones.getSelectedIndex();
 					Sistema.sistema.gestionarCancionesPendientesValidacion_Modificacion(canciones_totales[indice], EstadoCancion.EXPLICITA);
-					Ventana.ventana.showPantallaInicioAdmin();
 				}
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"No hay canciones para validar");
-				Ventana.ventana.showPantallaInicioAdmin();
 			}
+			
+			Ventana.ventana.showPantallaInicioAdmin();
 			
 		} else if(((JButton)e.getSource()).getText() == "Pendiente") {
 			
@@ -121,16 +118,16 @@ public class ControladorPantallaInicioAdmin implements ActionListener{
 				Cancion[] canciones_totales = Ventana.ventana.pantallaInicioAdmin.aValidar;
 				if(Ventana.ventana.pantallaInicioAdmin.lista_canciones.getSelectedIndex() == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Pendiente seleccione una primero");
-					Ventana.ventana.showPantallaInicioAdmin();
 				}else{
 					int indice = Ventana.ventana.pantallaInicioAdmin.lista_canciones.getSelectedIndex();
 					Sistema.sistema.gestionarCancionesPendientesValidacion_Modificacion(canciones_totales[indice], EstadoCancion.PENDIENTEMODIFICACION);
-					Ventana.ventana.showPantallaInicioAdmin();
 				}
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"No hay canciones para validar");
-				Ventana.ventana.showPantallaInicioAdmin();
 			}
+			
+			Ventana.ventana.showPantallaInicioAdmin();
+
 			
 		} else if(((JButton)e.getSource()).getText() == "Eliminada") {
 			
@@ -138,16 +135,15 @@ public class ControladorPantallaInicioAdmin implements ActionListener{
 				Cancion[] canciones_totales = Ventana.ventana.pantallaInicioAdmin.aValidar;
 				if(Ventana.ventana.pantallaInicioAdmin.lista_canciones.getSelectedIndex() == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Eliminada seleccione una primero");
-					Ventana.ventana.showPantallaInicioAdmin();
 				}else{
 					int indice = Ventana.ventana.pantallaInicioAdmin.lista_canciones.getSelectedIndex();
 					Sistema.sistema.gestionarCancionesPendientesValidacion_Modificacion(canciones_totales[indice], EstadoCancion.ELIMINADA);
-					Ventana.ventana.showPantallaInicioAdmin();
 				}
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"No hay canciones para validar");
-				Ventana.ventana.showPantallaInicioAdmin();
 			}
+			
+			Ventana.ventana.showPantallaInicioAdmin();
 			
 		} else if(((JButton)e.getSource()).getText() == "Buscar") {
 			if(Ventana.ventana.pantallaInicioAdmin.getOpcion1().isSelected() == true) {
@@ -157,11 +153,9 @@ public class ControladorPantallaInicioAdmin implements ActionListener{
 						Ventana.ventana.showBuscadorCanciones(retornadas.toArray(new Cancion[retornadas.size()]));
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado canciones por ese parametro");
-						Ventana.ventana.showPantallaInicioAdmin();
 					}
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
-					Ventana.ventana.showPantallaInicioAdmin();
 				}
 			}else if(Ventana.ventana.pantallaInicioAdmin.getOpcion2().isSelected() == true){
 				if(Ventana.ventana.pantallaInicioAdmin.getCriterioBusqueda().getText().isEmpty() != true) {
@@ -170,34 +164,31 @@ public class ControladorPantallaInicioAdmin implements ActionListener{
 						Ventana.ventana.showBuscadorAlbumes(retornadas.toArray(new Album[retornadas.size()]));
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado albumes por ese parametro");
-						Ventana.ventana.showPantallaInicioAdmin();
 					}
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
-					Ventana.ventana.showPantallaInicioAdmin();
 				}
 			}else if(Ventana.ventana.pantallaInicioAdmin.getOpcion3().isSelected() == true) {
 				if(Ventana.ventana.pantallaInicioAdmin.getCriterioBusqueda().getText().isEmpty() != true) {
 					ArrayList<Contenido> retornadas = Sistema.sistema.buscadorPorAutores(Ventana.ventana.pantallaInicioAdmin.getCriterioBusqueda().getText());
 					if(retornadas != null) { //ALGO HAY
-						Ventana.ventana.showBuscadorAutores(retornadas.toArray(new Album[retornadas.size()]));
+						Ventana.ventana.showBuscadorAutores(retornadas.toArray(new Contenido[retornadas.size()]));
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado autores por ese parametro");
-						Ventana.ventana.showPantallaInicioAdmin();
 					}
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
-					Ventana.ventana.showPantallaInicioAdmin();
 				}
 			}else {
 				if(Ventana.ventana.pantallaInicioAdmin.getCriterioBusqueda().getText().isEmpty() == true) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda y seleccione un criterio para realizar la busqueda");
-					Ventana.ventana.showPantallaInicioAdmin();
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Debe seleccionar un criterio para poder realizar la busqueda");
-					Ventana.ventana.showPantallaInicioAdmin();
 				}
 			}
+			
+			vista.limpiarBuscador();
+
 						
 		} else if(((JButton)e.getSource()).getText() == "Aceptar") {
 			
@@ -207,16 +198,15 @@ public class ControladorPantallaInicioAdmin implements ActionListener{
 				
 				if(Ventana.ventana.pantallaInicioAdmin.lista_reportes.getSelectedIndex() == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Aceptar seleccione uno primero");
-					Ventana.ventana.showPantallaInicioAdmin();
 				}else{
 					int indice = Ventana.ventana.pantallaInicioAdmin.lista_reportes.getSelectedIndex();
 					Sistema.sistema.gestionarReportes(reportes_totales[indice], true);
-					Ventana.ventana.showPantallaInicioAdmin();
 				}
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"No hay reportes para valorar");
-				Ventana.ventana.showPantallaInicioAdmin();
 			}
+			
+			Ventana.ventana.showPantallaInicioAdmin();
 			
 		} else if(((JButton)e.getSource()).getText() == "Denegar") {
 			
@@ -225,7 +215,6 @@ public class ControladorPantallaInicioAdmin implements ActionListener{
 				Reporte[] reportes_totales = Ventana.ventana.pantallaInicioAdmin.aReportar;
 				if(Ventana.ventana.pantallaInicioAdmin.lista_reportes.getSelectedIndex() == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Denegar seleccione uno primero");
-					Ventana.ventana.showPantallaInicioAdmin();
 				}else{
 					int indice = Ventana.ventana.pantallaInicioAdmin.lista_reportes.getSelectedIndex();
 					Sistema.sistema.gestionarReportes(reportes_totales[indice], false);
@@ -233,8 +222,10 @@ public class ControladorPantallaInicioAdmin implements ActionListener{
 				
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"No hay reportes para valorar");
-				Ventana.ventana.showPantallaInicioAdmin();
 			}
+			
+			Ventana.ventana.showPantallaInicioAdmin();
+			
 		} else if(((JButton)e.getSource()).getText() == "Seleccionar Reporte") {
 			
 			if(Sistema.sistema.getReportesTotales().size() > 0) {
@@ -244,16 +235,17 @@ public class ControladorPantallaInicioAdmin implements ActionListener{
 				if(indice == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Seleccionar Reporte seleccione uno primero");
 				}else{
-					JOptionPane.showMessageDialog(Ventana.ventana,"Titulo: " + reportes_totales[indice].getCancionReportada().getTitulo() + " Reportador: " + reportes_totales[indice].getUsuarioReportador().getNombreUsuario());  
+					JOptionPane.showMessageDialog(Ventana.ventana,"Titulo: " + reportes_totales[indice].getCancionReportada().getTitulo() + "\nReportador: " + reportes_totales[indice].getUsuarioReportador().getNombreUsuario() + "\nFecha: " + reportes_totales[indice].getFecha().toString() + "\nHora/Minuto/Segundo: " + reportes_totales[indice].getHora() + "/" + reportes_totales[indice].getMinuto() + "/" + reportes_totales[indice].getSegundo());  
 				}
 				
 				Ventana.ventana.pantallaInicioAdmin.lista_reportes.clearSelection();
-				Ventana.ventana.showPantallaInicioAdmin();
 
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"No hay reportes para seleccionar");
-				Ventana.ventana.showPantallaInicioAdmin();
 			}
+			
+			Ventana.ventana.showPantallaInicioAdmin();
+			
 		} else if(((JButton)e.getSource()).getText() == "Cambiar Criterios") {
 			
 			if(Ventana.ventana.pantallaInicioAdmin.campoUmbral.getText().isEmpty() == false && Ventana.ventana.pantallaInicioAdmin.campoReproducciones.getText().isEmpty() == false && Ventana.ventana.pantallaInicioAdmin.campoPrecio.getText().isEmpty() == false) {
@@ -275,15 +267,13 @@ public class ControladorPantallaInicioAdmin implements ActionListener{
 						JOptionPane.showMessageDialog(Ventana.ventana,"El formato a introducir para el precio es con . ");
 					}
 			
-					Ventana.ventana.showPantallaInicioAdmin();
-
-				}else {
-					Ventana.ventana.showPantallaInicioAdmin();
-				}
+				}				
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"Rellene todos los criterios para poder cambiarlos");
-				Ventana.ventana.showPantallaInicioAdmin();
 			}
+			
+			Ventana.ventana.showPantallaInicioAdmin();
+
 		
 		} else if(((JButton)e.getSource()).getText() == "Limpiar Buscador") {
 			vista.limpiarBuscador();		

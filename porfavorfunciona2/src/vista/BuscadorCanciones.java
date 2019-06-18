@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -13,10 +12,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import controlador.ControladorBuscadorCanciones;
-import modelo.contenido.Album;
 import modelo.contenido.Cancion;
-import modelo.contenido.Lista;
 
 public class BuscadorCanciones extends PantallaPrincipal{
 
@@ -108,7 +104,10 @@ public class BuscadorCanciones extends PantallaPrincipal{
 		model1.clear();
 		lasCanciones = canciones_propias;
 		for(int i=0; i < lasCanciones.length; i++) {
-			model1.addElement("Titulo: " + lasCanciones[i].getTitulo() + " // Duracion: " + String.format("%.2f",lasCanciones[i].getDuracion()) + " // Autor: " + lasCanciones[i].getAutor().getNombreAutor());
+			int horas = (int) (lasCanciones[i].getDuracion() / 3600);
+		    int minutos = (int) ((lasCanciones[i].getDuracion()-horas*3600)/60);
+		    int segundos = (int) (lasCanciones[i].getDuracion()-(horas*3600+minutos*60));
+			model1.addElement("Titulo: " + lasCanciones[i].getTitulo() + " // Duracion HH-MM-SS: " + horas + "-" + minutos + "-" + segundos + " // Autor: " + lasCanciones[i].getAutor().getNombreAutor());
 		}
 	}
 	

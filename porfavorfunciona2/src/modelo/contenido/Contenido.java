@@ -1,9 +1,13 @@
 package modelo.contenido;
 
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.*;
 
 import modelo.usuario.*;
+import pads.musicPlayer.Mp3Player;
+import pads.musicPlayer.exceptions.Mp3InvalidFileException;
+import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 /**
  *	Clase Contenido
@@ -15,6 +19,7 @@ public abstract class Contenido implements Serializable {
 	private int anyo;
 	private String titulo;
 	private double duracion;
+	private static Mp3Player repro_mp3;
 	private int id;
 	private Usuario autor;
 	
@@ -22,13 +27,16 @@ public abstract class Contenido implements Serializable {
 	 *	Constructor de Contenido
 	 *	@param estado  estado de la cancion
 	 *	@param reproducible  si la cacion es o no reproducible
+	 * @throws Mp3PlayerException 
+	 * @throws FileNotFoundException 
 	 */
-	public Contenido(int anyo, String titulo, Usuario autor ) {
+	public Contenido(int anyo, String titulo, Usuario autor ) throws FileNotFoundException, Mp3PlayerException {
 		this.setAutor(autor);
 		this.setAnyo(anyo);
 		this.setDuracion(0);
 		this.setId(nextID++);
 		this.setTitulo(titulo);
+		Contenido.repro_mp3 = new Mp3Player();
 	}
 	
 	
@@ -125,4 +133,49 @@ public abstract class Contenido implements Serializable {
 	public void setAutor(Usuario autor) {
 		this.autor = autor;
 	}
+	
+	/**
+	 *	Funcion para anyadir a la cola de reproduccion
+	 *	@param cancion_a_anyadir  string de la cancion a anyadir
+	 */
+	
+	
+	
+	/**
+	 *	Funcion para reproducir una cancion
+	 */
+	public void reproducir() {
+		try {
+			Contenido.repro_mp3.play();
+			return;
+		}catch(Mp3PlayerException pe) {
+			pe.toString();
+			return;
+		}
+		
+	}
+	
+	
+	/**
+	 *	Funcion para parar una cancion
+	 */
+	public void parar() {		
+			if(Contenido.repro_mp3 != null) {
+				Contenido.repro_mp3.stop();
+			}
+	}
+	
+	
+	public Mp3Player getReproductor() {
+		return Contenido.repro_mp3;
+	}
+	
+	/**
+	 * Setter del reproductor mp3
+	 */
+	public void setMp3Player() throws FileNotFoundException, Mp3PlayerException {
+		Contenido.repro_mp3 = new Mp3Player();
+	}
+	
+	
 }

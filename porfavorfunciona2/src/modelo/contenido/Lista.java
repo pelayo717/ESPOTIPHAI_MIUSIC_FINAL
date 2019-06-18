@@ -18,7 +18,7 @@ public class Lista extends Contenido{
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Contenido> contenidos = new ArrayList<Contenido>();
 	
-	public Lista(String titulo,Usuario autor, ArrayList<Contenido> contenido) {
+	public Lista(String titulo,Usuario autor, ArrayList<Contenido> contenido) throws FileNotFoundException, Mp3PlayerException {
 		super(-1, titulo,autor);
 		this.setContenido(contenido);
 		this.setDuracion(this.calcularTiempo());
@@ -138,6 +138,9 @@ public class Lista extends Contenido{
 		EstadoReproduccion variable = null;
 		
 		if(Sistema.sistema.getUsuarioActual() != null && (Sistema.sistema.getAdministrador() == true || Sistema.sistema.getUsuarioActual().getPremium() == true)) {
+			
+			//FALTA ARREGLAR
+			
 			for(Contenido contenido_reproduciendose:this.getContenido()) {
 				if(contenido_reproduciendose instanceof Cancion) {
 					variable = ((Cancion) contenido_reproduciendose).reproducirCancion();

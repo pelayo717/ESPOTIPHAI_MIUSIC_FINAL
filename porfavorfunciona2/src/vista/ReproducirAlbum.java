@@ -2,7 +2,8 @@ package vista;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.time.LocalDate;
+import java.time.Period;
 
 import javax.swing.*;
 
@@ -17,30 +18,59 @@ public class ReproducirAlbum extends PantallaPrincipal {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	private Album album;
 	
-	JButton botonPlay;
-	JButton botonPause;
-	public JList lista_comentarios;
+	public Album album;
+	
+	public JList<String> lista_comentarios;
+	public JList<String> lista_canciones;
+
+	
 	JScrollPane comentariosScrollPane;
-	public JList lista_canciones;
 	JScrollPane cancionesScrollPane;
+
 	JButton botonList;
 	JButton botonAnyadirComentario;
-	JButton botonReportar;
+	JButton eliminarCancion;
+	JButton anyadirLista;
+	JButton botonPlay;
+	JButton botonPause;
+	
+	
 	JLabel datos_album;
 	JLabel titulo_album;
 	JLabel anyo_album;
 	JLabel autor_album;
 	JLabel duracion_album;
 	JLabel comentarios_label;
-	public ArrayList<Comentario> comentarios;
-	ArrayList<Cancion> canciones;
 	
-	public ReproducirAlbum(Album album) {
+	public Comentario[] misComentarios;
+	public DefaultListModel<String> model1;
+	
+	public Cancion[] misCanciones;
+	public DefaultListModel<String> model2;
+	
+	//public Cancion reproduciendose;
+	
+	Dimension screenSize;
+	
+	public ReproducirAlbum() {
 		super();
-		this.album = album;
+		
+		model1 = new DefaultListModel<>();
+
+		lista_comentarios = new JList<String>(model1);
+		
+		comentariosScrollPane = new JScrollPane(lista_comentarios);
+		
+		model2 = new DefaultListModel<>();
+
+		lista_canciones = new JList<String>(model2);
+		
+		lista_canciones.setCellRenderer( new RowColor());
+
+		
+		cancionesScrollPane = new JScrollPane(lista_canciones);
+		
 		
 		//Declaracion
 		ImageIcon icono_reproducir = new ImageIcon("src/vista/play.png");
@@ -51,29 +81,22 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		this.botonPause = new JButton("pause");
 		this.botonList = new JButton("Ver comentario");
 		this.botonAnyadirComentario = new JButton("Añadir Comentario");
-		this.botonReportar = new JButton("Reportar");
+		
+		this.eliminarCancion = new JButton("Eliminar Cancion");
+		
+		this.anyadirLista = new JButton("Añadir a Lista");
+		
 		botonPlay.setIcon(icono_reproducir);
 		botonPause.setIcon(icono_parar);
 
-		if(this.album == null) {
+		
 			datos_album = new JLabel("Datos del album", SwingConstants.CENTER);
 			titulo_album = new JLabel("Titulo:\t\t\t\t\t" ,SwingConstants.CENTER);
 			anyo_album = new JLabel("Año:\t\t\t\t\t",SwingConstants.LEFT);
 			autor_album = new JLabel("Autor:\t\t\t\t\t",SwingConstants.LEFT);
 			duracion_album = new JLabel("Duracion:\t\t\t\t\t" + " s",SwingConstants.LEFT);
 			comentarios_label = new JLabel("Comentarios de la album", SwingConstants.CENTER);
-		}else{
-			datos_album = new JLabel("Datos del album", SwingConstants.CENTER);
-			titulo_album = new JLabel("Titulo:\t\t\t\t\t" + album.getTitulo() ,SwingConstants.CENTER);
-			anyo_album = new JLabel("Año:\t\t\t\t\t" + album.getAnyo(),SwingConstants.LEFT);
-			autor_album = new JLabel("Autor:\t\t\t\t\t" + album.getAutor(),SwingConstants.LEFT);
-			duracion_album = new JLabel("Duracion:\t\t\t\t\t" + album.getDuracion() + " s",SwingConstants.LEFT);
-			comentarios_label = new JLabel("Comentarios de la album", SwingConstants.CENTER);
-			
-			this.actualizarCanciones();
-			this.actualizarComentarios();
-		}
-		
+	
 		comentariosScrollPane = new JScrollPane(lista_comentarios);
 		
 		cancionesScrollPane = new JScrollPane(lista_canciones);
@@ -98,10 +121,7 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		GroupLayout layout = new GroupLayout(this);
 		this.setLayout(layout);
 		
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-		//Manual Constraints
-		//x axis, y axis, width, height 
+		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		//Distribucion
 		datos_album.setBounds(screenSize.width/2 - 380, 170, 300, 50);
@@ -112,7 +132,7 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		comentariosScrollPane.setBounds(screenSize.width/2  - 380, 400, 300, 200);
 		botonList.setBounds(screenSize.width/2 - 300, 610, 150, 30);
 		botonAnyadirComentario.setBounds(screenSize.width/2 - 380, 640, 150, 30);
-		botonReportar.setBounds(screenSize.width/2 - 230, 640, 150, 30);
+		anyadirLista.setBounds(screenSize.width/2 - 230, 640, 150, 30);
 
 		titulo_album.setBounds(screenSize.width/2 + 150, 210, 200, 50);
 		cancionesScrollPane.setBounds(screenSize.width/2  + 100, 260, 300, 300);
@@ -120,6 +140,8 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		botonPlay.setBounds(screenSize.width/2 + 180, 580, 60, 60);
 		botonPause.setBounds(screenSize.width/2 + 250, 580, 60, 60);
 
+		
+		eliminarCancion.setBounds(screenSize.width/2  + 430, 390, 150, 40);
 	
 		
 		//Añadimos
@@ -133,9 +155,10 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		this.add(comentariosScrollPane);
 		this.add(botonList);
 		this.add(botonAnyadirComentario);
-		this.add(botonReportar);
 		this.add(botonPlay);
 		this.add(botonPause);
+		this.add(eliminarCancion);
+		this.add(anyadirLista);
 	}
 	
 	public void limpiarBuscador(){
@@ -143,18 +166,33 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		this.grupo_eleccion.clearSelection();
 	}
 	
-	
-	public void setUsuarioRegistrado() {
+	public void setAdministrador() {
 		this.botonIzquierdaArriba.setText("Ver Perfil");
 		this.botonIzquierdaMedio.setText("Inicio");
 		this.botonIzquierdaAbajo.setVisible(false);
+		this.anyadirLista.setVisible(false);
+		this.eliminarCancion.setVisible(false);
+		this.botonAnyadirComentario.setBounds(screenSize.width/2 - 300, 640, 150, 30);
 	}
 	
-	public void setUsuarioNoRegistrado() {
+	public void setUsuarioRegistradoPropia() {
+		this.botonIzquierdaArriba.setText("Ver Perfil");
+		this.botonIzquierdaMedio.setText("Inicio");
+		this.botonIzquierdaAbajo.setVisible(false);
+		this.anyadirLista.setVisible(true);
+		this.eliminarCancion.setVisible(true);
+		this.botonAnyadirComentario.setBounds(screenSize.width/2 - 380, 640, 150, 30);
+	}
+	
+	public void setUsuarioRegistradoNoPropia() {
 		this.botonIzquierdaArriba.setText("Iniciar Sesion");
 		this.botonIzquierdaMedio.setText("Registro");
 		this.botonIzquierdaAbajo.setVisible(true);
+		this.anyadirLista.setVisible(true);
+		this.eliminarCancion.setVisible(false);
+		this.botonAnyadirComentario.setBounds(screenSize.width/2 - 380, 640, 150, 30);
 	}
+	
 	
 	 // método para asignar un controlador al botón
 	 public void setControlador(ActionListener c) {
@@ -165,23 +203,103 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		 this.botonLimpiarBuscador.addActionListener(c);
 		 this.botonList.addActionListener(c);
 		 this.botonAnyadirComentario.addActionListener(c);
-		 this.botonReportar.addActionListener(c);
 		 this.botonPlay.addActionListener(c);
+		 this.botonPause.addActionListener(c);
+		 this.anyadirLista.addActionListener(c);
+		 this.eliminarCancion.addActionListener(c);
 	 }
 	 
-	 @SuppressWarnings("unchecked")
-	public void actualizarComentarios() {
-		comentarios = album.getComentarios();
-		lista_canciones = new JList(comentarios.toArray());
-		comentariosScrollPane = new JScrollPane(lista_canciones);
+	 public void setInformacion(Album album_entrante) {
+		this.album = album_entrante; 
+		 
+	 	this.datos_album.setText("Datos del album");
+		this.titulo_album.setText("Titulo album:\t\t\t\t\t" + this.album.getTitulo());
+		this.anyo_album.setText("Año:\t\t\t\t\t" + this.album.getAnyo());
+		this.autor_album.setText("Autor:\t\t\t\t\t" + this.album.getAutor().getNombreAutor());
+		int horas = (int) (this.album.getDuracion() / 3600);
+	    int minutos = (int) ((this.album.getDuracion()-horas*3600)/60);
+	    int segundos = (int) (this.album.getDuracion()-(horas*3600+minutos*60));
+		this.duracion_album.setText("Duracion:\t\t\t\t\t" + horas + " h/" + minutos + " m/" + segundos + " s");
+		this.comentarios_label.setText("Comentarios de la album");
+		
+		this.actualizarCanciones();
+		this.actualizarComentarios();
 	 }
 	 
-	 @SuppressWarnings("unchecked")
-	public void actualizarCanciones() {
-		canciones = album.getContenido();
-		lista_canciones = new JList(canciones.toArray());
-		cancionesScrollPane = new JScrollPane(lista_canciones);
+	 public void actualizarComentarios() {
+		model1.clear();
+		misComentarios = album.getComentarios().toArray(new Comentario[album.getComentarios().size()]);
+		if(misComentarios != null) {
+			for(int i=0; i < misComentarios.length;i++) {
+				model1.addElement(misComentarios[i].getTexto());
+			}
+		}
 	 }
+	 
+	 public void actualizarCanciones() {
+		model2.clear();
+		misCanciones = album.getContenido().toArray(new Cancion[album.getContenido().size()]);
+		if(misCanciones != null) {
+			for(int i=0; i < misCanciones.length;i++) {
+				model2.addElement("Titulo: " + misCanciones[i].getTitulo() + " // Duracion: " + misCanciones[i].getDuracion() + " // Estado: " + misCanciones[i].getEstado().toString());
+			}
+		}
+	 }
+	 
+	 public void insertarComentario(Comentario nuevoComentario) {
+			if(this.album != null) {
+				album.anyadirComentario(nuevoComentario);
+			}
+	 }
+	 
+	 private class RowColor extends DefaultListCellRenderer{
+		
+			LocalDate fecha_actual = LocalDate.now();
+
+		 
+			private static final long serialVersionUID = 1L;
+
+			public Component getListCellRendererComponent( JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+	            Component c = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
+	            	
+	            	if(Sistema.sistema.getUsuarioActual() != null) {
+	            		if(Sistema.sistema.getAdministrador() == true) {
+	            			c.setBackground( Color.green);
+		                    c.setForeground( Color.black );
+	            		}else{
+	    					Period intervalo = Period.between(Sistema.sistema.getUsuarioActual().getFechaNacimiento(), fecha_actual);
+	    					if(intervalo.getYears() >= 18) {
+	    						c.setBackground( Color.green);
+			                    c.setForeground( Color.black );
+	    					}else {
+	    						if(misCanciones[index].getEstado() == EstadoCancion.VALIDA) {
+	    		                    c.setBackground( Color.green);
+	    		                    c.setForeground( Color.black );
+	    		            	}else {
+	    		            		c.setBackground( Color.red );
+	    		                    c.setForeground( Color.black );
+	    		            	}
+	    					}
+	            			
+	            		}
+	            	}else {
+	            		if(misCanciones[index].getEstado() == EstadoCancion.VALIDA) {
+		                    c.setBackground( Color.green);
+		                    c.setForeground( Color.black );
+		            	}else if(misCanciones[index].getEstado() == EstadoCancion.EXPLICITA){
+		            		c.setBackground( Color.red);
+		                    c.setForeground( Color.black );
+		            	}
+	            	}
+	            	
+	            	
+	            
+	            return c;
+	        }
+			
+		}
+
+	
 	 
 	 
 }

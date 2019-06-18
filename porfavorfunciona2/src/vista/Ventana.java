@@ -27,6 +27,11 @@ public class Ventana extends JFrame {
 	public Registrarse registrarse;
 	public Perfil perfil;
 	public BuscadorCanciones buscadorCanciones;
+	public BuscadorAlbumes buscadorAlbumes;
+	public BuscadorAutores buscadorAutores;
+
+	
+	
 	public static Ventana ventana;
 	public ControladorPantallaInicio controladorPantallaInicio;
 	public ControladorReproducirCancion controladorReproducirCancion;
@@ -37,6 +42,9 @@ public class Ventana extends JFrame {
 	public ControladorPerfil controladorPerfil;
 	public ControladorPantallaInicioAdmin controladorPantallaInicioAdmin;
 	public ControladorBuscadorCanciones controladorBuscadorCanciones;
+	public ControladorBuscadorAlbumes controladorBuscadorAlbumes;
+	public ControladorBuscadorAutores controladorBuscadorAutores;
+	
 	
 	Container container;
 	Sistema sistema;
@@ -58,6 +66,8 @@ public class Ventana extends JFrame {
 		final String perfilString = "Perfil";
 		final String pantallaInicioAdminString = "Pantalla Inicio Admin";
 		final String buscadorCancionesString = "Buscador Canciones";
+		final String buscadorAlbumesString = "Buscador Albumes";
+		final String buscadorAutoresString = "Buscador Autores";
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setExtendedState(6);
@@ -67,13 +77,15 @@ public class Ventana extends JFrame {
 		//Pantallas
 		this.pantallaInicio = new PantallaInicio();
 		this.reproducirCancion = new ReproducirCancion(null);
-		this.reproducirAlbum = new ReproducirAlbum(null);
+		this.reproducirAlbum = new ReproducirAlbum();
 		this.reproducirLista = new ReproducirLista(null);
 		this.inicioSesion = new InicioSesion();
 		this.registrarse = new Registrarse();
 		this.perfil = new Perfil();
 		this.pantallaInicioAdmin = new PantallaInicioAdmin();
 		this.buscadorCanciones = new BuscadorCanciones();
+		this.buscadorAlbumes = new BuscadorAlbumes();
+		this.buscadorAutores = new BuscadorAutores();
 		
 		//Controladores
 		controladorPantallaInicio = new ControladorPantallaInicio(pantallaInicio, 2);
@@ -85,7 +97,8 @@ public class Ventana extends JFrame {
 		controladorPerfil = new ControladorPerfil(perfil,2);
 		controladorPantallaInicioAdmin = new ControladorPantallaInicioAdmin(pantallaInicioAdmin,2);
 		controladorBuscadorCanciones = new ControladorBuscadorCanciones(buscadorCanciones,2);
-		
+		controladorBuscadorAlbumes = new ControladorBuscadorAlbumes(buscadorAlbumes,2);
+		controladorBuscadorAutores = new ControladorBuscadorAutores(buscadorAutores,2);
 		
 		// configurar la vista con el controlador
 		pantallaInicio.setControlador(controladorPantallaInicio);
@@ -97,6 +110,9 @@ public class Ventana extends JFrame {
 		perfil.setControlador(controladorPerfil);
 		pantallaInicioAdmin.setControlador(controladorPantallaInicioAdmin);
 		buscadorCanciones.setControlador(controladorBuscadorCanciones);
+		buscadorAlbumes.setControlador(controladorBuscadorAlbumes);
+		buscadorAutores.setControlador(controladorBuscadorAutores);
+		
 		
 		//anyadimos pantallas al contenedor
 		this.add(pantallaInicio, pantallaInicioString);
@@ -108,6 +124,8 @@ public class Ventana extends JFrame {
 		this.add(perfil, perfilString);
 		this.add(pantallaInicioAdmin,pantallaInicioAdminString);
 		this.add(buscadorCanciones,buscadorCancionesString);
+		this.add(buscadorAlbumes,buscadorAlbumesString);
+		this.add(buscadorAutores,buscadorAutoresString);
 		Ventana.ventana = this;
 		this.showPantallaInicio();
 	}
@@ -151,37 +169,48 @@ public class Ventana extends JFrame {
 	    cl.show(this.getContentPane(), reproducirCancionString);
 	   	    
 	    if (Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador() == false) {
-	    	this.reproducirCancion.setUsuarioRegistrado();
+	    	if(Sistema.sistema.getUsuarioActual().getCanciones().contains(c) == true) {
+		    	this.reproducirCancion.setUsuarioRegistradoPropia();
+	    	}else {
+	    		this.reproducirCancion.setUsuarioRegistradoNoPropia();
+	    	}
 	    }else if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador() == true) {
 	    	this.reproducirCancion.setAdministrador();
 	    } else {
-	    	this.reproducirCancion.setUsuarioNoRegistrado();
+	    	this.reproducirCancion.setUsuarioNoRegistradoNoPropia();
 	    }
 	    
 	    this.reproducirCancion.limpiarBuscador();
 	}
 	
 	public void showReproducirAlbum(Album a){
+		
 		final String reproducirAlbumString = "Reproducir Album";
 		this.remove(this.reproducirAlbum);
-		this.reproducirAlbum = new ReproducirAlbum(a);
+		this.reproducirAlbum = new ReproducirAlbum();
 		this.reproducirAlbum.setControlador(this.controladorReproducirAlbum);
 		this.add(reproducirAlbum,reproducirAlbumString);
 		
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), reproducirAlbumString);
 	    
-	    if (Sistema.sistema.getUsuarioActual() != null) {
-	    	this.reproducirAlbum.setUsuarioRegistrado();
+	    if (Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador() == true) {
+	    	this.reproducirAlbum.setAdministrador();
 	    } else {
-	    	this.reproducirAlbum.setUsuarioNoRegistrado();
+	    	if(Sistema.sistema.getUsuarioActual() != null) {
+		    	this.reproducirAlbum.setUsuarioRegistradoPropia();
+	    	}else {
+	    		this.reproducirAlbum.setUsuarioRegistradoNoPropia();
+	    	}
 	    }
 	    
+	    this.reproducirAlbum.setInformacion(a);
 	    this.reproducirAlbum.limpiarBuscador();
 	}
 	
 	
 	public void showReproducirLista(Lista l){
+		
 		final String reproducirListaString = "Reproducir Lista";
 		this.remove(this.reproducirLista);
 		this.reproducirLista = new ReproducirLista(l);
@@ -212,9 +241,11 @@ public class Ventana extends JFrame {
 		final String perfilString = "Perfil";
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), perfilString);
+	    
     	this.perfil.setInformacion(Sistema.sistema.getUsuarioActual());
+    	
 	    if(Sistema.sistema.getAdministrador() == true) {
-	    	this.perfil.setAsministrador();	
+	    	this.perfil.setAdministrador();	
 	    }else {
 	    	if(Sistema.sistema.getUsuarioActual().getPremium() == true) {
 	    		this.perfil.setUsuarioPremium();
@@ -231,9 +262,11 @@ public class Ventana extends JFrame {
 	    if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador() == true) {
 	    	this.pantallaInicioAdmin.actualizarCanciones();
 	    	this.pantallaInicioAdmin.actualizarReportes();
+	    	this.pantallaInicioAdmin.actualizarCriterios();
+	    	this.pantallaInicioAdmin.limpiarCriterios();
+		    this.pantallaInicioAdmin.limpiarBuscador();
 	    }
 	    
-	    this.pantallaInicioAdmin.limpiarBuscador();
 	}
 	
 	public void showBuscadorCanciones(Cancion[] retornadas) {
@@ -255,13 +288,41 @@ public class Ventana extends JFrame {
 	    this.buscadorCanciones.limpiarBuscador();
 	}
 
-	public void showBuscadorAutores(Album[] array) {
-		// TODO Auto-generated method stub
+	public void showBuscadorAutores(Contenido[] retornadas) {
+		
+		final String buscadorAutoresString = "Buscador Autores";
+		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
+	    cl.show(this.getContentPane(), buscadorAutoresString);
+	    
+	    if(Sistema.sistema.getUsuarioActual() != null) {
+	    	this.buscadorAutores.setUsuarioRegistrado();
+	    	this.buscadorAutores.actualizarContenido(retornadas);
+	    	this.buscadorAutores.actualizarAutores(retornadas);
+	    }else {
+	    	
+	    	this.buscadorAutores.setUsuarioNoRegistrado();
+	    	this.buscadorAutores.limpiarDatos();
+	    	this.buscadorAutores.actualizarContenido(retornadas);
+	    	this.buscadorAutores.actualizarAutores(retornadas);
+	    }
+	    
 		
 	}
 
-	public void showBuscadorAlbumes(Album[] array) {
-		// TODO Auto-generated method stub
+	public void showBuscadorAlbumes(Album[] retornadas) {
+		
+		final String buscadorAlbumesString = "Buscador Albumes";
+		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
+	    cl.show(this.getContentPane(), buscadorAlbumesString);
+	    
+	    if(Sistema.sistema.getUsuarioActual() != null) {
+	    	this.buscadorAlbumes.setUsuarioRegistrado();
+	    	this.buscadorAlbumes.actualizarAlbumes(retornadas);
+	    }else {
+	    	this.buscadorAlbumes.setUsuarioNoRegistrado();
+	    	this.buscadorAlbumes.limpiarDatos();
+	    	this.buscadorAlbumes.actualizarAlbumes(retornadas);
+	    }
 		
 	}
 	

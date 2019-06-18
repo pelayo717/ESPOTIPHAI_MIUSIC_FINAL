@@ -2,6 +2,7 @@
 package controlador;
 
 
+import java.awt.HeadlessException;
 import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.File;
@@ -110,6 +111,7 @@ public class ControladorPantallaInicio implements ActionListener{
 		} else if(((JButton)e.getSource()).getText() == "Registro") {
 			Ventana.ventana.showRegistrarse();
 		} else if(((JButton)e.getSource()).getText() == "Buscar") {
+			
 			if(Ventana.ventana.pantallaInicio.getOpcion1().isSelected() == true) {
 				if(Ventana.ventana.pantallaInicio.getCriterioBusqueda().getText().isEmpty() != true) {
 					ArrayList<Cancion>  retornadas = Sistema.sistema.buscadorPorTitulos(Ventana.ventana.pantallaInicio.getCriterioBusqueda().getText());
@@ -117,47 +119,50 @@ public class ControladorPantallaInicio implements ActionListener{
 						Ventana.ventana.showBuscadorCanciones(retornadas.toArray(new Cancion[retornadas.size()]));
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado canciones por ese parametro");
-						Ventana.ventana.showPantallaInicio();
 					}
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
-					Ventana.ventana.showPantallaInicio();
 				}
 			}else if(Ventana.ventana.pantallaInicio.getOpcion2().isSelected() == true){
+								
 				if(Ventana.ventana.pantallaInicio.getCriterioBusqueda().getText().isEmpty() != true) {
+										
 					ArrayList<Album> retornadas = Sistema.sistema.buscadorPorAlbumes(Ventana.ventana.pantallaInicio.getCriterioBusqueda().getText());
 					if(retornadas != null) { //ALGO HAY
+						
 						Ventana.ventana.showBuscadorAlbumes(retornadas.toArray(new Album[retornadas.size()]));
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado albumes por ese parametro");
-						Ventana.ventana.showPantallaInicio();
 					}
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
-					Ventana.ventana.showPantallaInicio();
 				}
 			}else if(Ventana.ventana.pantallaInicio.getOpcion3().isSelected() == true) {
+							
 				if(Ventana.ventana.pantallaInicio.getCriterioBusqueda().getText().isEmpty() != true) {
+										
 					ArrayList<Contenido> retornadas = Sistema.sistema.buscadorPorAutores(Ventana.ventana.pantallaInicio.getCriterioBusqueda().getText());
+										
 					if(retornadas != null) { //ALGO HAY
-						Ventana.ventana.showBuscadorAutores(retornadas.toArray(new Album[retornadas.size()]));
+						
+						Ventana.ventana.showBuscadorAutores(retornadas.toArray(new Contenido[retornadas.size()]));
+						
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado autores por ese parametro");
-						Ventana.ventana.showPantallaInicio();
 					}
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
-					Ventana.ventana.showPantallaInicio();
 				}
 			}else {
 				if(Ventana.ventana.pantallaInicio.getCriterioBusqueda().getText().isEmpty() == true) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda y seleccione un criterio para realizar la busqueda");
-					Ventana.ventana.showPantallaInicio();
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Debe seleccionar un criterio para poder realizar la busqueda");
-					Ventana.ventana.showPantallaInicio();
 				}
 			}
+			
+			vista.limpiarBuscador();
+
 			
 		} else if(((JButton)e.getSource()).getText() == "Limpiar Buscador") {
 			vista.limpiarBuscador();
@@ -217,7 +222,16 @@ public class ControladorPantallaInicio implements ActionListener{
 				    	//f1.printStackTrace();
 				    	JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca correctamente los parametros del album");
 
-				    }
+				    } catch (HeadlessException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (Mp3PlayerException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 				Ventana.ventana.showPantallaInicio();
 				
@@ -229,7 +243,12 @@ public class ControladorPantallaInicio implements ActionListener{
 			 
 			if(Sistema.sistema.getUsuarioActual()!= null) {
 				String titulo = JOptionPane.showInputDialog("Introduzca el titulo de la lista");
-				Sistema.sistema.crearLista(titulo);
+				try {
+					Sistema.sistema.crearLista(titulo);
+				} catch (FileNotFoundException | Mp3PlayerException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				JOptionPane.showMessageDialog(Ventana.ventana,"La lista " + titulo + " se ha creado correctamente");
 				Ventana.ventana.showPantallaInicio();
 			 }else {

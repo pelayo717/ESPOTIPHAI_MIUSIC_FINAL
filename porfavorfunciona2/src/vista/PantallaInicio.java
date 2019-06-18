@@ -7,11 +7,11 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -44,7 +44,6 @@ public class PantallaInicio extends PantallaPrincipal {
 	JButton eliminarCancion;
 	JButton eliminarAlbum;
 	JButton eliminarLista;
-	JButton modificarCancion;
 	
 	JLabel susCanciones;
 	JLabel susAlbumes;
@@ -53,6 +52,7 @@ public class PantallaInicio extends PantallaPrincipal {
 	public Cancion[] misCanciones;
 	public Album[] misAlbumes;
 	public Lista[] misListas;
+	
 	public DefaultListModel<String> model1;
 	public DefaultListModel<String> model2;
 	public DefaultListModel<String> model3;
@@ -91,7 +91,6 @@ public class PantallaInicio extends PantallaPrincipal {
 		eliminarAlbum = new JButton("Eliminar album");
 		eliminarLista = new JButton("Eliminar lista");
 		
-		modificarCancion = new JButton("Modificar cancion");
 		
 		//Cambio de estilo en los JLabel
 		Font susCancionesFont = new Font(susCanciones.getFont().getName(), Font.BOLD, 16);
@@ -178,24 +177,42 @@ public class PantallaInicio extends PantallaPrincipal {
 		model1.clear();
 		misCanciones = canciones_propias.toArray(new Cancion[canciones_propias.size()]);
 		for(int i=0; i < misCanciones.length; i++) {
-			model1.addElement("Titulo: " + misCanciones[i].getTitulo() + " // Duracion: " + String.format("%.2f",misCanciones[i].getDuracion()) + " // Estado: " + misCanciones[i].getEstado().name());
+			int horas = (int) (misCanciones[i].getDuracion() / 3600);
+		    int minutos = (int) ((misCanciones[i].getDuracion()-horas*3600)/60);
+		    int segundos = (int) (misCanciones[i].getDuracion()-(horas*3600+minutos*60));
+			if(misCanciones[i].getEstado() == EstadoCancion.PENDIENTEMODIFICACION) {
+				LocalDate a = misCanciones[i].getFechaModificacion();
+				a = a.plusDays(3);
+				model1.addElement("Titulo: " + misCanciones[i].getTitulo() + " // Duracion HH-MM-SS: " + horas + "-" + minutos + "-" + segundos + " // Estado: " + misCanciones[i].getEstado().name() + " // Fecha Fin Modificacion: " + a.toString());
+			}else {
+				model1.addElement("Titulo: " + misCanciones[i].getTitulo() + " // Duracion HH-MM-SS: " + horas + "-" + minutos + "-" + segundos + " // Estado: " + misCanciones[i].getEstado().name());
+			}
 		}
+		
 	}
 	
 	public void actualizarAlbumes(ArrayList<Album> albumes_propios) {
 		model2.clear();
 		misAlbumes = albumes_propios.toArray(new Album[albumes_propios.size()]);
 		for(int i=0; i < misAlbumes.length; i++) {
-			model2.addElement("Titulo: " + misAlbumes[i].getTitulo() + " // Num.Canciones: " + misAlbumes[i].getContenido().size() + " // Duracion: " + String.format("%.2f",misAlbumes[i].getDuracion()));
+			int horas = (int) (misAlbumes[i].getDuracion() / 3600);
+		    int minutos = (int) ((misAlbumes[i].getDuracion()-horas*3600)/60);
+		    int segundos = (int) (misAlbumes[i].getDuracion()-(horas*3600+minutos*60));
+			model2.addElement("Titulo: " + misAlbumes[i].getTitulo() + " // Num.Canciones: " + misAlbumes[i].getContenido().size() + " // Duracion HH-MM-SS: " + horas + "-" + minutos + "-" + segundos);
 		}
+		
 	}
 	
 	public void actualizarListas(ArrayList<Lista> listas_propias) {
 		model3.clear();
 		misListas = listas_propias.toArray(new Lista[listas_propias.size()]);
 		for(int i=0; i < misListas.length; i++) {
-			model3.addElement("Titulo: " + misListas[i].getTitulo() + " // Num.Contenido: "  + misListas[i].getContenido().size() + " // Duracion: " + String.format("%.2f",misListas[i].getDuracion()));
+			int horas = (int) (misListas[i].getDuracion() / 3600);
+		    int minutos = (int) ((misListas[i].getDuracion()-horas*3600)/60);
+		    int segundos = (int) (misListas[i].getDuracion()-(horas*3600+minutos*60));
+			model3.addElement("Titulo: " + misListas[i].getTitulo() + " // Num.Contenido: "  + misListas[i].getContenido().size() + " // Duracion HH-MM-SS: " + horas + "-" + minutos + "-" + segundos);
 		}
+		
 	}
 
 
@@ -210,9 +227,9 @@ public class PantallaInicio extends PantallaPrincipal {
 		
 		private static final long serialVersionUID = 1L;
 
-		public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+		public Component getListCellRendererComponent( JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
             Component c = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
-            if (misCanciones[index].getEstado() == EstadoCancion.VALIDA || misCanciones[index].getEstado() == EstadoCancion.EXPLICITA) {
+            if (misCanciones[index].getEstado() == EstadoCancion.VALIDA) {
                 c.setBackground( Color.green); 
                 c.setForeground( Color.black );
             }else if(misCanciones[index].getEstado() == EstadoCancion.PENDIENTEAPROBACION){ //LAS PENDIENTES DE MODIFICACION
@@ -220,6 +237,9 @@ public class PantallaInicio extends PantallaPrincipal {
                 c.setForeground( Color.black );
             }else if(misCanciones[index].getEstado() == EstadoCancion.PENDIENTEMODIFICACION) {
                 c.setBackground( Color.orange );
+                c.setForeground( Color.black );
+            }else if(misCanciones[index].getEstado() == EstadoCancion.EXPLICITA) {
+            	c.setBackground( Color.pink );
                 c.setForeground( Color.black );
             }
             return c;

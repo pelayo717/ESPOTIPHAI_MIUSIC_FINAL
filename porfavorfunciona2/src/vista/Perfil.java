@@ -72,7 +72,7 @@ public class Perfil extends JPanel{
 		
 			
 		//VALORES INICIALIZADOS UNICAMENTE PARA QUE NO HAYA PROBLEMAS AL CONSTRUIR LA VENTANA DE PERFIL,
-		//ESTOS VALORES NO SE LLEGAN A VER NUNCA
+		//ESTOS VALORES NO SE LLEGAN A VER NUNCA, PORQUE ESTA VISTA APARECE PARA AQUELLOS QUE LA TENDRAN QUE VER
 		
 		this.nombre_autor =  "";
 		this.fecha_nacimiento =  LocalDate.now();
@@ -128,8 +128,7 @@ public class Perfil extends JPanel{
 		
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-		//Manual Constraints
-		//x axis, y axis, width, height  
+		 
 		botonInicio.setBounds(10, 10, 150, 30);
 		titulo.setBounds(screenSize.width/2 - 300, 50, 600, 30);
 		datosUsuario.setBounds(screenSize.width/2,100,300, 40);
@@ -144,11 +143,11 @@ public class Perfil extends JPanel{
 
 		imagen_reproduccion.setBounds(screenSize.width/2 - 320, 160, 300, 300);
 
-		susNotificaciones.setBounds(screenSize.width/2 - 350, 500, 200, 30);
+		susNotificaciones.setBounds(screenSize.width/2 - 260, 540, 200, 30);
 		
-		notificaciones.setBounds(screenSize.width/2 - 450, 540, 400, 100);
+		notificaciones.setBounds(screenSize.width/2 - 450, 580, 550, 100);
 		
-		seleccionarNotificacion.setBounds(screenSize.width/2 - 350, 650, 200, 30);
+		seleccionarNotificacion.setBounds(screenSize.width/2 - 260, 690, 200, 30);
 
 		
 		//We add all the components
@@ -179,7 +178,7 @@ public class Perfil extends JPanel{
 		this.botonCerrarSesion.setBounds(screenSize.width/2 + 30, 410, 150, 30);
 	}
 			
-	public void setAsministrador() {
+	public void setAdministrador() {
 		this.numeroSeguidos.setVisible(false);
 		this.numeroSeguidores.setVisible(false);
 		this.botonEliminarCuenta.setVisible(false);
@@ -194,6 +193,14 @@ public class Perfil extends JPanel{
 		 this.botonEliminarCuenta.addActionListener(c);
 		 this.botonHacersePRO.addActionListener(c);
 		 this.seleccionarNotificacion.addActionListener(c);
+	}
+	
+	public void setUsuarioPremium() {
+		this.numeroSeguidos.setVisible(true);
+		this.numeroSeguidores.setVisible(true);
+		this.botonEliminarCuenta.setVisible(true);
+		this.botonHacersePRO.setVisible(false);	
+		this.botonCerrarSesion.setBounds(screenSize.width/2 + 30, 410, 150, 30);
 	}
 		 
 	public void setInformacion(Usuario usuario) {
@@ -213,10 +220,4 @@ public class Perfil extends JPanel{
 		}
 	}
 
-	public void setUsuarioPremium() {
-		this.numeroSeguidos.setVisible(true);
-		this.numeroSeguidores.setVisible(true);
-		this.botonEliminarCuenta.setVisible(true);
-		this.botonHacersePRO.setVisible(false);		
-	}
 }

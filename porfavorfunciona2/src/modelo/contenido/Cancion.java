@@ -12,6 +12,7 @@ import modelo.usuario.*;
 import pads.musicPlayer.Mp3Player;
 import pads.musicPlayer.exceptions.Mp3InvalidFileException;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
+import vista.Ventana;
 
 
 
@@ -25,7 +26,6 @@ public class Cancion extends ContenidoComentable {
 	private EstadoCancion estado_anterior;
 	private EstadoCancion estado;
 	private String nombreMP3;
-	private static Mp3Player repro_mp3;
 	private LocalDate fecha_modificar;
 	/**
 	 *	Constructor de Cancion
@@ -36,13 +36,11 @@ public class Cancion extends ContenidoComentable {
 	 */
 	public Cancion(String titulo, Usuario autor,  String nombreMP3) throws FileNotFoundException, Mp3PlayerException{
 		super(-1,titulo, autor, new ArrayList<Comentario>());
-		Cancion.repro_mp3 = new Mp3Player();
 		this.setNombreMP3(nombreMP3);		
 		this.setDuracion(this.devolverDuracion());
 		this.setEstado(EstadoCancion.PENDIENTEAPROBACION);
 		this.fecha_modificar = LocalDate.now();
 	}
-	
 	
 	
 	
@@ -52,36 +50,12 @@ public class Cancion extends ContenidoComentable {
 	 */
 	public void anyadirCola() {
 		try {
-			Cancion.repro_mp3.add(this.nombreMP3);
+			this.getReproductor().add(this.nombreMP3);
 			return;
 		}catch(Mp3InvalidFileException ie) {
 			ie.toString();
 			return;
 		}
-	}
-	
-	
-	
-	/**
-	 *	Funcion para reproducir una cancion
-	 */
-	public void reproducir() {
-		try {
-			Cancion.repro_mp3.play();
-			return;
-		}catch(Mp3PlayerException pe) {
-			pe.toString();
-			return;
-		}
-		
-	}
-	
-	
-	/**
-	 *	Funcion para parar una cancion
-	 */
-	public void parar() {
-			Cancion.repro_mp3.stop();
 	}
 	
 	/**
@@ -90,9 +64,12 @@ public class Cancion extends ContenidoComentable {
 	 *	return true si es de tipo MP3 y false de lo contrario
 	 */
 	public boolean esMP3() {
+				
 		if(Mp3Player.isValidMp3File(this.nombreMP3) == true) {
+
 			return true;
 		}
+			
 		return false;
 	}
 	
@@ -228,13 +205,10 @@ public class Cancion extends ContenidoComentable {
 		this.nombreMP3 = nombreMP3;
 	}
 	
-	/**
-	 * Setter del reproductor mp3
-	 */
-	public void setMp3Player() throws FileNotFoundException, Mp3PlayerException {
-		Cancion.repro_mp3 = new Mp3Player();
+	public void reproducirBasico() {
+		this.anyadirCola();
+		super.reproducir();
 	}
-	
 	
 	/**
 	 * Esta funcion permite a cualquier usuario reproducir una cancion que se pase como argumento
@@ -246,9 +220,7 @@ public class Cancion extends ContenidoComentable {
 	 */
 	
 	public EstadoReproduccion reproducirCancion() throws InterruptedException, FileNotFoundException, Mp3PlayerException { //se supone que la cancion ha sido subida, valida y a la hora de buscar se devuelve en base a criterios ya comprobados
-		
-			this.setMp3Player();
-			
+					
 			LocalDate fecha_actual = LocalDate.now();
 			
 			if(this.getEstado() == EstadoCancion.PLAGIO || this.getEstado() == EstadoCancion.ELIMINADA) {
@@ -258,11 +230,10 @@ public class Cancion extends ContenidoComentable {
 			if(Sistema.sistema.getUsuarioActual() != null && ((Sistema.sistema.getAdministrador() == true || Sistema.sistema.getUsuarioActual().getPremium() == true))){
 				
 				if(Sistema.sistema.getAdministrador() == true) {
-					Sistema.sistema.setCancionReproduciendo(this);
-					Sistema.sistema.getCancionReproduciendo().anyadirCola();
-					Sistema.sistema.getCancionReproduciendo().reproducir();
-					Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
-					Sistema.sistema.getCancionReproduciendo().getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());
+					
+					this.reproducirBasico();				
+					
+					this.getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());
 				}else {
 					
 					Period intervalo = Period.between(Sistema.sistema.getUsuarioActual().getFechaNacimiento(), fecha_actual);
@@ -272,19 +243,14 @@ public class Cancion extends ContenidoComentable {
 					
 					if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) == true && (this.getEstado() == EstadoCancion.PENDIENTEAPROBACION || this.getEstado() == EstadoCancion.PENDIENTEMODIFICACION )) {
 		
-						Sistema.sistema.setCancionReproduciendo(this);
-						Sistema.sistema.getCancionReproduciendo().anyadirCola();
-						Sistema.sistema.getCancionReproduciendo().reproducir();
-						Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
+						this.reproducirBasico();
+
 					}else {
 					
-						Sistema.sistema.setCancionReproduciendo(this);
-						Sistema.sistema.getCancionReproduciendo().anyadirCola();
-						Sistema.sistema.getCancionReproduciendo().reproducir();
-						Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
+						this.reproducirBasico();
 						
 						if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) != true) {
-							Sistema.sistema.getCancionReproduciendo().getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());
+							this.getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());
 						}
 					
 					}
@@ -292,13 +258,8 @@ public class Cancion extends ContenidoComentable {
 				}
 				
 			}else{
-				
-				System.out.print("SIN REGISTRARSE: " + Sistema.sistema.getContenidoEscuchadoSinRegistrarse());
-				
+								
 				if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
-					
-					System.out.print("REGISTRADO: " + Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium());
-
 					
 					Period intervalo = Period.between(Sistema.sistema.getUsuarioActual().getFechaNacimiento(), fecha_actual);
 					if(intervalo.getYears() < 18 && this.getEstado() == EstadoCancion.EXPLICITA) {
@@ -307,21 +268,18 @@ public class Cancion extends ContenidoComentable {
 					
 					
 					if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) == true && (this.getEstado() == EstadoCancion.PENDIENTEAPROBACION || this.getEstado() == EstadoCancion.PENDIENTEMODIFICACION )) {
-						Sistema.sistema.setCancionReproduciendo(this);
-						Sistema.sistema.getCancionReproduciendo().anyadirCola();
-						Sistema.sistema.getCancionReproduciendo().reproducir();
-						Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
+						
+						this.reproducirBasico();
+
 						Sistema.sistema.getUsuarioActual().addContenidoEscuchadoSinSerPremium();
 					}else {
 												
-						Sistema.sistema.setCancionReproduciendo(this);
-						Sistema.sistema.getCancionReproduciendo().anyadirCola();
-						Sistema.sistema.getCancionReproduciendo().reproducir();
-						Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
+						this.reproducirBasico();
+						
 						Sistema.sistema.getUsuarioActual().addContenidoEscuchadoSinSerPremium();
 						
 						if(Sistema.sistema.getUsuarioActual().getCanciones().contains(this) != true) {
-							Sistema.sistema.getCancionReproduciendo().getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());						
+							this.getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());						
 						}
 					}
 				}else if(Sistema.sistema.getContenidoEscuchadoSinRegistrarse() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
@@ -329,26 +287,10 @@ public class Cancion extends ContenidoComentable {
 					if(this.getEstado() == EstadoCancion.EXPLICITA ) { 
 						return EstadoReproduccion.USUARIO_SR;
 					}
+										
+					this.reproducirBasico();
 					
-					System.out.print(" ME REPRODUZCO ");
-					
-					Sistema.sistema.setCancionReproduciendo(this);
-					
-					System.out.print(" ME REPRODUZCO 1 ");
-
-					Sistema.sistema.getCancionReproduciendo().anyadirCola();
-					
-					System.out.print(" ME REPRODUZCO 2 ");
-
-					Sistema.sistema.getCancionReproduciendo().reproducir();
-					
-					System.out.print(" ME REPRODUZCO 3 ");
-					
-					Thread.sleep((long) Sistema.sistema.getCancionReproduciendo().getDuracion());
-					
-					System.out.print(" ME REPRODUZCO 4 ");
-					
-					Sistema.sistema.getCancionReproduciendo().getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());
+					this.getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());
 					Sistema.sistema.addContenidoEscuchadoSinRegistrarse();
 					
 				}else {

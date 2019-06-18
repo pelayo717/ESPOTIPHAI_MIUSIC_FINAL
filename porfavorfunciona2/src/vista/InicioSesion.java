@@ -49,11 +49,7 @@ public class InicioSesion extends JPanel{
 		this.setLayout(layout);
 		
 		
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-		
-		//Manual Constraints
-		//x axis, y axis, width, height  
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();  
 
 		botonInicio.setBounds(10, 10, 100, 30);
 		titulo.setBounds(screenSize.width/2 - 300, 20, 600, 30);
