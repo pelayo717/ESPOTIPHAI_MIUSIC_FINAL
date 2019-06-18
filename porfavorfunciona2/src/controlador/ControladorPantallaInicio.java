@@ -185,7 +185,7 @@ public class ControladorPantallaInicio implements ActionListener{
 					 return;
 				 }
 				 JFileChooser file=new JFileChooser();
-				 file.showOpenDialog(Ventana.ventana);
+				 int a = file.showOpenDialog(Ventana.ventana);
 				 File escogido = file.getSelectedFile();
 				 
 				 //escogido.renameTo(new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName()));
@@ -193,14 +193,16 @@ public class ControladorPantallaInicio implements ActionListener{
 				 
 				 try {
 					 Cancion c;
-					if((c = Sistema.sistema.crearCancion(titulo, escogido.getAbsolutePath())) != null) {
-						JOptionPane.showMessageDialog(Ventana.ventana,"La cancion " + c.getTitulo() + " se ha creado correctamente");
-						vista.actualizarCanciones(Sistema.sistema.getUsuarioActual().getCanciones());
-						Ventana.ventana.showPantallaInicio();
+					if(a == JFileChooser.APPROVE_OPTION) {
+						if((c = Sistema.sistema.crearCancion(titulo, escogido.getAbsolutePath())) != null) {
+							JOptionPane.showMessageDialog(Ventana.ventana,"La cancion " + c.getTitulo() + " se ha creado correctamente");
+							vista.actualizarCanciones(Sistema.sistema.getUsuarioActual().getCanciones());
+							Ventana.ventana.showPantallaInicio();
+						}else {
+							JOptionPane.showMessageDialog(Ventana.ventana,"Se cancelo la creacion");
+						}
 					}else {
-						JOptionPane.showMessageDialog(Ventana.ventana,"La cancion no se ha creado");
-						vista.actualizarCanciones(Sistema.sistema.getUsuarioActual().getCanciones());
-
+						JOptionPane.showMessageDialog(Ventana.ventana,"Se cancelo la creacion");
 						Ventana.ventana.showPantallaInicio();
 					}
 					

@@ -18,7 +18,7 @@ public class ControladorInicioSesion implements ActionListener{
 		
 		public ControladorInicioSesion(InicioSesion vista, int modelo) {
 			this.vista = vista;
-			this.modelo = modelo;   
+			this.modelo = modelo;
 		}
 	 
 		@Override
