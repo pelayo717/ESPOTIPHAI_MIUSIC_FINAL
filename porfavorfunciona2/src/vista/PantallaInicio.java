@@ -170,7 +170,7 @@ public class PantallaInicio extends PantallaPrincipal {
 	public void setUsuarioNoRegistrado() {
 		super.getBotonIzquierdaArriba().setText("Iniciar Sesion");
 		super.getBotonIzquierdaMedio().setText("Registro");
-		super.getBotonIzquierdaAbajo().setVisible(true);
+		super.getBotonIzquierdaAbajo().setVisible(false);
 	}
 	
 	public static long getSerialversionuid() {

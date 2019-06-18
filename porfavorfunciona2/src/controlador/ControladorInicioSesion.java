@@ -2,20 +2,17 @@ package controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
-import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-import modelo.contenido.*;
 import modelo.sistema.*;
-import pads.musicPlayer.exceptions.Mp3PlayerException;
 import vista.InicioSesion;
 import vista.Ventana;
 
 public class ControladorInicioSesion implements ActionListener{
 		private InicioSesion vista;
+		@SuppressWarnings("unused")
 		private int modelo;
 		
 		
