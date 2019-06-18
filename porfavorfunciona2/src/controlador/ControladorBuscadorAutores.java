@@ -52,8 +52,8 @@ public class ControladorBuscadorAutores implements ActionListener{
 		if(((JButton)e.getSource()).getText() == "Elegir contenido") {
 			
 			if(vista.getContenido().length > 0) {
-				Contenido[] contenidos_totales = vista
-				int indice = Ventana.ventana.buscadorAutores.lista_contenidos.getSelectedIndex();
+				Contenido[] contenidos_totales = vista.getContenido();
+				int indice = vista.getLista_contenidos().getSelectedIndex();
 				if(indice == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir contenido seleccione uno primero");
 				}else{
@@ -66,19 +66,19 @@ public class ControladorBuscadorAutores implements ActionListener{
 					
 				}
 				
-				Ventana.ventana.buscadorAutores.lista_contenidos.clearSelection();
+				vista.getLista_contenidos().clearSelection();
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"No hay canciones para seleccionar");
 			}
 		}  else if(((JButton)e.getSource()).getText() == "Elegir autor") {
 			
 			if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador() == false) {
-				if(vista.lista_autores.getSelectedIndex() == -1) {
+				if(vista.getLista_autores().getSelectedIndex() == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir contenido seleccione uno primero");
 				}else{
 					String[] options = {"Seguir","Dejar Seguir"};
-					int indice = vista.lista_autores.getSelectedIndex();
-					Usuario[] presentados = vista.losAutores;
+					int indice = vista.getLista_autores().getSelectedIndex();
+					Usuario[] presentados = vista.getLosAutores();
 					
 					if(Sistema.sistema.getUsuarioActual().equals(presentados[indice]) == true) { //SOLO MOSTRAMOS SU INFO
 						JOptionPane.showMessageDialog(Ventana.ventana,"Autor: " + presentados[indice].getNombreAutor() + "\nCanciones Totales(se incluyen canciones pendientes de validar y explicitas): " + presentados[indice].getCanciones().size() + "\nAlbumes: " + presentados[indice].getAlbumes().size() + "\nReproducciones de sus contenidos por otros usuario: " + presentados[indice].getNumeroReproducciones());  
@@ -100,24 +100,24 @@ public class ControladorBuscadorAutores implements ActionListener{
 					}	
 				}
 				
-				Ventana.ventana.buscadorAutores.lista_autores.clearSelection();
+				vista.getLista_contenidos().clearSelection();
 				
 			}else if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador() == true) {
-				if(vista.lista_autores.getSelectedIndex() == -1) {
+				if(vista.getLista_autores().getSelectedIndex() == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir autor seleccione uno primero");
 				}else{
-					int indice = vista.lista_autores.getSelectedIndex();
-					Usuario[] presentados = vista.losAutores;
+					int indice = vista.getLista_autores().getSelectedIndex();
+					Usuario[] presentados = vista.getLosAutores();
 					JOptionPane.showMessageDialog(Ventana.ventana,"Autor: " + presentados[indice].getNombreAutor() + "\nCanciones Totales(se incluyen canciones pendientes de validar y explicitas): " + presentados[indice].getCanciones().size() + "\nAlbumes: " + presentados[indice].getAlbumes().size() + "\nReproducciones de sus contenidos por otros usuario: " + presentados[indice].getNumeroReproducciones());  
 					presentados = null;
 				}
 			}else {
-				if(vista.lista_autores.getSelectedIndex() == -1) {
+				if(vista.getLista_autores().getSelectedIndex() == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir autor seleccione uno primero");
 				}else{
 					String[] options = {"Seguir","Dejar Seguir"};
-					int indice = vista.lista_autores.getSelectedIndex();
-					Usuario[] presentados = vista.losAutores;
+					int indice = vista.getLista_autores().getSelectedIndex();
+					Usuario[] presentados = vista.getLosAutores();
 					int a = JOptionPane.showOptionDialog(Ventana.ventana,"Autor: " + presentados[indice].getNombreAutor() + "\nCanciones Totales(se incluyen canciones pendientes de validar y explicitas): " + presentados[indice].getCanciones().size() + "\nAlbumes: " + presentados[indice].getAlbumes().size() + "\nReproducciones de sus contenidos por otros usuario: " + presentados[indice].getNumeroReproducciones() ,"Usuario seleccionado",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);  
 					if(a == 0){
 						JOptionPane.showMessageDialog(Ventana.ventana,"Debe iniciar sesion para seguir a este usuario");

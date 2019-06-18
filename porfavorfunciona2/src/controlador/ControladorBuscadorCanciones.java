@@ -2,23 +2,16 @@ package controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 import modelo.contenido.Album;
 import modelo.contenido.Cancion;
 import modelo.contenido.Contenido;
-import modelo.contenido.Lista;
 import modelo.sistema.Sistema;
-import pads.musicPlayer.exceptions.Mp3PlayerException;
 import vista.BuscadorCanciones;
-import vista.PantallaInicio;
 import vista.Ventana;
 
 public class ControladorBuscadorCanciones implements ActionListener {
@@ -37,13 +30,13 @@ public class ControladorBuscadorCanciones implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(((JButton)e.getSource()).getText() == "Elegir cancion") {
 			
-			if(vista.lasCanciones.length > 0) {
-				Cancion[] canciones_totales = vista.lasCanciones;
-				if(vista.lista_canciones.getSelectedIndex() == -1) {
+			if(vista.getLasCanciones().length > 0) {
+				Cancion[] canciones_totales = vista.getLasCanciones();
+				if(vista.getLista_canciones().getSelectedIndex() == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir cancion seleccione una primero");
 					Ventana.ventana.showBuscadorCanciones(canciones_totales);
 				}else{
-					Ventana.ventana.showReproducirCancion(canciones_totales[vista.lista_canciones.getSelectedIndex()]);
+					Ventana.ventana.showReproducirCancion(canciones_totales[vista.getLista_canciones().getSelectedIndex()]);
 				}
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"No hay canciones para seleccionar");

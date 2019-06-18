@@ -56,16 +56,16 @@ public class ControladorPantallaInicio implements ActionListener{
 		if(((JButton)e.getSource()).getText() == "Elegir cancion") {
 			if(Sistema.sistema.getUsuarioActual() != null) {
 				if(Sistema.sistema.getUsuarioActual().getCanciones().size() > 0) {
-					Cancion[] canciones_totales = vista.misCanciones;
+					Cancion[] canciones_totales = vista.getMisCanciones();
 					
-					if(vista.lista_canciones.getSelectedIndex() == -1) {
+					if(vista.getLista_canciones().getSelectedIndex() == -1) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir cancion seleccione una primero");
 						Ventana.ventana.showPantallaInicio();
 					}else{
-						Ventana.ventana.showReproducirCancion(canciones_totales[vista.lista_canciones.getSelectedIndex()]);
+						Ventana.ventana.showReproducirCancion(canciones_totales[vista.getLista_canciones().getSelectedIndex()]);
 					}
 					
-					Ventana.ventana.pantallaInicio.lista_canciones.clearSelection();
+					Ventana.ventana.pantallaInicio.getLista_canciones().clearSelection();
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"No hay canciones para seleccionar");
 					Ventana.ventana.showPantallaInicio();
@@ -80,15 +80,15 @@ public class ControladorPantallaInicio implements ActionListener{
 		} else if(((JButton)e.getSource()).getText() == "Elegir album") {
 			if(Sistema.sistema.getUsuarioActual() != null) {
 				if(Sistema.sistema.getUsuarioActual().getAlbumes().size() > 0) { //ALGUNO HAY
-					Album[] albumes_totales = vista.misAlbumes;
-					if(vista.lista_albumes.getSelectedIndex() == -1) { //NO HA SELECCIONADO
+					Album[] albumes_totales = vista.getMisAlbumes();
+					if(vista.getLista_albumes().getSelectedIndex() == -1) { //NO HA SELECCIONADO
 						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir album seleccione uno primero");
 						Ventana.ventana.showPantallaInicio();
 					}else {
-						Ventana.ventana.showReproducirAlbum(albumes_totales[vista.lista_albumes.getSelectedIndex()]);
+						Ventana.ventana.showReproducirAlbum(albumes_totales[vista.getLista_albumes().getSelectedIndex()]);
 					}
 					
-					Ventana.ventana.pantallaInicio.lista_albumes.clearSelection();
+					Ventana.ventana.pantallaInicio.getLista_albumes().clearSelection();
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"No hay albumes para seleccionar");
 					Ventana.ventana.showPantallaInicio();
@@ -100,15 +100,15 @@ public class ControladorPantallaInicio implements ActionListener{
 		} else if(((JButton)e.getSource()).getText() == "Elegir lista") {
 			if(Sistema.sistema.getUsuarioActual() != null) {
 				if(Sistema.sistema.getUsuarioActual().getListas().size() > 0) { //ALGUNO HAY
-					Lista[] listas_totales = vista.misListas;
-					if(vista.lista_listas.getSelectedIndex() == -1) { //NO HA SELECCIONADO
+					Lista[] listas_totales = vista.getMisListas();
+					if(vista.getLista_listas().getSelectedIndex() == -1) { //NO HA SELECCIONADO
 						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir lista seleccione una primero");
 						Ventana.ventana.showPantallaInicio();
 					}else {
-						Ventana.ventana.showReproducirLista(listas_totales[vista.lista_listas.getSelectedIndex()]);
+						Ventana.ventana.showReproducirLista(listas_totales[vista.getLista_listas().getSelectedIndex()]);
 					}
 					
-					Ventana.ventana.pantallaInicio.lista_listas.clearSelection();
+					Ventana.ventana.pantallaInicio.getLista_listas().clearSelection();
 					
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"No hay albumes para seleccionar");
@@ -271,21 +271,21 @@ public class ControladorPantallaInicio implements ActionListener{
 		}else if(((JButton)e.getSource()).getText() == "Eliminar cancion") {
 			
 			if(Sistema.sistema.getUsuarioActual()!= null) {
-				Cancion[] canciones_totales = vista.misCanciones;
+				Cancion[] canciones_totales = vista.getMisCanciones();
 				if(canciones_totales.length > 0) {
 					
-					if(vista.lista_canciones.getSelectedIndex() == -1) {
+					if(vista.getLista_canciones().getSelectedIndex() == -1) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Eliminar cancion seleccione una primero");
 						Ventana.ventana.showPantallaInicio();
 					}else{
-						int indice = vista.lista_canciones.getSelectedIndex();
+						int indice = vista.getLista_canciones().getSelectedIndex();
 						int a=JOptionPane.showConfirmDialog(Ventana.ventana,"¿Esta seguro que desea eliminar " + canciones_totales[indice].getTitulo()  + " ?","Alert",JOptionPane.WARNING_MESSAGE);  
 						if(a == JOptionPane.YES_OPTION) {
 							Sistema.sistema.eliminarCancion(canciones_totales[indice]);
 						}
 					}
 					
-					Ventana.ventana.pantallaInicio.lista_canciones.clearSelection();
+					Ventana.ventana.pantallaInicio.getLista_canciones().clearSelection();
 					Ventana.ventana.showPantallaInicio();
 					
 				}else {
@@ -301,20 +301,20 @@ public class ControladorPantallaInicio implements ActionListener{
 		}else if(((JButton)e.getSource()).getText() == "Eliminar album") {
 			
 			if(Sistema.sistema.getUsuarioActual()!= null) {
-				Album[] albumes_totales = vista.misAlbumes;
+				Album[] albumes_totales = vista.getMisAlbumes();
 				if(albumes_totales.length > 0) {
 					
-					if(vista.lista_albumes.getSelectedIndex() == -1) {
+					if(vista.getLista_albumes().getSelectedIndex() == -1) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Eliminar album seleccione uno primero");
 						Ventana.ventana.showPantallaInicio();
 					}else{
-						int indice = vista.lista_albumes.getSelectedIndex();
+						int indice = vista.getLista_albumes().getSelectedIndex();
 						int a = JOptionPane.showConfirmDialog(Ventana.ventana,"¿Esta seguro que desea eliminar " + albumes_totales[indice].getTitulo()  + " ?","Alert",JOptionPane.WARNING_MESSAGE);  
 						if(a == JOptionPane.YES_OPTION) {
 							Sistema.sistema.eliminarAlbum(albumes_totales[indice]);
 						}
 						
-						Ventana.ventana.pantallaInicio.lista_albumes.clearSelection();
+						Ventana.ventana.pantallaInicio.getLista_albumes().clearSelection();
 						Ventana.ventana.showPantallaInicio();
 					}
 				}else {
@@ -330,14 +330,14 @@ public class ControladorPantallaInicio implements ActionListener{
 		}else if(((JButton)e.getSource()).getText() == "Eliminar lista") {
 			
 			if(Sistema.sistema.getUsuarioActual()!= null) {
-				Lista[]	listas_totales = vista.misListas;
+				Lista[]	listas_totales = vista.getMisListas();
 				if(listas_totales.length > 0) {
 					
-					if(vista.lista_listas.getSelectedIndex() == -1) {
+					if(vista.getLista_listas().getSelectedIndex() == -1) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Eliminar lista seleccione una primero");
 						Ventana.ventana.showPantallaInicio();
 					}else{
-						int indice = vista.lista_listas.getSelectedIndex();
+						int indice = vista.getLista_listas().getSelectedIndex();
 						int a = JOptionPane.showConfirmDialog(Ventana.ventana,"¿Esta seguro que desea eliminar " + listas_totales[indice].getTitulo()  + " ?","Alert",JOptionPane.WARNING_MESSAGE);  
 						if(a == JOptionPane.YES_OPTION) {
 							Sistema.sistema.eliminarLista(listas_totales[indice]);

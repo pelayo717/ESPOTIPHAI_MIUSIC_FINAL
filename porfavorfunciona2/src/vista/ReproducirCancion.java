@@ -75,32 +75,14 @@ public class ReproducirCancion extends PantallaPrincipal {
 		botonPause.setIcon(icono_parar);
 
 		
-		if(this.cancion != null) {
-			
-			int horas = (int) (cancion.getDuracion() / 3600);
-		    int minutos = (int) ((cancion.getDuracion()-horas*3600)/60);
-		    int segundos = (int) (cancion.getDuracion()-(horas*3600+minutos*60));
-			
-			datos_cancion = new JLabel("Datos de la cancion", SwingConstants.CENTER);
-			titulo_cancion = new JLabel("Titulo:\t\t\t\t\t" + this.cancion.getTitulo(),SwingConstants.CENTER);
-			autor_cancion = new JLabel("Autor:\t\t\t\t\t" + this.cancion.getAutor().getNombreAutor(),SwingConstants.CENTER);
-			duracion_cancion = new JLabel("Duracion:\t\t\t\t\t" + minutos + " m/" + segundos + " s",SwingConstants.CENTER);
-			comentarios_label = new JLabel("Comentarios de la cancion", SwingConstants.CENTER);
-			estadoCancion = new JLabel("Estado Cancion:\t\t\t\t\t" + this.cancion.getEstado().name());
-			this.actualizarComentarios();
-			if(this.cancion.getEstado() == EstadoCancion.PENDIENTEMODIFICACION) {
-				this.modificarCancion.setVisible(true);
-			}else{
-				this.modificarCancion.setVisible(false);
-			}
-		}else {
-			datos_cancion = new JLabel("Datos de la cancion", SwingConstants.CENTER);
-			titulo_cancion = new JLabel("Titulo:\t\t\t\t\t" ,SwingConstants.LEFT);
-			autor_cancion = new JLabel("Autor:\t\t\t\t\t" ,SwingConstants.LEFT);
-			duracion_cancion = new JLabel("Duracion:\t\t\t\t\t" + " s",SwingConstants.LEFT);
-			comentarios_label = new JLabel("Comentarios de la cancion", SwingConstants.CENTER);
-			estadoCancion = new JLabel("Estado Cancion:\t\t\t\t\t");
-		}
+		
+		datos_cancion = new JLabel("Datos de la cancion", SwingConstants.CENTER);
+		titulo_cancion = new JLabel("Titulo:\t\t\t\t\t" ,SwingConstants.LEFT);
+		autor_cancion = new JLabel("Autor:\t\t\t\t\t" ,SwingConstants.LEFT);
+		duracion_cancion = new JLabel("Duracion:\t\t\t\t\t" + " s",SwingConstants.LEFT);
+		comentarios_label = new JLabel("Comentarios de la cancion", SwingConstants.CENTER);
+		estadoCancion = new JLabel("Estado Cancion:\t\t\t\t\t");
+		
 		
 		
 		
@@ -172,11 +154,11 @@ public class ReproducirCancion extends PantallaPrincipal {
 	
 	 // método para asignar un controlador al botón
 	 public void setControlador(ActionListener c) {
-		 this.botonIzquierdaArriba.addActionListener(c);
-		 this.botonIzquierdaMedio.addActionListener(c);
-		 this.botonIzquierdaAbajo.addActionListener(c);
-		 this.botonBuscar.addActionListener(c);
-		 this.botonLimpiarBuscador.addActionListener(c);
+		 super.getBotonIzquierdaArriba().addActionListener(c);
+		 super.getBotonIzquierdaMedio().addActionListener(c);
+		 super.getBotonIzquierdaAbajo().addActionListener(c);
+		 super.getBotonBuscar().addActionListener(c);
+		 super.getBotonLimpiarBuscador().addActionListener(c);
 		 this.botonList.addActionListener(c);
 		 this.botonAnyadirComentario.addActionListener(c);
 		 this.botonReportar.addActionListener(c);
@@ -204,8 +186,8 @@ public class ReproducirCancion extends PantallaPrincipal {
 	}
 	
 	public void limpiarBuscador(){
-		this.busquedaTextfield.setText("");
-		this.grupo_eleccion.clearSelection();
+		super.getBusquedaTextfield().setText("");
+		super.getGrupo_eleccion().clearSelection();
 	}
 	
 	public void setInformacion(Cancion cancion) {
@@ -229,9 +211,9 @@ public class ReproducirCancion extends PantallaPrincipal {
 	}
 
 	public void setAdministrador() {
-		this.botonIzquierdaArriba.setText("Ver Perfil");
-		this.botonIzquierdaMedio.setText("Inicio");
-		this.botonIzquierdaAbajo.setVisible(false);
+		super.getBotonIzquierdaArriba().setText("Ver Perfil");
+		super.getBotonIzquierdaMedio().setText("Inicio");
+		super.getBotonIzquierdaAbajo().setVisible(false);
 		this.anyadirAlbum.setVisible(false);
 		this.anyadirLista.setVisible(false);
 		this.botonReportar.setVisible(false);
@@ -239,9 +221,9 @@ public class ReproducirCancion extends PantallaPrincipal {
 	}
 	
 	public void setUsuarioRegistradoPropia() {
-		this.botonIzquierdaArriba.setText("Ver Perfil");
-		this.botonIzquierdaMedio.setText("Inicio");
-		this.botonIzquierdaAbajo.setVisible(false);
+		super.getBotonIzquierdaArriba().setText("Ver Perfil");
+		super.getBotonIzquierdaMedio().setText("Inicio");
+		super.getBotonIzquierdaAbajo().setVisible(false);
 		this.anyadirAlbum.setVisible(true);
 		this.anyadirLista.setVisible(true);
 		this.anyadirLista.setBounds(screenSize.width/2 - 210, 600, 150, 30);
@@ -251,9 +233,9 @@ public class ReproducirCancion extends PantallaPrincipal {
 	}
 	
 	public void setUsuarioRegistradoNoPropia() {
-		this.botonIzquierdaArriba.setText("Ver Perfil");
-		this.botonIzquierdaMedio.setText("Inicio");
-		this.botonIzquierdaAbajo.setVisible(false);
+		super.getBotonIzquierdaArriba().setText("Ver Perfil");
+		super.getBotonIzquierdaMedio().setText("Inicio");
+		super.getBotonIzquierdaAbajo().setVisible(false);
 		this.anyadirAlbum.setVisible(false);
 		this.anyadirLista.setVisible(true);
 		this.anyadirLista.setBounds(screenSize.width/2 - 280, 600, 150, 30);
@@ -264,9 +246,9 @@ public class ReproducirCancion extends PantallaPrincipal {
 	
 	
 	public void setUsuarioNoRegistradoNoPropia() {
-		this.botonIzquierdaArriba.setText("Iniciar Sesion");
-		this.botonIzquierdaMedio.setText("Registro");
-		this.botonIzquierdaAbajo.setVisible(true);
+		super.getBotonIzquierdaArriba().setText("Iniciar Sesion");
+		super.getBotonIzquierdaMedio().setText("Registro");
+		super.getBotonIzquierdaAbajo().setVisible(true);
 		this.anyadirAlbum.setVisible(false);
 		this.anyadirLista.setVisible(true);
 		this.anyadirLista.setBounds(screenSize.width/2 - 280, 600, 150, 30);

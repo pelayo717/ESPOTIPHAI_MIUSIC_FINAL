@@ -146,13 +146,13 @@ public class PantallaInicio extends PantallaPrincipal {
 	
 	// metodo para asignar un controlador al boton
 	public void setControlador(ActionListener c) {
-		this.botonIzquierdaArriba.addActionListener(c);
-		this.botonIzquierdaMedio.addActionListener(c);
+		super.getBotonIzquierdaArriba().addActionListener(c);
+		super.getBotonIzquierdaMedio().addActionListener(c);
 		this.seleccionarCancion.addActionListener(c);
 		this.seleccionarAlbum.addActionListener(c);
 		this.seleccionarLista.addActionListener(c);
-		this.botonBuscar.addActionListener(c);
-		this.botonLimpiarBuscador.addActionListener(c);
+		super.getBotonBuscar().addActionListener(c);
+		super.getBotonLimpiarBuscador().addActionListener(c);
 		this.crearAlbum.addActionListener(c);
 		this.crearCancion.addActionListener(c);
 		this.crearLista.addActionListener(c);
@@ -162,15 +162,15 @@ public class PantallaInicio extends PantallaPrincipal {
 	}
 		 
 	public void setUsuarioRegistrado() {
-		this.botonIzquierdaArriba.setText("Ver Perfil");
-		this.botonIzquierdaMedio.setVisible(false);
-		this.botonIzquierdaAbajo.setVisible(false);
+		super.getBotonIzquierdaArriba().setText("Ver Perfil");
+		super.getBotonIzquierdaMedio().setText("Inicio");
+		super.getBotonIzquierdaAbajo().setVisible(false);
 	}
 			
 	public void setUsuarioNoRegistrado() {
-		this.botonIzquierdaArriba.setText("Iniciar Sesion");
-		this.botonIzquierdaMedio.setVisible(true);
-		this.botonIzquierdaAbajo.setVisible(false);
+		super.getBotonIzquierdaArriba().setText("Iniciar Sesion");
+		super.getBotonIzquierdaMedio().setText("Registro");
+		super.getBotonIzquierdaAbajo().setVisible(true);
 	}
 	
 	public static long getSerialversionuid() {

@@ -80,24 +80,24 @@ public class BuscadorCanciones extends PantallaPrincipal{
 	}
 
 	public void setControlador(ActionListener c) {
-		this.botonIzquierdaArriba.addActionListener(c);
-		this.botonIzquierdaMedio.addActionListener(c);
+		super.getBotonIzquierdaArriba().addActionListener(c);
+		super.getBotonIzquierdaMedio().addActionListener(c);
 		this.seleccionarCancion.addActionListener(c);
-		this.botonIzquierdaAbajo.addActionListener(c);
-		this.botonBuscar.addActionListener(c);
-		this.botonLimpiarBuscador.addActionListener(c);
+		super.getBotonIzquierdaAbajo().addActionListener(c);
+		super.getBotonBuscar().addActionListener(c);
+		super.getBotonLimpiarBuscador().addActionListener(c);
 	}
 	
 	public void setUsuarioRegistrado() {
-		this.botonIzquierdaArriba.setText("Ver Perfil");
-		this.botonIzquierdaMedio.setText("Inicio");
-		this.botonIzquierdaAbajo.setVisible(false);
+		super.getBotonIzquierdaArriba().setText("Ver Perfil");
+		super.getBotonIzquierdaMedio().setText("Inicio");
+		super.getBotonIzquierdaAbajo().setVisible(false);
 	}
 			
 	public void setUsuarioNoRegistrado() {
-		this.botonIzquierdaArriba.setText("Iniciar Sesion");
-		this.botonIzquierdaMedio.setText("Registro");
-		this.botonIzquierdaAbajo.setVisible(true);
+		super.getBotonIzquierdaArriba().setText("Iniciar Sesion");
+		super.getBotonIzquierdaMedio().setText("Registro");
+		super.getBotonIzquierdaAbajo().setVisible(true);
 	}
 	
 	public static long getSerialversionuid() {

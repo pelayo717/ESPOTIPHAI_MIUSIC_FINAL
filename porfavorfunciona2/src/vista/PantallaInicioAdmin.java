@@ -78,9 +78,9 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 		canciones = new JScrollPane(lista_canciones);
 		reportes = new JScrollPane(lista_reportes);
 		
-		botonIzquierdaArriba.setText("Ver Perfil");
-		botonIzquierdaMedio.setVisible(false);
-		botonIzquierdaAbajo.setVisible(false);
+		super.getBotonIzquierdaArriba().setText("Ver Perfil");
+		super.getBotonIzquierdaMedio().setVisible(false);
+		super.getBotonIzquierdaAbajo().setVisible(false);
 		
 		susCanciones = new JLabel("Canciones a validar",  SwingConstants.CENTER);
 		susReportes = new JLabel("Reportes a revisar",  SwingConstants.CENTER);	
@@ -177,13 +177,13 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 	
 	// metodo para asignar un controlador al boton
 		public void setControlador(ActionListener c) {
-			this.botonIzquierdaArriba.addActionListener(c);
-			this.botonIzquierdaMedio.addActionListener(c);
+			super.getBotonIzquierdaArriba().addActionListener(c);
+			super.getBotonIzquierdaMedio().addActionListener(c);
 			this.valida.addActionListener(c);
 			this.explicita.addActionListener(c);
 			this.pendienteModificacion.addActionListener(c);
-			this.botonBuscar.addActionListener(c);
-			this.botonLimpiarBuscador.addActionListener(c);
+			super.getBotonBuscar().addActionListener(c);
+			super.getBotonLimpiarBuscador().addActionListener(c);
 			this.eliminada.addActionListener(c);
 			this.seleccionarCancion.addActionListener(c);
 			this.aceptarReporte.addActionListener(c);

@@ -90,12 +90,12 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		botonPause.setIcon(icono_parar);
 
 		
-			datos_album = new JLabel("Datos del album", SwingConstants.CENTER);
-			titulo_album = new JLabel("Titulo:\t\t\t\t\t" ,SwingConstants.CENTER);
-			anyo_album = new JLabel("Año:\t\t\t\t\t",SwingConstants.LEFT);
-			autor_album = new JLabel("Autor:\t\t\t\t\t",SwingConstants.LEFT);
-			duracion_album = new JLabel("Duracion:\t\t\t\t\t" + " s",SwingConstants.LEFT);
-			comentarios_label = new JLabel("Comentarios de la album", SwingConstants.CENTER);
+		datos_album = new JLabel("Datos del album", SwingConstants.CENTER);
+		titulo_album = new JLabel("Titulo:\t\t\t\t\t" ,SwingConstants.CENTER);
+		anyo_album = new JLabel("Año:\t\t\t\t\t",SwingConstants.LEFT);
+		autor_album = new JLabel("Autor:\t\t\t\t\t",SwingConstants.LEFT);
+		duracion_album = new JLabel("Duracion:\t\t\t\t\t" + " s",SwingConstants.LEFT);
+		comentarios_label = new JLabel("Comentarios de la album", SwingConstants.CENTER);
 	
 		comentariosScrollPane = new JScrollPane(lista_comentarios);
 		
@@ -162,32 +162,32 @@ public class ReproducirAlbum extends PantallaPrincipal {
 	}
 	
 	public void limpiarBuscador(){
-		this.busquedaTextfield.setText("");
-		this.grupo_eleccion.clearSelection();
+		super.getBusquedaTextfield().setText("");
+		super.getGrupo_eleccion().clearSelection();
 	}
 	
 	public void setAdministrador() {
-		this.botonIzquierdaArriba.setText("Ver Perfil");
-		this.botonIzquierdaMedio.setText("Inicio");
-		this.botonIzquierdaAbajo.setVisible(false);
+		super.getBotonIzquierdaArriba().setText("Ver Perfil");
+		super.getBotonIzquierdaMedio().setText("Inicio");
+		super.getBotonIzquierdaAbajo().setVisible(false);
 		this.anyadirLista.setVisible(false);
 		this.eliminarCancion.setVisible(false);
 		this.botonAnyadirComentario.setBounds(screenSize.width/2 - 300, 640, 150, 30);
 	}
 	
 	public void setUsuarioRegistradoPropia() {
-		this.botonIzquierdaArriba.setText("Ver Perfil");
-		this.botonIzquierdaMedio.setText("Inicio");
-		this.botonIzquierdaAbajo.setVisible(false);
+		super.getBotonIzquierdaArriba().setText("Ver Perfil");
+		super.getBotonIzquierdaMedio().setText("Inicio");
+		super.getBotonIzquierdaAbajo().setVisible(false);
 		this.anyadirLista.setVisible(true);
 		this.eliminarCancion.setVisible(true);
 		this.botonAnyadirComentario.setBounds(screenSize.width/2 - 380, 640, 150, 30);
 	}
 	
 	public void setUsuarioRegistradoNoPropia() {
-		this.botonIzquierdaArriba.setText("Iniciar Sesion");
-		this.botonIzquierdaMedio.setText("Registro");
-		this.botonIzquierdaAbajo.setVisible(true);
+		super.getBotonIzquierdaArriba().setText("Iniciar Sesion");
+		super.getBotonIzquierdaMedio().setText("Registro");
+		super.getBotonIzquierdaAbajo().setVisible(true);
 		this.anyadirLista.setVisible(true);
 		this.eliminarCancion.setVisible(false);
 		this.botonAnyadirComentario.setBounds(screenSize.width/2 - 380, 640, 150, 30);
@@ -196,11 +196,11 @@ public class ReproducirAlbum extends PantallaPrincipal {
 	
 	 // método para asignar un controlador al botón
 	 public void setControlador(ActionListener c) {
-		 this.botonIzquierdaArriba.addActionListener(c);
-		 this.botonIzquierdaAbajo.addActionListener(c);
-		 this.botonIzquierdaMedio.addActionListener(c);
-		 this.botonBuscar.addActionListener(c);
-		 this.botonLimpiarBuscador.addActionListener(c);
+		 super.getBotonIzquierdaArriba().addActionListener(c);
+		 super.getBotonIzquierdaMedio().addActionListener(c);
+		 super.getBotonIzquierdaAbajo().addActionListener(c);
+		 super.getBotonBuscar().addActionListener(c);
+		 super.getBotonLimpiarBuscador().addActionListener(c);
 		 this.botonList.addActionListener(c);
 		 this.botonAnyadirComentario.addActionListener(c);
 		 this.botonPlay.addActionListener(c);

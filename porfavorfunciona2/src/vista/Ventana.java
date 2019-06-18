@@ -209,11 +209,8 @@ public class Ventana extends JFrame {
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), reproducirListaString);
 	    
-	    if (Sistema.sistema.getUsuarioActual() != null) {
-	    	this.reproducirLista.setUsuarioRegistrado();
-	    } else {
-	    	this.reproducirLista.setUsuarioNoRegistrado();
-	    }
+    	this.reproducirLista.setUsuarioRegistrado();
+    	    
 	    this.reproducirLista.setInformacion(l);
 	    this.reproducirLista.limpiarBuscador();
 	}
