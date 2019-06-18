@@ -15,36 +15,36 @@ public class Perfil extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	JButton botonInicio;
-	JButton botonCerrarSesion;
-	JButton botonEliminarCuenta;
-	JButton botonHacersePRO;
-	JButton seleccionarNotificacion;
+	private JButton botonInicio;
+	private JButton botonCerrarSesion;
+	private JButton botonEliminarCuenta;
+	private JButton botonHacersePRO;
+	private JButton seleccionarNotificacion;
 	 
 	
-	String nombre_autor;
-	LocalDate fecha_nacimiento;
-	String nombre_usuario;
-	int numero_seguidores;
-	int numero_seguidos;
-	int reproducciones;
+	private String nombre_autor;
+	private LocalDate fecha_nacimiento;
+	private String nombre_usuario;
+	private int numero_seguidores;
+	private int numero_seguidos;
+	private int reproducciones;
 	
-	JLabel nombreAutor;
-	JLabel fechaNacimiento;
-	JLabel nombreUsuario;
-	JLabel numeroSeguidores;
-	JLabel numeroSeguidos;
-	JLabel susNotificaciones;
+	private JLabel nombreAutor;
+	private JLabel fechaNacimiento;
+	private JLabel nombreUsuario;
+	private JLabel numeroSeguidores;
+	private JLabel numeroSeguidos;
+	private JLabel susNotificaciones;
 	
-	public DefaultListModel<String> model1;
+	private DefaultListModel<String> model1;
 
-	public Notificacion[] lasNotificaciones;
+	private Notificacion[] lasNotificaciones;
 
-	public JList<String> lista_notificaciones;
+	private JList<String> lista_notificaciones;
 
 	private JScrollPane notificaciones;
 	
-	public Dimension screenSize;
+	private Dimension screenSize;
 	
 	public Perfil() {
 		

@@ -18,32 +18,32 @@ public class ReproducirCancion extends PantallaPrincipal {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public Cancion cancion;
+	private  Cancion cancion;
 	
-	JLabel datos_cancion;
-	JLabel titulo_cancion;
-	JLabel autor_cancion;
-	JLabel duracion_cancion;
-	JLabel comentarios_label;
-	JLabel estadoCancion;
+	private JLabel datos_cancion;
+	private JLabel titulo_cancion;
+	private JLabel autor_cancion;
+	private JLabel duracion_cancion;
+	private JLabel comentarios_label;
+	private JLabel estadoCancion;
 	
-	JButton botonPlay;
-	JButton botonPause;
-	public JList<String> lista_comentarios;
-	JScrollPane comentariosScrollPane;
-	JButton botonList;
-	JButton botonAnyadirComentario;
-	JButton botonReportar;
+	private JButton botonPlay;
+	private JButton botonPause;
+	private  JList<String> lista_comentarios;
+	private JScrollPane comentariosScrollPane;
+	private JButton botonList;
+	private JButton botonAnyadirComentario;
+	private JButton botonReportar;
 	
-	JButton modificarCancion;
+	private JButton modificarCancion;
 	
-	JButton anyadirAlbum;
-	JButton anyadirLista;
+	private JButton anyadirAlbum;
+	private JButton anyadirLista;
 	
-	Dimension screenSize;
+	private Dimension screenSize;
 	
-	public Comentario[] comentarios;
-	public DefaultListModel<String> model1;
+	private  Comentario[] comentarios;
+	private  DefaultListModel<String> model1;
 
 	public ReproducirCancion(Cancion cancion) {
 		super();
@@ -206,6 +206,26 @@ public class ReproducirCancion extends PantallaPrincipal {
 	public void limpiarBuscador(){
 		this.busquedaTextfield.setText("");
 		this.grupo_eleccion.clearSelection();
+	}
+	
+	public void setInformacion(Cancion cancion) {
+		this.cancion = cancion;
+
+		int horas = (int) (cancion.getDuracion() / 3600);
+	    int minutos = (int) ((cancion.getDuracion()-horas*3600)/60);
+	    int segundos = (int) (cancion.getDuracion()-(horas*3600+minutos*60));
+		
+		datos_cancion.setText("Datos de la cancion");
+		titulo_cancion.setText("Titulo:\t\t\t\t\t" + this.cancion.getTitulo());
+		autor_cancion.setText("Autor:\t\t\t\t\t" + this.cancion.getAutor().getNombreAutor());
+		duracion_cancion.setText("Duracion:\t\t\t\t\t" + minutos + " m/" + segundos + " s");
+		estadoCancion.setText("Estado Cancion:\t\t\t\t\t" + this.cancion.getEstado().name());
+		this.actualizarComentarios();
+		if(this.cancion.getEstado() == EstadoCancion.PENDIENTEMODIFICACION) {
+			this.modificarCancion.setVisible(true);
+		}else{
+			this.modificarCancion.setVisible(false);
+		}
 	}
 
 	public void setAdministrador() {

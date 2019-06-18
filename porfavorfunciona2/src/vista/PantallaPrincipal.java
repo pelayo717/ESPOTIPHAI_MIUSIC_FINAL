@@ -8,19 +8,19 @@ public class PantallaPrincipal extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public JButton botonIzquierdaArriba;
-	public JButton botonIzquierdaMedio;
-	public JButton botonIzquierdaAbajo;
-	public JButton botonBuscar;
-	public JButton botonLimpiarBuscador;
+	private  JButton botonIzquierdaArriba;
+	private  JButton botonIzquierdaMedio;
+	private  JButton botonIzquierdaAbajo;
+	private  JButton botonBuscar;
+	private  JButton botonLimpiarBuscador;
 	
-	JTextField busquedaTextfield;
+	private JTextField busquedaTextfield;
 
-	JRadioButton opcion1;
-	JRadioButton opcion2;
-	JRadioButton opcion3;
+	private JRadioButton opcion1;
+	private JRadioButton opcion2;
+	private JRadioButton opcion3;
 	
-	ButtonGroup grupo_eleccion;
+	private ButtonGroup grupo_eleccion;
 	
 	public PantallaPrincipal() { //CAMBIADO, MEJORADO
 		

@@ -13,22 +13,22 @@ import modelo.contenido.*;
 
 public class ReproducirLista extends PantallaPrincipal {
 
-	public Lista lista;
+	private Lista lista;
 	
-	JButton botonPlay;
-	JButton botonPause;
-	JButton botonAdd;
-	JButton perfilAutor;
-	JList lista_contenido;
-	JScrollPane contenidoScrollPane;
-	JButton botonList;
+	private JButton botonPlay;
+	private JButton botonPause;
+	private JButton botonAdd;
+	private JButton perfilAutor;
+	private JList lista_contenido;
+	private JScrollPane contenidoScrollPane;
+	private JButton botonList;
 	
-	JLabel datos_lista;
-	JLabel titulo_lista;
-	JLabel autor_lista;
-	JLabel duracion_lista;
-	JLabel comentarios_label;
-	public ArrayList<Contenido> contenido;
+	private JLabel datos_lista;
+	private JLabel titulo_lista;
+	private JLabel autor_lista;
+	private JLabel duracion_lista;
+	private JLabel comentarios_label;
+	private ArrayList<Contenido> contenido;
 
 	public ReproducirLista(Lista lista) {
 		super();
@@ -153,6 +153,22 @@ public class ReproducirLista extends PantallaPrincipal {
 		 this.perfilAutor.addActionListener(c);
 	 }
 	 
+	 
+	 public void setInformacion(Lista lista) {
+			this.lista = lista;
+
+			int horas = (int) (lista.getDuracion() / 3600);
+		    int minutos = (int) ((lista.getDuracion()-horas*3600)/60);
+		    int segundos = (int) (lista.getDuracion()-(horas*3600+minutos*60));
+		    
+		    
+		    titulo_lista.setText("Titulo:\t\t\t\t\t" + this.lista.getTitulo());
+			autor_lista.setText("Autor:\t\t\t\t\t" + this.lista.getAutor());
+			duracion_lista.setText("Duracion:\t\t\t\t\t" + minutos + " m/" + segundos + " s");
+			
+			actualizarContenido();
+		}
+
 	 @SuppressWarnings("unchecked")
 		public void actualizarContenido() {
 			contenido = lista.getContenido();

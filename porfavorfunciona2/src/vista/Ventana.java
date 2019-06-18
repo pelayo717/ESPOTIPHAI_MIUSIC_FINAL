@@ -160,10 +160,6 @@ public class Ventana extends JFrame {
 	public void showReproducirCancion(Cancion c){
 		
 		final String reproducirCancionString = "Reproducir Cancion";
-		this.remove(this.reproducirCancion);
-		this.reproducirCancion = new ReproducirCancion(c);
-		this.reproducirCancion.setControlador(this.controladorReproducirCancion);
-		this.add(reproducirCancion, reproducirCancionString);
 		
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), reproducirCancionString);
@@ -180,16 +176,13 @@ public class Ventana extends JFrame {
 	    	this.reproducirCancion.setUsuarioNoRegistradoNoPropia();
 	    }
 	    
+		this.reproducirCancion.setInformacion(c);
 	    this.reproducirCancion.limpiarBuscador();
 	}
 	
 	public void showReproducirAlbum(Album a){
 		
 		final String reproducirAlbumString = "Reproducir Album";
-		this.remove(this.reproducirAlbum);
-		this.reproducirAlbum = new ReproducirAlbum();
-		this.reproducirAlbum.setControlador(this.controladorReproducirAlbum);
-		this.add(reproducirAlbum,reproducirAlbumString);
 		
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), reproducirAlbumString);
@@ -212,10 +205,6 @@ public class Ventana extends JFrame {
 	public void showReproducirLista(Lista l){
 		
 		final String reproducirListaString = "Reproducir Lista";
-		this.remove(this.reproducirLista);
-		this.reproducirLista = new ReproducirLista(l);
-		this.reproducirLista.setControlador(this.controladorReproducirLista);
-		this.add(reproducirLista, reproducirListaString);
 		
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), reproducirListaString);
@@ -225,7 +214,7 @@ public class Ventana extends JFrame {
 	    } else {
 	    	this.reproducirLista.setUsuarioNoRegistrado();
 	    }
-	    
+	    this.reproducirLista.setInformacion(l);
 	    this.reproducirLista.limpiarBuscador();
 	}
 	
