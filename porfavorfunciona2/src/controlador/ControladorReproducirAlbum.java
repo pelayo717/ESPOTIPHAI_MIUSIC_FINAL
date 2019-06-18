@@ -145,10 +145,12 @@ public class ControladorReproducirAlbum implements ActionListener{
 						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Eliminar Cancion debe seleccionar una");
 					}else {
 						Cancion[] entrantes = vista.getMisCanciones();
+						Album entrante = vista.getAlbum();
 						int a=JOptionPane.showConfirmDialog(Ventana.ventana,"¿Esta seguro que desea eliminar la cancion " + entrantes[indice].getTitulo() + " del album?","Alert",JOptionPane.WARNING_MESSAGE);  
 						if(a == JOptionPane.YES_OPTION) {
 							Sistema.sistema.quitarCancionDeAlbum(vista.getAlbum(),entrantes[indice]);
 							Ventana.ventana.reproducirAlbum.actualizarCanciones();
+							vista.setInformacion(entrante);
 						}
 					}
 				}else {
