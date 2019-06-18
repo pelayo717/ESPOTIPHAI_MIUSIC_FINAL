@@ -11,6 +11,8 @@ public class PantallaPrincipal extends JPanel{
 	private  JButton botonIzquierdaArriba;
 	private  JButton botonIzquierdaMedio;
 	private  JButton botonIzquierdaAbajo;
+	
+
 	private  JButton botonBuscar;
 	private  JButton botonLimpiarBuscador;
 	
@@ -101,6 +103,46 @@ public class PantallaPrincipal extends JPanel{
 	public ButtonGroup getGrupoElecciones() {
 		return this.grupo_eleccion;
 	}
+	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
+	public JButton getBotonIzquierdaArriba() {
+		return botonIzquierdaArriba;
+	}
+
+
+	public JButton getBotonIzquierdaMedio() {
+		return botonIzquierdaMedio;
+	}
+
+
+	public JButton getBotonIzquierdaAbajo() {
+		return botonIzquierdaAbajo;
+	}
+
+
+	public JButton getBotonBuscar() {
+		return botonBuscar;
+	}
+
+
+	public JButton getBotonLimpiarBuscador() {
+		return botonLimpiarBuscador;
+	}
+
+
+	public JTextField getBusquedaTextfield() {
+		return busquedaTextfield;
+	}
+
+
+	public ButtonGroup getGrupo_eleccion() {
+		return grupo_eleccion;
+	}
+
 	
 
 	public void limpiarBuscador(){

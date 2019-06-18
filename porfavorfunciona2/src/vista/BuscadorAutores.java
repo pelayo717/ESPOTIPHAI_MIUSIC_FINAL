@@ -29,29 +29,29 @@ public class BuscadorAutores extends PantallaPrincipal {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public DefaultListModel<String> model1;
+	private  DefaultListModel<String> model1;
 	
-	public DefaultListModel<String> model2;
+	private  DefaultListModel<String> model2;
 
-	public Contenido[] losContenidos;
+	private  Contenido[] losContenidos;
 	
-	public Usuario[] losAutores;
+	private  Usuario[] losAutores;
 
-	public JList<String> lista_autores;
+	private  JList<String> lista_autores;
 	
-	public JList<String> lista_contenidos;
+	private  JList<String> lista_contenidos;
 
 	private JScrollPane autores;
 	
 	private JScrollPane contenidos;
 
-	JLabel autoresEncontrados;
+	private JLabel autoresEncontrados;
 	
-	JLabel contenidosEncontrados;
+	private JLabel contenidosEncontrados;
 	
-	JButton seleccionarAutor;
+	private JButton seleccionarAutor;
 	
-	JButton seleccionarContenido;
+	private JButton seleccionarContenido;
 	
 	
 	public BuscadorAutores() {
@@ -134,6 +134,71 @@ public class BuscadorAutores extends PantallaPrincipal {
 		this.botonIzquierdaAbajo.setVisible(true);
 	}
 	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
+	public DefaultListModel<String> getModel1() {
+		return model1;
+	}
+
+
+	public DefaultListModel<String> getModel2() {
+		return model2;
+	}
+
+
+	public Contenido[] getLosContenidos() {
+		return losContenidos;
+	}
+
+
+	public Usuario[] getLosAutores() {
+		return losAutores;
+	}
+
+
+	public JList<String> getLista_autores() {
+		return lista_autores;
+	}
+
+
+	public JList<String> getLista_contenidos() {
+		return lista_contenidos;
+	}
+
+
+	public JScrollPane getAutores() {
+		return autores;
+	}
+
+
+	public JScrollPane getContenidos() {
+		return contenidos;
+	}
+
+
+	public JLabel getAutoresEncontrados() {
+		return autoresEncontrados;
+	}
+
+
+	public JLabel getContenidosEncontrados() {
+		return contenidosEncontrados;
+	}
+
+
+	public JButton getSeleccionarAutor() {
+		return seleccionarAutor;
+	}
+
+
+	public JButton getSeleccionarContenido() {
+		return seleccionarContenido;
+	}
+
+
 	@SuppressWarnings("unlikely-arg-type")
 	public void actualizarContenido(Contenido[] autores_propios) {
 		model2.clear();

@@ -212,6 +212,98 @@ public class Perfil extends JPanel{
 		this.actualizarNotificaciones();
 	}
 	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public JButton getBotonInicio() {
+		return botonInicio;
+	}
+
+	public JButton getBotonCerrarSesion() {
+		return botonCerrarSesion;
+	}
+
+	public JButton getBotonEliminarCuenta() {
+		return botonEliminarCuenta;
+	}
+
+	public JButton getBotonHacersePRO() {
+		return botonHacersePRO;
+	}
+
+	public JButton getSeleccionarNotificacion() {
+		return seleccionarNotificacion;
+	}
+
+	public String getNombre_autor() {
+		return nombre_autor;
+	}
+
+	public LocalDate getFecha_nacimiento() {
+		return fecha_nacimiento;
+	}
+
+	public String getNombre_usuario() {
+		return nombre_usuario;
+	}
+
+	public int getNumero_seguidores() {
+		return numero_seguidores;
+	}
+
+	public int getNumero_seguidos() {
+		return numero_seguidos;
+	}
+
+	public int getReproducciones() {
+		return reproducciones;
+	}
+
+	public JLabel getNombreAutor() {
+		return nombreAutor;
+	}
+
+	public JLabel getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public JLabel getNombreUsuario() {
+		return nombreUsuario;
+	}
+
+	public JLabel getNumeroSeguidores() {
+		return numeroSeguidores;
+	}
+
+	public JLabel getNumeroSeguidos() {
+		return numeroSeguidos;
+	}
+
+	public JLabel getSusNotificaciones() {
+		return susNotificaciones;
+	}
+
+	public DefaultListModel<String> getModel1() {
+		return model1;
+	}
+
+	public Notificacion[] getLasNotificaciones() {
+		return lasNotificaciones;
+	}
+
+	public JList<String> getLista_notificaciones() {
+		return lista_notificaciones;
+	}
+
+	public JScrollPane getNotificaciones() {
+		return notificaciones;
+	}
+
+	public Dimension getScreenSize() {
+		return screenSize;
+	}
+
 	public void actualizarNotificaciones() {
 		model1.clear();
 		lasNotificaciones = Sistema.sistema.getUsuarioActual().getNotificacionesTotales().toArray(new Notificacion[Sistema.sistema.getUsuarioActual().getNotificacionesTotales().size()]);

@@ -31,37 +31,37 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 	private JScrollPane reportes;
 	private JScrollPane canciones;
 	
-	public JList<String> lista_reportes;
-	public JList<String> lista_canciones;
+	private  JList<String> lista_reportes;
+	private  JList<String> lista_canciones;
 	
-	JButton modificarCriterios;
+	private JButton modificarCriterios;
 	
-	JButton valida;
-	JButton explicita;
-	JButton pendienteModificacion;
-	JButton eliminada;
-	JButton seleccionarCancion;
+	private JButton valida;
+	private JButton explicita;
+	private JButton pendienteModificacion;
+	private JButton eliminada;
+	private JButton seleccionarCancion;
 	
-	JButton aceptarReporte;
-	JButton denegarReporte;
-	JButton seleccionarReporte;
+	private JButton aceptarReporte;
+	private JButton denegarReporte;
+	private JButton seleccionarReporte;
 	
-	JButton cambiarCriterios;
-	public JTextField campoUmbral;
-	public JTextField campoPrecio;
-	public JTextField campoReproducciones;
+	private JButton cambiarCriterios;
+	private JTextField campoUmbral;
+	private JTextField campoPrecio;
+	private JTextField campoReproducciones;
 	
-	JLabel susCanciones;
-	JLabel susReportes;
-	JLabel precio;
-	JLabel umbral;
-	JLabel reproducciones;
+	private JLabel susCanciones;
+	private JLabel susReportes;
+	private JLabel precio;
+	private JLabel umbral;
+	private JLabel reproducciones;
 	
-	public Cancion[] aValidar;
-	public Reporte[] aReportar;
+	private  Cancion[] aValidar;
+	private  Reporte[] aReportar;
 	
-	public DefaultListModel<String> model1;
-	public DefaultListModel<String> model2;
+	private  DefaultListModel<String> model1;
+	private  DefaultListModel<String> model2;
 	
 	public PantallaInicioAdmin () {
 		
@@ -241,6 +241,114 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 	            return c;
 	        }
 			
+		}
+
+		public static long getSerialversionuid() {
+			return serialVersionUID;
+		}
+
+		public JScrollPane getReportes() {
+			return reportes;
+		}
+
+		public JScrollPane getCanciones() {
+			return canciones;
+		}
+
+		public JList<String> getLista_reportes() {
+			return lista_reportes;
+		}
+
+		public JList<String> getLista_canciones() {
+			return lista_canciones;
+		}
+
+		public JButton getModificarCriterios() {
+			return modificarCriterios;
+		}
+
+		public JButton getValida() {
+			return valida;
+		}
+
+		public JButton getExplicita() {
+			return explicita;
+		}
+
+		public JButton getPendienteModificacion() {
+			return pendienteModificacion;
+		}
+
+		public JButton getEliminada() {
+			return eliminada;
+		}
+
+		public JButton getSeleccionarCancion() {
+			return seleccionarCancion;
+		}
+
+		public JButton getAceptarReporte() {
+			return aceptarReporte;
+		}
+
+		public JButton getDenegarReporte() {
+			return denegarReporte;
+		}
+
+		public JButton getSeleccionarReporte() {
+			return seleccionarReporte;
+		}
+
+		public JButton getCambiarCriterios() {
+			return cambiarCriterios;
+		}
+
+		public JTextField getCampoUmbral() {
+			return campoUmbral;
+		}
+
+		public JTextField getCampoPrecio() {
+			return campoPrecio;
+		}
+
+		public JTextField getCampoReproducciones() {
+			return campoReproducciones;
+		}
+
+		public JLabel getSusCanciones() {
+			return susCanciones;
+		}
+
+		public JLabel getSusReportes() {
+			return susReportes;
+		}
+
+		public JLabel getPrecio() {
+			return precio;
+		}
+
+		public JLabel getUmbral() {
+			return umbral;
+		}
+
+		public JLabel getReproducciones() {
+			return reproducciones;
+		}
+
+		public Cancion[] getaValidar() {
+			return aValidar;
+		}
+
+		public Reporte[] getaReportar() {
+			return aReportar;
+		}
+
+		public DefaultListModel<String> getModel1() {
+			return model1;
+		}
+
+		public DefaultListModel<String> getModel2() {
+			return model2;
 		}
 
 		public void limpiarCriterios() {

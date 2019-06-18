@@ -16,6 +16,11 @@ import modelo.usuario.Usuario;
 import vista.BuscadorAutores;
 import vista.Ventana;
 
+/**
+ * Clase que implementa el controlador de la clase BuscadorAutores 
+ * teniendo en cuenta todos los casos posibles en los que el usuario realiza
+ * una accion u otra y asignando el controlador determinado a la accion realizada
+ */
 public class ControladorBuscadorAutores implements ActionListener{
 
 
@@ -23,11 +28,24 @@ public class ControladorBuscadorAutores implements ActionListener{
 	@SuppressWarnings("unused")
 	private int modelo;
 
+	/**
+	 * Constructor de la clase en la que se inicializan todos los atributos de 
+	 * la clase dandoles los valores necesarios
+	 * @param x: vista en la que se encuentra el usuario y donde se van a realizar 
+	 * todas las acciones 
+	 * @param modelo: argumento de tipo entero que representa el modelo que estamos usando
+	 */
 	public ControladorBuscadorAutores(BuscadorAutores x, int modelo) {
 		this.modelo = modelo;
 		this.vista = x;
 	}
 	
+	/**
+	 * Funcion que asigna el controlador necesario a la accion o boton que 
+	 * el usuario ha pulsado 
+	 * @param e: accion o boton que el usuario ha pulsado y se pasa como argumento 
+	 * para asignarle el controlador correspondiente 
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		

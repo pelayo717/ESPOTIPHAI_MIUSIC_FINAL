@@ -21,17 +21,17 @@ public class BuscadorCanciones extends PantallaPrincipal{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public DefaultListModel<String> model1;
+	private  DefaultListModel<String> model1;
 
-	public Cancion[] lasCanciones;
+	private  Cancion[] lasCanciones;
 
-	public JList<String> lista_canciones;
+	private  JList<String> lista_canciones;
 
 	private JScrollPane canciones;
 
-	JLabel cancionesEncontradas;
+	private JLabel cancionesEncontradas;
 	
-	JButton seleccionarCancion;
+	private JButton seleccionarCancion;
 	
 	public BuscadorCanciones() {
 		
@@ -100,6 +100,34 @@ public class BuscadorCanciones extends PantallaPrincipal{
 		this.botonIzquierdaAbajo.setVisible(true);
 	}
 	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public DefaultListModel<String> getModel1() {
+		return model1;
+	}
+
+	public Cancion[] getLasCanciones() {
+		return lasCanciones;
+	}
+
+	public JList<String> getLista_canciones() {
+		return lista_canciones;
+	}
+
+	public JScrollPane getCanciones() {
+		return canciones;
+	}
+
+	public JLabel getCancionesEncontradas() {
+		return cancionesEncontradas;
+	}
+
+	public JButton getSeleccionarCancion() {
+		return seleccionarCancion;
+	}
+
 	public void actualizarCanciones(Cancion[] canciones_propias) {
 		model1.clear();
 		lasCanciones = canciones_propias;

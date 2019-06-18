@@ -168,8 +168,65 @@ public class ReproducirLista extends PantallaPrincipal {
 			
 			actualizarContenido();
 		}
+	 
 
-	 @SuppressWarnings("unchecked")
+	 public Lista getLista() {
+		return lista;
+	}
+
+	public JButton getBotonPlay() {
+		return botonPlay;
+	}
+
+	public JButton getBotonPause() {
+		return botonPause;
+	}
+
+	public JButton getBotonAdd() {
+		return botonAdd;
+	}
+
+	public JButton getPerfilAutor() {
+		return perfilAutor;
+	}
+
+	public JList getLista_contenido() {
+		return lista_contenido;
+	}
+
+	public JScrollPane getContenidoScrollPane() {
+		return contenidoScrollPane;
+	}
+
+	public JButton getBotonList() {
+		return botonList;
+	}
+
+	public JLabel getDatos_lista() {
+		return datos_lista;
+	}
+
+	public JLabel getTitulo_lista() {
+		return titulo_lista;
+	}
+
+	public JLabel getAutor_lista() {
+		return autor_lista;
+	}
+
+	public JLabel getDuracion_lista() {
+		return duracion_lista;
+	}
+
+	public JLabel getComentarios_label() {
+		return comentarios_label;
+	}
+
+	public ArrayList<Contenido> getContenido() {
+		return contenido;
+	}
+
+	@SuppressWarnings("unchecked")
 		public void actualizarContenido() {
 			contenido = lista.getContenido();
 			lista_contenido = new JList(contenido.toArray());

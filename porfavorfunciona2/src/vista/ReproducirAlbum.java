@@ -19,39 +19,39 @@ public class ReproducirAlbum extends PantallaPrincipal {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public Album album;
+	private  Album album;
 	
-	public JList<String> lista_comentarios;
-	public JList<String> lista_canciones;
+	private  JList<String> lista_comentarios;
+	private  JList<String> lista_canciones;
 
 	
-	JScrollPane comentariosScrollPane;
-	JScrollPane cancionesScrollPane;
+	private JScrollPane comentariosScrollPane;
+	private JScrollPane cancionesScrollPane;
 
-	JButton botonList;
-	JButton botonAnyadirComentario;
-	JButton eliminarCancion;
-	JButton anyadirLista;
-	JButton botonPlay;
-	JButton botonPause;
+	private JButton botonList;
+	private JButton botonAnyadirComentario;
+	private JButton eliminarCancion;
+	private JButton anyadirLista;
+	private JButton botonPlay;
+	private JButton botonPause;
 	
 	
-	JLabel datos_album;
-	JLabel titulo_album;
-	JLabel anyo_album;
-	JLabel autor_album;
-	JLabel duracion_album;
-	JLabel comentarios_label;
+	private JLabel datos_album;
+	private JLabel titulo_album;
+	private JLabel anyo_album;
+	private JLabel autor_album;
+	private JLabel duracion_album;
+	private JLabel comentarios_label;
 	
-	public Comentario[] misComentarios;
-	public DefaultListModel<String> model1;
+	private Comentario[] misComentarios;
+	private DefaultListModel<String> model1;
 	
-	public Cancion[] misCanciones;
-	public DefaultListModel<String> model2;
+	private Cancion[] misCanciones;
+	private DefaultListModel<String> model2;
 	
 	//public Cancion reproduciendose;
 	
-	Dimension screenSize;
+	private Dimension screenSize;
 	
 	public ReproducirAlbum() {
 		super();
@@ -298,6 +298,98 @@ public class ReproducirAlbum extends PantallaPrincipal {
 	        }
 			
 		}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public Album getAlbum() {
+		return album;
+	}
+
+	public JList<String> getLista_comentarios() {
+		return lista_comentarios;
+	}
+
+	public JList<String> getLista_canciones() {
+		return lista_canciones;
+	}
+
+	public JScrollPane getComentariosScrollPane() {
+		return comentariosScrollPane;
+	}
+
+	public JScrollPane getCancionesScrollPane() {
+		return cancionesScrollPane;
+	}
+
+	public JButton getBotonList() {
+		return botonList;
+	}
+
+	public JButton getBotonAnyadirComentario() {
+		return botonAnyadirComentario;
+	}
+
+	public JButton getEliminarCancion() {
+		return eliminarCancion;
+	}
+
+	public JButton getAnyadirLista() {
+		return anyadirLista;
+	}
+
+	public JButton getBotonPlay() {
+		return botonPlay;
+	}
+
+	public JButton getBotonPause() {
+		return botonPause;
+	}
+
+	public JLabel getDatos_album() {
+		return datos_album;
+	}
+
+	public JLabel getTitulo_album() {
+		return titulo_album;
+	}
+
+	public JLabel getAnyo_album() {
+		return anyo_album;
+	}
+
+	public JLabel getAutor_album() {
+		return autor_album;
+	}
+
+	public JLabel getDuracion_album() {
+		return duracion_album;
+	}
+
+	public JLabel getComentarios_label() {
+		return comentarios_label;
+	}
+
+	public Comentario[] getMisComentarios() {
+		return misComentarios;
+	}
+
+	public DefaultListModel<String> getModel1() {
+		return model1;
+	}
+
+	public Cancion[] getMisCanciones() {
+		return misCanciones;
+	}
+
+	public DefaultListModel<String> getModel2() {
+		return model2;
+	}
+
+	public Dimension getScreenSize() {
+		return screenSize;
+	}
 
 	
 	 
