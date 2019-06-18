@@ -31,15 +31,20 @@ import vista.PantallaPrincipal;
 import vista.Ventana;
 
 /**
- * Clase que implementa el controlador de la clase PantallaInicio
+ * Clase que implementa el controlador de la clase PantallaInicio 
+ * teniendo en cuenta todos los casos posibles en los que el usuario realiza
+ * una accion u otra y asignando el controlador determinado a la accion realizada
  */
 public class ControladorPantallaInicio implements ActionListener{
 	private PantallaInicio vista;
 	private int modelo;
 
 	/**
-	 * Constructor de la clase, donde se inicialiazan todos los atributos de la
-	 * clase asignando los valores pertinentes a los atributos
+	 * Constructor de la clase en la que se inicializan todos los atributos de 
+	 * la clase dandoles los valores necesarios
+	 * @param x: vista en la que se encuentra el usuario y donde se van a realizar 
+	 * todas las acciones 
+	 * @param modelo: argumento de tipo entero que representa el modelo que estamos usando
 	 */
 	public ControladorPantallaInicio(PantallaInicio x, int modelo) {
 		this.modelo = modelo;
@@ -47,9 +52,10 @@ public class ControladorPantallaInicio implements ActionListener{
 	}
 
 	/**
-	 * Funcion que asigna un controlador al boton que el usuario 
-	 * ha pulsado
-	 * @param c: argumento que indica que boton se ha pulsado
+	 * Funcion que asigna el controlador necesario a la accion o boton que 
+	 * el usuario ha pulsado 
+	 * @param e: accion o boton que el usuario ha pulsado y se pasa como argumento 
+	 * para asignarle el controlador correspondiente 
 	 */ 
 	@Override
 	public void actionPerformed(ActionEvent e) { //CAMBIADO BASTANTE, MEJORADO
