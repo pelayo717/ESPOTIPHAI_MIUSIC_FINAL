@@ -18,7 +18,7 @@ public class ControladorInicioSesion implements ActionListener{
 		
 		public ControladorInicioSesion(InicioSesion vista, int modelo) {
 			this.vista = vista;
-			this.modelo = modelo;
+			this.modelo = modelo;   
 		}
 	 
 		@Override
@@ -27,7 +27,7 @@ public class ControladorInicioSesion implements ActionListener{
 				Ventana.ventana.inicioSesion.limpiarVentana();
 				Ventana.ventana.showPantallaInicio();
 			} else if(((JButton)e.getSource()).getText() == "Registrarse") {
-				Ventana.ventana.inicioSesion.limpiarVentana();
+				Ventana.ventana.inicioSesion.limpiarVentana(); 
 				Ventana.ventana.showRegistrarse();
 			} else if(((JButton)e.getSource()).getText() == "Iniciar Sesion") {
 				EstadoInicioSesion variable = Sistema.sistema.iniciarSesion(vista.getUsuarioTextfield().getText(), String.valueOf(vista.getPasswordTextfield().getPassword()));
