@@ -38,10 +38,10 @@ public class ControladorRegistrarse implements ActionListener{
 				try {
 					
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
-					String date = vista.birthTextfield.getText();
+					String date = vista.getBirthTextfield().getText();
 					LocalDate localDate = LocalDate.parse(date, formatter);
 					
-					if (Sistema.sistema.registrarse(vista.usuarioTextfield.getText(),vista.authorTextfield.getText(), localDate, String.valueOf(vista.passwordTextfield.getPassword())) == Status.OK){
+					if (Sistema.sistema.registrarse(vista.getUsuarioTextfield().getText(),vista.getAuthorTextfield().getText(), localDate, String.valueOf(vista.getPasswordTextfield())) == Status.OK){
 						JOptionPane.showMessageDialog(Ventana.ventana,"Su usuario ha sido registrado correctamente en la aplicacion");
 						Ventana.ventana.showInicioSesion();
 						Ventana.ventana.registrarse.limpiarVentana();

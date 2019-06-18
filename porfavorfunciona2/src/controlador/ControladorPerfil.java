@@ -68,17 +68,17 @@ public class ControladorPerfil implements ActionListener{
 				
 			} else if(((JButton)e.getSource()).getText() == "Elegir notificacion") {
 				
-				if(Ventana.ventana.perfil.lasNotificaciones.length > 0) {
+				if(vista.getLasNotificaciones().length > 0) {
 					
-					Notificacion[] para_ver = Ventana.ventana.perfil.lasNotificaciones;
-					int indice = Ventana.ventana.perfil.lista_notificaciones.getSelectedIndex();
+					Notificacion[] para_ver = vista.getLasNotificaciones();
+					int indice = vista.getLista_notificaciones().getSelectedIndex();
 					if(indice == -1) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir notificacion seleccione una primero");
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Emisor: " + para_ver[indice].getEmisor().getNombreUsuario()  + "\n" + "Texto: " + para_ver[indice].getMensaje() + "\n" + "Receptor: " + para_ver[indice].getReceptor().getNombreUsuario());
 					}
 					
-					Ventana.ventana.perfil.lista_notificaciones.clearSelection();
+					vista.getLista_notificaciones().clearSelection();
 					
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"No hay notificaciones para ver");

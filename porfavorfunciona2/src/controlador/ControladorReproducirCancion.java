@@ -93,15 +93,15 @@ public class ControladorReproducirCancion implements ActionListener{
 				vista.limpiarBuscador();
 			} else if((((JButton)e.getSource()).getText() == "Ver comentario")) {
 				
-				if(Ventana.ventana.reproducirCancion.lista_comentarios.getSelectedIndex() != -1) {
-					Comentario[] para_ver = Ventana.ventana.reproducirCancion.comentarios;
-					int indice = Ventana.ventana.reproducirCancion.lista_comentarios.getSelectedIndex();
+				if(vista.getLista_comentarios().getSelectedIndex() != -1) {
+					Comentario[] para_ver = vista.getComentarios();
+					int indice = vista.getLista_comentarios().getSelectedIndex();
 					if(para_ver[indice].getComentador() == null) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Autor: Desconocido" + "\nComentario: " + para_ver[indice].getTexto() + "\nFecha: " + para_ver[indice].getFecha() + "\nHora/Minuto/Segundo: " + para_ver[indice].getHora() + "/" + para_ver[indice].getMinuto() + "/" + para_ver[indice].getSegundo());  
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Autor: " + para_ver[indice].getComentador().getNombreUsuario() + "\n" + "Comentario: " + para_ver[indice].getTexto() + "\nFecha: " + para_ver[indice].getFecha() + "\nHora/Minuto/Segundo: " + para_ver[indice].getHora() + "/" + para_ver[indice].getMinuto() + "/" + para_ver[indice].getSegundo());
 					}
-					Ventana.ventana.reproducirCancion.lista_comentarios.clearSelection();
+					vista.getLista_comentarios().clearSelection();
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Ver comentario seleccione uno primero");
 				}
@@ -117,7 +117,7 @@ public class ControladorReproducirCancion implements ActionListener{
 					
 					int a=JOptionPane.showConfirmDialog(Ventana.ventana,"¿Esta seguro que desea reportar por plagio?","Alert",JOptionPane.WARNING_MESSAGE);  
 					if(a == JOptionPane.YES_OPTION) {
-						if(Sistema.sistema.denunciarPlagio(Ventana.ventana.reproducirCancion.cancion) == Status.OK) {
+						if(Sistema.sistema.denunciarPlagio(vista.getCancion()) == Status.OK) {
 							JOptionPane.showMessageDialog(Ventana.ventana,"El reporte fue realizado correctamente");
 						}else {
 							JOptionPane.showMessageDialog(Ventana.ventana,"El reporte no se pudo realizar");
@@ -130,9 +130,9 @@ public class ControladorReproducirCancion implements ActionListener{
 			
 			}else if(((JButton)e.getSource()).getText() == "play") {
 				try {
-					Ventana.ventana.reproducirCancion.cancion.parar();
-					Ventana.ventana.reproducirCancion.cancion.setMp3Player();
-					EstadoReproduccion  variable = Ventana.ventana.reproducirCancion.cancion.reproducirCancion();
+					vista.getCancion().parar();
+					vista.getCancion().setMp3Player();
+					EstadoReproduccion  variable = vista.getCancion().reproducirCancion();
 					if( variable == EstadoReproduccion.MENOR) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Esta cancion esta categorizada de Explicita y usted no tiene la edad suficiente para escucharla");
 					}else if(variable == EstadoReproduccion.REPRODUCCIONES_AGOTADAS){
@@ -153,7 +153,7 @@ public class ControladorReproducirCancion implements ActionListener{
 				}
 			} else if(((JButton)e.getSource()).getText() == "pause") {
 				
-				Ventana.ventana.reproducirCancion.cancion.parar();
+				vista.getCancion().parar();
 			} else if(((JButton)e.getSource()).getText() == "Añadir a Album") {
 				
 				if(Sistema.sistema.getUsuarioActual() != null) {
@@ -170,7 +170,7 @@ public class ControladorReproducirCancion implements ActionListener{
 						Object opcion = JOptionPane.showInputDialog(null,"Selecciona un album", "Elegir Album",JOptionPane.QUESTION_MESSAGE,null,nombre_albumes, nombre_albumes[0]);
 						for(int i=0; i < albumes_totales.length; i++) {
 							if(albumes_totales[i].getTitulo().equals(opcion)) {
-								if(Sistema.sistema.anyadirCancionAAlbum(albumes_totales[i], Ventana.ventana.reproducirCancion.cancion) == Status.OK) {
+								if(Sistema.sistema.anyadirCancionAAlbum(albumes_totales[i], vista.getCancion()) == Status.OK) {
 									JOptionPane.showMessageDialog(Ventana.ventana,"La cancion se ha añadido correctamente al album " + opcion);
 								}else {
 									JOptionPane.showMessageDialog(Ventana.ventana,"La cancion no se ha añadido al album " + opcion);
@@ -199,7 +199,7 @@ public class ControladorReproducirCancion implements ActionListener{
 						Object opcion = JOptionPane.showInputDialog(null,"Selecciona una lista", "Elegir Lista",JOptionPane.QUESTION_MESSAGE,null,nombre_listas, nombre_listas[0]);
 						for(int i=0; i < listas_totales.length; i++) {
 							if(listas_totales[i].getTitulo().equals(opcion)) {
-								if(Sistema.sistema.anyadirALista(listas_totales[i], Ventana.ventana.reproducirCancion.cancion) == Status.OK) {
+								if(Sistema.sistema.anyadirALista(listas_totales[i], vista.getCancion()) == Status.OK) {
 									JOptionPane.showMessageDialog(Ventana.ventana,"La cancion se ha añadido correctamente a la lista " + opcion);
 								}else {
 									JOptionPane.showMessageDialog(Ventana.ventana,"La cancion no se ha añadido a la lista " + opcion);
@@ -223,7 +223,7 @@ public class ControladorReproducirCancion implements ActionListener{
 				 //System.out.print(System.getProperty("user.dir") + System.getProperty("file.separator") + "src" + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName());
 				 
 				 //POR EL MOMENTO SUPONEMOS QUE SOLO ES COSA DEL MP3
-				 Cancion c = Ventana.ventana.reproducirCancion.cancion;
+				 Cancion c = vista.getCancion();
 				if(Sistema.sistema.modificarCancion(c, escogido.getAbsolutePath()) == Status.OK) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"La cancion " + c.getTitulo() + " ha sido modificada correctamente");
 					Ventana.ventana.showReproducirCancion(c);
@@ -232,7 +232,6 @@ public class ControladorReproducirCancion implements ActionListener{
 				}
 			
 			} else {
-				System.out.println(vista.lista_comentarios.isSelectionEmpty());
 				System.out.println(e.getSource());
 			}
 		}

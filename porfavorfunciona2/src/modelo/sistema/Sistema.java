@@ -1372,6 +1372,10 @@ public class Sistema implements Serializable{
 				
 		if(sistema.getUsuarioActual()!= null && sistema.es_administrador == false && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
 			
+			if(sistema.getUsuarioActual().getCanciones().contains(c) == true) {
+				return Status.ERROR;
+			}
+			
 			Reporte r = new Reporte(sistema.getUsuarioActual(),c);
 			if(sistema.getReportesTotales().contains(r)) {
 				return Status.ERROR; //REPORTE YA REALIZADO POR LA MISMA PERSONA CON LA MISMA CANCION

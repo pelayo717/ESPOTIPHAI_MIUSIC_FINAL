@@ -33,7 +33,7 @@ public class ControladorInicioSesion implements ActionListener{
 				Ventana.ventana.inicioSesion.limpiarVentana();
 				Ventana.ventana.showRegistrarse();
 			} else if(((JButton)e.getSource()).getText() == "Iniciar Sesion") {
-				EstadoInicioSesion variable = Sistema.sistema.iniciarSesion(vista.usuarioTextfield.getText(), String.valueOf(vista.passwordTextfield.getPassword()));
+				EstadoInicioSesion variable = Sistema.sistema.iniciarSesion(vista.getUsuarioTextfield().getText(), String.valueOf(vista.getPasswordTextfield().getPassword()));
 				if(variable == EstadoInicioSesion.CORRECTO) {
 					if(Sistema.sistema.getAdministrador() == true) {
 						Ventana.ventana.inicioSesion.limpiarVentana();

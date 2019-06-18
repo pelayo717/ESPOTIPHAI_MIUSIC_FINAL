@@ -8,13 +8,13 @@ public class PantallaPrincipal extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private  JButton botonIzquierdaArriba;
-	private  JButton botonIzquierdaMedio;
-	private  JButton botonIzquierdaAbajo;
+	public  JButton botonIzquierdaArriba;
+	public  JButton botonIzquierdaMedio;
+	public JButton botonIzquierdaAbajo;
 	
 
-	private  JButton botonBuscar;
-	private  JButton botonLimpiarBuscador;
+	public  JButton botonBuscar;
+	public  JButton botonLimpiarBuscador;
 	
 	private JTextField busquedaTextfield;
 

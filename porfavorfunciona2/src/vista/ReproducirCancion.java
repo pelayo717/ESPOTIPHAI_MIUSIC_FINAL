@@ -45,7 +45,7 @@ public class ReproducirCancion extends PantallaPrincipal {
 	private  Comentario[] comentarios;
 	private  DefaultListModel<String> model1;
 
-	public ReproducirCancion(Cancion cancion) {
+	public ReproducirCancion() {
 		super();
 		
 		this.cancion = cancion;

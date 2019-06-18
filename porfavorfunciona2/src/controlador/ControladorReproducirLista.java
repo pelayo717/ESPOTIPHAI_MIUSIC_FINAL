@@ -38,7 +38,7 @@ public class ControladorReproducirLista implements ActionListener{
 				Ventana.ventana.perfil.setInformacion(Sistema.sistema.getUsuarioActual());
 			} else if(((JButton)e.getSource()).getText() == "Ver Perfil Autor") {
 				for (Usuario usuario : Sistema.sistema.getUsuariosTotales()) {
-					if (usuario.getNombreAutor().equals(vista.lista.getAutor()) ) {
+					if (usuario.getNombreAutor().equals(vista.getLista().getAutor()) ) {
 						Ventana.ventana.showPerfil();
 						Ventana.ventana.perfil.setInformacion(usuario);
 					}
@@ -101,9 +101,9 @@ public class ControladorReproducirLista implements ActionListener{
 				vista.limpiarBuscador();
 			} else if(((JButton)e.getSource()).getText() == "play") {
 				try {
-					Ventana.ventana.reproducirLista.lista.parar();
-					Ventana.ventana.reproducirLista.lista.setMp3Player();
-					EstadoReproduccion  variable = Ventana.ventana.reproducirLista.lista.reproducirLista();
+					vista.getLista().parar();
+					vista.getLista().setMp3Player();
+					EstadoReproduccion  variable = vista.getLista().reproducirLista();
 					if( variable == EstadoReproduccion.MENOR) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"El album tiene contenido explicito que no esta autorizado a escuchar");
 					}else if(variable == EstadoReproduccion.REPRODUCCIONES_AGOTADAS){
@@ -121,7 +121,7 @@ public class ControladorReproducirLista implements ActionListener{
 					e1.printStackTrace();
 				}
 			} else if(((JButton)e.getSource()).getText() == "pause") {
-				Ventana.ventana.reproducirLista.lista.parar();
+				vista.getLista().parar();
 			} else if(((JButton)e.getSource()).getText() == "add") {
 				System.out.println("ADD BUTTON PLRESED");
 			} else {

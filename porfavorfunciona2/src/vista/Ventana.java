@@ -76,9 +76,9 @@ public class Ventana extends JFrame {
 
 		//Pantallas
 		this.pantallaInicio = new PantallaInicio();
-		this.reproducirCancion = new ReproducirCancion(null);
+		this.reproducirCancion = new ReproducirCancion();
 		this.reproducirAlbum = new ReproducirAlbum();
-		this.reproducirLista = new ReproducirLista(null);
+		this.reproducirLista = new ReproducirLista();
 		this.inicioSesion = new InicioSesion();
 		this.registrarse = new Registrarse();
 		this.perfil = new Perfil();

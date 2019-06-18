@@ -30,9 +30,8 @@ public class ReproducirLista extends PantallaPrincipal {
 	private JLabel comentarios_label;
 	private ArrayList<Contenido> contenido;
 
-	public ReproducirLista(Lista lista) {
+	public ReproducirLista() {
 		super();
-		this.lista = lista;
 		
 		//Declaracion
 		ImageIcon icono_add = new ImageIcon("src/vista/plus.png");
@@ -145,19 +144,19 @@ public class ReproducirLista extends PantallaPrincipal {
 	 
 	 
 	 public void setInformacion(Lista lista) {
-			this.lista = lista;
+		this.lista = lista;
 
-			int horas = (int) (lista.getDuracion() / 3600);
-		    int minutos = (int) ((lista.getDuracion()-horas*3600)/60);
-		    int segundos = (int) (lista.getDuracion()-(horas*3600+minutos*60));
-		    
-		    
-		    titulo_lista.setText("Titulo:\t\t\t\t\t" + this.lista.getTitulo());
-			autor_lista.setText("Autor:\t\t\t\t\t" + this.lista.getAutor());
-			duracion_lista.setText("Duracion:\t\t\t\t\t" + minutos + " m/" + segundos + " s");
-			
-			actualizarContenido();
-		}
+		int horas = (int) (lista.getDuracion() / 3600);
+	    int minutos = (int) ((lista.getDuracion()-horas*3600)/60);
+	    int segundos = (int) (lista.getDuracion()-(horas*3600+minutos*60));
+	    
+	    
+	    titulo_lista.setText("Titulo:\t\t\t\t\t" + this.lista.getTitulo());
+		autor_lista.setText("Autor:\t\t\t\t\t" + this.lista.getAutor());
+		duracion_lista.setText("Duracion:\t\t\t\t\t" + minutos + " m/" + segundos + " s");
+		
+		actualizarContenido();
+	}
 	 
 
 	 public Lista getLista() {

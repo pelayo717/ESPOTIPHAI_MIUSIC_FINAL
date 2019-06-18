@@ -88,9 +88,9 @@ public class ControladorReproducirAlbum implements ActionListener{
 				vista.limpiarBuscador();
 			} else if(((JButton)e.getSource()).getText() == "Ver comentario") {
 				
-				if(Ventana.ventana.reproducirAlbum.lista_comentarios.getSelectedIndex() != -1) {
-					Comentario[] para_ver = Ventana.ventana.reproducirAlbum.misComentarios;
-					int indice = Ventana.ventana.reproducirAlbum.lista_comentarios.getSelectedIndex();
+				if(vista.getLista_comentarios().getSelectedIndex() != -1) {
+					Comentario[] para_ver = vista.getMisComentarios();
+					int indice = vista.getLista_comentarios().getSelectedIndex();
 					
 					if(para_ver[indice].getComentador() == null) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Autor: Desconocido" + "\nComentario: " + para_ver[indice].getTexto() + "\nFecha: " + para_ver[indice].getFecha() + "\nHora/Minuto/Segundo: " + para_ver[indice].getHora() + "/" + para_ver[indice].getMinuto() + "/" + para_ver[indice].getSegundo());  
@@ -98,7 +98,7 @@ public class ControladorReproducirAlbum implements ActionListener{
 						JOptionPane.showMessageDialog(Ventana.ventana,"Autor: " + para_ver[indice].getComentador().getNombreUsuario() + "\n" + "Comentario: " + para_ver[indice].getTexto() + "\nFecha: " + para_ver[indice].getFecha() + "\nHora/Minuto/Segundo: " + para_ver[indice].getHora() + "/" + para_ver[indice].getMinuto() + "/" + para_ver[indice].getSegundo());
 					}
 					
-					Ventana.ventana.reproducirCancion.lista_comentarios.clearSelection();
+					vista.getLista_comentarios().clearSelection();
 					
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Ver comentario seleccione uno primero");
@@ -112,9 +112,9 @@ public class ControladorReproducirAlbum implements ActionListener{
 				Ventana.ventana.reproducirAlbum.actualizarComentarios();
 			} else if(((JButton)e.getSource()).getText() == "play") {				
 				try {
-					Ventana.ventana.reproducirAlbum.album.parar();
-					Ventana.ventana.reproducirAlbum.album.setMp3Player();
-					EstadoReproduccion  variable = Ventana.ventana.reproducirAlbum.album.reproducirAlbum();
+					vista.getAlbum().parar();
+					vista.getAlbum().setMp3Player();
+					EstadoReproduccion  variable = vista.getAlbum().reproducirAlbum();
 					if( variable == EstadoReproduccion.MENOR) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"El album tiene contenido explicito que no esta autorizado a escuchar");
 					}else if(variable == EstadoReproduccion.REPRODUCCIONES_AGOTADAS){
@@ -136,18 +136,18 @@ public class ControladorReproducirAlbum implements ActionListener{
 				
 				
 			} else if(((JButton)e.getSource()).getText() == "pause") {
-				Ventana.ventana.reproducirAlbum.album.parar();
+				vista.getAlbum().parar();
 			
 			} else if(((JButton)e.getSource()).getText() == "Eliminar Cancion") {
-				if(Ventana.ventana.reproducirAlbum.misCanciones.length > 0) {
-					int indice = Ventana.ventana.reproducirAlbum.lista_canciones.getSelectedIndex();
+				if(vista.getMisCanciones().length > 0) {
+					int indice = vista.getLista_canciones().getSelectedIndex();
 					if(indice == -1) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Eliminar Cancion debe seleccionar una");
 					}else {
-						Cancion[] entrantes = Ventana.ventana.reproducirAlbum.misCanciones;
+						Cancion[] entrantes = vista.getMisCanciones();
 						int a=JOptionPane.showConfirmDialog(Ventana.ventana,"¿Esta seguro que desea eliminar la cancion " + entrantes[indice].getTitulo() + " del album?","Alert",JOptionPane.WARNING_MESSAGE);  
 						if(a == JOptionPane.YES_OPTION) {
-							Sistema.sistema.quitarCancionDeAlbum(Ventana.ventana.reproducirAlbum.album,entrantes[indice]);
+							Sistema.sistema.quitarCancionDeAlbum(vista.getAlbum(),entrantes[indice]);
 							Ventana.ventana.reproducirAlbum.actualizarCanciones();
 						}
 					}
@@ -170,7 +170,7 @@ public class ControladorReproducirAlbum implements ActionListener{
 						Object opcion = JOptionPane.showInputDialog(null,"Selecciona un album", "Elegir Album",JOptionPane.QUESTION_MESSAGE,null,nombre_albumes, nombre_albumes[0]);
 						for(int i=0; i < listas_totales.length; i++) {
 							if(listas_totales[i].getTitulo().equals(opcion)) {
-								if(Sistema.sistema.anyadirALista(listas_totales[i], Ventana.ventana.reproducirAlbum.album) == Status.OK) {
+								if(Sistema.sistema.anyadirALista(listas_totales[i], vista.getAlbum()) == Status.OK) {
 									JOptionPane.showMessageDialog(Ventana.ventana,"El album se ha añadido correctamente a la lista " + opcion);
 								}else {
 									JOptionPane.showMessageDialog(Ventana.ventana,"El album no se ha añadido a la lista " + opcion);
