@@ -14,18 +14,35 @@ import modelo.sistema.Sistema;
 import vista.BuscadorCanciones;
 import vista.Ventana;
 
+/**
+ * Clase que implementa el controlador de la clase BuscadorCanciones 
+ * teniendo en cuenta todos los casos posibles en los que el usuario realiza
+ * una accion u otra y asignando el controlador determinado a la accion realizada
+ */
 public class ControladorBuscadorCanciones implements ActionListener {
 
 	private BuscadorCanciones vista;
 	private int modelo;
 
 
-	
+	/**
+	 * Constructor de la clase en la que se inicializan todos los atributos de 
+	 * la clase dandoles los valores necesarios
+	 * @param x: vista en la que se encuentra el usuario y donde se van a realizar 
+	 * todas las acciones 
+	 * @param modelo: argumento de tipo entero que representa el modelo que estamos usando
+	 */
 	public ControladorBuscadorCanciones(BuscadorCanciones x, int modelo) {
 		this.modelo = modelo;
 		this.vista = x;
 	}
 
+	/**
+	 * Funcion que asigna el controlador necesario a la accion o boton que 
+	 * el usuario ha pulsado 
+	 * @param e: accion o boton que el usuario ha pulsado y se pasa como argumento 
+	 * para asignarle el controlador correspondiente 
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(((JButton)e.getSource()).getText() == "Elegir cancion") {
