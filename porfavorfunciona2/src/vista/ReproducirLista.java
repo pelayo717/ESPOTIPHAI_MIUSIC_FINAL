@@ -13,26 +13,25 @@ import modelo.contenido.*;
 
 public class ReproducirLista extends PantallaPrincipal {
 
-	public Lista lista;
+	private Lista lista;
 	
-	JButton botonPlay;
-	JButton botonPause;
-	JButton botonAdd;
-	JButton perfilAutor;
-	JList lista_contenido;
-	JScrollPane contenidoScrollPane;
-	JButton botonList;
+	public JButton botonPlay;
+	public JButton botonPause;
+	public JButton botonAdd;
+	public JButton perfilAutor;
+	private JList lista_contenido;
+	private JScrollPane contenidoScrollPane;
+	private JButton botonList;
 	
-	JLabel datos_lista;
-	JLabel titulo_lista;
-	JLabel autor_lista;
-	JLabel duracion_lista;
-	JLabel comentarios_label;
-	public ArrayList<Contenido> contenido;
+	private JLabel datos_lista;
+	private JLabel titulo_lista;
+	private JLabel autor_lista;
+	private JLabel duracion_lista;
+	private JLabel comentarios_label;
+	private ArrayList<Contenido> contenido;
 
-	public ReproducirLista(Lista lista) {
+	public ReproducirLista() {
 		super();
-		this.lista = lista;
 		
 		//Declaracion
 		ImageIcon icono_add = new ImageIcon("src/vista/plus.png");
@@ -51,26 +50,21 @@ public class ReproducirLista extends PantallaPrincipal {
 		this.botonPause = new JButton("pause");
 		this.botonAdd = new JButton("add");
 		this.botonList = new JButton("Ver comentario");
-		botonPlay.setIcon(icono_reproducir);
+		botonPlay.setIcon(icono_reproducir); 
 		botonPause.setIcon(icono_parar);
 		botonAdd.setIcon(icono_add);
-		this.botonIzquierdaArriba.setText("Ver Perfil");
-		this.botonIzquierdaAbajo.setVisible(false);
 		
-		if(this.lista != null) {
-			datos_lista = new JLabel("Datos de la lista", SwingConstants.CENTER);
-			titulo_lista = new JLabel("Titulo:\t\t\t\t\t" + this.lista.getTitulo(),SwingConstants.CENTER);
-			autor_lista = new JLabel("Autor:\t\t\t\t\t" + this.lista.getAutor(),SwingConstants.CENTER);
-			duracion_lista = new JLabel("Duracion:\t\t\t\t\t" + this.lista.getDuracion() + " s",SwingConstants.CENTER);
-			comentarios_label = new JLabel("Comentarios de la lista", SwingConstants.CENTER);
-			this.actualizarContenido();
-		}else {
-			datos_lista = new JLabel("Datos de la lista", SwingConstants.CENTER);
-			titulo_lista = new JLabel("Titulo:\t\t\t\t\t" ,SwingConstants.CENTER);
-			autor_lista = new JLabel("Autor:\t\t\t\t\t" ,SwingConstants.LEFT);
-			duracion_lista = new JLabel("Duracion:\t\t\t\t\t" + " s",SwingConstants.LEFT);
-			comentarios_label = new JLabel("Comentarios de la lista", SwingConstants.CENTER);
-		}
+		super.getBotonIzquierdaArriba().setText("Ver Perfil");
+		super.getBotonIzquierdaMedio().setText("Inicio");
+		super.getBotonIzquierdaAbajo().setVisible(false);
+		
+		
+		datos_lista = new JLabel("Datos de la lista", SwingConstants.CENTER);
+		titulo_lista = new JLabel("Titulo:\t\t\t\t\t" ,SwingConstants.CENTER);
+		autor_lista = new JLabel("Autor:\t\t\t\t\t" ,SwingConstants.LEFT);
+		duracion_lista = new JLabel("Duracion:\t\t\t\t\t" + " s",SwingConstants.LEFT);
+		comentarios_label = new JLabel("Comentarios de la lista", SwingConstants.CENTER);
+		
 		contenidoScrollPane = new JScrollPane(lista_contenido);
 
 		
@@ -123,29 +117,24 @@ public class ReproducirLista extends PantallaPrincipal {
 	}
 	
 	public void limpiarBuscador(){
-		this.busquedaTextfield.setText("");
-		this.grupo_eleccion.clearSelection();
+		super.getBusquedaTextfield().setText("");
+		super.getGrupo_eleccion().clearSelection();
 	}
 	
 	public void setUsuarioRegistrado() {
-		this.botonIzquierdaArriba.setText("Ver Perfil");
-		this.botonIzquierdaMedio.setText("Inicio");
-		this.botonIzquierdaAbajo.setVisible(false);
-	}
-	
-	public void setUsuarioNoRegistrado() {
-		this.botonIzquierdaArriba.setText("Iniciar Sesion");
-		this.botonIzquierdaMedio.setText("Registro");
-		this.botonIzquierdaAbajo.setVisible(true);
+		super.getBotonIzquierdaArriba().setText("Ver Perfil");
+		super.getBotonIzquierdaMedio().setText("Inicio");
+		super.getBotonIzquierdaAbajo().setVisible(false);
 	}
 
 	
 	 // método para asignar un controlador al botón
 	 public void setControlador(ActionListener c) {
-		 this.botonIzquierdaArriba.addActionListener(c);
-		 this.botonIzquierdaAbajo.addActionListener(c);
-		 this.botonBuscar.addActionListener(c);
-		 this.botonLimpiarBuscador.addActionListener(c);
+		 super.getBotonIzquierdaArriba().addActionListener(c);
+		 super.getBotonIzquierdaMedio().addActionListener(c);
+		 super.getBotonIzquierdaAbajo().addActionListener(c);
+		 super.getBotonBuscar().addActionListener(c);
+		 super.getBotonLimpiarBuscador().addActionListener(c);
 		 this.botonList.addActionListener(c);
 		 this.botonPlay.addActionListener(c);
 		 this.botonPause.addActionListener(c);
@@ -153,7 +142,80 @@ public class ReproducirLista extends PantallaPrincipal {
 		 this.perfilAutor.addActionListener(c);
 	 }
 	 
-	 @SuppressWarnings("unchecked")
+	 
+	 public void setInformacion(Lista lista) {
+		this.lista = lista;
+
+		int horas = (int) (lista.getDuracion() / 3600);
+	    int minutos = (int) ((lista.getDuracion()-horas*3600)/60);
+	    int segundos = (int) (lista.getDuracion()-(horas*3600+minutos*60));
+	    
+	    
+	    titulo_lista.setText("Titulo:\t\t\t\t\t" + this.lista.getTitulo());
+		autor_lista.setText("Autor:\t\t\t\t\t" + this.lista.getAutor());
+		duracion_lista.setText("Duracion:\t\t\t\t\t" + minutos + " m/" + segundos + " s");
+		
+		actualizarContenido();
+	}
+	 
+
+	 public Lista getLista() {
+		return lista;
+	}
+
+	public JButton getBotonPlay() {
+		return botonPlay;
+	}
+
+	public JButton getBotonPause() {
+		return botonPause;
+	}
+
+	public JButton getBotonAdd() {
+		return botonAdd;
+	}
+
+	public JButton getPerfilAutor() {
+		return perfilAutor;
+	}
+
+	public JList getLista_contenido() {
+		return lista_contenido;
+	}
+
+	public JScrollPane getContenidoScrollPane() {
+		return contenidoScrollPane;
+	}
+
+	public JButton getBotonList() {
+		return botonList;
+	}
+
+	public JLabel getDatos_lista() {
+		return datos_lista;
+	}
+
+	public JLabel getTitulo_lista() {
+		return titulo_lista;
+	}
+
+	public JLabel getAutor_lista() {
+		return autor_lista;
+	}
+
+	public JLabel getDuracion_lista() {
+		return duracion_lista;
+	}
+
+	public JLabel getComentarios_label() {
+		return comentarios_label;
+	}
+
+	public ArrayList<Contenido> getContenido() {
+		return contenido;
+	}
+
+	@SuppressWarnings("unchecked")
 		public void actualizarContenido() {
 			contenido = lista.getContenido();
 			lista_contenido = new JList(contenido.toArray());

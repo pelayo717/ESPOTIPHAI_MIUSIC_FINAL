@@ -10,15 +10,15 @@ public class InicioSesion extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	JButton botonInicio;
-	JButton botonIniciarSesion;
-	JButton botonRegistrarse;
-	JLabel titulo ;
-	JLabel usuarioLabel;
-	JLabel passwordLabel;
-	JLabel preguntaLabel;
-	public JTextField usuarioTextfield;
-	public JPasswordField passwordTextfield;
+	public JButton botonInicio;
+	public JButton botonIniciarSesion;
+	public JButton botonRegistrarse;
+	private JLabel titulo ;
+	private JLabel usuarioLabel;
+	private JLabel passwordLabel;
+	private JLabel preguntaLabel;
+	private JTextField usuarioTextfield;
+	private JPasswordField passwordTextfield;
 	
 	
 	public InicioSesion() {
@@ -49,11 +49,7 @@ public class InicioSesion extends JPanel{
 		this.setLayout(layout);
 		
 		
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-		
-		//Manual Constraints
-		//x axis, y axis, width, height  
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();  
 
 		botonInicio.setBounds(10, 10, 100, 30);
 		titulo.setBounds(screenSize.width/2 - 300, 20, 600, 30);
@@ -77,21 +73,6 @@ public class InicioSesion extends JPanel{
 		this.add(preguntaLabel);
 		this.add(botonRegistrarse);
 		
-		/*
-		layout.setHorizontalGroup(
-		   layout.createSequentialGroup()
-		      .addComponent(botonInicio)
-		      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-		           .addComponent(titulo)
-		           .addComponent(campo))
-		);
-		layout.setVerticalGroup(
-		   layout.createSequentialGroup()
-		      .addComponent(botonInicio)
-		      .addComponent(titulo)
-		      .addComponent(campo)
-		);
-		*/
 	}
 	
 	public void limpiarVentana(){
@@ -100,7 +81,47 @@ public class InicioSesion extends JPanel{
 	}
 	
 	
-	 // método para asignar un controlador al botón
+	 public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public JButton getBotonInicio() {
+		return botonInicio;
+	}
+
+	public JButton getBotonIniciarSesion() {
+		return botonIniciarSesion;
+	}
+
+	public JButton getBotonRegistrarse() {
+		return botonRegistrarse;
+	}
+
+	public JLabel getTitulo() {
+		return titulo;
+	}
+
+	public JLabel getUsuarioLabel() {
+		return usuarioLabel;
+	}
+
+	public JLabel getPasswordLabel() {
+		return passwordLabel;
+	}
+
+	public JLabel getPreguntaLabel() {
+		return preguntaLabel;
+	}
+
+	public JTextField getUsuarioTextfield() {
+		return usuarioTextfield;
+	}
+
+	public JPasswordField getPasswordTextfield() {
+		return passwordTextfield;
+	}
+
+	// método para asignar un controlador al botón
 	 public void setControlador(ActionListener c) {
 		 this.botonInicio.addActionListener(c);
 		 this.botonRegistrarse.addActionListener(c);

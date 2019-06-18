@@ -1,8 +1,10 @@
 package modelo.contenido;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 import modelo.status.*;
 import modelo.usuario.*;
+import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 /**
  *	Clase ContenidoComentable con herencia de Contenido
@@ -16,7 +18,7 @@ public abstract class ContenidoComentable extends Contenido {
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Comentario> comentarios = new ArrayList<Comentario>();
 	
-	public ContenidoComentable (int anyo, String titulo, Usuario autor, ArrayList<Comentario> comentarios) {
+	public ContenidoComentable (int anyo, String titulo, Usuario autor, ArrayList<Comentario> comentarios) throws FileNotFoundException, Mp3PlayerException {
 		super(anyo, titulo,autor);
 		this.setComentarios(comentarios);
 	}

@@ -6,6 +6,8 @@ import java.time.LocalDate;
 
 import javax.swing.*;
 
+import modelo.notificacion.Notificacion;
+import modelo.sistema.Sistema;
 import modelo.usuario.*;
 
 public class Perfil extends JPanel{
@@ -13,39 +15,71 @@ public class Perfil extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	JButton botonInicio;
-	JButton botonNotificaciones;
-	JButton botonCerrarSesion;
-	JButton botonEliminarCuenta;
-	JButton botonHacersePRO;
+	public JButton botonInicio;
+	public JButton botonCerrarSesion;
+	public JButton botonEliminarCuenta;
+	public JButton botonHacersePRO;
+	public JButton seleccionarNotificacion;
+	 
 	
-	String nombre_autor;
-	LocalDate fecha_nacimiento;
-	String nombre_usuario;
-	int numero_seguidores;
-	int numero_seguidos;
+	private String nombre_autor;
+	private LocalDate fecha_nacimiento;
+	private String nombre_usuario;
+	private int numero_seguidores;
+	private int numero_seguidos;
+	private int reproducciones;
 	
-	JLabel nombreAutor;
-	JLabel fechaNacimiento;
-	JLabel nombreUsuario;
-	JLabel numeroSeguidores;
-	JLabel numeroSeguidos;
+	private JLabel nombreAutor;
+	private JLabel fechaNacimiento;
+	private JLabel nombreUsuario;
+	private JLabel numeroSeguidores;
+	private JLabel numeroSeguidos;
+	private JLabel susNotificaciones;
 	
+	private DefaultListModel<String> model1;
+
+	private Notificacion[] lasNotificaciones;
+
+	private JList<String> lista_notificaciones;
+
+	private JScrollPane notificaciones;
+	
+	private Dimension screenSize;
 	
 	public Perfil() {
 		
 		
+		model1 = new DefaultListModel<>();
+		
+		
+		lista_notificaciones = new JList<String>(model1);
+		
+		
+		notificaciones = new JScrollPane(lista_notificaciones);
+		
+		
+		susNotificaciones = new JLabel("Sus Notificaciones",  SwingConstants.CENTER);
+		
+		
+		seleccionarNotificacion = new JButton("Elegir notificacion");
+		
 	
+		Font susNotificacionesFont = new Font(susNotificaciones.getFont().getName(), Font.BOLD, 16);
+		
+		notificaciones.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+		this.susNotificaciones.setFont(susNotificacionesFont);
+		
 			
 		//VALORES INICIALIZADOS UNICAMENTE PARA QUE NO HAYA PROBLEMAS AL CONSTRUIR LA VENTANA DE PERFIL,
-		//ESTOS VALORES NO SE LLEGAN A VER NUNCA
+		//ESTOS VALORES NO SE LLEGAN A VER NUNCA, PORQUE ESTA VISTA APARECE PARA AQUELLOS QUE LA TENDRAN QUE VER
 		
 		this.nombre_autor =  "";
 		this.fecha_nacimiento =  LocalDate.now();
 		this.nombre_usuario =  "";
 		this.numero_seguidores = -1;
 		this.numero_seguidos =  -1;
-	
+		this.reproducciones = -1;
 		
 		
 		
@@ -54,15 +88,14 @@ public class Perfil extends JPanel{
 		
 		this.setBackground(new Color(40,159,211));
 		this.botonInicio = new JButton("Inicio");
-		this.botonNotificaciones = new JButton("Notificaciones");
 		JLabel titulo = new JLabel("ESPOTIPHAIMUSIC", SwingConstants.CENTER);
 		JLabel imagen_reproduccion = new JLabel("",icono_corchea,JLabel.CENTER);
 		JLabel datosUsuario = new JLabel("Datos del usuario:" , SwingConstants.CENTER);
 		this.nombreAutor = new JLabel("Nombre de autor:\t\t " + nombre_autor, SwingConstants.LEFT);
 		this.fechaNacimiento = new JLabel("F. de nacimiento:\t\t" + fecha_nacimiento, SwingConstants.LEFT);
 		this.nombreUsuario = new JLabel("Nombre de usuario:\t\t" + nombre_usuario, SwingConstants.LEFT);
-		this.numeroSeguidores = new JLabel("Numero de seguidores:\t\t"+ numero_seguidores, SwingConstants.LEFT);
-		this.numeroSeguidos = new JLabel("Numero de seguidos:\t\t" + numero_seguidos, SwingConstants.LEFT);
+		this.numeroSeguidores = new JLabel("Seguidores/Seguidos:\t\t"+ numero_seguidores + "/" + numero_seguidos, SwingConstants.LEFT);
+		this.numeroSeguidos = new JLabel("Num Reproducciones de tu contenido:\t\t" + reproducciones, SwingConstants.LEFT);
 		
 		this.botonCerrarSesion = new JButton("Cerrar Sesion");
 		this.botonEliminarCuenta = new JButton("Eliminar Cuenta");
@@ -93,30 +126,32 @@ public class Perfil extends JPanel{
 		this.setLayout(layout);
 		
 		
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-		//Manual Constraints
-		//x axis, y axis, width, height  
+		 
 		botonInicio.setBounds(10, 10, 150, 30);
-		botonNotificaciones.setBounds(10, 50, 150, 30);
 		titulo.setBounds(screenSize.width/2 - 300, 50, 600, 30);
 		datosUsuario.setBounds(screenSize.width/2,100,300, 40);
 		nombreAutor.setBounds(screenSize.width/2 , 160, 300, 30);
 		fechaNacimiento.setBounds(screenSize.width/2 ,210,300, 30);
 		nombreUsuario.setBounds(screenSize.width/2 , 260, 300, 30);
 		numeroSeguidores.setBounds(screenSize.width/2 , 310, 300, 30);
-		numeroSeguidos.setBounds(screenSize.width/2, 360, 300, 30);
-		botonCerrarSesion.setBounds(screenSize.width/2 + 75, 410, 150, 30);
-		botonEliminarCuenta.setBounds(screenSize.width/2 + 75, 460, 150, 30);
-		botonHacersePRO.setBounds(screenSize.width/2 + 75, 510, 150, 30);
+		numeroSeguidos.setBounds(screenSize.width/2, 360, 500, 30);
+		botonCerrarSesion.setBounds(screenSize.width/2 + 30, 410, 150, 30);
+		botonEliminarCuenta.setBounds(screenSize.width/2 + 30, 460, 150, 30);
+		botonHacersePRO.setBounds(screenSize.width/2 + 30, 510, 150, 30);
 
 		imagen_reproduccion.setBounds(screenSize.width/2 - 320, 160, 300, 300);
 
+		susNotificaciones.setBounds(screenSize.width/2 - 260, 540, 200, 30);
+		
+		notificaciones.setBounds(screenSize.width/2 - 450, 580, 550, 100);
+		
+		seleccionarNotificacion.setBounds(screenSize.width/2 - 260, 690, 200, 30);
 
 		
 		//We add all the components
 		this.add(botonInicio);
-		this.add(botonNotificaciones);
 		this.add(titulo);
 		this.add(datosUsuario);
 		this.add(nombreAutor);
@@ -128,6 +163,9 @@ public class Perfil extends JPanel{
 		this.add(botonEliminarCuenta);
 		this.add(botonHacersePRO);
 		this.add(imagen_reproduccion);
+		this.add(susNotificaciones);
+		this.add(notificaciones);
+		this.add(seleccionarNotificacion);
 
 		
 	}
@@ -137,29 +175,141 @@ public class Perfil extends JPanel{
 		this.botonHacersePRO.setVisible(true);
 		this.numeroSeguidos.setVisible(true);
 		this.numeroSeguidores.setVisible(true);
+		this.botonCerrarSesion.setBounds(screenSize.width/2 + 30, 410, 150, 30);
 	}
 			
-	public void setAsministrador() {
+	public void setAdministrador() {
 		this.numeroSeguidos.setVisible(false);
 		this.numeroSeguidores.setVisible(false);
 		this.botonEliminarCuenta.setVisible(false);
 		this.botonHacersePRO.setVisible(false);
+		this.botonCerrarSesion.setBounds(screenSize.width/2 , 310, 150, 30);
 	}
 	
 	// método para asignar un controlador al botón
 	public void setControlador(ActionListener c) {
 		 this.botonInicio.addActionListener(c);
-		 this.botonNotificaciones.addActionListener(c);
 		 this.botonCerrarSesion.addActionListener(c);
 		 this.botonEliminarCuenta.addActionListener(c);
 		 this.botonHacersePRO.addActionListener(c);
+		 this.seleccionarNotificacion.addActionListener(c);
+	}
+	
+	public void setUsuarioPremium() {
+		this.numeroSeguidos.setVisible(true);
+		this.numeroSeguidores.setVisible(true);
+		this.botonEliminarCuenta.setVisible(true);
+		this.botonHacersePRO.setVisible(false);	
+		this.botonCerrarSesion.setBounds(screenSize.width/2 + 30, 410, 150, 30);
 	}
 		 
 	public void setInformacion(Usuario usuario) {
 		this.nombreAutor.setText("Nombre de autor:\t\t " + usuario.getNombreAutor());
 		this.fechaNacimiento.setText("F. de nacimiento:\t\t" + usuario.getFechaNacimiento());
 		this.nombreUsuario.setText("Nombre de usuario:\t\t" + usuario.getNombreUsuario());
-		this.numeroSeguidores.setText("Numero de seguidores:\t\t"+ usuario.getSeguidores().size());
-		this.numeroSeguidos.setText("Numero de seguidos:\t\t" + usuario.getSeguidos().size());
+		this.numeroSeguidores.setText("Seguidores/Seguidos:\t\t"+ usuario.getSeguidores().size() + "/" +  usuario.getSeguidos().size());
+		this.numeroSeguidos.setText("Num Reproducciones de tu contenido:\t\t" + usuario.getNumeroReproducciones());
+		this.actualizarNotificaciones();
 	}
+	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public JButton getBotonInicio() {
+		return botonInicio;
+	}
+
+	public JButton getBotonCerrarSesion() {
+		return botonCerrarSesion;
+	}
+
+	public JButton getBotonEliminarCuenta() {
+		return botonEliminarCuenta;
+	}
+
+	public JButton getBotonHacersePRO() {
+		return botonHacersePRO;
+	}
+
+	public JButton getSeleccionarNotificacion() {
+		return seleccionarNotificacion;
+	}
+
+	public String getNombre_autor() {
+		return nombre_autor;
+	}
+
+	public LocalDate getFecha_nacimiento() {
+		return fecha_nacimiento;
+	}
+
+	public String getNombre_usuario() {
+		return nombre_usuario;
+	}
+
+	public int getNumero_seguidores() {
+		return numero_seguidores;
+	}
+
+	public int getNumero_seguidos() {
+		return numero_seguidos;
+	}
+
+	public int getReproducciones() {
+		return reproducciones;
+	}
+
+	public JLabel getNombreAutor() {
+		return nombreAutor;
+	}
+
+	public JLabel getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public JLabel getNombreUsuario() {
+		return nombreUsuario;
+	}
+
+	public JLabel getNumeroSeguidores() {
+		return numeroSeguidores;
+	}
+
+	public JLabel getNumeroSeguidos() {
+		return numeroSeguidos;
+	}
+
+	public JLabel getSusNotificaciones() {
+		return susNotificaciones;
+	}
+
+	public DefaultListModel<String> getModel1() {
+		return model1;
+	}
+
+	public Notificacion[] getLasNotificaciones() {
+		return lasNotificaciones;
+	}
+
+	public JList<String> getLista_notificaciones() {
+		return lista_notificaciones;
+	}
+
+	public JScrollPane getNotificaciones() {
+		return notificaciones;
+	}
+
+	public Dimension getScreenSize() {
+		return screenSize;
+	}
+
+	public void actualizarNotificaciones() {
+		model1.clear();
+		lasNotificaciones = Sistema.sistema.getUsuarioActual().getNotificacionesTotales().toArray(new Notificacion[Sistema.sistema.getUsuarioActual().getNotificacionesTotales().size()]);
+		for(int i=0; i < lasNotificaciones.length; i++) {
+			model1.addElement("Emisor: " + lasNotificaciones[i].getEmisor().getNombreUsuario() + " // Mensaje: " + lasNotificaciones[i].getMensaje() + " // Receptor: " + lasNotificaciones[i].getReceptor().getNombreUsuario());
+		}
+	}
+
 }

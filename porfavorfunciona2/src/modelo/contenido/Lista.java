@@ -1,9 +1,11 @@
 package modelo.contenido;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 import modelo.sistema.Sistema;
 import modelo.status.*;
 import modelo.usuario.*;
+import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 /**
  *	Clase Lista con herencia de Contenido
@@ -16,7 +18,7 @@ public class Lista extends Contenido{
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Contenido> contenidos = new ArrayList<Contenido>();
 	
-	public Lista(String titulo,Usuario autor, ArrayList<Contenido> contenido) {
+	public Lista(String titulo,Usuario autor, ArrayList<Contenido> contenido) throws FileNotFoundException, Mp3PlayerException {
 		super(-1, titulo,autor);
 		this.setContenido(contenido);
 		this.setDuracion(this.calcularTiempo());
@@ -62,41 +64,28 @@ public class Lista extends Contenido{
 	 */
 	public Status eliminarContenido(Contenido contenido) {		
 		
-		if(contenido instanceof Cancion) {
+		for(Iterator<Contenido> iterator = this.getContenido().iterator(); iterator.hasNext();) {
+			Contenido c_l = iterator.next();
 			
-			for(Contenido c_l: this.getContenido()) {
-				
-				if(c_l instanceof Cancion && c_l.equals(contenido) == true) {
-					this.getContenido().remove(contenido);
-					this.setDuracion(this.calcularTiempo());
-				}else if(c_l instanceof Album && ((Album) c_l).getContenido().contains(contenido) == true) {
-					((Album)c_l).eliminarContenido((Cancion)contenido);
-				}else if(c_l instanceof Lista) {
-					((Lista) c_l).eliminarContenido((Cancion)contenido);
-				}
-			}
-		}else if(contenido instanceof Album) {
-			for(Contenido c_l:this.getContenido()) {
-				if(c_l instanceof Album && c_l.equals(contenido)==true) {
-					this.getContenido().remove(contenido);
-					this.setDuracion(this.calcularTiempo());
-				}else if(c_l instanceof Lista) {
-					((Lista) c_l).eliminarContenido((Album)contenido);
-				}
-			}
-		}else if(contenido instanceof Lista) {
-			for(Contenido c_l:this.getContenido()) {
-				if(c_l instanceof Lista) {
-					if(c_l.equals(contenido) == true) {
-						this.getContenido().remove(contenido);
-						this.setDuracion(this.calcularTiempo());
-					}else {
-						((Lista) c_l).eliminarContenido((Lista)contenido);
-					}
-				}
+			if (c_l instanceof Cancion && contenido instanceof Cancion && c_l.equals(contenido) == true) {
+				iterator.remove();
+				this.setDuracion(this.calcularTiempo());
+			} else if (c_l instanceof Album && contenido instanceof Cancion && ((Album) c_l).getContenido().contains(contenido) == true) {
+				((Album)c_l).eliminarContenido((Cancion)contenido);
+			} else if (c_l instanceof Lista && contenido instanceof Cancion) {
+				((Lista) c_l).eliminarContenido((Cancion)contenido);
+			} else if(c_l instanceof Album && contenido instanceof Album && c_l.equals(contenido)==true) {
+				iterator.remove();
+				this.setDuracion(this.calcularTiempo());
+			} else if(c_l instanceof Lista && contenido instanceof Album) {
+				((Lista) c_l).eliminarContenido((Album)contenido);
+			} else if(c_l instanceof Lista && contenido instanceof Lista && ((Lista) c_l).getContenido().contains(contenido) == true) {
+				iterator.remove();
+				this.setDuracion(this.calcularTiempo());
+			} else {
+				System.out.println("no se elimina nada");
 			}
 		}
-		
 		return Status.OK;
 	}
 
@@ -127,43 +116,55 @@ public class Lista extends Contenido{
 	 * @param l
 	 * @throws ExcesoReproduccionesExcepcion 
 	 * @throws InterruptedException 
+	 * @throws Mp3PlayerException 
+	 * @throws FileNotFoundException 
 	 */
 	
-	public void reproducirLista() throws InterruptedException {
+	public EstadoReproduccion reproducirLista() throws InterruptedException, FileNotFoundException, Mp3PlayerException {
+		
+		EstadoReproduccion variable = null;
 		
 		if(Sistema.sistema.getUsuarioActual() != null && (Sistema.sistema.getAdministrador() == true || Sistema.sistema.getUsuarioActual().getPremium() == true)) {
+			
+			//FALTA ARREGLAR
+			
 			for(Contenido contenido_reproduciendose:this.getContenido()) {
 				if(contenido_reproduciendose instanceof Cancion) {
-					((Cancion) contenido_reproduciendose).reproducirCancion();
+					variable = ((Cancion) contenido_reproduciendose).reproducirCancion();
 				}else if(contenido_reproduciendose instanceof Album) {
-					((Album) contenido_reproduciendose).reproducirAlbum();
+					variable = ((Album) contenido_reproduciendose).reproducirAlbum();
 				}else if(contenido_reproduciendose instanceof Lista) {
-					((Lista) contenido_reproduciendose).reproducirLista();
+					variable = ((Lista) contenido_reproduciendose).reproducirLista();
 				}
+				
+				if(variable != null) {
+					return variable;
+				}
+				
 			}	
-			return;
 				
 		}else {
 			if(Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
 				
 				for(Contenido contenido_total:this.getContenido()) {
 					
-					if(Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium() == Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()) {
-						return;
+					if(contenido_total instanceof Cancion) {
+						variable = ((Cancion) contenido_total).reproducirCancion();
+					}else if(contenido_total instanceof Album) {
+						variable = ((Album) contenido_total).reproducirAlbum();
+					}else if(contenido_total instanceof Lista) {
+						variable = ((Lista) contenido_total).reproducirLista();
 					}
 					
-					if(contenido_total instanceof Cancion) {
-						((Cancion) contenido_total).reproducirCancion();
-					}else if(contenido_total instanceof Album) {
-						((Album) contenido_total).reproducirAlbum();
-					}else if(contenido_total instanceof Lista) {
-						((Lista) contenido_total).reproducirLista();
+					if(variable != null) {
+						return variable;
 					}
 				}
 				
-				return;
 			}
 		}
+		
+		return null;
 	}
 	
 

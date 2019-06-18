@@ -1,12 +1,16 @@
 package vista;
 
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -16,6 +20,7 @@ import javax.swing.SwingConstants;
 
 import modelo.contenido.Album;
 import modelo.contenido.Cancion;
+import modelo.contenido.EstadoCancion;
 import modelo.contenido.Lista;
 
 public class PantallaInicio extends PantallaPrincipal {
@@ -27,26 +32,30 @@ public class PantallaInicio extends PantallaPrincipal {
 	private JScrollPane canciones;
 	private JScrollPane albumes;
 	private JScrollPane listas;
-	public JList<String> lista_canciones;
-	public JList<String> lista_albumes;
-	public JList<String> lista_listas;
-	JButton seleccionarAlbum;
-	JButton seleccionarCancion;
-	JButton seleccionarLista;
-	JButton crearCancion;
-	JButton crearAlbum;
-	JButton crearLista;
+	private JList<String> lista_canciones;
+	private JList<String> lista_albumes;
+	private JList<String> lista_listas;
+	public JButton seleccionarAlbum;
+	public JButton seleccionarCancion;
+	public JButton seleccionarLista;
+	public JButton crearCancion;
+	public JButton crearAlbum;
+	public JButton crearLista;
+	public JButton eliminarCancion;
+	public JButton eliminarAlbum;
+	public JButton eliminarLista;
 	
-	JLabel susCanciones;
-	JLabel susAlbumes;
-	JLabel susListas;
+	private JLabel susCanciones;
+	private JLabel susAlbumes;
+	private JLabel susListas;
 	
-	public Cancion[] misCanciones;
-	public Album[] misAlbumes;
-	public Lista[] misListas;
-	public DefaultListModel<String> model1;
-	public DefaultListModel<String> model2;
-	public DefaultListModel<String> model3;
+	private Cancion[] misCanciones;
+	private Album[] misAlbumes;
+	private Lista[] misListas;
+	
+	private DefaultListModel<String> model1;
+	private DefaultListModel<String> model2;
+	private DefaultListModel<String> model3;
 	
 	public PantallaInicio() {  //CAMBIADO, MEJORADO
 		
@@ -58,6 +67,7 @@ public class PantallaInicio extends PantallaPrincipal {
 		
 		
 		lista_canciones = new JList<String>(model1);
+		lista_canciones.setCellRenderer( new RowColor());
 		lista_albumes = new JList<String>(model2);
 		lista_listas = new JList<String>(model3);
 		
@@ -76,6 +86,11 @@ public class PantallaInicio extends PantallaPrincipal {
 		crearCancion = new JButton("Crear cancion");
 		crearAlbum = new JButton("Crear album");
 		crearLista = new JButton("Crear lista");
+		
+		eliminarCancion = new JButton("Eliminar cancion");
+		eliminarAlbum = new JButton("Eliminar album");
+		eliminarLista = new JButton("Eliminar lista");
+		
 		
 		//Cambio de estilo en los JLabel
 		Font susCancionesFont = new Font(susCanciones.getFont().getName(), Font.BOLD, 16);
@@ -106,6 +121,9 @@ public class PantallaInicio extends PantallaPrincipal {
 		crearAlbum.setBounds(screenSize.width/2 - 170, 500, 250, 30);
 		crearLista.setBounds(screenSize.width/2 + 190, 500, 250, 30);
 		
+		eliminarCancion.setBounds(screenSize.width/2 - 530, 530, 250, 30);
+		eliminarAlbum.setBounds(screenSize.width/2 - 170, 530, 250, 30);
+		eliminarLista.setBounds(screenSize.width/2 + 190, 530, 250, 30);
 		
 		//Anyadimos los elementos a la pantalla principal
 		this.add(albumes);
@@ -120,57 +138,207 @@ public class PantallaInicio extends PantallaPrincipal {
 		this.add(crearAlbum);
 		this.add(crearCancion);
 		this.add(crearLista);
+		this.add(eliminarCancion);
+		this.add(eliminarAlbum);
+		this.add(eliminarLista);
 	}
 		
 	
 	// metodo para asignar un controlador al boton
 	public void setControlador(ActionListener c) {
-		this.botonIzquierdaArriba.addActionListener(c);
-		this.botonIzquierdaMedio.addActionListener(c);
+		super.getBotonIzquierdaArriba().addActionListener(c);
+		super.getBotonIzquierdaMedio().addActionListener(c);
 		this.seleccionarCancion.addActionListener(c);
 		this.seleccionarAlbum.addActionListener(c);
 		this.seleccionarLista.addActionListener(c);
-		this.botonBuscar.addActionListener(c);
-		this.botonLimpiarBuscador.addActionListener(c);
+		super.getBotonBuscar().addActionListener(c);
+		super.getBotonLimpiarBuscador().addActionListener(c);
 		this.crearAlbum.addActionListener(c);
 		this.crearCancion.addActionListener(c);
 		this.crearLista.addActionListener(c);
+		this.eliminarCancion.addActionListener(c);
+		this.eliminarAlbum.addActionListener(c);
+		this.eliminarLista.addActionListener(c);
 	}
 		 
 	public void setUsuarioRegistrado() {
-		this.botonIzquierdaArriba.setText("Ver Perfil");
-		this.botonIzquierdaMedio.setVisible(false);
-		this.botonIzquierdaAbajo.setVisible(false);
+		super.getBotonIzquierdaArriba().setText("Ver Perfil");
+		super.getBotonIzquierdaMedio().setVisible(false);
+		super.getBotonIzquierdaAbajo().setVisible(false);
 	}
 			
 	public void setUsuarioNoRegistrado() {
-		this.botonIzquierdaArriba.setText("Iniciar Sesion");
-		this.botonIzquierdaMedio.setVisible(true);
-		this.botonIzquierdaAbajo.setVisible(false);
+		super.getBotonIzquierdaArriba().setText("Iniciar Sesion");
+		super.getBotonIzquierdaMedio().setText("Registro");
+		super.getBotonIzquierdaMedio().setVisible(true);
+		super.getBotonIzquierdaAbajo().setVisible(false);
 	}
 	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
+	public JScrollPane getCanciones() {
+		return canciones;
+	}
+
+
+	public JScrollPane getAlbumes() {
+		return albumes;
+	}
+
+
+	public JScrollPane getListas() {
+		return listas;
+	}
+
+
+	public JList<String> getLista_canciones() {
+		return lista_canciones;
+	}
+
+
+	public JList<String> getLista_albumes() {
+		return lista_albumes;
+	}
+
+
+	public JList<String> getLista_listas() {
+		return lista_listas;
+	}
+
+
+	public JButton getSeleccionarAlbum() {
+		return seleccionarAlbum;
+	}
+
+
+	public JButton getSeleccionarCancion() {
+		return seleccionarCancion;
+	}
+
+
+	public JButton getSeleccionarLista() {
+		return seleccionarLista;
+	}
+
+
+	public JButton getCrearCancion() {
+		return crearCancion;
+	}
+
+
+	public JButton getCrearAlbum() {
+		return crearAlbum;
+	}
+
+
+	public JButton getCrearLista() {
+		return crearLista;
+	}
+
+
+	public JButton getEliminarCancion() {
+		return eliminarCancion;
+	}
+
+
+	public JButton getEliminarAlbum() {
+		return eliminarAlbum;
+	}
+
+
+	public JButton getEliminarLista() {
+		return eliminarLista;
+	}
+
+
+	public JLabel getSusCanciones() {
+		return susCanciones;
+	}
+
+
+	public JLabel getSusAlbumes() {
+		return susAlbumes;
+	}
+
+
+	public JLabel getSusListas() {
+		return susListas;
+	}
+
+
+	public Cancion[] getMisCanciones() {
+		return misCanciones;
+	}
+
+
+	public Album[] getMisAlbumes() {
+		return misAlbumes;
+	}
+
+
+	public Lista[] getMisListas() {
+		return misListas;
+	}
+
+
+	public DefaultListModel<String> getModel1() {
+		return model1;
+	}
+
+
+	public DefaultListModel<String> getModel2() {
+		return model2;
+	}
+
+
+	public DefaultListModel<String> getModel3() {
+		return model3;
+	}
+
+
 	public void actualizarCanciones(ArrayList<Cancion> canciones_propias) {
 		model1.clear();
 		misCanciones = canciones_propias.toArray(new Cancion[canciones_propias.size()]);
 		for(int i=0; i < misCanciones.length; i++) {
-			model1.addElement(misCanciones[i].getTitulo() + " // " + String.format("%.2f",misCanciones[i].getDuracion()));
+			int horas = (int) (misCanciones[i].getDuracion() / 3600);
+		    int minutos = (int) ((misCanciones[i].getDuracion()-horas*3600)/60);
+		    int segundos = (int) (misCanciones[i].getDuracion()-(horas*3600+minutos*60));
+			if(misCanciones[i].getEstado() == EstadoCancion.PENDIENTEMODIFICACION) {
+				LocalDate a = misCanciones[i].getFechaModificacion();
+				a = a.plusDays(3);
+				model1.addElement("Titulo: " + misCanciones[i].getTitulo() + " // Duracion HH-MM-SS: " + horas + "-" + minutos + "-" + segundos + " // Estado: " + misCanciones[i].getEstado().name() + " // Fecha Fin Modificacion: " + a.toString());
+			}else {
+				model1.addElement("Titulo: " + misCanciones[i].getTitulo() + " // Duracion HH-MM-SS: " + horas + "-" + minutos + "-" + segundos + " // Estado: " + misCanciones[i].getEstado().name());
+			}
 		}
+		
 	}
 	
 	public void actualizarAlbumes(ArrayList<Album> albumes_propios) {
 		model2.clear();
 		misAlbumes = albumes_propios.toArray(new Album[albumes_propios.size()]);
 		for(int i=0; i < misAlbumes.length; i++) {
-			model2.addElement(misAlbumes[i].getTitulo());
+			int horas = (int) (misAlbumes[i].getDuracion() / 3600);
+		    int minutos = (int) ((misAlbumes[i].getDuracion()-horas*3600)/60);
+		    int segundos = (int) (misAlbumes[i].getDuracion()-(horas*3600+minutos*60));
+			model2.addElement("Titulo: " + misAlbumes[i].getTitulo() + " // Num.Canciones: " + misAlbumes[i].getContenido().size() + " // Duracion HH-MM-SS: " + horas + "-" + minutos + "-" + segundos);
 		}
+		
 	}
 	
 	public void actualizarListas(ArrayList<Lista> listas_propias) {
 		model3.clear();
 		misListas = listas_propias.toArray(new Lista[listas_propias.size()]);
 		for(int i=0; i < misListas.length; i++) {
-			model3.addElement(misListas[i].getTitulo());
+			int horas = (int) (misListas[i].getDuracion() / 3600);
+		    int minutos = (int) ((misListas[i].getDuracion()-horas*3600)/60);
+		    int segundos = (int) (misListas[i].getDuracion()-(horas*3600+minutos*60));
+			model3.addElement("Titulo: " + misListas[i].getTitulo() + " // Num.Contenido: "  + misListas[i].getContenido().size() + " // Duracion HH-MM-SS: " + horas + "-" + minutos + "-" + segundos);
 		}
+		
 	}
 
 
@@ -178,6 +346,31 @@ public class PantallaInicio extends PantallaPrincipal {
 		model1.clear();
 		model2.clear();
 		model3.clear();
+	}
+	
+	
+	private class RowColor extends DefaultListCellRenderer{
+		
+		private static final long serialVersionUID = 1L;
+
+		public Component getListCellRendererComponent( JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+            Component c = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
+            if (misCanciones[index].getEstado() == EstadoCancion.VALIDA) {
+                c.setBackground( Color.green); 
+                c.setForeground( Color.black );
+            }else if(misCanciones[index].getEstado() == EstadoCancion.PENDIENTEAPROBACION){ //LAS PENDIENTES DE MODIFICACION
+                c.setBackground( Color.cyan );
+                c.setForeground( Color.black );
+            }else if(misCanciones[index].getEstado() == EstadoCancion.PENDIENTEMODIFICACION) {
+                c.setBackground( Color.orange );
+                c.setForeground( Color.black );
+            }else if(misCanciones[index].getEstado() == EstadoCancion.EXPLICITA) {
+            	c.setBackground( Color.pink );
+                c.setForeground( Color.black );
+            }
+            return c;
+        }
+		
 	}
 			
 }  

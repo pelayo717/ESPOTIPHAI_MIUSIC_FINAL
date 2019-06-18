@@ -8,16 +8,21 @@ public class PantallaPrincipal extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public JButton botonIzquierdaArriba;
-	public JButton botonIzquierdaMedio;
-	public JButton botonIzquierdaAbajo;
-	JTextField busquedaTextfield;
-	JButton botonBuscar;
-	JButton botonLimpiarBuscador;
-	JRadioButton opcion1;
-	JRadioButton opcion2;
-	JRadioButton opcion3;
-	ButtonGroup grupo_eleccion;
+	private  JButton botonIzquierdaArriba;   
+	private  JButton botonIzquierdaMedio;
+	private  JButton botonIzquierdaAbajo;
+	
+
+	private  JButton botonBuscar; 
+	private JButton botonLimpiarBuscador;
+	
+	private JTextField busquedaTextfield;
+
+	private JRadioButton opcion1;
+	private JRadioButton opcion2;
+	private JRadioButton opcion3;
+	
+	private ButtonGroup grupo_eleccion;
 	
 	public PantallaPrincipal() { //CAMBIADO, MEJORADO
 		
@@ -49,10 +54,7 @@ public class PantallaPrincipal extends JPanel{
 		this.setLayout(layout);
 		
 		
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-		//Manual Constraints
-		//x axis, y axis, width, height  
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();  
 		
 		botonIzquierdaArriba.setBounds(10, 10, 150, 30);
 		botonIzquierdaMedio.setBounds(10, 50, 150, 30);
@@ -101,6 +103,46 @@ public class PantallaPrincipal extends JPanel{
 	public ButtonGroup getGrupoElecciones() {
 		return this.grupo_eleccion;
 	}
+	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
+	public JButton getBotonIzquierdaArriba() {
+		return botonIzquierdaArriba;
+	}
+
+
+	public JButton getBotonIzquierdaMedio() {
+		return botonIzquierdaMedio;
+	}
+
+
+	public JButton getBotonIzquierdaAbajo() {
+		return botonIzquierdaAbajo;
+	}
+
+
+	public JButton getBotonBuscar() {
+		return botonBuscar;
+	}
+
+
+	public JButton getBotonLimpiarBuscador() {
+		return botonLimpiarBuscador;
+	}
+
+
+	public JTextField getBusquedaTextfield() {
+		return busquedaTextfield;
+	}
+
+
+	public ButtonGroup getGrupo_eleccion() {
+		return grupo_eleccion;
+	}
+
 	
 
 	public void limpiarBuscador(){

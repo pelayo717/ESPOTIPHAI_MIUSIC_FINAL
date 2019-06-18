@@ -2,7 +2,8 @@ package vista;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.time.LocalDate;
+import java.time.Period;
 
 import javax.swing.*;
 
@@ -17,30 +18,59 @@ public class ReproducirAlbum extends PantallaPrincipal {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private  Album album;
+	
+	private  JList<String> lista_comentarios;
+	private  JList<String> lista_canciones;
 
-	private Album album;
 	
-	JButton botonPlay;
-	JButton botonPause;
-	public JList lista_comentarios;
-	JScrollPane comentariosScrollPane;
-	public JList lista_canciones;
-	JScrollPane cancionesScrollPane;
-	JButton botonList;
-	JButton botonAnyadirComentario;
-	JButton botonReportar;
-	JLabel datos_album;
-	JLabel titulo_album;
-	JLabel anyo_album;
-	JLabel autor_album;
-	JLabel duracion_album;
-	JLabel comentarios_label;
-	public ArrayList<Comentario> comentarios;
-	ArrayList<Cancion> canciones;
+	private JScrollPane comentariosScrollPane;
+	private JScrollPane cancionesScrollPane;
+
+	public JButton botonList;
+	public JButton botonAnyadirComentario;
+	public JButton eliminarCancion;
+	public JButton anyadirLista;
+	public JButton botonPlay;
+	public JButton botonPause;
 	
-	public ReproducirAlbum(Album album) {
+	
+	private JLabel datos_album;
+	private JLabel titulo_album;
+	private JLabel anyo_album;
+	private JLabel autor_album;
+	private JLabel duracion_album;
+	private JLabel comentarios_label;
+	
+	private Comentario[] misComentarios;
+	private DefaultListModel<String> model1;
+	
+	private Cancion[] misCanciones;
+	private DefaultListModel<String> model2;
+	
+	//public Cancion reproduciendose;
+	
+	private Dimension screenSize;
+	
+	public ReproducirAlbum() {
 		super();
-		this.album = album;
+		
+		model1 = new DefaultListModel<>();
+
+		lista_comentarios = new JList<String>(model1);
+		
+		comentariosScrollPane = new JScrollPane(lista_comentarios);
+		
+		model2 = new DefaultListModel<>();
+
+		lista_canciones = new JList<String>(model2);
+		
+		lista_canciones.setCellRenderer( new RowColor());
+
+		
+		cancionesScrollPane = new JScrollPane(lista_canciones);
+		
 		
 		//Declaracion
 		ImageIcon icono_reproducir = new ImageIcon("src/vista/play.png");
@@ -51,29 +81,22 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		this.botonPause = new JButton("pause");
 		this.botonList = new JButton("Ver comentario");
 		this.botonAnyadirComentario = new JButton("Añadir Comentario");
-		this.botonReportar = new JButton("Reportar");
+		
+		this.eliminarCancion = new JButton("Eliminar Cancion");
+		
+		this.anyadirLista = new JButton("Añadir a Lista");
+		
 		botonPlay.setIcon(icono_reproducir);
 		botonPause.setIcon(icono_parar);
 
-		if(this.album == null) {
-			datos_album = new JLabel("Datos del album", SwingConstants.CENTER);
-			titulo_album = new JLabel("Titulo:\t\t\t\t\t" ,SwingConstants.CENTER);
-			anyo_album = new JLabel("Año:\t\t\t\t\t",SwingConstants.LEFT);
-			autor_album = new JLabel("Autor:\t\t\t\t\t",SwingConstants.LEFT);
-			duracion_album = new JLabel("Duracion:\t\t\t\t\t" + " s",SwingConstants.LEFT);
-			comentarios_label = new JLabel("Comentarios de la album", SwingConstants.CENTER);
-		}else{
-			datos_album = new JLabel("Datos del album", SwingConstants.CENTER);
-			titulo_album = new JLabel("Titulo:\t\t\t\t\t" + album.getTitulo() ,SwingConstants.CENTER);
-			anyo_album = new JLabel("Año:\t\t\t\t\t" + album.getAnyo(),SwingConstants.LEFT);
-			autor_album = new JLabel("Autor:\t\t\t\t\t" + album.getAutor(),SwingConstants.LEFT);
-			duracion_album = new JLabel("Duracion:\t\t\t\t\t" + album.getDuracion() + " s",SwingConstants.LEFT);
-			comentarios_label = new JLabel("Comentarios de la album", SwingConstants.CENTER);
-			
-			this.actualizarCanciones();
-			this.actualizarComentarios();
-		}
 		
+		datos_album = new JLabel("Datos del album", SwingConstants.CENTER);
+		titulo_album = new JLabel("Titulo:\t\t\t\t\t" ,SwingConstants.CENTER);
+		anyo_album = new JLabel("Año:\t\t\t\t\t",SwingConstants.LEFT);
+		autor_album = new JLabel("Autor:\t\t\t\t\t",SwingConstants.LEFT);
+		duracion_album = new JLabel("Duracion:\t\t\t\t\t" + " s",SwingConstants.LEFT);
+		comentarios_label = new JLabel("Comentarios de la album", SwingConstants.CENTER);
+	
 		comentariosScrollPane = new JScrollPane(lista_comentarios);
 		
 		cancionesScrollPane = new JScrollPane(lista_canciones);
@@ -98,10 +121,7 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		GroupLayout layout = new GroupLayout(this);
 		this.setLayout(layout);
 		
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-		//Manual Constraints
-		//x axis, y axis, width, height 
+		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		//Distribucion
 		datos_album.setBounds(screenSize.width/2 - 380, 170, 300, 50);
@@ -112,7 +132,7 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		comentariosScrollPane.setBounds(screenSize.width/2  - 380, 400, 300, 200);
 		botonList.setBounds(screenSize.width/2 - 300, 610, 150, 30);
 		botonAnyadirComentario.setBounds(screenSize.width/2 - 380, 640, 150, 30);
-		botonReportar.setBounds(screenSize.width/2 - 230, 640, 150, 30);
+		anyadirLista.setBounds(screenSize.width/2 - 230, 640, 150, 30);
 
 		titulo_album.setBounds(screenSize.width/2 + 150, 210, 200, 50);
 		cancionesScrollPane.setBounds(screenSize.width/2  + 100, 260, 300, 300);
@@ -120,6 +140,8 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		botonPlay.setBounds(screenSize.width/2 + 180, 580, 60, 60);
 		botonPause.setBounds(screenSize.width/2 + 250, 580, 60, 60);
 
+		
+		eliminarCancion.setBounds(screenSize.width/2  + 430, 390, 150, 40);
 	
 		
 		//Añadimos
@@ -133,55 +155,243 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		this.add(comentariosScrollPane);
 		this.add(botonList);
 		this.add(botonAnyadirComentario);
-		this.add(botonReportar);
 		this.add(botonPlay);
 		this.add(botonPause);
+		this.add(eliminarCancion);
+		this.add(anyadirLista);
 	}
 	
 	public void limpiarBuscador(){
-		this.busquedaTextfield.setText("");
-		this.grupo_eleccion.clearSelection();
+		super.getBusquedaTextfield().setText("");
+		super.getGrupo_eleccion().clearSelection();
 	}
 	
-	
-	public void setUsuarioRegistrado() {
-		this.botonIzquierdaArriba.setText("Ver Perfil");
-		this.botonIzquierdaMedio.setText("Inicio");
-		this.botonIzquierdaAbajo.setVisible(false);
+	public void setAdministrador() {
+		super.getBotonIzquierdaArriba().setText("Ver Perfil");
+		super.getBotonIzquierdaMedio().setText("Inicio");
+		super.getBotonIzquierdaAbajo().setVisible(false);
+		this.anyadirLista.setVisible(false);
+		this.eliminarCancion.setVisible(false);
+		this.botonAnyadirComentario.setBounds(screenSize.width/2 - 300, 640, 150, 30);
 	}
 	
-	public void setUsuarioNoRegistrado() {
-		this.botonIzquierdaArriba.setText("Iniciar Sesion");
-		this.botonIzquierdaMedio.setText("Registro");
-		this.botonIzquierdaAbajo.setVisible(true);
+	public void setUsuarioRegistradoPropia() {
+		super.getBotonIzquierdaArriba().setText("Ver Perfil");
+		super.getBotonIzquierdaMedio().setText("Inicio");
+		super.getBotonIzquierdaAbajo().setVisible(false);
+		this.anyadirLista.setVisible(true);
+		this.eliminarCancion.setVisible(true);
+		this.botonAnyadirComentario.setBounds(screenSize.width/2 - 380, 640, 150, 30);
 	}
+	
+	public void setUsuarioRegistradoNoPropia() {
+		super.getBotonIzquierdaArriba().setText("Iniciar Sesion");
+		super.getBotonIzquierdaMedio().setText("Registro");
+		super.getBotonIzquierdaAbajo().setVisible(true);
+		this.anyadirLista.setVisible(true);
+		this.eliminarCancion.setVisible(false);
+		this.botonAnyadirComentario.setBounds(screenSize.width/2 - 380, 640, 150, 30);
+	}
+	
 	
 	 // método para asignar un controlador al botón
 	 public void setControlador(ActionListener c) {
-		 this.botonIzquierdaArriba.addActionListener(c);
-		 this.botonIzquierdaAbajo.addActionListener(c);
-		 this.botonIzquierdaMedio.addActionListener(c);
-		 this.botonBuscar.addActionListener(c);
-		 this.botonLimpiarBuscador.addActionListener(c);
+		 super.getBotonIzquierdaArriba().addActionListener(c);  
+		 super.getBotonIzquierdaMedio().addActionListener(c);
+		 super.getBotonIzquierdaAbajo().addActionListener(c);
+		 super.getBotonBuscar().addActionListener(c);
+		 super.getBotonLimpiarBuscador().addActionListener(c);
 		 this.botonList.addActionListener(c);
 		 this.botonAnyadirComentario.addActionListener(c);
-		 this.botonReportar.addActionListener(c);
 		 this.botonPlay.addActionListener(c);
+		 this.botonPause.addActionListener(c);
+		 this.anyadirLista.addActionListener(c);
+		 this.eliminarCancion.addActionListener(c);
 	 }
 	 
-	 @SuppressWarnings("unchecked")
-	public void actualizarComentarios() {
-		comentarios = album.getComentarios();
-		lista_canciones = new JList(comentarios.toArray());
-		comentariosScrollPane = new JScrollPane(lista_canciones);
+	 public void setInformacion(Album album_entrante) {
+		this.album = album_entrante; 
+		 
+	 	this.datos_album.setText("Datos del album");
+		this.titulo_album.setText("Titulo album:\t\t\t\t\t" + this.album.getTitulo());
+		this.anyo_album.setText("Año:\t\t\t\t\t" + this.album.getAnyo());
+		this.autor_album.setText("Autor:\t\t\t\t\t" + this.album.getAutor().getNombreAutor());
+		int horas = (int) (this.album.getDuracion() / 3600);
+	    int minutos = (int) ((this.album.getDuracion()-horas*3600)/60);
+	    int segundos = (int) (this.album.getDuracion()-(horas*3600+minutos*60));
+		this.duracion_album.setText("Duracion:\t\t\t\t\t" + horas + " h/" + minutos + " m/" + segundos + " s");
+		this.comentarios_label.setText("Comentarios de la album");
+		
+		this.actualizarCanciones();
+		this.actualizarComentarios();
 	 }
 	 
-	 @SuppressWarnings("unchecked")
-	public void actualizarCanciones() {
-		canciones = album.getContenido();
-		lista_canciones = new JList(canciones.toArray());
-		cancionesScrollPane = new JScrollPane(lista_canciones);
+	 public void actualizarComentarios() {
+		model1.clear();
+		misComentarios = album.getComentarios().toArray(new Comentario[album.getComentarios().size()]);
+		if(misComentarios != null) {
+			for(int i=0; i < misComentarios.length;i++) {
+				model1.addElement(misComentarios[i].getTexto());
+			}
+		}
 	 }
+	 
+	 public void actualizarCanciones() {
+		model2.clear();
+		misCanciones = album.getContenido().toArray(new Cancion[album.getContenido().size()]);
+		if(misCanciones != null) {
+			for(int i=0; i < misCanciones.length;i++) {
+				model2.addElement("Titulo: " + misCanciones[i].getTitulo() + " // Duracion: " + misCanciones[i].getDuracion() + " // Estado: " + misCanciones[i].getEstado().toString());
+			}
+		}
+	 }
+	 
+	 public void insertarComentario(Comentario nuevoComentario) {
+			if(this.album != null) {
+				album.anyadirComentario(nuevoComentario);
+			}
+	 }
+	 
+	 private class RowColor extends DefaultListCellRenderer{
+		
+			LocalDate fecha_actual = LocalDate.now();
+
+		 
+			private static final long serialVersionUID = 1L;
+
+			public Component getListCellRendererComponent( JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+	            Component c = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
+	            	
+	            	if(Sistema.sistema.getUsuarioActual() != null) {
+	            		if(Sistema.sistema.getAdministrador() == true) {
+	            			c.setBackground( Color.green);
+		                    c.setForeground( Color.black );
+	            		}else{
+	    					Period intervalo = Period.between(Sistema.sistema.getUsuarioActual().getFechaNacimiento(), fecha_actual);
+	    					if(intervalo.getYears() >= 18) {
+	    						c.setBackground( Color.green);
+			                    c.setForeground( Color.black );
+	    					}else {
+	    						if(misCanciones[index].getEstado() == EstadoCancion.VALIDA) {
+	    		                    c.setBackground( Color.green);
+	    		                    c.setForeground( Color.black );
+	    		            	}else {
+	    		            		c.setBackground( Color.red );
+	    		                    c.setForeground( Color.black );
+	    		            	}
+	    					}
+	            			
+	            		}
+	            	}else {
+	            		if(misCanciones[index].getEstado() == EstadoCancion.VALIDA) {
+		                    c.setBackground( Color.green);
+		                    c.setForeground( Color.black );
+		            	}else if(misCanciones[index].getEstado() == EstadoCancion.EXPLICITA){
+		            		c.setBackground( Color.red);
+		                    c.setForeground( Color.black );
+		            	}
+	            	}
+	            	
+	            	
+	            
+	            return c;
+	        }
+			
+		}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public Album getAlbum() {
+		return album;
+	}
+
+	public JList<String> getLista_comentarios() {
+		return lista_comentarios;
+	}
+
+	public JList<String> getLista_canciones() {
+		return lista_canciones;
+	}
+
+	public JScrollPane getComentariosScrollPane() {
+		return comentariosScrollPane;
+	}
+
+	public JScrollPane getCancionesScrollPane() {
+		return cancionesScrollPane;
+	}
+
+	public JButton getBotonList() {
+		return botonList;
+	}
+
+	public JButton getBotonAnyadirComentario() {
+		return botonAnyadirComentario;
+	}
+
+	public JButton getEliminarCancion() {
+		return eliminarCancion;
+	}
+
+	public JButton getAnyadirLista() {
+		return anyadirLista;
+	}
+
+	public JButton getBotonPlay() {
+		return botonPlay;
+	}
+
+	public JButton getBotonPause() {
+		return botonPause;
+	}
+
+	public JLabel getDatos_album() {
+		return datos_album;
+	}
+
+	public JLabel getTitulo_album() {
+		return titulo_album;
+	}
+
+	public JLabel getAnyo_album() {
+		return anyo_album;
+	}
+
+	public JLabel getAutor_album() {
+		return autor_album;
+	}
+
+	public JLabel getDuracion_album() {
+		return duracion_album;
+	}
+
+	public JLabel getComentarios_label() {
+		return comentarios_label;
+	}
+
+	public Comentario[] getMisComentarios() {
+		return misComentarios;
+	}
+
+	public DefaultListModel<String> getModel1() {
+		return model1;
+	}
+
+	public Cancion[] getMisCanciones() {
+		return misCanciones;
+	}
+
+	public DefaultListModel<String> getModel2() {
+		return model2;
+	}
+
+	public Dimension getScreenSize() {
+		return screenSize;
+	}
+
+	
 	 
 	 
 }

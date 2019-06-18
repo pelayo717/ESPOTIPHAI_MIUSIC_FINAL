@@ -1,10 +1,14 @@
 package vista;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import modelo.contenido.Cancion;
+import modelo.contenido.EstadoCancion;
 import modelo.reporte.Reporte;
 import modelo.sistema.Sistema;
 
@@ -26,37 +31,37 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 	private JScrollPane reportes;
 	private JScrollPane canciones;
 	
-	public JList<String> lista_reportes;
-	public JList<String> lista_canciones;
+	private  JList<String> lista_reportes;
+	private  JList<String> lista_canciones;
 	
-	JButton modificarCriterios;
+	public JButton modificarCriterios;
 	
-	JButton valida;
-	JButton explicita;
-	JButton pendienteModificacion;
-	JButton eliminada;
-	JButton seleccionarCancion;
+	public JButton valida;
+	public JButton explicita;
+	public JButton pendienteModificacion;
+	public JButton eliminada;
+	public JButton seleccionarCancion;
 	
-	JButton aceptarReporte;
-	JButton denegarReporte;
-	JButton seleccionarReporte;
+	public JButton aceptarReporte;
+	public JButton denegarReporte;
+	public JButton seleccionarReporte;
 	
-	JButton cambiarCriterios;
-	JTextField campoUmbral;
-	JTextField campoPrecio;
-	JTextField campoReproducciones;
+	public JButton cambiarCriterios;
+	private JTextField campoUmbral;
+	private JTextField campoPrecio;
+	private JTextField campoReproducciones;
 	
-	JLabel susCanciones;
-	JLabel susReportes;
-	JLabel precio;
-	JLabel umbral;
-	JLabel reproducciones;
+	private JLabel susCanciones;
+	private JLabel susReportes;
+	private JLabel precio;
+	private JLabel umbral;
+	private JLabel reproducciones;
 	
-	public Cancion[] aValidar;
-	public Reporte[] aReportar;
+	private  Cancion[] aValidar;
+	private  Reporte[] aReportar;
 	
-	public DefaultListModel<String> model1;
-	public DefaultListModel<String> model2;
+	private  DefaultListModel<String> model1;
+	private  DefaultListModel<String> model2;
 	
 	public PantallaInicioAdmin () {
 		
@@ -68,19 +73,21 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 		lista_reportes = new JList<String>(model1);
 		lista_canciones = new JList<String>(model2);
 		
+		lista_canciones.setCellRenderer(new RowColor());
+		
 		canciones = new JScrollPane(lista_canciones);
 		reportes = new JScrollPane(lista_reportes);
 		
-		botonIzquierdaArriba.setText("Ver Perfil");
-		botonIzquierdaMedio.setVisible(false);
-		botonIzquierdaAbajo.setVisible(false);
+		super.getBotonIzquierdaArriba().setText("Ver Perfil");
+		super.getBotonIzquierdaMedio().setVisible(false);
+		super.getBotonIzquierdaAbajo().setVisible(false);
 		
 		susCanciones = new JLabel("Canciones a validar",  SwingConstants.CENTER);
 		susReportes = new JLabel("Reportes a revisar",  SwingConstants.CENTER);	
 		
-		precio = new JLabel("Precio Premium",  SwingConstants.CENTER);
-		umbral = new JLabel("Umbral Reproducciones",  SwingConstants.CENTER);
-		reproducciones = new JLabel("Reproducciones Maximas",  SwingConstants.CENTER);
+		precio = new JLabel("Precio PRO => " + Sistema.sistema.getPrecioPremium() + " €" ,  SwingConstants.CENTER);
+		umbral = new JLabel("Umbral Reproducciones => " + Sistema.sistema.getUmbralReproducciones(),  SwingConstants.CENTER);
+		reproducciones = new JLabel("Reproducciones Maximas => " + Sistema.sistema.getMaxReproduccionesUsuariosNoPremium() ,  SwingConstants.CENTER);
 		
 		valida = new JButton("Valida");
 		explicita = new JButton("Explicita");
@@ -116,14 +123,8 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 		
 		reportes.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-		
-		
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		//Distribucion en la pantalla
-		//Manual Constraints
-		//x axis, y axis, width, height 
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); 
 				
-		
 		susCanciones.setBounds(screenSize.width/2 - 600, 200, 290, 30);
 		canciones.setBounds(screenSize.width/2 - 600, 250, 290, 200);
 
@@ -141,8 +142,8 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 		seleccionarReporte.setBounds(screenSize.width/2 -25 , 470, 150, 30);
 		
 		precio.setBounds(screenSize.width/2 + 350, 200, 200, 30);
-		umbral.setBounds(screenSize.width/2 + 350, 275, 200, 30);
-		reproducciones.setBounds(screenSize.width/2 + 350, 350, 200, 30);
+		umbral.setBounds(screenSize.width/2 + 300, 275, 300, 30);
+		reproducciones.setBounds(screenSize.width/2 + 300, 350, 300, 30);
 		
 		campoPrecio.setBounds(screenSize.width/2 + 350, 225, 200, 30);
 		campoUmbral.setBounds(screenSize.width/2 + 350, 300, 200, 30);
@@ -176,18 +177,19 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 	
 	// metodo para asignar un controlador al boton
 		public void setControlador(ActionListener c) {
-			this.botonIzquierdaArriba.addActionListener(c);
-			this.botonIzquierdaMedio.addActionListener(c);
+			super.getBotonIzquierdaArriba().addActionListener(c);
+			super.getBotonIzquierdaMedio().addActionListener(c);
 			this.valida.addActionListener(c);
 			this.explicita.addActionListener(c);
 			this.pendienteModificacion.addActionListener(c);
-			this.botonBuscar.addActionListener(c);
-			this.botonLimpiarBuscador.addActionListener(c);
+			super.getBotonBuscar().addActionListener(c);
+			super.getBotonLimpiarBuscador().addActionListener(c);
 			this.eliminada.addActionListener(c);
 			this.seleccionarCancion.addActionListener(c);
 			this.aceptarReporte.addActionListener(c);
 			this.denegarReporte.addActionListener(c);
 			this.seleccionarReporte.addActionListener(c);
+			this.cambiarCriterios.addActionListener(c);
 			
 		}
 		
@@ -195,7 +197,16 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 			model2.clear();
 			aValidar = Sistema.sistema.getCancionesPendientesValidacion().toArray(new Cancion[Sistema.sistema.getCancionesPendientesValidacion().size()]);
 			for(int i=0;i< aValidar.length; i++) {
-				model2.addElement(aValidar[i].getTitulo() + " // " + aValidar[i].getAutor().getNombreAutor());
+				int horas = (int) (aValidar[i].getDuracion() / 3600);
+			    int minutos = (int) ((aValidar[i].getDuracion()-horas*3600)/60);
+			    int segundos = (int) (aValidar[i].getDuracion()-(horas*3600+minutos*60));
+				if(aValidar[i].getEstado() == EstadoCancion.PENDIENTEMODIFICACION) {
+					LocalDate a = aValidar[i].getFechaModificacion();
+					a = a.plusDays(3);
+					model2.addElement("Titulo: " + aValidar[i].getTitulo() + " // Autor: " + aValidar[i].getAutor().getNombreAutor() + " // Fecha FIN Modificacion: " + a.toString() + " // Duracion HH/MM/SS: " + horas + "/" + minutos + "/" + segundos);
+				}else {
+					model2.addElement("Titulo: " + aValidar[i].getTitulo() + " // Autor: " + aValidar[i].getAutor().getNombreAutor() + " // Duracion HH-MM-SS: " + horas + "-" + minutos + "-" + segundos);
+				}
 			}
 		}
 		
@@ -203,8 +214,148 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 			model1.clear();
 			aReportar = Sistema.sistema.getReportesTotales().toArray(new Reporte[Sistema.sistema.getReportesTotales().size()]);
 			for(int i=0; i < aReportar.length; i++) {
-				model1.addElement(aReportar[i].getCancionReportada().getTitulo() + " // " + aReportar[i].getUsuarioReportador().getNombreUsuario());
+				model1.addElement("Cancion: " + aReportar[i].getCancionReportada().getTitulo() + " // Reportador: " + aReportar[i].getUsuarioReportador().getNombreUsuario());
 			}
+		}
+		
+		
+		public void actualizarCriterios() {	
+			precio.setText("Precio PRO => " + Sistema.sistema.getPrecioPremium() + " €");
+			umbral.setText("Umbral Reproducciones => " + Sistema.sistema.getUmbralReproducciones());
+			reproducciones.setText("Reproducciones Maximas => " + Sistema.sistema.getMaxReproduccionesUsuariosNoPremium());			
+		}
+		
+		private class RowColor extends DefaultListCellRenderer{
+			
+			private static final long serialVersionUID = 1L;
+
+			public Component getListCellRendererComponent( JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+	            Component c = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
+	            if(aValidar[index].getEstado() == EstadoCancion.PENDIENTEAPROBACION){ //LAS PENDIENTES DE MODIFICACION
+	                c.setBackground( Color.white );
+	                c.setForeground( Color.black );
+	            }else if(aValidar[index].getEstado() == EstadoCancion.PENDIENTEMODIFICACION) {
+	                c.setBackground( Color.yellow );
+	                c.setForeground( Color.black );
+	            }
+	            return c;
+	        }
+			
+		}
+
+		public static long getSerialversionuid() {
+			return serialVersionUID;
+		}
+
+		public JScrollPane getReportes() {
+			return reportes;
+		}
+
+		public JScrollPane getCanciones() {
+			return canciones;
+		}
+
+		public JList<String> getLista_reportes() {
+			return lista_reportes;
+		}
+
+		public JList<String> getLista_canciones() {
+			return lista_canciones;
+		}
+
+		public JButton getModificarCriterios() {
+			return modificarCriterios;
+		}
+
+		public JButton getValida() {
+			return valida;
+		}
+
+		public JButton getExplicita() {
+			return explicita;
+		}
+
+		public JButton getPendienteModificacion() {
+			return pendienteModificacion;
+		}
+
+		public JButton getEliminada() {
+			return eliminada;
+		}
+
+		public JButton getSeleccionarCancion() {
+			return seleccionarCancion;
+		}
+
+		public JButton getAceptarReporte() {
+			return aceptarReporte;
+		}
+
+		public JButton getDenegarReporte() {
+			return denegarReporte;
+		}
+
+		public JButton getSeleccionarReporte() {
+			return seleccionarReporte;
+		}
+
+		public JButton getCambiarCriterios() {
+			return cambiarCriterios;
+		}
+
+		public JTextField getCampoUmbral() {
+			return campoUmbral;
+		}
+
+		public JTextField getCampoPrecio() {
+			return campoPrecio;
+		}
+
+		public JTextField getCampoReproducciones() {
+			return campoReproducciones;
+		}
+
+		public JLabel getSusCanciones() {
+			return susCanciones;
+		}
+
+		public JLabel getSusReportes() {
+			return susReportes;
+		}
+
+		public JLabel getPrecio() {
+			return precio;
+		}
+
+		public JLabel getUmbral() {
+			return umbral;
+		}
+
+		public JLabel getReproducciones() {
+			return reproducciones;
+		}
+
+		public Cancion[] getaValidar() {
+			return aValidar;
+		}
+
+		public Reporte[] getaReportar() {
+			return aReportar;
+		}
+
+		public DefaultListModel<String> getModel1() {
+			return model1;
+		}
+
+		public DefaultListModel<String> getModel2() {
+			return model2;
+		}
+
+		public void limpiarCriterios() {
+			this.campoPrecio.setText("");
+			this.campoReproducciones.setText("");
+			this.campoUmbral.setText("");
+			
 		}
 	
 }

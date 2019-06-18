@@ -2,8 +2,10 @@ package vista;
 
 
 import java.awt.*;
+import java.awt.event.*;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -25,6 +27,12 @@ public class Ventana extends JFrame {
 	public PantallaInicioAdmin pantallaInicioAdmin;
 	public Registrarse registrarse;
 	public Perfil perfil;
+	public BuscadorCanciones buscadorCanciones;
+	public BuscadorAlbumes buscadorAlbumes;
+	public BuscadorAutores buscadorAutores;
+
+	
+	
 	public static Ventana ventana;
 	public ControladorPantallaInicio controladorPantallaInicio;
 	public ControladorReproducirCancion controladorReproducirCancion;
@@ -34,13 +42,17 @@ public class Ventana extends JFrame {
 	public ControladorRegistrarse controladorRegistrarse;
 	public ControladorPerfil controladorPerfil;
 	public ControladorPantallaInicioAdmin controladorPantallaInicioAdmin;
+	public ControladorBuscadorCanciones controladorBuscadorCanciones;
+	public ControladorBuscadorAlbumes controladorBuscadorAlbumes;
+	public ControladorBuscadorAutores controladorBuscadorAutores;
+	
+	
 	Container container;
 	Sistema sistema;
 	
 	public Ventana() throws Mp3PlayerException, IOException{ //CAMBIADO, MEJORADO
 		
 		this.sistema = Sistema.getSistema();
-		System.out.print(this.sistema.registrarse("admin", "ADMIN", LocalDate.now(), "admin"));
 		
 		//obtener contenedor, asignar layout
 		container = this.getContentPane();
@@ -53,9 +65,11 @@ public class Ventana extends JFrame {
 		final String reproducirListaString = "Reproducir Lista";
 		final String pantallaInicioString = "Pantalla Inicio";
 		final String perfilString = "Perfil";
-		final String crearAlbumString = "Crear Album";
 		final String pantallaInicioAdminString = "Pantalla Inicio Admin";
-
+		final String buscadorCancionesString = "Buscador Canciones";
+		final String buscadorAlbumesString = "Buscador Albumes";
+		final String buscadorAutoresString = "Buscador Autores";
+		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setExtendedState(6);
 		this.setVisible(true);
@@ -63,14 +77,17 @@ public class Ventana extends JFrame {
 
 		//Pantallas
 		this.pantallaInicio = new PantallaInicio();
-		this.reproducirCancion = new ReproducirCancion(null);
-		this.reproducirAlbum = new ReproducirAlbum(null);
-		this.reproducirLista = new ReproducirLista(null);
+		this.reproducirCancion = new ReproducirCancion();
+		this.reproducirAlbum = new ReproducirAlbum();
+		this.reproducirLista = new ReproducirLista();
 		this.inicioSesion = new InicioSesion();
 		this.registrarse = new Registrarse();
 		this.perfil = new Perfil();
 		this.pantallaInicioAdmin = new PantallaInicioAdmin();
-
+		this.buscadorCanciones = new BuscadorCanciones();
+		this.buscadorAlbumes = new BuscadorAlbumes();
+		this.buscadorAutores = new BuscadorAutores();
+		
 		//Controladores
 		controladorPantallaInicio = new ControladorPantallaInicio(pantallaInicio, 2);
 		controladorReproducirCancion = new ControladorReproducirCancion(reproducirCancion, 2);
@@ -80,7 +97,10 @@ public class Ventana extends JFrame {
 		controladorRegistrarse = new ControladorRegistrarse(registrarse, 2);
 		controladorPerfil = new ControladorPerfil(perfil,2);
 		controladorPantallaInicioAdmin = new ControladorPantallaInicioAdmin(pantallaInicioAdmin,2);
-
+		controladorBuscadorCanciones = new ControladorBuscadorCanciones(buscadorCanciones,2);
+		controladorBuscadorAlbumes = new ControladorBuscadorAlbumes(buscadorAlbumes,2);
+		controladorBuscadorAutores = new ControladorBuscadorAutores(buscadorAutores,2);
+		
 		// configurar la vista con el controlador
 		pantallaInicio.setControlador(controladorPantallaInicio);
 		reproducirCancion.setControlador(controladorReproducirCancion);
@@ -90,6 +110,10 @@ public class Ventana extends JFrame {
 		registrarse.setControlador(controladorRegistrarse);
 		perfil.setControlador(controladorPerfil);
 		pantallaInicioAdmin.setControlador(controladorPantallaInicioAdmin);
+		buscadorCanciones.setControlador(controladorBuscadorCanciones);
+		buscadorAlbumes.setControlador(controladorBuscadorAlbumes);
+		buscadorAutores.setControlador(controladorBuscadorAutores);
+		
 		
 		//anyadimos pantallas al contenedor
 		this.add(pantallaInicio, pantallaInicioString);
@@ -100,8 +124,28 @@ public class Ventana extends JFrame {
 		this.add(registrarse, registrarseString);
 		this.add(perfil, perfilString);
 		this.add(pantallaInicioAdmin,pantallaInicioAdminString);
+		this.add(buscadorCanciones,buscadorCancionesString);
+		this.add(buscadorAlbumes,buscadorAlbumesString);
+		this.add(buscadorAutores,buscadorAutoresString);
 		Ventana.ventana = this;
 		this.showPantallaInicio();
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.addWindowListener(new WindowAdapter(){
+			@Override
+			public void windowClosing(WindowEvent e) {
+				if (JOptionPane.showConfirmDialog(Ventana.ventana,  "Estas seguro de que quieres cerrar ESPOTIPHAIMUSIC?", "Cerrar ESPOTIPHAIMUSIC?", 
+			            JOptionPane.YES_NO_OPTION,
+			            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+						try {
+							Sistema.sistema.guardarDatosGenerales();
+						} catch (IOException exception) {
+							System.out.println(exception.toString());
+						}
+			            System.exit(0);
+			        }	
+			}
+		});
+		
 	}
 	
 	public void showInicioSesion(){
@@ -127,62 +171,66 @@ public class Ventana extends JFrame {
 	    	this.pantallaInicio.setUsuarioNoRegistrado();
 	    	this.pantallaInicio.limpiarDatos();
 	    }
+	    
+	    this.pantallaInicio.limpiarBuscador();
 	}
 	
 	public void showReproducirCancion(Cancion c){
 		
-		System.out.print(c.getTitulo());
 		final String reproducirCancionString = "Reproducir Cancion";
-		this.remove(this.reproducirCancion);
-		this.reproducirCancion = new ReproducirCancion(c);
-		this.reproducirCancion.setControlador(this.controladorReproducirCancion);
-		this.add(reproducirCancion, reproducirCancionString);
 		
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), reproducirCancionString);
-	   
-	    System.out.print(this.reproducirCancion.titulo_cancion.getText());
-	    
-	    if (Sistema.sistema.getUsuarioActual() != null) {
-	    	this.reproducirCancion.setUsuarioRegistrado();
+	   	    
+	    if (Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador() == false) {
+	    	if(Sistema.sistema.getUsuarioActual().getCanciones().contains(c) == true) {
+		    	this.reproducirCancion.setUsuarioRegistradoPropia();
+	    	}else {
+	    		this.reproducirCancion.setUsuarioRegistradoNoPropia();
+	    	}
+	    }else if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador() == true) {
+	    	this.reproducirCancion.setAdministrador();
 	    } else {
-	    	this.reproducirCancion.setUsuarioNoRegistrado();
+	    	this.reproducirCancion.setUsuarioNoRegistradoNoPropia();
 	    }
+	    
+		this.reproducirCancion.setInformacion(c);
+	    this.reproducirCancion.limpiarBuscador();
 	}
 	
 	public void showReproducirAlbum(Album a){
+		
 		final String reproducirAlbumString = "Reproducir Album";
-		this.remove(this.reproducirAlbum);
-		this.reproducirAlbum = new ReproducirAlbum(a);
-		this.reproducirAlbum.setControlador(this.controladorReproducirAlbum);
-		this.add(reproducirAlbum,reproducirAlbumString);
 		
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), reproducirAlbumString);
 	    
-	    if (Sistema.sistema.getUsuarioActual() != null) {
-	    	this.reproducirAlbum.setUsuarioRegistrado();
+	    if (Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador() == true) {
+	    	this.reproducirAlbum.setAdministrador();
 	    } else {
-	    	this.reproducirAlbum.setUsuarioNoRegistrado();
+	    	if(Sistema.sistema.getUsuarioActual() != null) {
+		    	this.reproducirAlbum.setUsuarioRegistradoPropia();
+	    	}else {
+	    		this.reproducirAlbum.setUsuarioRegistradoNoPropia();
+	    	}
 	    }
+	    
+	    this.reproducirAlbum.setInformacion(a);
+	    this.reproducirAlbum.limpiarBuscador();
 	}
 	
 	
 	public void showReproducirLista(Lista l){
+		
 		final String reproducirListaString = "Reproducir Lista";
-		this.remove(this.reproducirLista);
-		this.reproducirLista = new ReproducirLista(l);
-		this.reproducirLista.setControlador(this.controladorReproducirLista);
-		this.add(reproducirLista, reproducirListaString);
 		
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), reproducirListaString);
 	    
-	    if (Sistema.sistema.getUsuarioActual() != null) {
-	    	this.reproducirLista.setUsuarioRegistrado();
-	    } else {
-	    	this.reproducirLista.setUsuarioNoRegistrado();
-	    }
+    	this.reproducirLista.setUsuarioRegistrado();
+    	    
+	    this.reproducirLista.setInformacion(l);
+	    this.reproducirLista.limpiarBuscador();
 	}
 	
 	
@@ -197,11 +245,17 @@ public class Ventana extends JFrame {
 		final String perfilString = "Perfil";
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), perfilString);
+	    
     	this.perfil.setInformacion(Sistema.sistema.getUsuarioActual());
+    	
 	    if(Sistema.sistema.getAdministrador() == true) {
-	    	this.perfil.setAsministrador();	
+	    	this.perfil.setAdministrador();	
 	    }else {
-	    	this.perfil.setUsuario();
+	    	if(Sistema.sistema.getUsuarioActual().getPremium() == true) {
+	    		this.perfil.setUsuarioPremium();
+	    	}else{
+	    		this.perfil.setUsuario();
+	    	}
 	    }
 	}
 
@@ -212,7 +266,69 @@ public class Ventana extends JFrame {
 	    if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador() == true) {
 	    	this.pantallaInicioAdmin.actualizarCanciones();
 	    	this.pantallaInicioAdmin.actualizarReportes();
+	    	this.pantallaInicioAdmin.actualizarCriterios();
+	    	this.pantallaInicioAdmin.limpiarCriterios();
+		    this.pantallaInicioAdmin.limpiarBuscador();
 	    }
+	    
 	}
+	
+	public void showBuscadorCanciones(Cancion[] retornadas) {
+		
+		final String buscadorCancionesString = "Buscador Canciones";
+		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
+	    cl.show(this.getContentPane(), buscadorCancionesString);
+	   
+	    if (Sistema.sistema.getUsuarioActual() != null) {
+	    	this.buscadorCanciones.setUsuarioRegistrado();
+	    	this.buscadorCanciones.actualizarCanciones(retornadas);
+	    	
+	    } else {
+	    	this.buscadorCanciones.setUsuarioNoRegistrado();
+	    	this.buscadorCanciones.limpiarDatos();
+	    	this.buscadorCanciones.actualizarCanciones(retornadas);
+	    }
+	    
+	    this.buscadorCanciones.limpiarBuscador();
+	}
+
+	public void showBuscadorAutores(Contenido[] retornadas) {
+		
+		final String buscadorAutoresString = "Buscador Autores";
+		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
+	    cl.show(this.getContentPane(), buscadorAutoresString);
+	    
+	    if(Sistema.sistema.getUsuarioActual() != null) {
+	    	this.buscadorAutores.setUsuarioRegistrado();
+	    	this.buscadorAutores.actualizarContenido(retornadas);
+	    	this.buscadorAutores.actualizarAutores(retornadas);
+	    }else {
+	    	
+	    	this.buscadorAutores.setUsuarioNoRegistrado();
+	    	this.buscadorAutores.limpiarDatos();
+	    	this.buscadorAutores.actualizarContenido(retornadas);
+	    	this.buscadorAutores.actualizarAutores(retornadas);
+	    }
+	    
+		
+	}
+
+	public void showBuscadorAlbumes(Album[] retornadas) {
+		
+		final String buscadorAlbumesString = "Buscador Albumes";
+		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
+	    cl.show(this.getContentPane(), buscadorAlbumesString);
+	    
+	    if(Sistema.sistema.getUsuarioActual() != null) {
+	    	this.buscadorAlbumes.setUsuarioRegistrado();
+	    	this.buscadorAlbumes.actualizarAlbumes(retornadas);
+	    }else {
+	    	this.buscadorAlbumes.setUsuarioNoRegistrado();
+	    	this.buscadorAlbumes.limpiarDatos();
+	    	this.buscadorAlbumes.actualizarAlbumes(retornadas);
+	    }
+		
+	}
+	
 	
 }

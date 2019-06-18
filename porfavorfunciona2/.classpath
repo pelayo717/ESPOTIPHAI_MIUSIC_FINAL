@@ -6,8 +6,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="/Users/pelayorodriguezaviles/eclipse-workspace/porfavorfunciona2/TeleChargeAndPaySystem8.jar"/>
-	<classpathentry kind="lib" path="/Users/pelayorodriguezaviles/eclipse-workspace/porfavorfunciona2/MP3Player.jar"/>
-	<classpathentry kind="lib" path="/Users/pelayorodriguezaviles/eclipse-workspace/porfavorfunciona2/jl1.0.1.jar"/>
+	<classpathentry kind="lib" path="jl1.0.1.jar"/>
+	<classpathentry kind="lib" path="MP3Player.jar"/>
+	<classpathentry kind="lib" path="TeleChargeAndPaySystem8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

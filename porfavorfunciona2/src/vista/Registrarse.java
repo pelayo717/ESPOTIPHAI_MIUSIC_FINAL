@@ -10,22 +10,22 @@ public class Registrarse extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	JButton botonInicio;
-	JButton botonIniciarSesion ;
-	JButton botonRegistrarse;
+	public JButton botonInicio;
+	public JButton botonIniciarSesion ;
+	public JButton botonRegistrarse;
 	
-	JLabel titulo;
-	JLabel usuarioLabel;
-	JLabel authorLabel;
-	JLabel birthLabel;
-	JLabel passwordLabel;
-	JLabel preguntaLabel;
+	private JLabel titulo;
+	private JLabel usuarioLabel;
+	private JLabel authorLabel;
+	private JLabel birthLabel;
+	private JLabel passwordLabel;
+	private JLabel preguntaLabel;
 
-	public JTextField usuarioTextfield;
-	public JTextField authorTextfield ;
-	public JTextField birthTextfield ;
+	private JTextField usuarioTextfield;
+	private JTextField authorTextfield ;
+	private JTextField birthTextfield ;
 
-	public JPasswordField passwordTextfield ;
+	private JPasswordField passwordTextfield ;
 	
 	
 	public Registrarse() {
@@ -100,23 +100,70 @@ public class Registrarse extends JPanel{
 		this.add(preguntaLabel);
 		this.add(botonRegistrarse);
 		
-		/*
-		layout.setHorizontalGroup(
-		   layout.createSequentialGroup()
-		      .addComponent(botonInicio)
-		      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-		           .addComponent(titulo)
-		           .addComponent(campo))
-		);
-		layout.setVerticalGroup(
-		   layout.createSequentialGroup()
-		      .addComponent(botonInicio)
-		      .addComponent(titulo)
-		      .addComponent(campo)
-		);
-		*/
 	}
 	
+	 public void setControlador(ActionListener c) {
+		 this.botonInicio.addActionListener(c);
+		 this.botonIniciarSesion.addActionListener(c);
+		 this.botonRegistrarse.addActionListener(c);
+	 }
+		 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public JButton getBotonInicio() {
+		return botonInicio;
+	}
+
+	public JButton getBotonIniciarSesion() {
+		return botonIniciarSesion;
+	}
+
+	public JButton getBotonRegistrarse() {
+		return botonRegistrarse;
+	}
+
+	public JLabel getTitulo() {
+		return titulo;
+	}
+
+	public JLabel getUsuarioLabel() {
+		return usuarioLabel;
+	}
+
+	public JLabel getAuthorLabel() {
+		return authorLabel;
+	}
+
+	public JLabel getBirthLabel() {
+		return birthLabel;
+	}
+
+	public JLabel getPasswordLabel() {
+		return passwordLabel;
+	}
+
+	public JLabel getPreguntaLabel() {
+		return preguntaLabel;
+	}
+
+	public JTextField getUsuarioTextfield() {
+		return usuarioTextfield;
+	}
+
+	public JTextField getAuthorTextfield() {
+		return authorTextfield;
+	}
+
+	public JTextField getBirthTextfield() {
+		return birthTextfield;
+	}
+
+	public JPasswordField getPasswordTextfield() {
+		return passwordTextfield;
+	}
+
 	public void limpiarVentana(){
 		this.passwordTextfield.setText("");
 		this.authorTextfield.setText("");
@@ -124,12 +171,7 @@ public class Registrarse extends JPanel{
 		this.usuarioTextfield.setText("");
 	}
 	
-	 // método para asignar un controlador al botón
-	 public void setControlador(ActionListener c) {
-		 this.botonInicio.addActionListener(c);
-		 this.botonIniciarSesion.addActionListener(c);
-		 this.botonRegistrarse.addActionListener(c);
-	 }
+	 
 	 
 }
 
