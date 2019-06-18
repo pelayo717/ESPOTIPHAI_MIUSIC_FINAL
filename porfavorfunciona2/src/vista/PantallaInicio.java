@@ -163,7 +163,7 @@ public class PantallaInicio extends PantallaPrincipal {
 		 
 	public void setUsuarioRegistrado() {
 		super.getBotonIzquierdaArriba().setText("Ver Perfil");
-		super.getBotonIzquierdaMedio().setText("Inicio");
+		super.getBotonIzquierdaMedio().setVisible(false);
 		super.getBotonIzquierdaAbajo().setVisible(false);
 	}
 			
