@@ -12,7 +12,6 @@ import modelo.contenido.Cancion;
 import modelo.contenido.Contenido;
 import modelo.sistema.Sistema;
 import vista.BuscadorAlbumes;
-import vista.PantallaInicio;
 import vista.Ventana;
 
 /**
@@ -22,6 +21,7 @@ import vista.Ventana;
 public class ControladorBuscadorAlbumes implements ActionListener {
 
 	private BuscadorAlbumes vista;
+	@SuppressWarnings("unused")
 	private int modelo;
 
 	/**
@@ -45,18 +45,20 @@ public class ControladorBuscadorAlbumes implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(((JButton)e.getSource()).getText() == "Elegir album") {		
-			if(vista.losAlbumes.length > 0) {
-				Album[] albumes_totales = vista.losAlbumes;
-				if(vista.lista_albumes.getSelectedIndex() == -1) {
+			
+			if(vista.getAlbum().length > 0) {
+				Album[] albumes_totales = vista.getAlbum();
+				int indice = vista.getListAlbum().getSelectedIndex();
+				
+				if(indice == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir album seleccione uno primero");
 					Ventana.ventana.showBuscadorAlbumes(albumes_totales);
 				}else{
-					Ventana.ventana.showReproducirAlbum(albumes_totales[vista.lista_albumes.getSelectedIndex()]);
+					Ventana.ventana.showReproducirAlbum(albumes_totales[indice]);
 				}
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"No hay canciones para seleccionar");
-			}
-			
+			}						
 		}  else if(((JButton)e.getSource()).getText() == "Ver Perfil") {
 			Ventana.ventana.showPerfil();
 			Ventana.ventana.perfil.setInformacion(Sistema.sistema.getUsuarioActual());
@@ -71,20 +73,24 @@ public class ControladorBuscadorAlbumes implements ActionListener {
 				Ventana.ventana.showPantallaInicio();
 			}
 		} else if(((JButton)e.getSource()).getText() == "Buscar") {
-			if(Ventana.ventana.buscadorAlbumes.getOpcion1().isSelected() == true) {
-				if(Ventana.ventana.buscadorAlbumes.getCriterioBusqueda().getText().isEmpty() != true) {
-					ArrayList<Cancion>  retornadas = Sistema.sistema.buscadorPorTitulos(Ventana.ventana.buscadorAlbumes.getCriterioBusqueda().getText());
+			
+			if(vista.getOpcion1().isSelected() == true) {
+				if(vista.getCriterioBusqueda().getText().isEmpty() != true) {
+					ArrayList<Cancion>  retornadas = Sistema.sistema.buscadorPorTitulos(vista.getCriterioBusqueda().getText());
+					
 					if(retornadas != null) { //ALGO HAY
 						Ventana.ventana.showBuscadorCanciones(retornadas.toArray(new Cancion[retornadas.size()]));
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado canciones por ese parametro");
 					}
+					
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
 				}
-			}else if(Ventana.ventana.buscadorAlbumes.getOpcion2().isSelected() == true){
-				if(Ventana.ventana.buscadorAlbumes.getCriterioBusqueda().getText().isEmpty() != true) {
-					ArrayList<Album> retornadas = Sistema.sistema.buscadorPorAlbumes(Ventana.ventana.buscadorAlbumes.getCriterioBusqueda().getText());
+				
+			}else if(vista.getOpcion2().isSelected() == true){
+				if(vista.getCriterioBusqueda().getText().isEmpty() != true) {
+					ArrayList<Album> retornadas = Sistema.sistema.buscadorPorAlbumes(vista.getCriterioBusqueda().getText());
 					if(retornadas != null) { //ALGO HAY
 						Ventana.ventana.showBuscadorAlbumes(retornadas.toArray(new Album[retornadas.size()]));
 					}else {
@@ -93,9 +99,9 @@ public class ControladorBuscadorAlbumes implements ActionListener {
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
 				}
-			}else if(Ventana.ventana.buscadorAlbumes.getOpcion3().isSelected() == true) {
-				if(Ventana.ventana.buscadorAlbumes.getCriterioBusqueda().getText().isEmpty() != true) {
-					ArrayList<Contenido> retornadas = Sistema.sistema.buscadorPorAutores(Ventana.ventana.buscadorAlbumes.getCriterioBusqueda().getText());
+			}else if(vista.getOpcion3().isSelected() == true) {
+				if(vista.getCriterioBusqueda().getText().isEmpty() != true) {
+					ArrayList<Contenido> retornadas = Sistema.sistema.buscadorPorAutores(vista.getCriterioBusqueda().getText());
 					if(retornadas != null) { //ALGO HAY
 						Ventana.ventana.showBuscadorAutores(retornadas.toArray(new Contenido[retornadas.size()]));
 					}else {
@@ -105,7 +111,7 @@ public class ControladorBuscadorAlbumes implements ActionListener {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
 				}
 			}else {
-				if(Ventana.ventana.buscadorAlbumes.getCriterioBusqueda().getText().isEmpty() == true) {
+				if(vista.getCriterioBusqueda().getText().isEmpty() == true) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda y seleccione un criterio para realizar la busqueda");
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Debe seleccionar un criterio para poder realizar la busqueda");
