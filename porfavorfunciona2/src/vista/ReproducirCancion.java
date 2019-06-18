@@ -48,7 +48,6 @@ public class ReproducirCancion extends PantallaPrincipal {
 	public ReproducirCancion() {
 		super();
 		
-		this.cancion = cancion;
 		model1 = new DefaultListModel<>();
 
 		lista_comentarios = new JList<String>(model1);

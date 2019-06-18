@@ -16,6 +16,7 @@ import vista.Ventana;
 
 public class ControladorRegistrarse implements ActionListener{
 		private Registrarse vista;
+		@SuppressWarnings("unused")
 		private int modelo;
 		
 		
@@ -33,8 +34,7 @@ public class ControladorRegistrarse implements ActionListener{
 				Ventana.ventana.showInicioSesion();
 				Ventana.ventana.registrarse.limpiarVentana();
 			} else if(((JButton)e.getSource()).getText() == "Registrarse") {
-				
-				
+								
 				try {
 					
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
