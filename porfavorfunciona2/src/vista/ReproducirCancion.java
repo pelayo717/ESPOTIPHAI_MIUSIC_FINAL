@@ -274,6 +274,90 @@ public class ReproducirCancion extends PantallaPrincipal {
 		this.botonAnyadirComentario.setBounds(screenSize.width/2 + 80, 680, 150, 30);
 
 	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public Cancion getCancion() {
+		return cancion;
+	}
+
+	public JLabel getDatos_cancion() {
+		return datos_cancion;
+	}
+
+	public JLabel getTitulo_cancion() {
+		return titulo_cancion;
+	}
+
+	public JLabel getAutor_cancion() {
+		return autor_cancion;
+	}
+
+	public JLabel getDuracion_cancion() {
+		return duracion_cancion;
+	}
+
+	public JLabel getComentarios_label() {
+		return comentarios_label;
+	}
+
+	public JLabel getEstadoCancion() {
+		return estadoCancion;
+	}
+
+	public JButton getBotonPlay() {
+		return botonPlay;
+	}
+
+	public JButton getBotonPause() {
+		return botonPause;
+	}
+
+	public JList<String> getLista_comentarios() {
+		return lista_comentarios;
+	}
+
+	public JScrollPane getComentariosScrollPane() {
+		return comentariosScrollPane;
+	}
+
+	public JButton getBotonList() {
+		return botonList;
+	}
+
+	public JButton getBotonAnyadirComentario() {
+		return botonAnyadirComentario;
+	}
+
+	public JButton getBotonReportar() {
+		return botonReportar;
+	}
+
+	public JButton getModificarCancion() {
+		return modificarCancion;
+	}
+
+	public JButton getAnyadirAlbum() {
+		return anyadirAlbum;
+	}
+
+	public JButton getAnyadirLista() {
+		return anyadirLista;
+	}
+
+	public Dimension getScreenSize() {
+		return screenSize;
+	}
+
+	public Comentario[] getComentarios() {
+		return comentarios;
+	}
+
+	public DefaultListModel<String> getModel1() {
+		return model1;
+	}
 	
 	
 }

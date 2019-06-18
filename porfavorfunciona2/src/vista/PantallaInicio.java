@@ -32,30 +32,30 @@ public class PantallaInicio extends PantallaPrincipal {
 	private JScrollPane canciones;
 	private JScrollPane albumes;
 	private JScrollPane listas;
-	public JList<String> lista_canciones;
-	public JList<String> lista_albumes;
-	public JList<String> lista_listas;
-	JButton seleccionarAlbum;
-	JButton seleccionarCancion;
-	JButton seleccionarLista;
-	JButton crearCancion;
-	JButton crearAlbum;
-	JButton crearLista;
-	JButton eliminarCancion;
-	JButton eliminarAlbum;
-	JButton eliminarLista;
+	private JList<String> lista_canciones;
+	private JList<String> lista_albumes;
+	private JList<String> lista_listas;
+	private JButton seleccionarAlbum;
+	private JButton seleccionarCancion;
+	private JButton seleccionarLista;
+	private JButton crearCancion;
+	private JButton crearAlbum;
+	private JButton crearLista;
+	private JButton eliminarCancion;
+	private JButton eliminarAlbum;
+	private JButton eliminarLista;
 	
-	JLabel susCanciones;
-	JLabel susAlbumes;
-	JLabel susListas;
+	private JLabel susCanciones;
+	private JLabel susAlbumes;
+	private JLabel susListas;
 	
-	public Cancion[] misCanciones;
-	public Album[] misAlbumes;
-	public Lista[] misListas;
+	private Cancion[] misCanciones;
+	private Album[] misAlbumes;
+	private Lista[] misListas;
 	
-	public DefaultListModel<String> model1;
-	public DefaultListModel<String> model2;
-	public DefaultListModel<String> model3;
+	private DefaultListModel<String> model1;
+	private DefaultListModel<String> model2;
+	private DefaultListModel<String> model3;
 	
 	public PantallaInicio() {  //CAMBIADO, MEJORADO
 		
@@ -173,6 +173,131 @@ public class PantallaInicio extends PantallaPrincipal {
 		this.botonIzquierdaAbajo.setVisible(false);
 	}
 	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
+	public JScrollPane getCanciones() {
+		return canciones;
+	}
+
+
+	public JScrollPane getAlbumes() {
+		return albumes;
+	}
+
+
+	public JScrollPane getListas() {
+		return listas;
+	}
+
+
+	public JList<String> getLista_canciones() {
+		return lista_canciones;
+	}
+
+
+	public JList<String> getLista_albumes() {
+		return lista_albumes;
+	}
+
+
+	public JList<String> getLista_listas() {
+		return lista_listas;
+	}
+
+
+	public JButton getSeleccionarAlbum() {
+		return seleccionarAlbum;
+	}
+
+
+	public JButton getSeleccionarCancion() {
+		return seleccionarCancion;
+	}
+
+
+	public JButton getSeleccionarLista() {
+		return seleccionarLista;
+	}
+
+
+	public JButton getCrearCancion() {
+		return crearCancion;
+	}
+
+
+	public JButton getCrearAlbum() {
+		return crearAlbum;
+	}
+
+
+	public JButton getCrearLista() {
+		return crearLista;
+	}
+
+
+	public JButton getEliminarCancion() {
+		return eliminarCancion;
+	}
+
+
+	public JButton getEliminarAlbum() {
+		return eliminarAlbum;
+	}
+
+
+	public JButton getEliminarLista() {
+		return eliminarLista;
+	}
+
+
+	public JLabel getSusCanciones() {
+		return susCanciones;
+	}
+
+
+	public JLabel getSusAlbumes() {
+		return susAlbumes;
+	}
+
+
+	public JLabel getSusListas() {
+		return susListas;
+	}
+
+
+	public Cancion[] getMisCanciones() {
+		return misCanciones;
+	}
+
+
+	public Album[] getMisAlbumes() {
+		return misAlbumes;
+	}
+
+
+	public Lista[] getMisListas() {
+		return misListas;
+	}
+
+
+	public DefaultListModel<String> getModel1() {
+		return model1;
+	}
+
+
+	public DefaultListModel<String> getModel2() {
+		return model2;
+	}
+
+
+	public DefaultListModel<String> getModel3() {
+		return model3;
+	}
+
+
 	public void actualizarCanciones(ArrayList<Cancion> canciones_propias) {
 		model1.clear();
 		misCanciones = canciones_propias.toArray(new Cancion[canciones_propias.size()]);

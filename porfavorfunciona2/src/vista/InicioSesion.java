@@ -10,15 +10,15 @@ public class InicioSesion extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	JButton botonInicio;
-	JButton botonIniciarSesion;
-	JButton botonRegistrarse;
-	JLabel titulo ;
-	JLabel usuarioLabel;
-	JLabel passwordLabel;
-	JLabel preguntaLabel;
-	public JTextField usuarioTextfield;
-	public JPasswordField passwordTextfield;
+	private JButton botonInicio;
+	private JButton botonIniciarSesion;
+	private JButton botonRegistrarse;
+	private JLabel titulo ;
+	private JLabel usuarioLabel;
+	private JLabel passwordLabel;
+	private JLabel preguntaLabel;
+	private JTextField usuarioTextfield;
+	private JPasswordField passwordTextfield;
 	
 	
 	public InicioSesion() {
@@ -81,7 +81,47 @@ public class InicioSesion extends JPanel{
 	}
 	
 	
-	 // método para asignar un controlador al botón
+	 public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public JButton getBotonInicio() {
+		return botonInicio;
+	}
+
+	public JButton getBotonIniciarSesion() {
+		return botonIniciarSesion;
+	}
+
+	public JButton getBotonRegistrarse() {
+		return botonRegistrarse;
+	}
+
+	public JLabel getTitulo() {
+		return titulo;
+	}
+
+	public JLabel getUsuarioLabel() {
+		return usuarioLabel;
+	}
+
+	public JLabel getPasswordLabel() {
+		return passwordLabel;
+	}
+
+	public JLabel getPreguntaLabel() {
+		return preguntaLabel;
+	}
+
+	public JTextField getUsuarioTextfield() {
+		return usuarioTextfield;
+	}
+
+	public JPasswordField getPasswordTextfield() {
+		return passwordTextfield;
+	}
+
+	// método para asignar un controlador al botón
 	 public void setControlador(ActionListener c) {
 		 this.botonInicio.addActionListener(c);
 		 this.botonRegistrarse.addActionListener(c);
