@@ -29,7 +29,7 @@ public class ControladorReproducirCancion implements ActionListener{
 		/**
 		 * Constructor de la clase en la que se inicializan todos los atributos de 
 		 * la clase dandoles los valores necesarios
-		 * @param x: vista en la que se encuentra el usuario y donde se van a realizar 
+		 * @param vista: vista en la que se encuentra el usuario y donde se van a realizar 
 		 * todas las acciones 
 		 * @param modelo: argumento de tipo entero que representa el modelo que estamos usando
 		 */
