@@ -65,20 +65,23 @@ public class Lista extends Contenido{
 	public Status eliminarContenido(Contenido contenido) {		
 		
 		if(contenido instanceof Cancion) {
-			
-			for(Contenido c_l: this.getContenido()) {
-				
-				if(c_l instanceof Cancion && c_l.equals(contenido) == true) {
-					this.getContenido().remove(contenido);
-					this.setDuracion(this.calcularTiempo());
-				}else if(c_l instanceof Album && ((Album) c_l).getContenido().contains(contenido) == true) {
-					((Album)c_l).eliminarContenido((Cancion)contenido);
-				}else if(c_l instanceof Lista) {
-					((Lista) c_l).eliminarContenido((Cancion)contenido);
+			if(this.getContenido().size() > 0) {
+				ArrayList<Contenido> temporal = this.getContenido();
+				for(Contenido c_l: temporal) {
+					
+					if(c_l instanceof Cancion && c_l.equals(contenido) == true) {
+						this.getContenido().remove(contenido);
+						this.setDuracion(this.calcularTiempo());
+					}else if(c_l instanceof Album && ((Album) c_l).getContenido().contains(contenido) == true) {
+						((Album)c_l).eliminarContenido((Cancion)contenido);
+					}else if(c_l instanceof Lista) {
+						((Lista) c_l).eliminarContenido((Cancion)contenido);
+					}
 				}
 			}
 		}else if(contenido instanceof Album) {
-			for(Contenido c_l:this.getContenido()) {
+			ArrayList<Contenido> temporal = this.getContenido();
+			for(Contenido c_l: temporal) {
 				if(c_l instanceof Album && c_l.equals(contenido)==true) {
 					this.getContenido().remove(contenido);
 					this.setDuracion(this.calcularTiempo());
@@ -87,7 +90,8 @@ public class Lista extends Contenido{
 				}
 			}
 		}else if(contenido instanceof Lista) {
-			for(Contenido c_l:this.getContenido()) {
+			ArrayList<Contenido> temporal = this.getContenido();
+			for(Contenido c_l: temporal) {
 				if(c_l instanceof Lista) {
 					if(c_l.equals(contenido) == true) {
 						this.getContenido().remove(contenido);

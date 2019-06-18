@@ -196,7 +196,7 @@ public class ReproducirAlbum extends PantallaPrincipal {
 	
 	 // método para asignar un controlador al botón
 	 public void setControlador(ActionListener c) {
-		 super.getBotonIzquierdaArriba().addActionListener(c);
+		 super.getBotonIzquierdaArriba().addActionListener(c);  
 		 super.getBotonIzquierdaMedio().addActionListener(c);
 		 super.getBotonIzquierdaAbajo().addActionListener(c);
 		 super.getBotonBuscar().addActionListener(c);

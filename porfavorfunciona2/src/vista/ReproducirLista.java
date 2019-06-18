@@ -50,7 +50,7 @@ public class ReproducirLista extends PantallaPrincipal {
 		this.botonPause = new JButton("pause");
 		this.botonAdd = new JButton("add");
 		this.botonList = new JButton("Ver comentario");
-		botonPlay.setIcon(icono_reproducir);
+		botonPlay.setIcon(icono_reproducir); 
 		botonPause.setIcon(icono_parar);
 		botonAdd.setIcon(icono_add);
 		
