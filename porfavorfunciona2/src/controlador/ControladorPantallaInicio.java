@@ -30,16 +30,28 @@ import vista.PantallaInicio;
 import vista.PantallaPrincipal;
 import vista.Ventana;
 
+/**
+ * Clase que implementa el controlador de la clase PantallaInicio
+ */
 public class ControladorPantallaInicio implements ActionListener{
 	private PantallaInicio vista;
 	private int modelo;
 
+	/**
+	 * Constructor de la clase, donde se inicialiazan todos los atributos de la
+	 * clase asignando los valores pertinentes a los atributos
+	 */
 	public ControladorPantallaInicio(PantallaInicio x, int modelo) {
 		this.modelo = modelo;
 		this.vista = x;
 	}
 
-@Override
+	/**
+	 * Funcion que asigna un controlador al boton que el usuario 
+	 * ha pulsado
+	 * @param c: argumento que indica que boton se ha pulsado
+	 */ 
+	@Override
 	public void actionPerformed(ActionEvent e) { //CAMBIADO BASTANTE, MEJORADO
 		if(((JButton)e.getSource()).getText() == "Elegir cancion") {
 			if(Sistema.sistema.getUsuarioActual() != null) {
