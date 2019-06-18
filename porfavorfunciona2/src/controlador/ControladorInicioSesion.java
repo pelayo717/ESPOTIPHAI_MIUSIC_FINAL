@@ -10,17 +10,34 @@ import modelo.sistema.*;
 import vista.InicioSesion;
 import vista.Ventana;
 
+/**
+ * Clase que implementa el controlador de la clase InicioSesion
+ * teniendo en cuenta todos los casos posibles en los que el usuario realiza
+ * una accion u otra y asignando el controlador determinado a la accion realizada
+ */
 public class ControladorInicioSesion implements ActionListener{
 		private InicioSesion vista;
 		@SuppressWarnings("unused")
 		private int modelo;
 		
-		
+		/**
+	 	* Constructor de la clase en la que se inicializan todos los atributos de 
+	 	* la clase dandoles los valores necesarios
+	 	* @param vista: vista en la que se encuentra el usuario y donde se van a realizar 
+	 	* todas las acciones 
+	 	* @param modelo: argumento de tipo entero que representa el modelo que estamos usando
+	 	*/
 		public ControladorInicioSesion(InicioSesion vista, int modelo) {
 			this.vista = vista;
 			this.modelo = modelo;
 		}
-	 
+	
+	 	/**
+	 	* Funcion que asigna el controlador necesario a la accion o boton que 
+	 	* el usuario ha pulsado 
+	 	* @param e: accion o boton que el usuario ha pulsado y se pasa como argumento 
+	 	* para asignarle el controlador correspondiente 
+	 	*/
 		@Override
 		public void actionPerformed(ActionEvent e) { //CAMBIADO, MEJORADO
 			if (((JButton)e.getSource()).getText() == "Inicio") {
