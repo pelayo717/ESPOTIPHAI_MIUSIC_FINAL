@@ -31,7 +31,7 @@ public class BuscadorAlbumes extends PantallaPrincipal{
 
 	private JLabel albumesEncontrados;
 	
-	private JButton seleccionarAlbum;
+	public JButton seleccionarAlbum;
 	
 	
 	public BuscadorAlbumes() {

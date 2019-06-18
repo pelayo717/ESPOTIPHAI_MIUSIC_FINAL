@@ -15,10 +15,10 @@ public class ReproducirLista extends PantallaPrincipal {
 
 	private Lista lista;
 	
-	private JButton botonPlay;
-	private JButton botonPause;
-	private JButton botonAdd;
-	private JButton perfilAutor;
+	public JButton botonPlay;
+	public JButton botonPause;
+	public JButton botonAdd;
+	public JButton perfilAutor;
 	private JList lista_contenido;
 	private JScrollPane contenidoScrollPane;
 	private JButton botonList;

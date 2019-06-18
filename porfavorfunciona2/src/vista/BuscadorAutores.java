@@ -49,9 +49,9 @@ public class BuscadorAutores extends PantallaPrincipal {
 	
 	private JLabel contenidosEncontrados;
 	
-	private JButton seleccionarAutor;
+	public JButton seleccionarAutor;
 	
-	private JButton seleccionarContenido;
+	public JButton seleccionarContenido;
 	
 	
 	public BuscadorAutores() {

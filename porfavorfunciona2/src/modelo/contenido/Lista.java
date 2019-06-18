@@ -64,45 +64,28 @@ public class Lista extends Contenido{
 	 */
 	public Status eliminarContenido(Contenido contenido) {		
 		
-		if(contenido instanceof Cancion) {
-			if(this.getContenido().size() > 0) {
-				ArrayList<Contenido> temporal = this.getContenido();
-				for(Contenido c_l: temporal) {
-					
-					if(c_l instanceof Cancion && c_l.equals(contenido) == true) {
-						this.getContenido().remove(contenido);
-						this.setDuracion(this.calcularTiempo());
-					}else if(c_l instanceof Album && ((Album) c_l).getContenido().contains(contenido) == true) {
-						((Album)c_l).eliminarContenido((Cancion)contenido);
-					}else if(c_l instanceof Lista) {
-						((Lista) c_l).eliminarContenido((Cancion)contenido);
-					}
-				}
-			}
-		}else if(contenido instanceof Album) {
-			ArrayList<Contenido> temporal = this.getContenido();
-			for(Contenido c_l: temporal) {
-				if(c_l instanceof Album && c_l.equals(contenido)==true) {
-					this.getContenido().remove(contenido);
-					this.setDuracion(this.calcularTiempo());
-				}else if(c_l instanceof Lista) {
-					((Lista) c_l).eliminarContenido((Album)contenido);
-				}
-			}
-		}else if(contenido instanceof Lista) {
-			ArrayList<Contenido> temporal = this.getContenido();
-			for(Contenido c_l: temporal) {
-				if(c_l instanceof Lista) {
-					if(c_l.equals(contenido) == true) {
-						this.getContenido().remove(contenido);
-						this.setDuracion(this.calcularTiempo());
-					}else {
-						((Lista) c_l).eliminarContenido((Lista)contenido);
-					}
-				}
+		for(Iterator<Contenido> iterator = this.getContenido().iterator(); iterator.hasNext();) {
+			Contenido c_l = iterator.next();
+			
+			if (c_l instanceof Cancion && contenido instanceof Cancion && c_l.equals(contenido) == true) {
+				iterator.remove();
+				this.setDuracion(this.calcularTiempo());
+			} else if (c_l instanceof Album && contenido instanceof Cancion && ((Album) c_l).getContenido().contains(contenido) == true) {
+				((Album)c_l).eliminarContenido((Cancion)contenido);
+			} else if (c_l instanceof Lista && contenido instanceof Cancion) {
+				((Lista) c_l).eliminarContenido((Cancion)contenido);
+			} else if(c_l instanceof Album && contenido instanceof Album && c_l.equals(contenido)==true) {
+				iterator.remove();
+				this.setDuracion(this.calcularTiempo());
+			} else if(c_l instanceof Lista && contenido instanceof Album) {
+				((Lista) c_l).eliminarContenido((Album)contenido);
+			} else if(c_l instanceof Lista && contenido instanceof Lista && ((Lista) c_l).getContenido().contains(contenido) == true) {
+				iterator.remove();
+				this.setDuracion(this.calcularTiempo());
+			} else {
+				System.out.println("no se elimina nada");
 			}
 		}
-		
 		return Status.OK;
 	}
 

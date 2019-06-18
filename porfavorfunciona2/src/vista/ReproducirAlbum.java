@@ -28,12 +28,12 @@ public class ReproducirAlbum extends PantallaPrincipal {
 	private JScrollPane comentariosScrollPane;
 	private JScrollPane cancionesScrollPane;
 
-	private JButton botonList;
-	private JButton botonAnyadirComentario;
-	private JButton eliminarCancion;
-	private JButton anyadirLista;
-	private JButton botonPlay;
-	private JButton botonPause;
+	public JButton botonList;
+	public JButton botonAnyadirComentario;
+	public JButton eliminarCancion;
+	public JButton anyadirLista;
+	public JButton botonPlay;
+	public JButton botonPause;
 	
 	
 	private JLabel datos_album;

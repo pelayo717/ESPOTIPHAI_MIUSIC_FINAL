@@ -35,15 +35,15 @@ public class PantallaInicio extends PantallaPrincipal {
 	private JList<String> lista_canciones;
 	private JList<String> lista_albumes;
 	private JList<String> lista_listas;
-	private JButton seleccionarAlbum;
-	private JButton seleccionarCancion;
-	private JButton seleccionarLista;
-	private JButton crearCancion;
-	private JButton crearAlbum;
-	private JButton crearLista;
-	private JButton eliminarCancion;
-	private JButton eliminarAlbum;
-	private JButton eliminarLista;
+	public JButton seleccionarAlbum;
+	public JButton seleccionarCancion;
+	public JButton seleccionarLista;
+	public JButton crearCancion;
+	public JButton crearAlbum;
+	public JButton crearLista;
+	public JButton eliminarCancion;
+	public JButton eliminarAlbum;
+	public JButton eliminarLista;
 	
 	private JLabel susCanciones;
 	private JLabel susAlbumes;
@@ -170,6 +170,7 @@ public class PantallaInicio extends PantallaPrincipal {
 	public void setUsuarioNoRegistrado() {
 		super.getBotonIzquierdaArriba().setText("Iniciar Sesion");
 		super.getBotonIzquierdaMedio().setText("Registro");
+		super.getBotonIzquierdaMedio().setVisible(true);
 		super.getBotonIzquierdaAbajo().setVisible(false);
 	}
 	

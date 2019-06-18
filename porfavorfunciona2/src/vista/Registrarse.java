@@ -10,9 +10,9 @@ public class Registrarse extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JButton botonInicio;
-	private JButton botonIniciarSesion ;
-	private JButton botonRegistrarse;
+	public JButton botonInicio;
+	public JButton botonIniciarSesion ;
+	public JButton botonRegistrarse;
 	
 	private JLabel titulo;
 	private JLabel usuarioLabel;

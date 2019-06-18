@@ -15,11 +15,11 @@ public class Perfil extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JButton botonInicio;
-	private JButton botonCerrarSesion;
-	private JButton botonEliminarCuenta;
-	private JButton botonHacersePRO;
-	private JButton seleccionarNotificacion;
+	public JButton botonInicio;
+	public JButton botonCerrarSesion;
+	public JButton botonEliminarCuenta;
+	public JButton botonHacersePRO;
+	public JButton seleccionarNotificacion;
 	 
 	
 	private String nombre_autor;

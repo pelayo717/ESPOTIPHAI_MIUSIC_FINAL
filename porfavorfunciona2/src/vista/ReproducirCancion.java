@@ -27,18 +27,18 @@ public class ReproducirCancion extends PantallaPrincipal {
 	private JLabel comentarios_label;
 	private JLabel estadoCancion;
 	
-	private JButton botonPlay;
-	private JButton botonPause;
+	public JButton botonPlay;
+	public JButton botonPause;
 	private  JList<String> lista_comentarios;
 	private JScrollPane comentariosScrollPane;
-	private JButton botonList;
-	private JButton botonAnyadirComentario;
-	private JButton botonReportar;
+	public JButton botonList;
+	public JButton botonAnyadirComentario;
+	public JButton botonReportar;
 	
-	private JButton modificarCancion;
+	public JButton modificarCancion;
 	
-	private JButton anyadirAlbum;
-	private JButton anyadirLista;
+	public JButton anyadirAlbum;
+	public JButton anyadirLista;
 	
 	private Dimension screenSize;
 	

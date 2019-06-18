@@ -34,19 +34,19 @@ public class PantallaInicioAdmin extends PantallaPrincipal{
 	private  JList<String> lista_reportes;
 	private  JList<String> lista_canciones;
 	
-	private JButton modificarCriterios;
+	public JButton modificarCriterios;
 	
-	private JButton valida;
-	private JButton explicita;
-	private JButton pendienteModificacion;
-	private JButton eliminada;
-	private JButton seleccionarCancion;
+	public JButton valida;
+	public JButton explicita;
+	public JButton pendienteModificacion;
+	public JButton eliminada;
+	public JButton seleccionarCancion;
 	
-	private JButton aceptarReporte;
-	private JButton denegarReporte;
-	private JButton seleccionarReporte;
+	public JButton aceptarReporte;
+	public JButton denegarReporte;
+	public JButton seleccionarReporte;
 	
-	private JButton cambiarCriterios;
+	public JButton cambiarCriterios;
 	private JTextField campoUmbral;
 	private JTextField campoPrecio;
 	private JTextField campoReproducciones;

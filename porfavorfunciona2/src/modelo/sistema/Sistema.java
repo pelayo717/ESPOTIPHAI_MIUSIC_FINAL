@@ -896,16 +896,18 @@ public class Sistema implements Serializable{
 				//ELIMINAMOS CONTENIDO DE LAS LISTAS Y ALBUMES DE TODOS LOS USUARIOS
 				
 				for(Usuario usuarios_totales:sistema.getUsuariosTotales()) {
-					
-					for(Lista lista: usuarios_totales.getListas()) {
-						lista.eliminarContenido(cancion_eliminar);
-					}
-					
-					//ENVIAMOS NOTIFICACION AL USUARIO QUE CONTENIA LA CANCION EN SUS LISTAS
-					if(sistema.getUsuariosTotales().contains(sistema.getUsuarioActual()) == false) {
-						sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado la cancion " + cancion_eliminar.getTitulo() + " ya que se ha dado de baja.");
-					}else{
-						sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado la cancion " + cancion_eliminar.getTitulo() + ".");
+					if ( usuarios_totales.getListas() != null) {
+						for(Lista lista: usuarios_totales.getListas()) {
+							System.out.println(lista);
+							lista.eliminarContenido(cancion_eliminar);
+						}
+						
+						//ENVIAMOS NOTIFICACION AL USUARIO QUE CONTENIA LA CANCION EN SUS LISTAS
+						if(sistema.getUsuariosTotales().contains(sistema.getUsuarioActual()) == false) {
+							sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado la cancion " + cancion_eliminar.getTitulo() + " ya que se ha dado de baja.");
+						}else{
+							sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado la cancion " + cancion_eliminar.getTitulo() + ".");
+						}
 					}
 				}
 				
