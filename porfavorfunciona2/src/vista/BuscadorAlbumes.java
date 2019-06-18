@@ -80,6 +80,8 @@ public class BuscadorAlbumes extends PantallaPrincipal{
 	}
 	
 	
+	//PIILAYO
+	
 	public void setControlador(ActionListener c) {
 		this.botonIzquierdaArriba.addActionListener(c);
 		this.botonIzquierdaMedio.addActionListener(c);
