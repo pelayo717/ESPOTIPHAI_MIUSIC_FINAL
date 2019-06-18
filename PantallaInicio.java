@@ -12,6 +12,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
+/**
+ * Clase que implementa la pantalla inicial que ve el usuario 
+ * cuando ya ha iniciado sesion.
+ */
 public class PantallaInicio extends PantallaPrincipal {
 
 	private JScrollPane canciones;
@@ -21,6 +25,11 @@ public class PantallaInicio extends PantallaPrincipal {
 	JButton seleccionarAlbum;
 	JButton seleccionarCancion;
 	
+	/**
+	 * Constructor de la clase PantallaInicial en la que se 
+	 * inicializan todos los atributos de la clase dandole
+	 * los valores correspondientes
+	 */
 	public PantallaInicio() {
 		
 		canciones = new JScrollPane(lista_canciones);
@@ -49,7 +58,7 @@ public class PantallaInicio extends PantallaPrincipal {
 		seleccionarAlbum.setBounds(screenSize.width/2 + 30, 470, 250, 30);
 		
 		
-		//Añadimos los elementos a la pantalla principal
+		//AÃ±adimos los elementos a la pantalla principal
 		this.add(albumes);
 		this.add(canciones);
 		this.add(susCanciones);
@@ -59,7 +68,13 @@ public class PantallaInicio extends PantallaPrincipal {
 	}
 		
 	
-	// método para asignar un controlador al botón
+		/**
+		 * Funcion que asigna un controlador al boton que el
+		 * usuario ha pulsado 
+		 * @param c: boton que el usuario a pulsado al que se le va asginar
+		 * un controlador
+		 */
+	// mÃ©todo para asignar un controlador al botÃ³n
 		 public void setControlador(ActionListener c) {
 			 this.seleccionarCancion.addActionListener(c);
 			 this.seleccionarAlbum.addActionListener(c);
