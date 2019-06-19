@@ -19,9 +19,10 @@ import vista.Ventana;
  * teniendo en cuenta todos los casos posibles en los que el usuario realiza
  * una accion u otra y asignando el controlador determinado a la accion realizada
  */
-public class ControladorBuscadorCanciones implements ActionListener {
+public class ControladorBuscadorCanciones implements ActionListener { //99.9% esta terminado
 
 	private BuscadorCanciones vista;
+	@SuppressWarnings("unused")
 	private int modelo;
 
 
@@ -45,15 +46,17 @@ public class ControladorBuscadorCanciones implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(((JButton)e.getSource()).getText() == "Elegir cancion") {
+		if(((JButton)e.getSource()).getText() == "Elegir Cancion") {
 			
 			if(vista.getLasCanciones().length > 0) {
 				Cancion[] canciones_totales = vista.getLasCanciones();
-				if(vista.getLista_canciones().getSelectedIndex() == -1) {
+				int indice = vista.getLista_canciones().getSelectedIndex();
+				vista.getLista_canciones().clearSelection();
+				if(indice == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir cancion seleccione una primero");
 					Ventana.ventana.showBuscadorCanciones(canciones_totales);
 				}else{
-					Ventana.ventana.showReproducirCancion(canciones_totales[vista.getLista_canciones().getSelectedIndex()]);
+					Ventana.ventana.showReproducirCancion(canciones_totales[indice]);
 				}
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"No hay canciones para seleccionar");
@@ -61,7 +64,6 @@ public class ControladorBuscadorCanciones implements ActionListener {
 			
 		}  else if(((JButton)e.getSource()).getText() == "Ver Perfil") {
 			Ventana.ventana.showPerfil();
-			Ventana.ventana.perfil.setInformacion(Sistema.sistema.getUsuarioActual());
 		} else if(((JButton)e.getSource()).getText() == "Iniciar Sesion") {
 			Ventana.ventana.showInicioSesion();
 		} else if(((JButton)e.getSource()).getText() == "Registro") {

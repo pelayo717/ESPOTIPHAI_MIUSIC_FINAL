@@ -18,7 +18,7 @@ import vista.Ventana;
  * Funcion que implementa el controlador de la clase BuscadorAlbumes
  * 
  */
-public class ControladorBuscadorAlbumes implements ActionListener {
+public class ControladorBuscadorAlbumes implements ActionListener { //99.9% esta terminado
 
 	private BuscadorAlbumes vista;
 	@SuppressWarnings("unused")
@@ -44,24 +44,24 @@ public class ControladorBuscadorAlbumes implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(((JButton)e.getSource()).getText() == "Elegir album") {		
+		if(((JButton)e.getSource()).getText() == "Elegir Album") {		
 			
 			if(vista.getAlbum().length > 0) {
 				Album[] albumes_totales = vista.getAlbum();
 				int indice = vista.getListAlbum().getSelectedIndex();
-				
+				vista.getLista_albumes().clearSelection();
 				if(indice == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir album seleccione uno primero");
 					Ventana.ventana.showBuscadorAlbumes(albumes_totales);
 				}else{
 					Ventana.ventana.showReproducirAlbum(albumes_totales[indice]);
 				}
+				
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"No hay canciones para seleccionar");
 			}						
 		}  else if(((JButton)e.getSource()).getText() == "Ver Perfil") {
 			Ventana.ventana.showPerfil();
-			Ventana.ventana.perfil.setInformacion(Sistema.sistema.getUsuarioActual());
 		} else if(((JButton)e.getSource()).getText() == "Iniciar Sesion") {
 			Ventana.ventana.showInicioSesion();
 		} else if(((JButton)e.getSource()).getText() == "Registro") {

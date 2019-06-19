@@ -49,7 +49,7 @@ public class BuscadorCanciones extends PantallaPrincipal{
 		cancionesEncontradas = new JLabel("Canciones Encontradas",  SwingConstants.CENTER);
 		
 		
-		seleccionarCancion = new JButton("Elegir cancion");
+		seleccionarCancion = new JButton("Elegir Cancion");
 		
 		
 		

@@ -21,7 +21,7 @@ import vista.Ventana;
  * teniendo en cuenta todos los casos posibles en los que el usuario realiza
  * una accion u otra y asignando el controlador determinado a la accion realizada
  */
-public class ControladorBuscadorAutores implements ActionListener{
+public class ControladorBuscadorAutores implements ActionListener{ //99.9% esta terminado
 
 
 	private BuscadorAutores vista;
@@ -49,11 +49,12 @@ public class ControladorBuscadorAutores implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if(((JButton)e.getSource()).getText() == "Elegir contenido") {
+		if(((JButton)e.getSource()).getText() == "Elegir Contenido") {
 			
 			if(vista.getContenido().length > 0) {
 				Contenido[] contenidos_totales = vista.getContenido();
 				int indice = vista.getLista_contenidos().getSelectedIndex();
+				vista.getLista_contenidos().clearSelection();
 				if(indice == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir contenido seleccione uno primero");
 				}else{
@@ -65,12 +66,10 @@ public class ControladorBuscadorAutores implements ActionListener{
 					}
 					
 				}
-				
-				vista.getLista_contenidos().clearSelection();
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"No hay canciones para seleccionar");
 			}
-		}  else if(((JButton)e.getSource()).getText() == "Elegir autor") {
+		}  else if(((JButton)e.getSource()).getText() == "Elegir Autor") {
 			
 			if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador() == false) {
 				if(vista.getLista_autores().getSelectedIndex() == -1) {
@@ -130,7 +129,6 @@ public class ControladorBuscadorAutores implements ActionListener{
 			
 		}  else if(((JButton)e.getSource()).getText() == "Ver Perfil") {
 			Ventana.ventana.showPerfil();
-			Ventana.ventana.perfil.setInformacion(Sistema.sistema.getUsuarioActual());
 		} else if(((JButton)e.getSource()).getText() == "Iniciar Sesion") {
 			Ventana.ventana.showInicioSesion();
 		} else if(((JButton)e.getSource()).getText() == "Registro") {

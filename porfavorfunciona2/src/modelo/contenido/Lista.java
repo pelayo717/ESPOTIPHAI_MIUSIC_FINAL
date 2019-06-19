@@ -124,6 +124,7 @@ public class Lista extends Contenido{
 		
 		EstadoReproduccion variable = null;
 		
+		
 		if(Sistema.sistema.getUsuarioActual() != null && (Sistema.sistema.getAdministrador() == true || Sistema.sistema.getUsuarioActual().getPremium() == true)) {
 			
 			//FALTA ARREGLAR

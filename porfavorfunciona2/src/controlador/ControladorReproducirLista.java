@@ -11,6 +11,7 @@ import java.util.Iterator;
 import javax.swing.*;
 
 import modelo.sistema.*;
+import modelo.status.Status;
 import modelo.contenido.*;
 import modelo.usuario.*;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
@@ -141,6 +142,31 @@ public class ControladorReproducirLista implements ActionListener{
 				vista.getLista().parar();
 			} else if(((JButton)e.getSource()).getText() == "Eliminar Contenido") {
 
+				if(vista.getContenido().length > 0) {
+					Contenido[] temporal = vista.getContenido();
+					int indice = vista.getLista_contenido().getSelectedIndex();
+					if(indice == -1) {
+						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Eliminar Contenido debe seleccionar uno");
+					}else {
+						int a=JOptionPane.showConfirmDialog(Ventana.ventana,"¿Esta seguro que desea eliminar el contenido " + temporal[indice].getTitulo() + " de la lista?","Alert",JOptionPane.WARNING_MESSAGE);  
+						if(a == JOptionPane.YES_OPTION) {
+							Lista l = vista.getLista();
+							if(Sistema.sistema.quitarDeLista(l, temporal[indice])== Status.OK) {
+								vista.actualizarContenido();
+								vista.setInformacion(l);
+								JOptionPane.showMessageDialog(Ventana.ventana,"Se elimino correctamente");
+
+							}else {
+								JOptionPane.showMessageDialog(Ventana.ventana,"Se elimino correctamente");
+							}
+							
+						}
+					}
+				}else {
+					JOptionPane.showMessageDialog(Ventana.ventana,"La lista no contiene canciones");
+				}
+				
+				
 			} else {
 				
 				System.out.println(e.getSource());

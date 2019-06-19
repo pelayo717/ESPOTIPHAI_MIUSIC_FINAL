@@ -50,7 +50,7 @@ public class BuscadorAlbumes extends PantallaPrincipal{
 		albumesEncontrados = new JLabel("Albumes Encontrados",  SwingConstants.CENTER);
 		
 		
-		seleccionarAlbum = new JButton("Elegir album");
+		seleccionarAlbum = new JButton("Elegir Album");
 		
 		
 		

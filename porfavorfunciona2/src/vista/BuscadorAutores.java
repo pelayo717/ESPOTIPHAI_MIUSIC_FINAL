@@ -75,9 +75,9 @@ public class BuscadorAutores extends PantallaPrincipal {
 		
 		contenidosEncontrados = new JLabel("Contenidos Encontrados De Autores",  SwingConstants.CENTER);
 		
-		seleccionarContenido = new JButton("Elegir contenido");
+		seleccionarContenido = new JButton("Elegir Contenido");
 		
-		seleccionarAutor = new JButton("Elegir autor");
+		seleccionarAutor = new JButton("Elegir Autor");
 		
 		//Cambio de estilo en los JLabel
 		Font susAutoresFont = new Font(autoresEncontrados.getFont().getName(), Font.BOLD, 16);

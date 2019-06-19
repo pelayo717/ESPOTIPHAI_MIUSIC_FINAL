@@ -256,7 +256,7 @@ public class Sistema implements Serializable{
 	 * @return devuelve OK si el usuario se registro correctamente o ERROR si no lo consiguio
 	 */
 	public Status registrarse(String nombre_usuario,String nombre_autor,LocalDate fecha_nacimiento, String contrasenia) {
-		
+
 		int i=0;
 		
 		if(nombre_usuario == null || contrasenia == null || fecha_nacimiento == null) {
@@ -987,7 +987,7 @@ public class Sistema implements Serializable{
 
 				
 				//ELIMINAMOS DE ALBUMES DEL AUTOR
-				/*sistema.getUsuarioActual().eliminarDeAlbumesPersonales(album_eliminar);*/
+				sistema.getUsuarioActual().eliminarDeAlbumesPersonales(album_eliminar);
 
 				//ELIMINAMOS DE LAS LISTAS EN LAS QUE SE ENCUENTRE
 				for(Usuario usuarios_totales:sistema.getUsuariosTotales()) {
@@ -1200,6 +1200,12 @@ public class Sistema implements Serializable{
 							}else {
 								return Status.ERROR;
 							}
+						}
+					}else if(c instanceof Album || c instanceof Lista){
+						if(l.anyadirContenido(c) == Status.OK) {
+							return Status.OK;
+						}else {
+							return Status.ERROR;
 						}
 					}
 				}

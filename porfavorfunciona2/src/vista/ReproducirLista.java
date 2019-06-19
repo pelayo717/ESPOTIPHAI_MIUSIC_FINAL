@@ -218,7 +218,9 @@ public class ReproducirLista extends PantallaPrincipal {
 
 	public void actualizarContenido() {
 		model1.clear();
+		
 		contenido = lista.getContenido().toArray(new Contenido[lista.getContenido().size()]);
+
 		if(contenido != null) {
 			for(int i=0; i < contenido.length;i++) {
 				
