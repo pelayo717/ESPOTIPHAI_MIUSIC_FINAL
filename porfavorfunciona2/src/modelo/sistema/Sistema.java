@@ -350,13 +350,15 @@ public class Sistema implements Serializable{
 					 iteratorUsuario.remove(); 
 					 
 					//Informamos a los seguidos que el usuario se va a eliminar
-					 for(Usuario seguidos:usuario.getSeguidos()) {
+					 for(Iterator<Usuario> iteratorSeguido = usuario.getSeguidos().iterator(); iteratorSeguido.hasNext();) {
+						 Usuario seguidos = iteratorSeguido.next();
 						 usuario.dejarDeSeguirUsuario(seguidos);
 						 usuario.enviarNotificacion(seguidos, "El usuario " + usuario.getNombreUsuario() + " le ha dejado de seguir.");
 					 }
 					 
 					//Informamos a los seguidores que el usuario se va a eliminar
-					 for(Usuario seguidores:usuario.getSeguidores()) {
+					 for(Iterator<Usuario> iteratorSeguidores = usuario.getSeguidores().iterator(); iteratorSeguidores.hasNext();) {
+						Usuario seguidores = iteratorSeguidores.next();
 						seguidores.dejarDeSeguirUsuario(sistema.getUsuarioActual());
 						usuario.enviarNotificacion(seguidores, "El usuario " + usuario.getNombreUsuario() + " ha eliminado su cuenta.");
 					 }
