@@ -147,8 +147,7 @@ public class ControladorReproducirCancion implements ActionListener{
 			
 			}else if(((JButton)e.getSource()).getText() == "play") {
 				try {
-					vista.getCancion().parar();
-					vista.getCancion().setMp3Player();
+					
 					EstadoReproduccion  variable = vista.getCancion().reproducirCancion();
 					if( variable == EstadoReproduccion.MENOR) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Esta cancion esta categorizada de Explicita y usted no tiene la edad suficiente para escucharla");

@@ -58,7 +58,7 @@ public class ControladorRegistrarse implements ActionListener{
 					String date = vista.getBirthTextfield().getText(); 
 					LocalDate localDate = LocalDate.parse(date, formatter);
 					
-					if (Sistema.sistema.registrarse(vista.getUsuarioTextfield().getText(),vista.getAuthorTextfield().getText(), localDate, String.valueOf(vista.getPasswordTextfield())) == Status.OK){
+					if (Sistema.sistema.registrarse(vista.getUsuarioTextfield().getText(),vista.getAuthorTextfield().getText(), localDate, String.valueOf(vista.getPasswordTextfield().getText())) == Status.OK){
 						JOptionPane.showMessageDialog(Ventana.ventana,"Su usuario ha sido registrado correctamente en la aplicacion");
 						Ventana.ventana.showInicioSesion();
 						Ventana.ventana.registrarse.limpiarVentana();

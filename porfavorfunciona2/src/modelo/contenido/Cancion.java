@@ -227,6 +227,9 @@ public class Cancion extends ContenidoComentable {
 				return EstadoReproduccion.OTRO;
 			}
 			
+			super.parar();
+			super.setMp3Player();
+			
 			if(Sistema.sistema.getUsuarioActual() != null && ((Sistema.sistema.getAdministrador() == true || Sistema.sistema.getUsuarioActual().getPremium() == true))){
 				
 				if(Sistema.sistema.getAdministrador() == true) {

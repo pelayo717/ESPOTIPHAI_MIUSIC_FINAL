@@ -70,10 +70,7 @@ public class ControladorPantallaInicioAdmin implements ActionListener{
 						//ARREGLAR LO DE PARAR ANTES
 						
 						try {
-							for(int i=0; i < canciones_totales.length; i++) {
-								canciones_totales[indice].parar();
-							}
-							canciones_totales[indice].setMp3Player();
+													
 							canciones_totales[indice].reproducirCancion();
 						} catch (InterruptedException e1) {
 							// TODO Auto-generated catch block

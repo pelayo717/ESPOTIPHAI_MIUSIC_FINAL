@@ -17,9 +17,9 @@ public class ReproducirLista extends PantallaPrincipal {
 	
 	public JButton botonPlay;
 	public JButton botonPause;
-	public JButton botonAdd;
+	public JButton botonDelete;
 	public JButton perfilAutor;
-	private JList lista_contenido;
+	private JList<String> lista_contenido;
 	private JScrollPane contenidoScrollPane;
 	private JButton botonList;
 	
@@ -28,16 +28,21 @@ public class ReproducirLista extends PantallaPrincipal {
 	private JLabel autor_lista;
 	private JLabel duracion_lista;
 	private JLabel comentarios_label;
-	private ArrayList<Contenido> contenido;
 
+	private  Contenido[] contenido;
+	private  DefaultListModel<String> model1;
+	
 	public ReproducirLista() {
 		super();
 		
 		//Declaracion
-		ImageIcon icono_add = new ImageIcon("src/vista/plus.png");
 		ImageIcon icono_reproducir = new ImageIcon("src/vista/play.png");
 		ImageIcon icono_parar = new ImageIcon("src/vista/pause.png");
 		
+		
+		model1 = new DefaultListModel<>();
+
+		lista_contenido = new JList<String>(model1);
 		
 		perfilAutor = new JButton("Ver Perfil Autor");
 		perfilAutor.setOpaque(false);
@@ -48,11 +53,10 @@ public class ReproducirLista extends PantallaPrincipal {
 	    
 		this.botonPlay = new JButton("play");
 		this.botonPause = new JButton("pause");
-		this.botonAdd = new JButton("add");
+		this.botonDelete = new JButton("Eliminar Contenido");
 		this.botonList = new JButton("Ver comentario");
 		botonPlay.setIcon(icono_reproducir); 
 		botonPause.setIcon(icono_parar);
-		botonAdd.setIcon(icono_add);
 		
 		super.getBotonIzquierdaArriba().setText("Ver Perfil");
 		super.getBotonIzquierdaMedio().setText("Inicio");
@@ -63,7 +67,6 @@ public class ReproducirLista extends PantallaPrincipal {
 		titulo_lista = new JLabel("Titulo:\t\t\t\t\t" ,SwingConstants.CENTER);
 		autor_lista = new JLabel("Autor:\t\t\t\t\t" ,SwingConstants.LEFT);
 		duracion_lista = new JLabel("Duracion:\t\t\t\t\t" + " s",SwingConstants.LEFT);
-		comentarios_label = new JLabel("Comentarios de la lista", SwingConstants.CENTER);
 		
 		contenidoScrollPane = new JScrollPane(lista_contenido);
 
@@ -73,14 +76,12 @@ public class ReproducirLista extends PantallaPrincipal {
 		Font tituloFont = new Font(titulo_lista.getFont().getName(),Font.BOLD,titulo_lista.getFont().getSize());
 		Font autorFont = new Font(autor_lista.getFont().getName(),Font.BOLD,autor_lista.getFont().getSize());
 		Font duracionFont = new Font(duracion_lista.getFont().getName(),Font.BOLD,duracion_lista.getFont().getSize());
-		Font comentariosFont = new Font(datos_lista.getFont().getName(),Font.BOLD,datos_lista.getFont().getSize());
         contenidoScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
 		datos_lista.setFont(datosFont);
 		titulo_lista.setFont(tituloFont);
 		autor_lista.setFont(autorFont);
 		duracion_lista.setFont(duracionFont);
-		comentarios_label.setFont(comentariosFont);
 
 		GroupLayout layout = new GroupLayout(this);
 		this.setLayout(layout);
@@ -101,7 +102,7 @@ public class ReproducirLista extends PantallaPrincipal {
 
 		botonPlay.setBounds(screenSize.width/2 + 160, 580, 60, 60);
 		botonPause.setBounds(screenSize.width/2 + 230, 580, 60, 60);
-		botonAdd.setBounds(screenSize.width/2 + 300, 580, 60, 60);
+		botonDelete.setBounds(screenSize.width/2 + 300, 580, 150, 60);
 		
 		
 		//Añadimos
@@ -113,7 +114,7 @@ public class ReproducirLista extends PantallaPrincipal {
 		this.add(contenidoScrollPane);
 		this.add(botonPlay);
 		this.add(botonPause);
-		this.add(botonAdd);
+		this.add(botonDelete);
 	}
 	
 	public void limpiarBuscador(){
@@ -138,7 +139,7 @@ public class ReproducirLista extends PantallaPrincipal {
 		 this.botonList.addActionListener(c);
 		 this.botonPlay.addActionListener(c);
 		 this.botonPause.addActionListener(c);
-		 this.botonAdd.addActionListener(c);
+		 this.botonDelete.addActionListener(c);
 		 this.perfilAutor.addActionListener(c);
 	 }
 	 
@@ -151,11 +152,11 @@ public class ReproducirLista extends PantallaPrincipal {
 	    int segundos = (int) (lista.getDuracion()-(horas*3600+minutos*60));
 	    
 	    
-	    titulo_lista.setText("Titulo:\t\t\t\t\t" + this.lista.getTitulo());
-		autor_lista.setText("Autor:\t\t\t\t\t" + this.lista.getAutor());
-		duracion_lista.setText("Duracion:\t\t\t\t\t" + minutos + " m/" + segundos + " s");
+	    this.titulo_lista.setText("Titulo:\t\t\t\t\t" + this.lista.getTitulo());
+		this.autor_lista.setText("Autor:\t\t\t\t\t" + this.lista.getAutor().getNombreAutor());
+		this.duracion_lista.setText("Duracion:\t\t\t\t\t" + minutos + " m/" + segundos + " s");
 		
-		actualizarContenido();
+		this.actualizarContenido();
 	}
 	 
 
@@ -171,15 +172,15 @@ public class ReproducirLista extends PantallaPrincipal {
 		return botonPause;
 	}
 
-	public JButton getBotonAdd() {
-		return botonAdd;
+	public JButton getBotonDelete() {
+		return botonDelete;
 	}
 
 	public JButton getPerfilAutor() {
 		return perfilAutor;
 	}
 
-	public JList getLista_contenido() {
+	public JList<String> getLista_contenido() {
 		return lista_contenido;
 	}
 
@@ -211,14 +212,56 @@ public class ReproducirLista extends PantallaPrincipal {
 		return comentarios_label;
 	}
 
-	public ArrayList<Contenido> getContenido() {
+	public Contenido[] getContenido() {
 		return contenido;
 	}
 
-	@SuppressWarnings("unchecked")
-		public void actualizarContenido() {
-			contenido = lista.getContenido();
-			lista_contenido = new JList(contenido.toArray());
-			contenidoScrollPane = new JScrollPane(lista_contenido);
-		 }
+	public void actualizarContenido() {
+		model1.clear();
+		contenido = lista.getContenido().toArray(new Contenido[lista.getContenido().size()]);
+		if(contenido != null) {
+			for(int i=0; i < contenido.length;i++) {
+				
+				int horas = (int) (contenido[i].getDuracion() / 3600);
+			    int minutos = (int) ((contenido[i].getDuracion()-horas*3600)/60);
+			    int segundos = (int) (contenido[i].getDuracion()-(horas*3600+minutos*60));
+			    
+				if(contenido[i] instanceof Cancion) {
+					
+					model1.addElement("Cancion ==> Titulo: " + contenido[i].getTitulo() + " // Duracion HH-MM-SS: " + horas + "-" + minutos + "-" + segundos);
+
+				}else if(contenido[i] instanceof Album){
+					
+					ArrayList<Album> temporal = Sistema.sistema.getUsuarioActual().getAlbumes();
+					int j=0;
+					
+					for(j=0; j < temporal.size();j++) {
+						if(temporal.get(j).equals(contenido[i])) {
+							break;
+						}
+					}
+					
+					model1.addElement("Album ==> Titulo: " + contenido[i].getTitulo() + " // Duracion HH-MM-SS: " + horas + "-" + minutos + "-" + segundos + " // Num. Canciones: " + temporal.get(j).getContenido().size());
+
+					temporal = null;
+					
+					
+				}else if(contenido[i] instanceof Lista) {
+					
+					ArrayList<Lista> temporal = Sistema.sistema.getUsuarioActual().getListas();
+					int j=0;
+					
+					for(j=0; j < temporal.size();j++) {
+						if(temporal.get(j).equals(contenido[i])) {
+							break;
+						}
+					}
+					
+					model1.addElement("Lista ==> Titulo: " + contenido[i].getTitulo() + " // Duracion HH-MM-SS: " + horas + "-" + minutos + "-" + segundos + " // Num. Contenido: " + temporal.get(j).getContenido().size());
+
+				}
+			
+			}
+		}
+	}
 }

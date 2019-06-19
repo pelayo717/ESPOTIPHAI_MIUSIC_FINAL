@@ -1172,15 +1172,33 @@ public class Sistema implements Serializable{
 	 * @return retorna OK si se anyadio correctamente, ERROR si no fue asi
 	 */
 	public Status anyadirALista(Lista l, Contenido c) {
+		LocalDate d = LocalDate.now();
 		if(l == null || c == null) {
 			return null;
 		}
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
+				
+			Period intervalo = Period.between(Sistema.sistema.getUsuarioActual().getFechaNacimiento(), d);
+
+			
 				if(sistema.getUsuarioActual().getListas().contains(l) == true) {
-					if(l.anyadirContenido(c) == Status.OK) {
-						return Status.OK;
-					}else {
-						return Status.ERROR;
+					if(c instanceof Cancion && ((Cancion) c).getEstado() == EstadoCancion.VALIDA) {
+					
+						if(l.anyadirContenido(c) == Status.OK) {
+							return Status.OK;
+						}else {
+							return Status.ERROR;
+						}
+						
+					}else if( c instanceof Cancion && ((Cancion)c).getEstado() == EstadoCancion.EXPLICITA) {
+						if(intervalo.getYears() >= 18) {
+							
+							if(l.anyadirContenido(c) == Status.OK) {
+								return Status.OK;
+							}else {
+								return Status.ERROR;
+							}
+						}
 					}
 				}
 		}

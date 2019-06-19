@@ -139,8 +139,8 @@ public class ControladorReproducirLista implements ActionListener{
 				}
 			} else if(((JButton)e.getSource()).getText() == "pause") {
 				vista.getLista().parar();
-			} else if(((JButton)e.getSource()).getText() == "add") {
-				System.out.println("ADD BUTTON PLRESED");
+			} else if(((JButton)e.getSource()).getText() == "Eliminar Contenido") {
+
 			} else {
 				
 				System.out.println(e.getSource());

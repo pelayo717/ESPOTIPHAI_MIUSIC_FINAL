@@ -29,7 +29,7 @@ public class ReproducirCancion extends PantallaPrincipal {
 	
 	public JButton botonPlay;
 	public JButton botonPause;
-	private  JList<String> lista_comentarios;
+	private JList<String> lista_comentarios;
 	private JScrollPane comentariosScrollPane;
 	public JButton botonList;
 	public JButton botonAnyadirComentario;

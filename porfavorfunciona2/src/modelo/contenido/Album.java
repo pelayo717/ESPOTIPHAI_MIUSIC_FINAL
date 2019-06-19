@@ -129,67 +129,17 @@ public class Album extends ContenidoComentable {
 	 * @throws ExcesoReproduccionesExcepcion
 	 */
 	
-	/*public EstadoReproduccion reproducirAlbum() throws InterruptedException, FileNotFoundException, Mp3PlayerException{
-		
-		EstadoReproduccion variable;
-		
-		System.out.print(" HOOOLAAA1 ");
-		
-		try {
-						
-			if(Sistema.sistema.getUsuarioActual() != null && (Sistema.sistema.getAdministrador() == true || Sistema.sistema.getUsuarioActual().getPremium() == true)) {
-				for(Cancion canciones_reproduciendose:this.getContenido()) {
-					variable = canciones_reproduciendose.reproducirCancion();
-					if(variable != null) {
-						return variable;
-					}
-				}
-													
-			}else {
-				if(Sistema.sistema.getUsuarioActual() != null) {
-					if(Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
-
-						for(Cancion canciones_reproduciendose:this.getContenido()) {
-
-							variable = canciones_reproduciendose.reproducirCancion();
-							if(variable != null) {
-								return variable;
-							}
-						}
-						
-					}else {
-						return EstadoReproduccion.REPRODUCCIONES_AGOTADAS;
-					}
-				}else {
-					if(Sistema.sistema.getContenidoEscuchadoSinRegistrarse() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
-						for(Cancion canciones_reproduciendose:this.getContenido()) {
-							variable = canciones_reproduciendose.reproducirCancion();
-							if(variable != null) {
-								return variable;
-							}
-						}	
-						
-					}else {
-						return EstadoReproduccion.REPRODUCCIONES_AGOTADAS;
-					}
-				}
-			}
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}*/
-	
-@SuppressWarnings("unlikely-arg-type")
-public EstadoReproduccion reproducirAlbum() throws InterruptedException, FileNotFoundException, Mp3PlayerException{
+	@SuppressWarnings("unlikely-arg-type")
+	public EstadoReproduccion reproducirAlbum() throws InterruptedException, FileNotFoundException, Mp3PlayerException{
 		
 		EstadoReproduccion variable;
 		LocalDate fecha_actual = LocalDate.now();
 		
 		try {
-						
+				
+			super.parar();
+			super.setMp3Player();
+			
 			if(Sistema.sistema.getUsuarioActual() != null && (Sistema.sistema.getAdministrador() == true || Sistema.sistema.getUsuarioActual().getPremium() == true)) {
 				Period intervalo = Period.between(Sistema.sistema.getUsuarioActual().getFechaNacimiento(), fecha_actual);
 
@@ -224,6 +174,7 @@ public EstadoReproduccion reproducirAlbum() throws InterruptedException, FileNot
 							}
 							
 							canciones_reproduciendose.reproducirBasico();
+							
 							Sistema.sistema.getUsuarioActual().addContenidoEscuchadoSinSerPremium();
 							if(canciones_reproduciendose.getAutor().getAlbumes().contains(canciones_reproduciendose) == false) {
 								canciones_reproduciendose.getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());
