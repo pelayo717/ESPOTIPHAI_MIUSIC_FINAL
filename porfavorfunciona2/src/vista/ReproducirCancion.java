@@ -56,18 +56,21 @@ public class ReproducirCancion extends PantallaPrincipal {
 		
 				
 		root = new DefaultMutableTreeNode("Comentarios");
+		
 		treeModel = new DefaultTreeModel(root);
+		
         comentariosTree = new JTree(treeModel);
+        
         treeModel.reload();
         setTree();
         comentariosTree.addTreeSelectionListener(new TreeSelectionListener() {
 
 			@Override
 			public void valueChanged(TreeSelectionEvent e) {
-				DefaultMutableTreeNode selectedNode = 
-			       (DefaultMutableTreeNode)comentariosTree.getLastSelectedPathComponent();  
-				if(selectedNode.getUserObject() instanceof Comentario)
-				comentarioSeleccionado  = (Comentario)selectedNode.getUserObject();
+				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode)comentariosTree.getLastSelectedPathComponent();  
+				if(selectedNode != null && selectedNode.getUserObject() instanceof Comentario) {
+					comentarioSeleccionado  = (Comentario)selectedNode.getUserObject();
+				}
 			  }
 			});
         comentariosTree.setRootVisible(true);
@@ -228,6 +231,7 @@ public class ReproducirCancion extends PantallaPrincipal {
 		if(cancion!=null) {
 			comentarios = cancion.getComentarios().toArray(new Comentario[cancion.getComentarios().size()]);
 		}
+		
 		if(comentarios != null) {
 			for (Comentario c : comentarios)
 	        {

@@ -368,8 +368,7 @@ public class Sistema implements Serializable{
 					 }
 					 
 					 //elimino sus albumes e informo a los usuarios que tengan las canciones en sus listas de su eliminacion
-					 for(Iterator<Cancion> iteratorCancion = usuario.getCanciones().iterator(); iteratorCancion.hasNext();) {
-						 Cancion canciones_usuario = iteratorCancion.next();
+					 for(Cancion canciones_usuario: usuario.getCanciones()) {
 						 sistema.eliminarCancion(canciones_usuario);
 					 }
 					 

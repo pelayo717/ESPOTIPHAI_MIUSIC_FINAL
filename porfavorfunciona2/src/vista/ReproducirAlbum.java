@@ -69,16 +69,18 @@ public class ReproducirAlbum extends PantallaPrincipal {
         comentariosTree = new JTree(treeModel);
         treeModel.reload();
         setTree();
+        
         comentariosTree.addTreeSelectionListener(new TreeSelectionListener() {
 
 			@Override
 			public void valueChanged(TreeSelectionEvent e) {
-				DefaultMutableTreeNode selectedNode = 
-			       (DefaultMutableTreeNode)comentariosTree.getLastSelectedPathComponent(); 
-				if(selectedNode!= null && selectedNode.getUserObject() instanceof Comentario)
-				comentarioSeleccionado  = (Comentario)selectedNode.getUserObject();
+				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode)comentariosTree.getLastSelectedPathComponent(); 
+				if(selectedNode!= null && selectedNode.getUserObject() instanceof Comentario) {
+					comentarioSeleccionado  = (Comentario)selectedNode.getUserObject();
+				}
 			  }
 			});
+        
         comentariosTree.setRootVisible(true);
         comentariosTree.setShowsRootHandles(true);
 		comentariosScrollPane = new JScrollPane(comentariosTree);
