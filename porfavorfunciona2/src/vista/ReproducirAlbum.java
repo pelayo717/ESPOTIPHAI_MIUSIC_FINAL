@@ -6,6 +6,10 @@ import java.time.LocalDate;
 import java.time.Period;
 
 import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 import modelo.sistema.*;
 import modelo.contenido.*;
@@ -21,7 +25,6 @@ public class ReproducirAlbum extends PantallaPrincipal {
 	
 	private  Album album;
 	
-	private  JList<String> lista_comentarios;
 	private  JList<String> lista_canciones;
 
 	
@@ -43,8 +46,12 @@ public class ReproducirAlbum extends PantallaPrincipal {
 	private JLabel duracion_album;
 	private JLabel comentarios_label;
 	
-	private Comentario[] misComentarios;
-	private DefaultListModel<String> model1;
+	private Comentario[] comentarios;
+	private Comentario comentarioSeleccionado;
+
+	private JTree comentariosTree;
+	private DefaultMutableTreeNode root;
+	private DefaultTreeModel treeModel;
 	
 	private Cancion[] misCanciones;
 	private DefaultListModel<String> model2;
@@ -56,11 +63,25 @@ public class ReproducirAlbum extends PantallaPrincipal {
 	public ReproducirAlbum() {
 		super();
 		
-		model1 = new DefaultListModel<>();
 
-		lista_comentarios = new JList<String>(model1);
-		
-		comentariosScrollPane = new JScrollPane(lista_comentarios);
+		root = new DefaultMutableTreeNode("Comentarios");
+		treeModel = new DefaultTreeModel(root);
+        comentariosTree = new JTree(treeModel);
+        treeModel.reload();
+        setTree();
+        comentariosTree.addTreeSelectionListener(new TreeSelectionListener() {
+
+			@Override
+			public void valueChanged(TreeSelectionEvent e) {
+				DefaultMutableTreeNode selectedNode = 
+			       (DefaultMutableTreeNode)comentariosTree.getLastSelectedPathComponent(); 
+				if(selectedNode!= null && selectedNode.getUserObject() instanceof Comentario)
+				comentarioSeleccionado  = (Comentario)selectedNode.getUserObject();
+			  }
+			});
+        comentariosTree.setRootVisible(true);
+        comentariosTree.setShowsRootHandles(true);
+		comentariosScrollPane = new JScrollPane(comentariosTree);
 		
 		model2 = new DefaultListModel<>();
 
@@ -69,7 +90,6 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		lista_canciones.setCellRenderer( new RowColor());
 
 		
-		cancionesScrollPane = new JScrollPane(lista_canciones);
 		
 		
 		//Declaracion
@@ -97,7 +117,6 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		duracion_album = new JLabel("Duracion:\t\t\t\t\t" + " s",SwingConstants.LEFT);
 		comentarios_label = new JLabel("Comentarios de la album", SwingConstants.CENTER);
 	
-		comentariosScrollPane = new JScrollPane(lista_comentarios);
 		
 		cancionesScrollPane = new JScrollPane(lista_canciones);
 		
@@ -223,18 +242,53 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		this.comentarios_label.setText("Comentarios de la album");
 		
 		this.actualizarCanciones();
-		this.actualizarComentarios();
+		this.setTree();
 	 }
 	 
-	 public void actualizarComentarios() {
-		model1.clear();
-		misComentarios = album.getComentarios().toArray(new Comentario[album.getComentarios().size()]);
-		if(misComentarios != null) {
-			for(int i=0; i < misComentarios.length;i++) {
-				model1.addElement(misComentarios[i].getTexto());
+		
+		public void setTree() {
+			root.removeAllChildren();
+	        //create the child nodes
+			if(album!=null) {
+				comentarios = album.getComentarios().toArray(new Comentario[album.getComentarios().size()]);
 			}
+			if(comentarios != null) {
+				for (Comentario c : comentarios)
+		        {
+		          DefaultMutableTreeNode comentario = new DefaultMutableTreeNode(c);
+		          root.add(comentario);
+		          for (Comentario subc : c.getSubComentarios()) {
+					DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subc);
+		            comentario.add(subNode);
+					((DefaultTreeModel)comentariosTree.getModel()).reload(comentario);
+					this.addToTree(subNode,subc);
+		          }
+		        }
+			}
+			treeModel = new DefaultTreeModel(root);
+			treeModel.reload();
+			expandAllNodes(comentariosTree, 0, comentariosTree.getRowCount());
 		}
-	 }
+		
+		private void expandAllNodes(JTree tree, int startingIndex, int rowCount){
+		    for(int i=startingIndex;i<rowCount;++i){
+		        tree.expandRow(i);
+		    }
+
+		    if(tree.getRowCount()!=rowCount){
+		        expandAllNodes(tree, rowCount, tree.getRowCount());
+		    }
+		}
+		
+		public void addToTree(DefaultMutableTreeNode fatherNode, Comentario c) {
+			for (Comentario subc : c.getSubComentarios()) {
+				DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subc);
+	            fatherNode.add(subNode);
+	            ((DefaultTreeModel)comentariosTree.getModel()).reload(fatherNode);
+				System.out.println("anyadimos subcomentario" + subc);
+				this.addToTree(subNode,subc);
+	          }
+		}
 	 
 	 public void actualizarCanciones() {
 		model2.clear();
@@ -249,6 +303,7 @@ public class ReproducirAlbum extends PantallaPrincipal {
 	 public void insertarComentario(Comentario nuevoComentario) {
 			if(this.album != null) {
 				album.anyadirComentario(nuevoComentario);
+	            ((DefaultTreeModel)comentariosTree.getModel()).reload(root);
 			}
 	 }
 	 
@@ -305,10 +360,6 @@ public class ReproducirAlbum extends PantallaPrincipal {
 
 	public Album getAlbum() {
 		return album;
-	}
-
-	public JList<String> getLista_comentarios() {
-		return lista_comentarios;
 	}
 
 	public JList<String> getLista_canciones() {
@@ -371,12 +422,8 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		return comentarios_label;
 	}
 
-	public Comentario[] getMisComentarios() {
-		return misComentarios;
-	}
-
-	public DefaultListModel<String> getModel1() {
-		return model1;
+	public Comentario[] getComentarios() {
+		return comentarios;
 	}
 
 	public Cancion[] getMisCanciones() {
@@ -391,7 +438,9 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		return screenSize;
 	}
 
-	
+	public Comentario getComentarioSeleccionado() {
+		return comentarioSeleccionado;
+	}
 	 
 	 
 }

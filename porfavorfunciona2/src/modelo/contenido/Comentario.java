@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import modelo.status.Status;
 import modelo.usuario.*;
 
 /**
@@ -17,6 +18,7 @@ public class Comentario implements Serializable{
 	private LocalDate fecha;
 	private String texto;
 	private Usuario comentador;
+	private ArrayList<Comentario> subComentarios;
 	private int hora;
 	private int minuto;
 	private int segundo;
@@ -30,6 +32,7 @@ public class Comentario implements Serializable{
 		this.fecha = LocalDate.now();
 		this.setTexto(texto);
 		this.setComentador(comentador);
+		this.subComentarios = new ArrayList<Comentario>();
 		LocalDateTime tiempo = LocalDateTime.now();
 		this.hora  = tiempo.getHour();
 		this.minuto = tiempo.getMinute();
@@ -39,9 +42,40 @@ public class Comentario implements Serializable{
 	
 
 	
+	/**
+	 *	Funcion para añadir un subcomentario al comentario
+	 * 	@return  OK si no hay errores y ERROR de lo contrario
+	 */
+	public Status anyadirSubComentario(Comentario comentario) {
+		if(comentario == null) {
+			System.out.print("adei");
+		}
+		if (this.subComentarios.add(comentario) == true) {
+			return Status.OK;
+		} else {
+			return Status.ERROR;
+		}
+	}
+
 	
 	//GETTERS Y SETTERS
 	
+	@Override
+	public String toString() {
+		return texto;
+	}
+
+
+
+
+	public ArrayList<Comentario> getSubComentarios() {
+		return subComentarios;
+	}
+
+	public void setSubComentarios(ArrayList<Comentario> subComentarios) {
+		this.subComentarios = subComentarios;
+	}
+
 	/**
 	 * Establece el usuario que esta comentando
 	 * @param c
