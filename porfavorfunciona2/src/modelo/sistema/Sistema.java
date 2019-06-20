@@ -303,6 +303,8 @@ public class Sistema implements Serializable{
 				}else {
 					if(usuario.getEstadoBloqueado() == UsuarioBloqueado.INDEFINIDO) {
 						return EstadoInicioSesion.BLOQUEADO;
+					}else if(usuario.getEstadoBloqueado() == UsuarioBloqueado.POR_REPORTE) {
+						return EstadoInicioSesion.POR_REPORTE;
 					}else {
 						return EstadoInicioSesion.TEMPORAL;
 					}
@@ -825,6 +827,11 @@ public class Sistema implements Serializable{
 			//Period intervalo = Period.between(sistema.usuario_actual.getFechaNacimiento(), fecha_actual);
 					
 			Cancion c = new Cancion(titulo,sistema.usuario_actual,nombreMP3);
+			
+			if(c.getDuracion() == -1) { //ESTO SIGNIFICA QUE NO ES MP3 Y LA CANCION ESTARIA MAL CONSTRUIDA
+				c = null;
+				return null;
+			}
 			
 			for(Cancion cancion:sistema.usuario_actual.getCanciones()) {
 				if(cancion.getTitulo().equals(titulo) == true && cancion.getNombreMP3().equals(nombreMP3) == true) {
@@ -1405,12 +1412,13 @@ public class Sistema implements Serializable{
 			}
 			
 			Reporte r = new Reporte(sistema.getUsuarioActual(),c);
+
 			if(sistema.getReportesTotales().contains(r)) {
 				return Status.ERROR; //REPORTE YA REALIZADO POR LA MISMA PERSONA CON LA MISMA CANCION
 			}
 			
 			c.setEstado(EstadoCancion.PLAGIO);
-			c.getAutor().bloquearCuentaTemporal();
+			c.getAutor().bloqueoCuentaPorReporte();
 			sistema.getUsuariosTotales().get(0).enviarNotificacion(c.getAutor(), "Su cancion " + c.getTitulo() + " ha sido bloqueada por un reporte y usted de manera temporal. Comprobaremos esta informacion con la mayor brevedad porsible.");
 			sistema.getUsuarioActual().enviarNotificacion(sistema.getUsuariosTotales().get(0), "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha reportado la cancion " + c.getTitulo() + ".");
 			
@@ -1444,9 +1452,11 @@ public class Sistema implements Serializable{
 			}else {
 				//BLOQUEAR TEMPORALMENETE AL QUE REPORTO
 				r.getUsuarioReportador().bloquearCuentaTemporal();
-				
+							
 				//DESBLOQUEAR LA CANCION
 				r.getCancionReportada().setEstado(r.getCancionReportada().getEstadoAnterior());
+				
+				r.getCancionReportada().getAutor().setEstadoBloqueado(UsuarioBloqueado.NOBLOQUEADO);
 				
 				//INFORMAR DEL BLOQUEO AL USUARIO Y AL OTRO DEL DESBLOQUEO
 				sistema.getUsuarioActual().enviarNotificacion(r.getUsuarioReportador(), "Ha sido bloqueado temporalmente por el reporte de la cancion " + r.getCancionReportada().getTitulo() + " que no ha sido aceptado.");

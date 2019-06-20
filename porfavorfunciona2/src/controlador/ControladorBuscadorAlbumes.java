@@ -50,9 +50,9 @@ public class ControladorBuscadorAlbumes implements ActionListener { //99.9% esta
 				Album[] albumes_totales = vista.getAlbum();
 				int indice = vista.getListAlbum().getSelectedIndex();
 				vista.getLista_albumes().clearSelection();
+				
 				if(indice == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir album seleccione uno primero");
-					Ventana.ventana.showBuscadorAlbumes(albumes_totales);
 				}else{
 					Ventana.ventana.showReproducirAlbum(albumes_totales[indice]);
 				}

@@ -36,10 +36,14 @@ public class Cancion extends ContenidoComentable {
 	 */
 	public Cancion(String titulo, Usuario autor,  String nombreMP3) throws FileNotFoundException, Mp3PlayerException{
 		super(-1,titulo, autor, new ArrayList<Comentario>());
-		this.setNombreMP3(nombreMP3);		
+		this.setNombreMP3(nombreMP3);	
+		this.setDuracion(-1); //AÑADIMOS ESTA CONDICION POR SI ACASO RESULTA QUE EL nombreMP3 no es de tipo mp3
+		if(this.esMP3() == false) {
+			return;
+		}
 		this.setDuracion(this.devolverDuracion());
 		this.setEstado(EstadoCancion.PENDIENTEAPROBACION);
-		this.fecha_modificar = LocalDate.now();
+		this.fecha_modificar = null;		
 	}
 	
 	
@@ -167,7 +171,7 @@ public class Cancion extends ContenidoComentable {
 	 */
 	public void setEstado(EstadoCancion estado) {
 		if(estado == EstadoCancion.PENDIENTEMODIFICACION) {
-			this.fecha_modificar = LocalDate.now();
+			this.setFechaModificacion(LocalDate.now());
 		}
 		this.estado = estado;
 	}

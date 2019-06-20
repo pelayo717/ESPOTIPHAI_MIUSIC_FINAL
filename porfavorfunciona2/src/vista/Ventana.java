@@ -128,7 +128,11 @@ public class Ventana extends JFrame {
 		this.add(buscadorAlbumes,buscadorAlbumesString);
 		this.add(buscadorAutores,buscadorAutoresString);
 		Ventana.ventana = this;
-		this.showPantallaInicio();
+		if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador() == true) {
+			this.showPantallaInicioAdmin();
+		}else {
+			this.showPantallaInicio();
+		}
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter(){
 			@Override

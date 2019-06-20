@@ -45,35 +45,35 @@ public class ControladorRegistrarse implements ActionListener{
 		@Override 
 		public void actionPerformed(ActionEvent e) {
 			if (((JButton)e.getSource()).getText() == "Inicio") {
+				vista.limpiarVentana();
 				Ventana.ventana.showPantallaInicio();
-				Ventana.ventana.registrarse.limpiarVentana();
 			} else if(((JButton)e.getSource()).getText() == "Iniciar Sesion") {
+				vista.limpiarVentana();
 				Ventana.ventana.showInicioSesion();
-				Ventana.ventana.registrarse.limpiarVentana();
 			} else if(((JButton)e.getSource()).getText() == "Registrarse") {
-								
-				try {
 					
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
-					String date = vista.getBirthTextfield().getText(); 
-					LocalDate localDate = LocalDate.parse(date, formatter);
-					
-					if (Sistema.sistema.registrarse(vista.getUsuarioTextfield().getText(),vista.getAuthorTextfield().getText(), localDate, String.valueOf(vista.getPasswordTextfield().getPassword())) == Status.OK){
-						JOptionPane.showMessageDialog(Ventana.ventana,"Su usuario ha sido registrado correctamente en la aplicacion");
-						Ventana.ventana.showInicioSesion();
-						Ventana.ventana.registrarse.limpiarVentana();
-					}else {
-						JOptionPane.showMessageDialog(Ventana.ventana,"Su usuario no ha sido registrado correctamente, pruebe de nuevo con otros datos");
-						Ventana.ventana.showPantallaInicio();
+				if(vista.getUsuarioTextfield().getText().length() > 0 && vista.getAuthorTextfield().getText().length()> 0 &&  vista.getBirthTextfield().getText().length() > 0 && vista.getPasswordTextfield().getPassword().length > 0) {
+					try {
+						
+						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+						String date = vista.getBirthTextfield().getText(); 
+						LocalDate localDate = LocalDate.parse(date, formatter);
+						
+						if (Sistema.sistema.registrarse(vista.getUsuarioTextfield().getText(),vista.getAuthorTextfield().getText(), localDate, String.valueOf(vista.getPasswordTextfield().getPassword())) == Status.OK){
+							JOptionPane.showMessageDialog(Ventana.ventana,"Su usuario ha sido registrado correctamente en la aplicacion");
+							vista.limpiarVentana();
+							Ventana.ventana.showInicioSesion();
+						}else {
+							JOptionPane.showMessageDialog(Ventana.ventana,"Su usuario no ha sido registrado correctamente, pruebe de nuevo con otros datos");
+						}
+						
+					}catch(DateTimeParseException e4) {
+						JOptionPane.showMessageDialog(Ventana.ventana,"El formato a introducir para la fecha es dd/mm/aaaa");
+						vista.limpiarVentana();
 					}
-					
-				}catch(DateTimeParseException e4) {
-					
-					//e4.printStackTrace();
-					JOptionPane.showMessageDialog(Ventana.ventana,"El formato a introducir para la fecha es dd/mm/aaaa");
-					Ventana.ventana.showRegistrarse();
+				}else {
+					JOptionPane.showMessageDialog(Ventana.ventana,"Rellene todos los datos para poder registrarle como usuario");
 				}
-				
 			}
 		}
 }

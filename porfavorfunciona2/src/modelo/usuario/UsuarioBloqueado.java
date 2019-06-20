@@ -1,5 +1,5 @@
 package modelo.usuario;
 
 public enum UsuarioBloqueado {
-	INDEFINIDO, TEMPORAL, NOBLOQUEADO;
+	INDEFINIDO, TEMPORAL, NOBLOQUEADO,POR_REPORTE;
 }

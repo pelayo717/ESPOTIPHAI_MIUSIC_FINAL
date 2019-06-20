@@ -20,6 +20,7 @@ public class Registrarse extends JPanel{
 	private JLabel birthLabel;
 	private JLabel passwordLabel;
 	private JLabel preguntaLabel;
+	private JLabel formato;
 
 	private JTextField usuarioTextfield;
 	private JTextField authorTextfield ;
@@ -37,7 +38,8 @@ public class Registrarse extends JPanel{
 		this.usuarioTextfield = new JTextField(20);
 		this.authorLabel = new JLabel("Nombre de autor", SwingConstants.LEFT);
 		this.authorTextfield = new JTextField(10);
-		this.birthLabel = new JLabel("Fecha de nacimiento", SwingConstants.LEFT);
+		this.birthLabel = new JLabel("Fecha nacimiento", SwingConstants.LEFT);
+		this.formato = new JLabel("(dd/mm/aaaa)",SwingConstants.LEFT);
 		this.birthTextfield = new JTextField(10);
 		this.passwordLabel = new JLabel("Contraseña", SwingConstants.LEFT);
 		this.passwordTextfield = new JPasswordField(20);
@@ -52,6 +54,7 @@ public class Registrarse extends JPanel{
 		Font passwordLabelFont = new Font(passwordLabel.getFont().getName(),Font.BOLD,passwordLabel.getFont().getSize());
 		Font birthLabelFont = new Font(birthLabel.getFont().getName(),Font.BOLD,birthLabel.getFont().getSize());
 		Font authorLabelFont = new Font(authorLabel.getFont().getName(),Font.BOLD,authorLabel.getFont().getSize());
+		Font formatoLabelFont = new Font(formato.getFont().getName(),Font.BOLD,formato.getFont().getSize());
 
 		titulo.setFont(tituloFont);
 		titulo.setForeground(Color.yellow);
@@ -59,7 +62,8 @@ public class Registrarse extends JPanel{
 		passwordLabel.setFont(passwordLabelFont);
 		birthLabel.setFont(birthLabelFont);
 		authorLabel.setFont(authorLabelFont);
-
+		formato.setFont(formatoLabelFont);
+		
 		GroupLayout layout = new GroupLayout(this);
 		this.setLayout(layout);
 		
@@ -77,6 +81,7 @@ public class Registrarse extends JPanel{
 		authorLabel.setBounds(screenSize.width/2 - 200, 150, 200, 40);
 		authorTextfield.setBounds(screenSize.width/2,150,300, 40);
 		birthLabel.setBounds(screenSize.width/2  - 200, 210, 200, 40);
+		formato.setBounds(screenSize.width/2  - 193, 230, 200, 40);
 		birthTextfield.setBounds(screenSize.width/2,210,300, 40);
 		passwordLabel.setBounds(screenSize.width/2  - 200, 270, 200, 40);
 		passwordTextfield.setBounds(screenSize.width/2,270,300, 40);
@@ -99,6 +104,7 @@ public class Registrarse extends JPanel{
 		this.add(botonIniciarSesion);
 		this.add(preguntaLabel);
 		this.add(botonRegistrarse);
+		this.add(formato);
 		
 	}
 	

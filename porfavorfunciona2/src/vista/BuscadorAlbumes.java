@@ -14,7 +14,7 @@ import javax.swing.SwingConstants;
 
 import modelo.contenido.Album;
 
-public class BuscadorAlbumes extends PantallaPrincipal{
+public class BuscadorAlbumes extends PantallaPrincipal{ //99.9% esta terminado
 
 	/**
 	 * 

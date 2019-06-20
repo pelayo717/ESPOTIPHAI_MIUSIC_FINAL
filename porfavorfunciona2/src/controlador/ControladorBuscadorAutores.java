@@ -55,6 +55,7 @@ public class ControladorBuscadorAutores implements ActionListener{ //99.9% esta 
 				Contenido[] contenidos_totales = vista.getContenido();
 				int indice = vista.getLista_contenidos().getSelectedIndex();
 				vista.getLista_contenidos().clearSelection();
+				
 				if(indice == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir contenido seleccione uno primero");
 				}else{
@@ -72,43 +73,45 @@ public class ControladorBuscadorAutores implements ActionListener{ //99.9% esta 
 		}  else if(((JButton)e.getSource()).getText() == "Elegir Autor") {
 			
 			if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador() == false) {
+				
 				if(vista.getLista_autores().getSelectedIndex() == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir contenido seleccione uno primero");
 				}else{
 					String[] options = {"Seguir","Dejar Seguir"};
 					int indice = vista.getLista_autores().getSelectedIndex();
+					vista.getLista_autores().clearSelection();
+
 					Usuario[] presentados = vista.getLosAutores();
 					
 					if(Sistema.sistema.getUsuarioActual().equals(presentados[indice]) == true) { //SOLO MOSTRAMOS SU INFO
-						JOptionPane.showMessageDialog(Ventana.ventana,"Autor: " + presentados[indice].getNombreAutor() + "\nCanciones Totales(se incluyen canciones pendientes de validar y explicitas): " + presentados[indice].getCanciones().size() + "\nAlbumes: " + presentados[indice].getAlbumes().size() + "\nReproducciones de sus contenidos por otros usuario: " + presentados[indice].getNumeroReproducciones());  
+						JOptionPane.showMessageDialog(Ventana.ventana,"Autor: " + presentados[indice].getNombreAutor() + "\nCanciones Totales(se incluyen canciones pendientes de validacion y explicitas): " + presentados[indice].getCanciones().size() + "\nAlbumes: " + presentados[indice].getAlbumes().size() + "\nReproducciones de sus contenidos por otros usuario: " + presentados[indice].getNumeroReproducciones() + "\nPremium: " + presentados[indice].getPremium());  
 					}else { //Son distintos
-						int a = JOptionPane.showOptionDialog(Ventana.ventana,"Autor: " + presentados[indice].getNombreAutor() + "\nCanciones Totales(se incluyen canciones pendientes de validar y explicitas): " + presentados[indice].getCanciones().size() + "\nAlbumes: " + presentados[indice].getAlbumes().size() + "\nReproducciones de sus contenidos por otros usuario: " + presentados[indice].getNumeroReproducciones() ,"Usuario seleccionado",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);  
+						int a = JOptionPane.showOptionDialog(Ventana.ventana,"Autor: " + presentados[indice].getNombreAutor() + "\nCanciones Totales(se incluyen canciones pendientes de validacion y explicitas): " + presentados[indice].getCanciones().size() + "\nAlbumes: " + presentados[indice].getAlbumes().size() + "\nReproducciones de sus contenidos por otros usuario: " + presentados[indice].getNumeroReproducciones() + "\nPremium: " + presentados[indice].getPremium(),"Usuario seleccionado",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);  
 						if(a == 0){ //SEGUIR
 							if(Sistema.sistema.getUsuarioActual().follow(presentados[indice]) == Status.OK){
 								JOptionPane.showMessageDialog(Ventana.ventana,"Ha comenzado a seguir a este autor");
 							}else {
-								JOptionPane.showMessageDialog(Ventana.ventana,"Usted ya seguia a este autor");
+								JOptionPane.showMessageDialog(Ventana.ventana,"Usted ya seguia de antes a este autor");
 							}
 						}else if(a == 1){
 							if(Sistema.sistema.getUsuarioActual().unfollow(presentados[indice]) == Status.OK){
 								JOptionPane.showMessageDialog(Ventana.ventana,"Ha dejado de seguir a este autor");
 							}else {
-								JOptionPane.showMessageDialog(Ventana.ventana,"Usted no seguia a este autor");
+								JOptionPane.showMessageDialog(Ventana.ventana,"Usted no seguia de antes a este autor");
 							}
 						}
 					}	
 				}
 				
-				vista.getLista_contenidos().clearSelection();
 				
 			}else if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador() == true) {
 				if(vista.getLista_autores().getSelectedIndex() == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir autor seleccione uno primero");
 				}else{
 					int indice = vista.getLista_autores().getSelectedIndex();
+					vista.getLista_autores().clearSelection();
 					Usuario[] presentados = vista.getLosAutores();
-					JOptionPane.showMessageDialog(Ventana.ventana,"Autor: " + presentados[indice].getNombreAutor() + "\nCanciones Totales(se incluyen canciones pendientes de validar y explicitas): " + presentados[indice].getCanciones().size() + "\nAlbumes: " + presentados[indice].getAlbumes().size() + "\nReproducciones de sus contenidos por otros usuario: " + presentados[indice].getNumeroReproducciones());  
-					presentados = null;
+					JOptionPane.showMessageDialog(Ventana.ventana,"Autor: " + presentados[indice].getNombreAutor() + "\nCanciones Totales(se incluyen canciones pendientes de validacion y explicitas): " + presentados[indice].getCanciones().size() + "\nAlbumes: " + presentados[indice].getAlbumes().size() + "\nReproducciones de sus contenidos por otros usuario: " + presentados[indice].getNumeroReproducciones() + "\nPremium: " + presentados[indice].getPremium());  
 				}
 			}else {
 				if(vista.getLista_autores().getSelectedIndex() == -1) {
@@ -116,8 +119,10 @@ public class ControladorBuscadorAutores implements ActionListener{ //99.9% esta 
 				}else{
 					String[] options = {"Seguir","Dejar Seguir"};
 					int indice = vista.getLista_autores().getSelectedIndex();
+					vista.getLista_autores().clearSelection();
 					Usuario[] presentados = vista.getLosAutores();
-					int a = JOptionPane.showOptionDialog(Ventana.ventana,"Autor: " + presentados[indice].getNombreAutor() + "\nCanciones Totales(se incluyen canciones pendientes de validar y explicitas): " + presentados[indice].getCanciones().size() + "\nAlbumes: " + presentados[indice].getAlbumes().size() + "\nReproducciones de sus contenidos por otros usuario: " + presentados[indice].getNumeroReproducciones() ,"Usuario seleccionado",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);  
+					
+					int a = JOptionPane.showOptionDialog(Ventana.ventana,"Autor: " + presentados[indice].getNombreAutor() + "\nCanciones Totales(se incluyen canciones pendientes de validacion y explicitas): " + presentados[indice].getCanciones().size() + "\nAlbumes: " + presentados[indice].getAlbumes().size() + "\nReproducciones de sus contenidos por otros usuario: " + presentados[indice].getNumeroReproducciones() + "\nPremium: " + presentados[indice].getPremium(),"Usuario seleccionado",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);  
 					if(a == 0){
 						JOptionPane.showMessageDialog(Ventana.ventana,"Debe iniciar sesion para seguir a este usuario");
 					}else if(a == 1) {
@@ -140,9 +145,9 @@ public class ControladorBuscadorAutores implements ActionListener{ //99.9% esta 
 				Ventana.ventana.showPantallaInicio();
 			}
 		} else if(((JButton)e.getSource()).getText() == "Buscar") {
-			if(Ventana.ventana.buscadorAutores.getOpcion1().isSelected() == true) {
-				if(Ventana.ventana.buscadorAutores.getCriterioBusqueda().getText().isEmpty() != true) {
-					ArrayList<Cancion>  retornadas = Sistema.sistema.buscadorPorTitulos(Ventana.ventana.buscadorAutores.getCriterioBusqueda().getText());
+			if(vista.getOpcion1().isSelected() == true) {
+				if(vista.getCriterioBusqueda().getText().isEmpty() != true) {
+					ArrayList<Cancion>  retornadas = Sistema.sistema.buscadorPorTitulos(vista.getCriterioBusqueda().getText());
 					if(retornadas != null) { //ALGO HAY
 						Ventana.ventana.showBuscadorCanciones(retornadas.toArray(new Cancion[retornadas.size()]));
 					}else {
@@ -151,9 +156,9 @@ public class ControladorBuscadorAutores implements ActionListener{ //99.9% esta 
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
 				}
-			}else if(Ventana.ventana.buscadorAutores.getOpcion2().isSelected() == true){
-				if(Ventana.ventana.buscadorAutores.getCriterioBusqueda().getText().isEmpty() != true) {
-					ArrayList<Album> retornadas = Sistema.sistema.buscadorPorAlbumes(Ventana.ventana.buscadorAutores.getCriterioBusqueda().getText());
+			}else if(vista.getOpcion2().isSelected() == true){
+				if(vista.getCriterioBusqueda().getText().isEmpty() != true) {
+					ArrayList<Album> retornadas = Sistema.sistema.buscadorPorAlbumes(vista.getCriterioBusqueda().getText());
 					if(retornadas != null) { //ALGO HAY
 						Ventana.ventana.showBuscadorAlbumes(retornadas.toArray(new Album[retornadas.size()]));
 					}else {
@@ -162,9 +167,9 @@ public class ControladorBuscadorAutores implements ActionListener{ //99.9% esta 
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
 				}
-			}else if(Ventana.ventana.buscadorAutores.getOpcion3().isSelected() == true) {
-				if(Ventana.ventana.buscadorAutores.getCriterioBusqueda().getText().isEmpty() != true) {
-					ArrayList<Contenido> retornadas = Sistema.sistema.buscadorPorAutores(Ventana.ventana.buscadorAutores.getCriterioBusqueda().getText());
+			}else if(vista.getOpcion3().isSelected() == true) {
+				if(vista.getCriterioBusqueda().getText().isEmpty() != true) {
+					ArrayList<Contenido> retornadas = Sistema.sistema.buscadorPorAutores(vista.getCriterioBusqueda().getText());
 					if(retornadas != null) { //ALGO HAY
 						Ventana.ventana.showBuscadorAutores(retornadas.toArray(new Contenido[retornadas.size()]));
 					}else {
@@ -174,7 +179,7 @@ public class ControladorBuscadorAutores implements ActionListener{ //99.9% esta 
 					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
 				}
 			}else {
-				if(Ventana.ventana.buscadorAutores.getCriterioBusqueda().getText().isEmpty() == true) {
+				if(vista.getCriterioBusqueda().getText().isEmpty() == true) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda y seleccione un criterio para realizar la busqueda");
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Debe seleccionar un criterio para poder realizar la busqueda");

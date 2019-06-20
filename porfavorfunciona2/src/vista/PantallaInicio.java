@@ -79,17 +79,17 @@ public class PantallaInicio extends PantallaPrincipal {
 		susAlbumes = new JLabel("Sus albumes",  SwingConstants.CENTER);	
 		susListas = new JLabel("Sus listas", SwingConstants.CENTER);
 		
-		seleccionarAlbum = new JButton("Elegir album");
-		seleccionarCancion = new JButton("Elegir cancion");
-		seleccionarLista = new JButton("Elegir lista");
+		seleccionarAlbum = new JButton("Elegir Album");
+		seleccionarCancion = new JButton("Elegir Cancion");
+		seleccionarLista = new JButton("Elegir Lista");
 		
-		crearCancion = new JButton("Crear cancion");
-		crearAlbum = new JButton("Crear album");
-		crearLista = new JButton("Crear lista");
+		crearCancion = new JButton("Crear Cancion");
+		crearAlbum = new JButton("Crear Album");
+		crearLista = new JButton("Crear Lista");
 		
-		eliminarCancion = new JButton("Eliminar cancion");
-		eliminarAlbum = new JButton("Eliminar album");
-		eliminarLista = new JButton("Eliminar lista");
+		eliminarCancion = new JButton("Eliminar Cancion");
+		eliminarAlbum = new JButton("Eliminar Album");
+		eliminarLista = new JButton("Eliminar Lista");
 		
 		
 		//Cambio de estilo en los JLabel

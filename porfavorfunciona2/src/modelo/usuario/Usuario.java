@@ -500,6 +500,14 @@ public class Usuario implements Serializable{
 	}
 	
 	/**
+	 * Funcion que bloquea la cuenta temporalmente del usuario hasta que el administrador acepte o deniegue el reporte
+	 * por el que se bloqueo al usuario
+	 */
+	public void bloqueoCuentaPorReporte() {
+		this.setEstadoBloqueado(UsuarioBloqueado.POR_REPORTE);
+	}
+	
+	/**
 	 * Funcion que desbloquea la cuenta del usuario modificando los atributos correspondientes
 	 */
 	public void desbloquearCuenta() {

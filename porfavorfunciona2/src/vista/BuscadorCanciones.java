@@ -132,9 +132,11 @@ public class BuscadorCanciones extends PantallaPrincipal{
 		model1.clear();
 		lasCanciones = canciones_propias;
 		for(int i=0; i < lasCanciones.length; i++) {
+			
 			int horas = (int) (lasCanciones[i].getDuracion() / 3600);
 		    int minutos = (int) ((lasCanciones[i].getDuracion()-horas*3600)/60);
 		    int segundos = (int) (lasCanciones[i].getDuracion()-(horas*3600+minutos*60));
+		    
 			model1.addElement("Titulo: " + lasCanciones[i].getTitulo() + " // Duracion HH-MM-SS: " + horas + "-" + minutos + "-" + segundos + " // Autor: " + lasCanciones[i].getAutor().getNombreAutor());
 		}
 	}
