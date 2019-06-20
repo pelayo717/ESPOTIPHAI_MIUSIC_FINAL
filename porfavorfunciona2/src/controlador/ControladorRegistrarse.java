@@ -19,7 +19,7 @@ import vista.Ventana;
  * teniendo en cuenta todos los casos posibles en los que el usuario realiza
  * una accion u otra y asignando el controlador determinado a la accion realizada
  */
-public class ControladorRegistrarse implements ActionListener{
+public class ControladorRegistrarse implements ActionListener{//99.9% esta terminado
 		private Registrarse vista;
 		@SuppressWarnings("unused")
 		private int modelo;
@@ -65,6 +65,7 @@ public class ControladorRegistrarse implements ActionListener{
 							Ventana.ventana.showInicioSesion();
 						}else {
 							JOptionPane.showMessageDialog(Ventana.ventana,"Su usuario no ha sido registrado correctamente, pruebe de nuevo con otros datos");
+							vista.limpiarVentana();
 						}
 						
 					}catch(DateTimeParseException e4) {

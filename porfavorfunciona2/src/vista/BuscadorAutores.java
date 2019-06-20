@@ -22,7 +22,7 @@ import modelo.contenido.EstadoCancion;
 import modelo.sistema.Sistema;
 import modelo.usuario.Usuario;
 
-public class BuscadorAutores extends PantallaPrincipal { //99.9% esta terminado
+public class BuscadorAutores extends PantallaPrincipal {//99.9% esta terminado
 
 	/**
 	 * 

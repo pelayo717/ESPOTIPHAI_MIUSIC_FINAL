@@ -3,7 +3,7 @@ package vista;
 import java.awt.*;
 import javax.swing.*;
 
-public class PantallaPrincipal extends JPanel{
+public class PantallaPrincipal extends JPanel{ //99.9% esta terminado
 	/**
 	 * 
 	 */

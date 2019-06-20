@@ -23,7 +23,7 @@ import modelo.contenido.Cancion;
 import modelo.contenido.EstadoCancion;
 import modelo.contenido.Lista;
 
-public class PantallaInicio extends PantallaPrincipal {
+public class PantallaInicio extends PantallaPrincipal { //99.9% esta terminado
 
 	/**
 	 * 
@@ -302,7 +302,7 @@ public class PantallaInicio extends PantallaPrincipal {
 	public void actualizarCanciones(ArrayList<Cancion> canciones_propias) {
 		model1.clear();
 		misCanciones = canciones_propias.toArray(new Cancion[canciones_propias.size()]);
-		for(int i=0; i < misCanciones.length; i++) {
+		for(int i=0; i < misCanciones.length; i++) {			
 			int horas = (int) (misCanciones[i].getDuracion() / 3600);
 		    int minutos = (int) ((misCanciones[i].getDuracion()-horas*3600)/60);
 		    int segundos = (int) (misCanciones[i].getDuracion()-(horas*3600+minutos*60));
@@ -333,6 +333,7 @@ public class PantallaInicio extends PantallaPrincipal {
 		model3.clear();
 		misListas = listas_propias.toArray(new Lista[listas_propias.size()]);
 		for(int i=0; i < misListas.length; i++) {
+			misListas[i].setDuracion(misListas[i].calcularTiempo()); //Lo realizamos aqui porque la lista desconoce cuando a un album le han anyadido algo, por tanto este recalcula su tiempo para hacerlo efectivo antes de presentarse 
 			int horas = (int) (misListas[i].getDuracion() / 3600);
 		    int minutos = (int) ((misListas[i].getDuracion()-horas*3600)/60);
 		    int segundos = (int) (misListas[i].getDuracion()-(horas*3600+minutos*60));

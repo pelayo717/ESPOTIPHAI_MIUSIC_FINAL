@@ -27,16 +27,19 @@ public class Cancion extends ContenidoComentable {
 	private EstadoCancion estado;
 	private String nombreMP3;
 	private LocalDate fecha_modificar;
+	private String nombre_fichero;
 	/**
 	 *	Constructor de Cancion
+	 * @param nombre_f 
 	 *	@param estado  estado de la cancion
 	 *	@param reproducible  si la cacion es o no reproducible
 	 * @throws Mp3PlayerException 
 	 * @throws FileNotFoundException 
 	 */
-	public Cancion(String titulo, Usuario autor,  String nombreMP3) throws FileNotFoundException, Mp3PlayerException{
+	public Cancion(String titulo, Usuario autor,  String nombreMP3, String nombre_f) throws FileNotFoundException, Mp3PlayerException{
 		super(-1,titulo, autor, new ArrayList<Comentario>());
-		this.setNombreMP3(nombreMP3);	
+		this.setNombreMP3(nombreMP3);
+		this.setNombreFichero(nombre_f);
 		this.setDuracion(-1); //AÑADIMOS ESTA CONDICION POR SI ACASO RESULTA QUE EL nombreMP3 no es de tipo mp3
 		if(this.esMP3() == false) {
 			return;
@@ -48,6 +51,15 @@ public class Cancion extends ContenidoComentable {
 	
 	
 	
+	public void setNombreFichero(String nombre_f) {
+		this.nombre_fichero = nombre_f;
+	}
+
+	public String getNombreFichero() {
+		return this.nombre_fichero;
+	}
+	
+
 	/**
 	 *	Funcion para anyadir a la cola de reproduccion
 	 *	@param cancion_a_anyadir  string de la cancion a anyadir

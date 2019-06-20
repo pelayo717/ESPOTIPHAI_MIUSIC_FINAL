@@ -18,7 +18,7 @@ import vista.Ventana;
  * Funcion que implementa el controlador de la clase BuscadorAlbumes
  * 
  */
-public class ControladorBuscadorAlbumes implements ActionListener { //99.9% esta terminado
+public class ControladorBuscadorAlbumes implements ActionListener {//99.9% esta terminado
 
 	private BuscadorAlbumes vista;
 	@SuppressWarnings("unused")

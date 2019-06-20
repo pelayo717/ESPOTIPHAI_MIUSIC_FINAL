@@ -14,7 +14,7 @@ import modelo.contenido.*;
 import controlador.*;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
 
-public class Ventana extends JFrame {
+public class Ventana extends JFrame { //99.9% esta terminado
 	/**
 	 * 
 	 */

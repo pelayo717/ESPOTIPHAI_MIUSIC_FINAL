@@ -22,7 +22,7 @@ import modelo.contenido.EstadoCancion;
 import modelo.reporte.Reporte;
 import modelo.sistema.Sistema;
 
-public class PantallaInicioAdmin extends PantallaPrincipal{
+public class PantallaInicioAdmin extends PantallaPrincipal{ //99.9% esta terminado
 
 	/**
 	 * 

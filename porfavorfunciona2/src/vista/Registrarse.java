@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 
-public class Registrarse extends JPanel{
+public class Registrarse extends JPanel{ //99.9% esta terminado
 	/**
 	 * 
 	 */

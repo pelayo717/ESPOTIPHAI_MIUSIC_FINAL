@@ -9,7 +9,6 @@ import javax.swing.JOptionPane;
 import modelo.sistema.*;
 import vista.InicioSesion;
 import vista.Ventana;
-
 /**
  * Clase que implementa el controlador de la clase InicioSesion
  * teniendo en cuenta todos los casos posibles en los que el usuario realiza
@@ -71,5 +70,6 @@ public class ControladorInicioSesion implements ActionListener{ //99.9% esta ter
 				}
 				
 			}
+			
 		}
 }

@@ -87,6 +87,7 @@ public abstract class Contenido implements Serializable {
 	public double getDuracion() {
 		return duracion;
 	}
+	
 
 
 	/**

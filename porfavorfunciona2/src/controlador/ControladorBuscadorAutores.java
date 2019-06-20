@@ -21,7 +21,7 @@ import vista.Ventana;
  * teniendo en cuenta todos los casos posibles en los que el usuario realiza
  * una accion u otra y asignando el controlador determinado a la accion realizada
  */
-public class ControladorBuscadorAutores implements ActionListener{ //99.9% esta terminado
+public class ControladorBuscadorAutores implements ActionListener{//99.9% esta terminado
 
 
 	private BuscadorAutores vista;

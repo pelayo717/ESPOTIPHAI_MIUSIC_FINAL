@@ -10,7 +10,6 @@ import modelo.usuario.*;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.io.File;
 import java.io.FileInputStream;
@@ -69,6 +68,7 @@ public class Sistema implements Serializable{
 				sistema = new Sistema();
 				sistema = Sistema.cargarDatosGenerales();
 				
+				sistema.actualizarPathCanciones();
 				sistema.empeorarCuentaPrincipal();
 				sistema.desbloquearUsuario();
 				sistema.resetearContadoresNuevoMes();
@@ -784,9 +784,10 @@ public class Sistema implements Serializable{
 	 * Desde su intento de validacion el usuario tendra 3 dias para modificar el contenido
 	 * @param c
 	 * @param NombreMp3
+	 * @param aux 
 	 * @return retorna OK si la modificacion se llevo de manera satisfactoria, y ERROR si no fue asi
 	 */
-	public Status modificarCancion(Cancion c,String NombreMp3) {
+	public Status modificarCancion(Cancion c,String NombreMp3, String aux) {
 		LocalDate d = LocalDate.now();
 				
 		if(sistema.getUsuarioActual() != null && sistema.getAdministrador() == false && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
@@ -794,6 +795,7 @@ public class Sistema implements Serializable{
 			if(sistema.getCancionTotales().contains(c) == true && (d.minusDays(3).isBefore(c.getFechaModificacion()) == true || d.minusDays(3).isEqual(c.getFechaModificacion()) == true)&& c.getEstado() == EstadoCancion.PENDIENTEMODIFICACION) {
 								
 				c.setNombreMP3(NombreMp3);
+				c.setNombreFichero(aux);
 				if(c.esMP3() == true){
 										
 					c.setDuracion(c.devolverDuracion());
@@ -812,11 +814,12 @@ public class Sistema implements Serializable{
 	 * @param anyo
 	 * @param titulo
 	 * @param nombreMP3
+	 * @param string 
 	 * @return retorna la referencia a la cancion creada, que esta almacenada en el array general de canciones y en el propio del usuario
 	 * @throws FileNotFoundException
 	 * @throws Mp3PlayerException
 	 */
-	public Cancion crearCancion(String titulo,String nombreMP3) throws FileNotFoundException, Mp3PlayerException{
+	public Cancion crearCancion(String titulo,String nombreMP3, String auxiliar) throws FileNotFoundException, Mp3PlayerException{
 		//LocalDate fecha_actual = LocalDate.now();
 		if(titulo == null || nombreMP3 == null) {
 			return null;
@@ -826,7 +829,7 @@ public class Sistema implements Serializable{
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
 			//Period intervalo = Period.between(sistema.usuario_actual.getFechaNacimiento(), fecha_actual);
 					
-			Cancion c = new Cancion(titulo,sistema.usuario_actual,nombreMP3);
+			Cancion c = new Cancion(titulo,sistema.usuario_actual,nombreMP3,auxiliar);
 			
 			if(c.getDuracion() == -1) { //ESTO SIGNIFICA QUE NO ES MP3 Y LA CANCION ESTARIA MAL CONSTRUIDA
 				c = null;
@@ -1479,6 +1482,16 @@ public class Sistema implements Serializable{
 		return Status.ERROR;
 	}
 	
+	
+	public void actualizarPathCanciones() {
+		String temporal = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator");
+		String aux = null;
+		 
+		for(Cancion auxiliar: sistema.getCancionTotales()) {
+			aux = temporal + auxiliar.getNombreFichero();
+			auxiliar.setNombreMP3(aux);
+		}
+	}
 }
 
 

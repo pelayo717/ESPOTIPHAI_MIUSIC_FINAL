@@ -541,6 +541,7 @@ public class Usuario implements Serializable{
 	public boolean eliminarDeCancionesPersonales(Cancion c) {
 		if(this.canciones.contains(c)) {
 			c.setEstado(EstadoCancion.ELIMINADA);
+			this.canciones.remove(c);
 			return true;
 		} else
 			return false;

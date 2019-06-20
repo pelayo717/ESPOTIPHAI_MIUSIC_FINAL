@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 
-public class InicioSesion extends JPanel{ //99.9% esta terminado
+public class InicioSesion extends JPanel{//99.9% esta terminado
 	/**
 	 * 
 	 */

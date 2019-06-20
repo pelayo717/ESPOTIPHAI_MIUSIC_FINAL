@@ -24,6 +24,7 @@ import vista.Ventana;
  */
 public class ControladorReproducirCancion implements ActionListener{
 		private ReproducirCancion vista;
+		@SuppressWarnings("unused")
 		private int modelo;
 		
 		/**
@@ -229,24 +230,38 @@ public class ControladorReproducirCancion implements ActionListener{
 					JOptionPane.showMessageDialog(Ventana.ventana,"Debe iniciar sesion para añadir la cancion a una lista");
 				}
 			
-			} else if(((JButton)e.getSource()).getText() == "Modificar cancion") {
+			} else if(((JButton)e.getSource()).getText() == "Modificar cancion") {		
 				
-				 JFileChooser file=new JFileChooser();
-				 file.showOpenDialog(Ventana.ventana);
-				 File escogido = file.getSelectedFile();
-				 
-				 //escogido.renameTo(new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName()));
-				 //System.out.print(System.getProperty("user.dir") + System.getProperty("file.separator") + "src" + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName());
-				 
-				 //POR EL MOMENTO SUPONEMOS QUE SOLO ES COSA DEL MP3
-				 Cancion c = vista.getCancion();
-				if(Sistema.sistema.modificarCancion(c, escogido.getAbsolutePath()) == Status.OK) {
-					JOptionPane.showMessageDialog(Ventana.ventana,"La cancion " + c.getTitulo() + " ha sido modificada correctamente");
-					Ventana.ventana.showReproducirCancion(c);
-				}else {
-					JOptionPane.showMessageDialog(Ventana.ventana,"La cancion no se ha podido modificar");
-				}
-			
+				//BORRAMOS EL ANTIGUO 
+
+			    File fichero=new File(vista.getCancion().getNombreMP3());
+			    
+			    if(fichero.delete() == true) {
+			    	
+			    	JFileChooser file=new JFileChooser();
+					file.showOpenDialog(Ventana.ventana);
+					File escogido = file.getSelectedFile();
+					 
+					
+					escogido.renameTo(new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName()));
+
+					String temporal = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName();
+
+					//POR EL MOMENTO SUPONEMOS QUE SOLO ES COSA DEL MP3
+					Cancion c = vista.getCancion();
+					
+					if(Sistema.sistema.modificarCancion(c, temporal,escogido.getName()) == Status.OK) {
+						JOptionPane.showMessageDialog(Ventana.ventana,"La cancion " + c.getTitulo() + " ha sido modificada correctamente");
+						Ventana.ventana.showReproducirCancion(c);
+					}else {
+						JOptionPane.showMessageDialog(Ventana.ventana,"La cancion no se ha podido modificar");
+					}
+			    	
+			    }else {
+			    	
+			    }
+				
+				
 			} else {
 				System.out.println(e.getSource());
 			}

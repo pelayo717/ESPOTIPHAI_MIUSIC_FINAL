@@ -82,8 +82,6 @@ public class Lista extends Contenido{
 			} else if(c_l instanceof Lista && contenido instanceof Lista && ((Lista) c_l).getContenido().contains(contenido) == true) {
 				iterator.remove();
 				this.setDuracion(this.calcularTiempo());
-			} else {
-				System.out.println("no se elimina nada");
 			}
 		}
 		return Status.OK;
@@ -127,7 +125,6 @@ public class Lista extends Contenido{
 		
 		if(Sistema.sistema.getUsuarioActual() != null && (Sistema.sistema.getAdministrador() == true || Sistema.sistema.getUsuarioActual().getPremium() == true)) {
 			
-			//FALTA ARREGLAR
 			
 			for(Contenido contenido_reproduciendose:this.getContenido()) {
 				if(contenido_reproduciendose instanceof Cancion) {
