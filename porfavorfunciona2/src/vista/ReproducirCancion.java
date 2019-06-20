@@ -2,8 +2,12 @@ package vista;
 
 import java.awt.*;
 import java.awt.event.*;
-
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.event.TreeSelectionEvent;
 import javax.swing.*;
+
 
 import modelo.contenido.*;
 
@@ -29,7 +33,6 @@ public class ReproducirCancion extends PantallaPrincipal {
 	
 	public JButton botonPlay;
 	public JButton botonPause;
-	private JList<String> lista_comentarios;
 	private JScrollPane comentariosScrollPane;
 	public JButton botonList;
 	public JButton botonAnyadirComentario;
@@ -43,16 +46,34 @@ public class ReproducirCancion extends PantallaPrincipal {
 	private Dimension screenSize;
 	
 	private  Comentario[] comentarios;
-	private  DefaultListModel<String> model1;
-
+	private Comentario comentarioSeleccionado;
+	
+	private JTree comentariosTree;
+	private DefaultMutableTreeNode root;
+	private DefaultTreeModel treeModel;
 	public ReproducirCancion() {
 		super();
 		
-		model1 = new DefaultListModel<>();
+				
+		root = new DefaultMutableTreeNode("Comentarios");
+		treeModel = new DefaultTreeModel(root);
+        comentariosTree = new JTree(treeModel);
+        treeModel.reload();
+        setTree();
+        comentariosTree.addTreeSelectionListener(new TreeSelectionListener() {
 
-		lista_comentarios = new JList<String>(model1);
-		
-		comentariosScrollPane = new JScrollPane(lista_comentarios);
+			@Override
+			public void valueChanged(TreeSelectionEvent e) {
+				DefaultMutableTreeNode selectedNode = 
+			       (DefaultMutableTreeNode)comentariosTree.getLastSelectedPathComponent();  
+				if(selectedNode.getUserObject() instanceof Comentario)
+				comentarioSeleccionado  = (Comentario)selectedNode.getUserObject();
+			  }
+			});
+        comentariosTree.setRootVisible(true);
+        comentariosTree.setShowsRootHandles(true);
+		comentariosScrollPane = new JScrollPane(comentariosTree);
+
 		
 		//Declaracion
 		ImageIcon icono_corchea = new ImageIcon("src/vista/photo_default.jpg");
@@ -151,7 +172,8 @@ public class ReproducirCancion extends PantallaPrincipal {
 		this.add(modificarCancion);
 	}
 	
-	 // método para asignar un controlador al botón
+
+	// método para asignar un controlador al botón
 	 public void setControlador(ActionListener c) {
 		 super.getBotonIzquierdaArriba().addActionListener(c);
 		 super.getBotonIzquierdaMedio().addActionListener(c);
@@ -168,19 +190,10 @@ public class ReproducirCancion extends PantallaPrincipal {
 		 this.modificarCancion.addActionListener(c);
 	 }
 	 
-	public void actualizarComentarios() {
-	 	model1.clear();
-		comentarios = cancion.getComentarios().toArray(new Comentario[cancion.getComentarios().size()]);
-		if(comentarios != null) {
-			for(int i=0; i < comentarios.length;i++) {
-				model1.addElement(comentarios[i].getTexto());
-			}
-		}
-	 }
-
-	public void insertarComentario(Comentario nuevoComentario) {
+		public void insertarComentario(Comentario nuevoComentario) {
 		if(this.cancion != null) {
 			cancion.anyadirComentario(nuevoComentario);
+            ((DefaultTreeModel)comentariosTree.getModel()).reload(root);
 		}
 	}
 	
@@ -201,12 +214,56 @@ public class ReproducirCancion extends PantallaPrincipal {
 		autor_cancion.setText("Autor:\t\t\t\t\t" + this.cancion.getAutor().getNombreAutor());
 		duracion_cancion.setText("Duracion:\t\t\t\t\t" + minutos + " m/" + segundos + " s");
 		estadoCancion.setText("Estado Cancion:\t\t\t\t\t" + this.cancion.getEstado().name());
-		this.actualizarComentarios();
 		if(this.cancion.getEstado() == EstadoCancion.PENDIENTEMODIFICACION) {
 			this.modificarCancion.setVisible(true);
 		}else{
 			this.modificarCancion.setVisible(false);
 		}
+		this.setTree();
+	}
+	
+	public void setTree() {
+		root.removeAllChildren();
+        //create the child nodes
+		if(cancion!=null) {
+			comentarios = cancion.getComentarios().toArray(new Comentario[cancion.getComentarios().size()]);
+		}
+		if(comentarios != null) {
+			for (Comentario c : comentarios)
+	        {
+	          DefaultMutableTreeNode comentario = new DefaultMutableTreeNode(c);
+	          root.add(comentario);
+	          for (Comentario subc : c.getSubComentarios()) {
+				DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subc);
+	            comentario.add(subNode);
+				((DefaultTreeModel)comentariosTree.getModel()).reload(comentario);
+				this.addToTree(subNode,subc);
+	          }
+	        }
+		}
+		treeModel = new DefaultTreeModel(root);
+		treeModel.reload();
+		expandAllNodes(comentariosTree, 0, comentariosTree.getRowCount());
+		
+	}
+	
+	private void expandAllNodes(JTree tree, int startingIndex, int rowCount){
+	    for(int i=startingIndex;i<rowCount;++i){
+	        tree.expandRow(i);
+	    }
+
+	    if(tree.getRowCount()!=rowCount){
+	        expandAllNodes(tree, rowCount, tree.getRowCount());
+	    }
+	}
+	
+	public void addToTree(DefaultMutableTreeNode fatherNode, Comentario c) {
+		for (Comentario subc : c.getSubComentarios()) {
+			DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subc);
+            fatherNode.add(subNode);
+            ((DefaultTreeModel)comentariosTree.getModel()).reload(fatherNode);
+			this.addToTree(subNode,subc);
+          }
 	}
 
 	public void setAdministrador() {
@@ -296,9 +353,6 @@ public class ReproducirCancion extends PantallaPrincipal {
 		return botonPause;
 	}
 
-	public JList<String> getLista_comentarios() {
-		return lista_comentarios;
-	}
 
 	public JScrollPane getComentariosScrollPane() {
 		return comentariosScrollPane;
@@ -336,9 +390,11 @@ public class ReproducirCancion extends PantallaPrincipal {
 		return comentarios;
 	}
 
-	public DefaultListModel<String> getModel1() {
-		return model1;
+	 public JTree getComentariosTree() {
+		return comentariosTree;
 	}
 	
-	
+	public Comentario getComentarioSeleccionado() {
+			return comentarioSeleccionado;
+	}
 }
