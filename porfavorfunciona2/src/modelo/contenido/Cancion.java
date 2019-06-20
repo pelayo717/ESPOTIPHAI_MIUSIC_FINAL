@@ -1,5 +1,6 @@
 package modelo.contenido;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.Period;
@@ -332,6 +333,13 @@ public class Cancion extends ContenidoComentable {
 		}else {
 			return this.anyadirComentario(comentario);
 		}
+	}
+
+
+
+	public void eliminarAudio() {
+		File aux = new File(this.nombreMP3);
+		aux.delete();
 	}
 		
 	

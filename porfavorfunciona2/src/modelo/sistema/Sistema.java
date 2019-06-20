@@ -358,6 +358,8 @@ public class Sistema implements Serializable{
 						 usuario.enviarNotificacion(seguidos, "El usuario " + usuario.getNombreUsuario() + " le ha dejado de seguir.");
 					 }
 					 
+					 
+					 
 					//Informamos a los seguidores que el usuario se va a eliminar
 					 for(Iterator<Usuario> iteratorSeguidores = usuario.getSeguidores().iterator(); iteratorSeguidores.hasNext();) {
 						Usuario seguidores = iteratorSeguidores.next();
@@ -366,7 +368,8 @@ public class Sistema implements Serializable{
 					 }
 					 
 					 //elimino sus albumes e informo a los usuarios que tengan las canciones en sus listas de su eliminacion
-					 for(Cancion canciones_usuario: usuario.getCanciones()) {
+					 for(Iterator<Cancion> iteratorCancion = usuario.getCanciones().iterator(); iteratorCancion.hasNext();) {
+						 Cancion canciones_usuario = iteratorCancion.next();
 						 sistema.eliminarCancion(canciones_usuario);
 					 }
 					 
@@ -375,6 +378,7 @@ public class Sistema implements Serializable{
 						 Album albumes_usuario = iteratorAlbum.next();
 						 sistema.eliminarAlbum(albumes_usuario);
 					 }
+					 
 					 
 					 //elimino sus listas
 					 for(Iterator<Lista> iteratorLista = usuario.getListas().iterator(); iteratorLista.hasNext();) {
@@ -884,6 +888,20 @@ public class Sistema implements Serializable{
 					
 			if(cancion_eliminar.getAutor().getNombreAutor().equals(sistema.getUsuarioActual().getNombreAutor()) && cancion_eliminar.getEstado() != EstadoCancion.PLAGIO) {
 				
+				//PRIMERO LA ELIMINAMOS DEL CONTENIDO DE LAS LISTAS DE TODOS LOS USUARIOS QUE LA CONTENGAN
+				
+				for(Usuario usuarios_totales:sistema.getUsuariosTotales()) {
+					if ( usuarios_totales.getListas() != null) {
+						
+						for(Lista lista: usuarios_totales.getListas()) {
+							if(lista.eliminarContenido(cancion_eliminar) == Status.OK) {
+								sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado la cancion " + cancion_eliminar.getTitulo());
+							}
+						}
+					}
+				}
+				
+				
 				//ELIMINAMOS DE SITIOS DEL PROPIO SISTEMA
 				if(sistema.getCancionTotales().contains(cancion_eliminar) == true) {
 					sistema.getCancionTotales().remove(cancion_eliminar);
@@ -897,7 +915,6 @@ public class Sistema implements Serializable{
 				
 				
 				//ELIMINAMOS DE SITIOS DEL PROPIO AUTOR(SU CANCION EN SUS ALBUMES, SOLO EL!!!)
-				
 				if(sistema.getUsuarioActual().getCanciones().contains(cancion_eliminar) == true) {
 					sistema.getUsuarioActual().eliminarDeCancionesPersonales(cancion_eliminar);
 				}
@@ -907,27 +924,6 @@ public class Sistema implements Serializable{
 						albumes_usuario.eliminarContenido(cancion_eliminar);
 					}
 				}
-				
-				
-				//ELIMINAMOS CONTENIDO DE LAS LISTAS Y ALBUMES DE TODOS LOS USUARIOS
-				
-				for(Usuario usuarios_totales:sistema.getUsuariosTotales()) {
-					if ( usuarios_totales.getListas() != null) {
-						for(Lista lista: usuarios_totales.getListas()) {
-							System.out.println(lista);
-							lista.eliminarContenido(cancion_eliminar);
-						}
-						
-						//ENVIAMOS NOTIFICACION AL USUARIO QUE CONTENIA LA CANCION EN SUS LISTAS
-						if(sistema.getUsuariosTotales().contains(sistema.getUsuarioActual()) == false) {
-							sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado la cancion " + cancion_eliminar.getTitulo() + " ya que se ha dado de baja.");
-						}else{
-							sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado la cancion " + cancion_eliminar.getTitulo() + ".");
-						}
-					}
-				}
-				
-				
 				
 				return Status.OK;
 			}else {
@@ -992,6 +988,17 @@ public class Sistema implements Serializable{
 			
 			if(album_eliminar.getAutor().getNombreAutor().equals(sistema.getUsuarioActual().getNombreAutor())) {
 				
+				//ELIMINAMOS DE LAS LISTAS EN LAS QUE SE ENCUENTRE
+				for(Usuario usuarios_totales:sistema.getUsuariosTotales()) {
+					
+					for(Lista lista: usuarios_totales.getListas()) {
+						if(lista.eliminarContenido(album_eliminar) == Status.OK) {
+							sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado el album " + album_eliminar.getTitulo());
+						}
+					}
+					
+				}
+				
 				//ELIMINAMOS DEL PROPIO SISTEMA
 				sistema.getAlbumTotales().remove(album_eliminar);
 
@@ -999,20 +1006,7 @@ public class Sistema implements Serializable{
 				//ELIMINAMOS DE ALBUMES DEL AUTOR
 				sistema.getUsuarioActual().eliminarDeAlbumesPersonales(album_eliminar);
 
-				//ELIMINAMOS DE LAS LISTAS EN LAS QUE SE ENCUENTRE
-				for(Usuario usuarios_totales:sistema.getUsuariosTotales()) {
-					
-					for(Lista lista: usuarios_totales.getListas()) {
-						lista.eliminarContenido(album_eliminar);
-					}
-					
-					//ENVIAMOS NOTIFICACION AL USUARIO QUE CONTENIA EL ALBUM EN SUS LISTAS
-					if(sistema.getUsuariosTotales().contains(sistema.getUsuarioActual()) == false) {
-						sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado el album " + album_eliminar.getTitulo() + " ya que se ha dado de baja.");
-					}else {
-						sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado el album " + album_eliminar.getTitulo() + ".");
-					}
-				}
+				
 				
 				return Status.OK;
 			}else {

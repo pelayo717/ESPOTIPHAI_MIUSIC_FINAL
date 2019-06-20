@@ -421,7 +421,7 @@ public class Usuario implements Serializable{
 	public boolean dejarDeSeguirUsuario(Usuario x) {
 		if(this.seguidos.contains(x)) {
 			this.seguidos.remove(x);
-			x.seguidores.remove(this);
+			x.dejarDeSeguirUsuario(this);
 			return true;
 		} else {
 			return false;
@@ -540,8 +540,9 @@ public class Usuario implements Serializable{
 	 */
 	public boolean eliminarDeCancionesPersonales(Cancion c) {
 		if(this.canciones.contains(c)) {
-			c.setEstado(EstadoCancion.ELIMINADA);
+			c.eliminarAudio();
 			this.canciones.remove(c);
+			
 			return true;
 		} else
 			return false;

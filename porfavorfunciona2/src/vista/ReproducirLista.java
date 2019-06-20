@@ -8,6 +8,7 @@ import java.util.*;
 import javax.swing.*;
 
 import modelo.sistema.*;
+import modelo.usuario.Usuario;
 import modelo.contenido.*;
 
 
@@ -234,23 +235,33 @@ public class ReproducirLista extends PantallaPrincipal {
 
 				}else if(contenido[i] instanceof Album){
 					
-					ArrayList<Album> temporal = Sistema.sistema.getUsuarioActual().getAlbumes();
-					int j=0;
-					
-					for(j=0; j < temporal.size();j++) {
-						if(temporal.get(j).equals(contenido[i])) {
+					ArrayList<Usuario> usuarios = Sistema.sistema.getUsuariosTotales();
+					ArrayList<Album> temporal = null;
+					int j=0,k=0,flag=0;
+					for(k=0; k < usuarios.size(); k++) {
+						temporal = usuarios.get(k).getAlbumes();
+						for(j=0; j < temporal.size();j++) {
+							if(temporal.get(j).equals(contenido[i])) {
+								flag = -1;
+								break;
+							}
+						}
+						
+						if(flag == -1) {
 							break;
 						}
 					}
 					
+					
 					model1.addElement("Album ==> Titulo: " + contenido[i].getTitulo() + " // Duracion HH-MM-SS: " + horas + "-" + minutos + "-" + segundos + " // Num. Canciones: " + temporal.get(j).getContenido().size());
-
+					
+					usuarios = null;
 					temporal = null;
 					
 					
 				}else if(contenido[i] instanceof Lista) {
 					
-					ArrayList<Lista> temporal = Sistema.sistema.getUsuarioActual().getListas();
+					ArrayList<Lista> temporal = Sistema.sistema.getUsuarioActual().getListas(); //SOLO TENEMOS LISTAS PROPIAS
 					int j=0;
 					
 					for(j=0; j < temporal.size();j++) {
@@ -261,6 +272,7 @@ public class ReproducirLista extends PantallaPrincipal {
 					
 					model1.addElement("Lista ==> Titulo: " + contenido[i].getTitulo() + " // Duracion HH-MM-SS: " + horas + "-" + minutos + "-" + segundos + " // Num. Contenido: " + temporal.get(j).getContenido().size());
 
+					temporal = null;
 				}
 			
 			}
