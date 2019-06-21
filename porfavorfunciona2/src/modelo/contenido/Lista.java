@@ -64,6 +64,7 @@ public class Lista extends Contenido{
 	 */
 	public Status eliminarContenido(Contenido contenido) {		
 		
+		
 		for(Iterator<Contenido> iterator = this.getContenido().iterator(); iterator.hasNext();) {
 			Contenido c_l = iterator.next();
 			

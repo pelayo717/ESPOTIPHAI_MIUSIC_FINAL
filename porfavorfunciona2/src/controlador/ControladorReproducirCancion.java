@@ -208,7 +208,7 @@ public class ControladorReproducirCancion implements ActionListener{
 								if(Sistema.sistema.anyadirCancionAAlbum(albumes_totales[i], vista.getCancion()) == Status.OK) {
 									JOptionPane.showMessageDialog(Ventana.ventana,"La cancion se ha añadido correctamente al album " + opcion);
 								}else {
-									JOptionPane.showMessageDialog(Ventana.ventana,"La cancion ya se encuentra en el album " + opcion);
+									JOptionPane.showMessageDialog(Ventana.ventana,"La cancion o esta pendiente de ser validada o ya se encuentra en el album " + opcion);
 								}
 							}
 						}
@@ -237,7 +237,7 @@ public class ControladorReproducirCancion implements ActionListener{
 								if(Sistema.sistema.anyadirALista(listas_totales[i], vista.getCancion()) == Status.OK) {
 									JOptionPane.showMessageDialog(Ventana.ventana,"La cancion se ha añadido correctamente a la lista " + opcion);
 								}else {
-									JOptionPane.showMessageDialog(Ventana.ventana,"La cancion ya se encuentra en la lista " + opcion);
+									JOptionPane.showMessageDialog(Ventana.ventana,"La cancion o esta pendiente de ser validada o ya se encuentra en la lista " + opcion);
 								}
 							}
 						}

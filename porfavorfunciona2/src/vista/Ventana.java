@@ -211,10 +211,13 @@ public class Ventana extends JFrame { //99.9% esta terminado
 	    if (Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador() == true) {
 	    	this.reproducirAlbum.setAdministrador();
 	    } else {
-	    	if(Sistema.sistema.getUsuarioActual() != null) {
+	    	if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getUsuarioActual().getAlbumes().contains(a) == true) {
+		    	this.reproducirAlbum.setUsuarioRegistradoPropia();
+	    	}else if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getUsuarioActual().getAlbumes().contains(a) == false){
 		    	this.reproducirAlbum.setUsuarioRegistradoPropia();
 	    	}else {
 	    		this.reproducirAlbum.setUsuarioRegistradoNoPropia();
+
 	    	}
 	    }
 	    

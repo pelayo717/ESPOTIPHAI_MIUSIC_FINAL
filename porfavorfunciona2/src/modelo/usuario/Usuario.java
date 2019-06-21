@@ -419,8 +419,9 @@ public class Usuario implements Serializable{
 	 * @return true si se ejecuta correctamente la funcion y le ha dejado de seguir, false si hay algun error
 	 */
 	public boolean dejarDeSeguirUsuario(Usuario x) {
-		if(this.seguidos.contains(x)) {
-			this.seguidos.remove(x);
+				
+		if(this.seguidos.contains(x) == true) {
+			this.seguidos.remove(x);		
 			x.quitarSeguidor(this);
 			return true;
 		} else {
@@ -448,6 +449,7 @@ public class Usuario implements Serializable{
 	 * @return true si se encontraba en el array y se ha eliminado correctamente, false si no se encontraba
 	 */
 	public boolean quitarSeguidor(Usuario x) {
+		
 		if(this.seguidores.contains(x) == false) {
 			return false;
 		}else {
@@ -455,6 +457,38 @@ public class Usuario implements Serializable{
 			return true;
 		}
 	}
+	
+	/**
+	 * Esta funcion se encarga de eliminar un usuario dado del array de seguidos si es que se encuentra en el.
+	 * Esta funcion unicamente se utiliza al eliminar la cuenta de un usuario.
+	 * @param usuario: Usuario que podria ser un seguido, y necesario para eliminar la relacion de this -> usuario
+	 * @return true si se encuentra y se puede eliminar la relacion de seguido, false en otro caso
+	 */
+	public boolean eliminarSeguido(Usuario usuario) {
+		if(this.seguidos.contains(usuario)) {
+			this.seguidos.remove(usuario);
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Esta funcion se encarga de eliminar un usuario dado del array de seguidores si es que se encuentra en el.
+	 * Esta funcion unicamente se utiliza al eliminar la cuenta de un usuario.
+	 * @param usuario: Usuario que podria ser un seguidor, y necesario para eliminar la relacion de this <- usuario
+	 * @return true si se encuentra y se puede eliminar la relacion de seguidor, false en otro caso
+	 */
+	public boolean eliminarSeguidor(Usuario usuario) {		
+		if(this.seguidores.contains(usuario)) {
+			this.seguidores.remove(usuario);
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	
 	
 	/*===========================================*/
 	/*========== LOCK/UPDATE CUENTA =============*/
@@ -570,7 +604,6 @@ public class Usuario implements Serializable{
 		if(this.canciones.contains(c)) {
 			c.eliminarAudio();
 			this.canciones.remove(c);
-			
 			return true;
 		} else
 			return false;
@@ -617,10 +650,10 @@ public class Usuario implements Serializable{
 	 * @return: true si se ha realizado correctamente, false si no
 	 */
 	public boolean anyadirAListasPersonales(Lista c) {
-		if(this.listas.contains(c)) {
+		
+		if(this.listas.contains(c) == true) {
 			return false; //Ya esta esa lista
-		}
-		else {
+		}else {
 			this.listas.add(c);
 		}
 		return true;
@@ -732,6 +765,8 @@ public class Usuario implements Serializable{
 		this.getNotificacionesTotales().clear();
 		return Status.OK;
 	}
+
+	
 	
 		
 }

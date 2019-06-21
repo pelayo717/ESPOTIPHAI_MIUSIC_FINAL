@@ -68,6 +68,7 @@ public class Sistema implements Serializable{
 				sistema = new Sistema();
 				sistema = Sistema.cargarDatosGenerales();
 				
+
 				sistema.actualizarPathCanciones();
 				sistema.empeorarCuentaPrincipal();
 				sistema.desbloquearUsuario();
@@ -76,6 +77,7 @@ public class Sistema implements Serializable{
 			}else {
 				sistema = new Sistema();
 				sistema.registrarse("root1967", "ADMINISTRADOR",LocalDate.of(1967, 12, 26), "ADMINISTRADOR");
+
 			}
 		}
 		return sistema;
@@ -92,6 +94,7 @@ public class Sistema implements Serializable{
 	public int getMaxReproduccionesUsuariosNoPremium() {
 		return sistema.max_reproducciones_usuarios_no_premium;
 	}
+	
 	
 	/**
 	 * Devuelve todos los usuarios que estan registrados en el sistema
@@ -279,6 +282,8 @@ public class Sistema implements Serializable{
 		return Status.OK;
 	}
 	
+	
+	
 	/**
 	 * Permite iniciar sesion en la aplicacion, ya sea el administrador o un usuario convencional
 	 * @param nombre_usuario cadena, nombre de usuario necesario para el login
@@ -342,7 +347,10 @@ public class Sistema implements Serializable{
 	 * y a todos los usuarios a los que sigue. Previo a todo esto comprobaremos que el usuario a iniciado sesion y que este
 	 * no se encuentra bloqueado por el sistema.
 	 */
+	
+	
 	public void eliminarCuenta() {
+		
 		if(sistema.usuario_actual != null && sistema.getAdministrador() == false && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
 			 for(Iterator<Usuario> iteratorUsuario = sistema.getUsuariosTotales().iterator(); iteratorUsuario.hasNext();) {
 				 Usuario usuario = iteratorUsuario.next();
@@ -354,40 +362,50 @@ public class Sistema implements Serializable{
 					//Informamos a los seguidos que el usuario se va a eliminar
 					 for(Iterator<Usuario> iteratorSeguido = usuario.getSeguidos().iterator(); iteratorSeguido.hasNext();) {
 						 Usuario seguidos = iteratorSeguido.next();
-						 usuario.dejarDeSeguirUsuario(seguidos);
-						 usuario.enviarNotificacion(seguidos, "El usuario " + usuario.getNombreUsuario() + " le ha dejado de seguir.");
+						 iteratorSeguido.remove();
+						 if(seguidos.eliminarSeguidor(usuario)==true) {
+							 usuario.enviarNotificacion(seguidos, "El usuario " + usuario.getNombreUsuario() + " le ha dejado de seguir");
+						 }
 					 }
-					 
-					 
-					 
+					 					 
 					//Informamos a los seguidores que el usuario se va a eliminar
 					 for(Iterator<Usuario> iteratorSeguidores = usuario.getSeguidores().iterator(); iteratorSeguidores.hasNext();) {
 						Usuario seguidores = iteratorSeguidores.next();
-						seguidores.dejarDeSeguirUsuario(sistema.getUsuarioActual());
-						usuario.enviarNotificacion(seguidores, "El usuario " + usuario.getNombreUsuario() + " ha eliminado su cuenta.");
+						iteratorSeguidores.remove();
+						if(seguidores.eliminarSeguido(usuario) == true){
+							usuario.enviarNotificacion(seguidores, "El usuario " + usuario.getNombreUsuario() + " ha eliminado su cuenta");
+						}
 					 }
 					 
-					 //elimino sus albumes e informo a los usuarios que tengan las canciones en sus listas de su eliminacion
-					 for(Iterator<Cancion> iteratorCanciones = usuario.getCanciones().iterator(); iteratorCanciones.hasNext();) {
-						 Cancion canciones_usuario = iteratorCanciones.next();
-						 sistema.eliminarCancion(canciones_usuario);
-					 }
+					 //limpiamos los arrays propios de seguidores y seguidos
+					 Sistema.sistema.getUsuarioActual().getSeguidos().clear();
+					 Sistema.sistema.getUsuarioActual().getSeguidores().clear();
 					 
 					 
-					 //elimino sus albumes e informo a los usuarios que tengan los albumes en sus listas de su eliminacion
-					 for(Iterator<Album> iteratorAlbum = usuario.getAlbumes().iterator(); iteratorAlbum.hasNext();) {
-						 Album albumes_usuario = iteratorAlbum.next();
-						 sistema.eliminarAlbum(albumes_usuario);
-					 }
-					 
-					 
-					 //elimino sus listas
+					//elimino sus listas
 					 for(Iterator<Lista> iteratorLista = usuario.getListas().iterator(); iteratorLista.hasNext();) {
 						 Lista listas_usuario = iteratorLista.next();
 						 iteratorLista.remove();
 						 sistema.eliminarLista(listas_usuario);
 					 }
 					 
+					 
+					//elimino sus albumes e informo a los usuarios que tengan los albumes en sus listas de su eliminacion
+					 for(Iterator<Album> iteratorAlbum = usuario.getAlbumes().iterator(); iteratorAlbum.hasNext();) {
+						 Album albumes_usuario = iteratorAlbum.next();
+						 iteratorAlbum.remove();
+						 sistema.eliminarAlbum(albumes_usuario);
+					 }
+					 
+					 
+					 
+					 //elimino sus albumes e informo a los usuarios que tengan las canciones en sus listas de su eliminacion
+					 for(Iterator<Cancion> iteratorCanciones = usuario.getCanciones().iterator(); iteratorCanciones.hasNext();) {
+						 Cancion canciones_usuario = iteratorCanciones.next();
+						 iteratorCanciones.remove();
+						 sistema.eliminarCancion(canciones_usuario);
+					 }
+					 	 
 					 //elimino sus notificaciones
 					 sistema.getUsuarioActual().eliminarNotificacionesPropias();
 					 
@@ -884,7 +902,7 @@ public class Sistema implements Serializable{
 		if(cancion_eliminar == null) {
 			return Status.ERROR;
 		}
-		
+		String nombre = cancion_eliminar.getTitulo();
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
 					
 			if(cancion_eliminar.getAutor().getNombreAutor().equals(sistema.getUsuarioActual().getNombreAutor()) && cancion_eliminar.getEstado() != EstadoCancion.PLAGIO) {
@@ -897,7 +915,7 @@ public class Sistema implements Serializable{
 							Lista lista = iteratorListas.next();
 							if(lista.eliminarContenido(cancion_eliminar) == Status.OK) {
 								if(usuarios_totales.equals(Sistema.sistema.getUsuarioActual()) == false) {
-									sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado la cancion " + cancion_eliminar.getTitulo());
+									sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado la cancion " + nombre);
 								}
 							}
 						}
@@ -987,26 +1005,40 @@ public class Sistema implements Serializable{
 		if(album_eliminar == null) {
 			return Status.ERROR;
 		}
+		
+		String nombre = album_eliminar.getTitulo();
+		
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
 			
 			if(album_eliminar.getAutor().getNombreAutor().equals(sistema.getUsuarioActual().getNombreAutor())) {
 				
+				
 				//ELIMINAMOS DE LAS LISTAS EN LAS QUE SE ENCUENTRE
-				for(Usuario usuarios_totales:sistema.getUsuariosTotales()) {
+				for(Iterator<Usuario> iteratorUsuarios = sistema.getUsuariosTotales().iterator(); iteratorUsuarios.hasNext();) {
 					
-					for(Lista lista: usuarios_totales.getListas()) {
+					
+					Usuario usuarios_totales = iteratorUsuarios.next();
+					for(Iterator<Lista> iteratorListas = usuarios_totales.getListas().iterator(); iteratorListas.hasNext();) {
+						
+
+						Lista lista = iteratorListas.next();
 						if(lista.eliminarContenido(album_eliminar) == Status.OK) {
+							
+
+							
 							if(usuarios_totales.equals(Sistema.sistema.getUsuarioActual()) == false) {
-								sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado el album " + album_eliminar.getTitulo());
+								
+
+								sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado el album " + nombre);
 							}
 						}
 					}
 					
 				}
 				
+		
 				//ELIMINAMOS DEL PROPIO SISTEMA
 				sistema.getAlbumTotales().remove(album_eliminar);
-
 				
 				//ELIMINAMOS DE ALBUMES DEL AUTOR
 				sistema.getUsuarioActual().eliminarDeAlbumesPersonales(album_eliminar);
@@ -1158,16 +1190,22 @@ public class Sistema implements Serializable{
 	 * @return retorna OK si la lista fue eliminada correctamente, ERROR si no se elimino del sistema
 	 */
 	public Status eliminarLista(Lista lista_eliminar) {
+		
 		if(lista_eliminar == null) {
 			return null;
 		}
+				
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
-			if(sistema.getUsuarioActual().getListas().contains(lista_eliminar)==true) {
-				
+			
+			if(sistema.getUsuarioActual().getListas().contains(lista_eliminar) == true) {
 				//LISTA PROPIA
-				sistema.getUsuarioActual().eliminarDeListasPersonales(lista_eliminar);
+				if(sistema.getUsuarioActual().eliminarDeListasPersonales(lista_eliminar) == true) {
+					return Status.OK;
+
+				}else {
+					return Status.ERROR;
+				}
 				
-				return Status.OK;
 			}else {
 				return Status.ERROR;
 			}
@@ -1378,22 +1416,22 @@ public class Sistema implements Serializable{
 				c.setEstado(estado);
 				c.setEstadoAnterior(estado);
 				if(estado == EstadoCancion.VALIDA) {
-					sistema.getUsuarioActual().enviarNotificacion(c.getAutor(), "Su cancion " + c.getTitulo() + " ha sido validada correctamente.");
+					sistema.getUsuarioActual().enviarNotificacion(c.getAutor(), "Su cancion " + c.getTitulo() + " ha sido validada correctamente");
 				}else if(estado == EstadoCancion.EXPLICITA) {
-					sistema.getUsuarioActual().enviarNotificacion(c.getAutor(), "Su cancion " + c.getTitulo() + " ha sido validada correctamente considerada explicita.");
+					sistema.getUsuarioActual().enviarNotificacion(c.getAutor(), "Su cancion " + c.getTitulo() + " ha sido validada correctamente considerada explicita");
 				}
 				
 				for(Usuario u_t:sistema.getUsuariosTotales()) {
 					if(u_t.getSeguidos().contains(c.getAutor()) == true) {
-						sistema.getUsuarioActual().enviarNotificacion(u_t, "El autor " + c.getAutor() + " ha subido la cancion " + c.getTitulo() + ".");
+						sistema.getUsuarioActual().enviarNotificacion(u_t, "El autor " + c.getAutor() + " ha subido la cancion " + c.getTitulo());
 					}
 				}
 			
 			}else if(estado == EstadoCancion.PENDIENTEMODIFICACION) {
 				c.setEstado(estado);
-				sistema.getUsuarioActual().enviarNotificacion(c.getAutor(), "Su cancion " + c.getTitulo() + " no ha sido validada, tiene 3 dias para modificarla y la validaremos de nuevo.");
+				sistema.getUsuarioActual().enviarNotificacion(c.getAutor(), "Su cancion " + c.getTitulo() + " no ha sido validada, tiene 3 dias para modificarla y la validaremos de nuevo");
 			}else if(estado == EstadoCancion.ELIMINADA) {
-				sistema.getUsuarioActual().enviarNotificacion(c.getAutor(), "Su cancion " + c.getTitulo() + " no ha sido validada y procederemos a eliminarla.");
+				sistema.getUsuarioActual().enviarNotificacion(c.getAutor(), "Su cancion " + c.getTitulo() + " no ha sido validada y procederemos a eliminarla");
 				c.getAutor().getCanciones().remove(c);
 				sistema.getCancionTotales().remove(c);
 			}

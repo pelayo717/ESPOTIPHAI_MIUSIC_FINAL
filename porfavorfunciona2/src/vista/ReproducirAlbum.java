@@ -206,6 +206,15 @@ public class ReproducirAlbum extends PantallaPrincipal {
 	}
 	
 	public void setUsuarioRegistradoNoPropia() {
+		super.getBotonIzquierdaArriba().setText("Ver Perfil");
+		super.getBotonIzquierdaMedio().setText("Inicio");
+		super.getBotonIzquierdaAbajo().setVisible(false);
+		this.anyadirLista.setVisible(true);
+		this.eliminarCancion.setVisible(false);
+		this.botonAnyadirComentario.setBounds(screenSize.width/2 - 380, 640, 150, 30);
+	}
+	
+	public void setUsuarioNoRegistradoNoPropia() {
 		super.getBotonIzquierdaArriba().setText("Iniciar Sesion");
 		super.getBotonIzquierdaMedio().setText("Registro");
 		super.getBotonIzquierdaAbajo().setVisible(true);
@@ -229,6 +238,7 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		 this.anyadirLista.addActionListener(c);
 		 this.eliminarCancion.addActionListener(c);
 	 }
+	 
 	 
 	 public void setInformacion(Album album_entrante) {
 		this.album = album_entrante; 

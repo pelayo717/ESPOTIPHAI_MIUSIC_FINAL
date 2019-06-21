@@ -111,7 +111,7 @@ public class ControladorPantallaInicio implements ActionListener{
 					}
 									
 				}else {
-					JOptionPane.showMessageDialog(Ventana.ventana,"No hay albumes para seleccionar");
+					JOptionPane.showMessageDialog(Ventana.ventana,"No hay listas para seleccionar");
 				}
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"Debe iniciar sesion para usar sus listas");
