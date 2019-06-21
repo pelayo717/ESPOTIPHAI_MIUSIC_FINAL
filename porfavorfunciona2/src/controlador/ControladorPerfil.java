@@ -2,6 +2,7 @@ package controlador;
 
 
 import java.awt.event.*;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.*;
@@ -10,6 +11,8 @@ import modelo.contenido.Comentario;
 import modelo.notificacion.Notificacion;
 import modelo.sistema.*;
 import modelo.status.Status;
+import modelo.usuario.Usuario;
+import pads.musicPlayer.exceptions.Mp3PlayerException;
 import vista.Perfil;
 import vista.Ventana;
 
@@ -34,6 +37,8 @@ public class ControladorPerfil implements ActionListener{//99.9% esta terminado
 			this.modelo = modelo;
 		}
 	 	
+		
+		
 		/**
 	 	* Funcion que asigna el controlador necesario a la accion o boton que 
 		* el usuario ha pulsado 
@@ -83,24 +88,78 @@ public class ControladorPerfil implements ActionListener{//99.9% esta terminado
 				
 				Ventana.ventana.showPerfil();
 				
-			} else if(((JButton)e.getSource()).getText() == "Elegir notificacion") {
+			} else if(((JButton)e.getSource()).getText() == "Elegir Notificacion") {
 				
 				if(vista.getLasNotificaciones().length > 0) {
 					
 					Notificacion[] para_ver = vista.getLasNotificaciones();
 					int indice = vista.getLista_notificaciones().getSelectedIndex();
+					vista.getLista_notificaciones().clearSelection();
+					
 					if(indice == -1) {
-						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir notificacion seleccione una primero");
+						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir Notificacion seleccione una primero");
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Emisor: " + para_ver[indice].getEmisor().getNombreUsuario()  + "\n" + "Texto: " + para_ver[indice].getMensaje() + "\n" + "Receptor: " + para_ver[indice].getReceptor().getNombreUsuario());
 					}
-					
-					vista.getLista_notificaciones().clearSelection();
-					
+										
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"No hay notificaciones para ver");
 				}
 			
+			} else if(((JButton)e.getSource()).getText() == "Elegir Seguidor") {	
+								
+				if(vista.getSeguidores().length > 0) {
+					
+					Usuario[] seguidores = vista.getSeguidores();
+					int indice = vista.getLista_seguidores().getSelectedIndex();
+					vista.getLista_seguidores().clearSelection();
+					
+					if(indice == -1) {
+						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir Seguidor seleccione uno primero");
+					}else {
+						String[] options = {"Seguir"};
+
+						int a = JOptionPane.showOptionDialog(Ventana.ventana,"Autor: " + seguidores[indice].getNombreAutor() + "\nCanciones Totales(se incluyen canciones pendientes de validacion y explicitas): " + seguidores[indice].getCanciones().size() + "\nAlbumes: " + seguidores[indice].getAlbumes().size() + "\nReproducciones de sus contenidos por otros usuario: " + seguidores[indice].getNumeroReproducciones() + "\nPremium: " + seguidores[indice].getPremium(),"Usuario seleccionado",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);  
+						if(a == 0){ //SEGUIR
+							if(Sistema.sistema.getUsuarioActual().follow(seguidores[indice]) == Status.OK){
+								Ventana.ventana.showPerfil();
+								JOptionPane.showMessageDialog(Ventana.ventana,"Ha comenzado a seguir a este autor");
+							}else {
+								JOptionPane.showMessageDialog(Ventana.ventana,"Usted ya seguia de antes a este autor");
+							}
+						}
+					}
+				}else {
+					JOptionPane.showMessageDialog(Ventana.ventana,"No hay seguidores para ver");
+				}
+				
+			} else if(((JButton)e.getSource()).getText() == "Elegir Seguido") {	
+				
+				if(vista.getSeguidos().length > 0) {
+					
+					Usuario[] seguidos = vista.getSeguidos();
+					int indice = vista.getLista_seguidos().getSelectedIndex();
+					vista.getLista_seguidos().clearSelection();
+					if(indice == -1) {
+						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir Seguido seleccione uno primero");
+					}else {
+						String[] options = {"Dejar Seguir"};
+
+						int a = JOptionPane.showOptionDialog(Ventana.ventana,"Autor: " + seguidos[indice].getNombreAutor() + "\nCanciones Totales(se incluyen canciones pendientes de validacion y explicitas): " + seguidos[indice].getCanciones().size() + "\nAlbumes: " + seguidos[indice].getAlbumes().size() + "\nReproducciones de sus contenidos por otros usuario: " + seguidos[indice].getNumeroReproducciones() + "\nPremium: " + seguidos[indice].getPremium(),"Usuario seleccionado",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);  
+						if(a == 0){
+							if(Sistema.sistema.getUsuarioActual().unfollow(seguidos[indice]) == Status.OK){
+								Ventana.ventana.showPerfil();
+								JOptionPane.showMessageDialog(Ventana.ventana,"Ha dejado de seguir a este autor");
+							}else {
+								JOptionPane.showMessageDialog(Ventana.ventana,"Usted no seguia de antes a este autor");
+							}
+						}
+					}
+					
+				}else {
+					JOptionPane.showMessageDialog(Ventana.ventana,"No hay seguidores para ver");
+				}
+				
 			} else {
 				System.out.println(e.getSource());
 			}

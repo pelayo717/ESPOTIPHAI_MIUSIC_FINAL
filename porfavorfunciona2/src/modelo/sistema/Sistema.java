@@ -372,6 +372,7 @@ public class Sistema implements Serializable{
 						 sistema.eliminarCancion(canciones_usuario);
 					 }
 					 
+					 
 					 //elimino sus albumes e informo a los usuarios que tengan los albumes en sus listas de su eliminacion
 					 for(Iterator<Album> iteratorAlbum = usuario.getAlbumes().iterator(); iteratorAlbum.hasNext();) {
 						 Album albumes_usuario = iteratorAlbum.next();
@@ -894,7 +895,9 @@ public class Sistema implements Serializable{
 						
 						for(Lista lista: usuarios_totales.getListas()) {
 							if(lista.eliminarContenido(cancion_eliminar) == Status.OK) {
-								sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado la cancion " + cancion_eliminar.getTitulo());
+								if(usuarios_totales.equals(Sistema.sistema.getUsuarioActual()) == false) {
+									sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado la cancion " + cancion_eliminar.getTitulo());
+								}
 							}
 						}
 					}
@@ -992,7 +995,9 @@ public class Sistema implements Serializable{
 					
 					for(Lista lista: usuarios_totales.getListas()) {
 						if(lista.eliminarContenido(album_eliminar) == Status.OK) {
-							sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado el album " + album_eliminar.getTitulo());
+							if(usuarios_totales.equals(Sistema.sistema.getUsuarioActual()) == false) {
+								sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado el album " + album_eliminar.getTitulo());
+							}
 						}
 					}
 					

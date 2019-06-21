@@ -71,7 +71,7 @@ public class Usuario implements Serializable{
 	 * En esta funcion asignamos datos importantes al usuario que luego nos seran necesarios. De primeras indicamos que el usuario
 	 * no se encuentra bloqueado y entre otros datos le asignamos su identificador que sera único entre los usuarios totales del sistema
 	 *
-	 * @param nombre_usuario: nombre que se le asginar como usuario de la aplicacion para acciones como iniciar sesión o añadir comentarios entre otras funciones
+	 * @param nombre_usuario: nombre que se le asginar como usuario de la aplicacion para acciones como iniciar sesión o incluir comentarios entre otras funciones
 	 * @param nombre_autor: nombre que se le va asignar como persona que aporta contenido a la aplicacion y que puede ser escuchado por otros usuarios o autores
 	 * @param fecha_nacimiento: fecha de nacimiento del usuario
 	 * @param contraseña: contraseña que el usuario pone a su cuenta
@@ -408,7 +408,7 @@ public class Usuario implements Serializable{
 				return false;
 			else {
 				this.seguidos.add(x);
-				x.seguidores.add(this);
+				x.incluirSeguidor(this);
 				return true;
 			}
 	}
@@ -421,11 +421,39 @@ public class Usuario implements Serializable{
 	public boolean dejarDeSeguirUsuario(Usuario x) {
 		if(this.seguidos.contains(x)) {
 			this.seguidos.remove(x);
-			x.dejarDeSeguirUsuario(this);
+			x.quitarSeguidor(this);
 			return true;
 		} else {
 			return false;
 		}	
+	}
+	
+	/**
+	 * Funcion con la cual incluimos en los seguidores de un usuario dado, a otro usuario que le ha comenzado a seguir
+	 * @param x: Usuario que nos ha comenzado a seguir
+	 * @return true si el usuario no se econtraba en el array y se ha podido incluir correctamente, false si ya se encontraba
+	 */
+	public boolean incluirSeguidor(Usuario x) {
+		if(this.seguidores.contains(x)) {
+			return false;
+		}else {
+			this.seguidores.add(x);
+			return true;
+		}
+	}
+	
+	/**
+	 * Funcion con la cual quitamos en los seguidores de un usuario dado, a otro que le ha dejado de seguir
+	 * @param x: Usuario que nos ha dejado de seguir
+	 * @return true si se encontraba en el array y se ha eliminado correctamente, false si no se encontraba
+	 */
+	public boolean quitarSeguidor(Usuario x) {
+		if(this.seguidores.contains(x) == false) {
+			return false;
+		}else {
+			this.seguidores.remove(x);
+			return true;
+		}
 	}
 	
 	/*===========================================*/
@@ -521,7 +549,7 @@ public class Usuario implements Serializable{
 	
 	/**
 	 * Funcion que añade el contenido a la listas de canciones
-	 * @param c: Contenido que se va a añadir a la listas de canciones 
+	 * @param c: Contenido que se va a incluir a la listas de canciones 
 	 * @return: true si se ha realizado correctamente, false si no
 	 */
 	public boolean anyadirACancionesPersonales(Cancion c) {
@@ -554,7 +582,7 @@ public class Usuario implements Serializable{
 	
 	/**
 	 * Funcion que añade al album de usuario el contenido pasado como argumento
-	 * @param c: Contenido que se va a añadir al album 
+	 * @param c: Contenido que se va a incluir al album 
 	 * @return: true si se ha realizado correctamente, false si no
 	 */
 	public boolean anyadirAAlbumesPersonales(Album c) {
@@ -584,8 +612,8 @@ public class Usuario implements Serializable{
 	/*===========================================*/
 	
 	/**
-	 * Funcion que va a añadir el contenido a la lista Listas 
-	 * @param c: Contenido que se va a añadir a la lista de Listas  
+	 * Funcion que va a incluir el contenido a la lista Listas 
+	 * @param c: Contenido que se va a incluir a la lista de Listas  
 	 * @return: true si se ha realizado correctamente, false si no
 	 */
 	public boolean anyadirAListasPersonales(Lista c) {
@@ -629,13 +657,16 @@ public class Usuario implements Serializable{
 		if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador() == false && Sistema.sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
 			
 			for(Usuario totales:Sistema.sistema.getUsuariosTotales()) {
+
 				if(totales.getNombreAutor().equals(autor.getNombreAutor()) == true) {
+
 					if(Sistema.sistema.getUsuarioActual().seguirUsuario(totales) == false) {
 						return Status.ERROR;
 					}
 					this.enviarNotificacion(totales,Sistema.sistema.getUsuarioActual().getNombreAutor() + " ha comenzado a seguir " + totales.getNombreAutor());
 					return Status.OK;
 				}
+				
 			}
 			return Status.ERROR;
 		}

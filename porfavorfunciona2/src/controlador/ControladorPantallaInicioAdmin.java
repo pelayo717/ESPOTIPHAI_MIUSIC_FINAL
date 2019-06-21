@@ -81,7 +81,6 @@ public class ControladorPantallaInicioAdmin implements ActionListener{//99.9% es
 						canciones_totales[indice].parar();
 					}
 					
-					vista.getLista_canciones().clearSelection();
 				}
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"No hay canciones para seleccionar");
@@ -89,6 +88,7 @@ public class ControladorPantallaInicioAdmin implements ActionListener{//99.9% es
 					
 		} else if(((JButton)e.getSource()).getText() == "Valida") {
 			
+
 			if(vista.getaValidar().length > 0) {
 				Cancion[] canciones_totales = vista.getaValidar();
 				int indice = vista.getLista_canciones().getSelectedIndex();
@@ -186,7 +186,7 @@ public class ControladorPantallaInicioAdmin implements ActionListener{//99.9% es
 					if(retornadas != null) { //ALGO HAY
 						Ventana.ventana.showBuscadorAutores(retornadas.toArray(new Contenido[retornadas.size()]));
 					}else {
-						JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado autores por ese parametro");
+						JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado contenido por ese nombre de autor");
 					}
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");

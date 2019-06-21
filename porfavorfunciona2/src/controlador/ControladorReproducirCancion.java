@@ -91,7 +91,7 @@ public class ControladorReproducirCancion implements ActionListener{
 						if(retornadas != null) { //ALGO HAY
 							Ventana.ventana.showBuscadorAutores(retornadas.toArray(new Contenido[retornadas.size()]));
 						}else {
-							JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado autores por ese parametro");
+							JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado contenido por ese nombre de autor");
 						}
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");

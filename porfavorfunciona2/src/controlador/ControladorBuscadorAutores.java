@@ -66,6 +66,7 @@ public class ControladorBuscadorAutores implements ActionListener{//99.9% esta t
 						Ventana.ventana.showReproducirAlbum((Album) contenidos_totales[indice]);
 					}
 					
+					
 				}
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"No hay canciones para seleccionar");
@@ -114,6 +115,7 @@ public class ControladorBuscadorAutores implements ActionListener{//99.9% esta t
 					JOptionPane.showMessageDialog(Ventana.ventana,"Autor: " + presentados[indice].getNombreAutor() + "\nCanciones Totales(se incluyen canciones pendientes de validacion y explicitas): " + presentados[indice].getCanciones().size() + "\nAlbumes: " + presentados[indice].getAlbumes().size() + "\nReproducciones de sus contenidos por otros usuario: " + presentados[indice].getNumeroReproducciones() + "\nPremium: " + presentados[indice].getPremium());  
 				}
 			}else {
+				
 				if(vista.getLista_autores().getSelectedIndex() == -1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Elegir autor seleccione uno primero");
 				}else{
@@ -173,7 +175,7 @@ public class ControladorBuscadorAutores implements ActionListener{//99.9% esta t
 					if(retornadas != null) { //ALGO HAY
 						Ventana.ventana.showBuscadorAutores(retornadas.toArray(new Contenido[retornadas.size()]));
 					}else {
-						JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado autores por ese parametro");
+						JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado contenido por ese nombre de autor");
 					}
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
