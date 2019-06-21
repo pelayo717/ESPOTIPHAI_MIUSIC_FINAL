@@ -368,7 +368,8 @@ public class Sistema implements Serializable{
 					 }
 					 
 					 //elimino sus albumes e informo a los usuarios que tengan las canciones en sus listas de su eliminacion
-					 for(Cancion canciones_usuario: usuario.getCanciones()) {
+					 for(Iterator<Cancion> iteratorCanciones = usuario.getCanciones().iterator(); iteratorCanciones.hasNext();) {
+						 Cancion canciones_usuario = iteratorCanciones.next();
 						 sistema.eliminarCancion(canciones_usuario);
 					 }
 					 
@@ -889,11 +890,11 @@ public class Sistema implements Serializable{
 			if(cancion_eliminar.getAutor().getNombreAutor().equals(sistema.getUsuarioActual().getNombreAutor()) && cancion_eliminar.getEstado() != EstadoCancion.PLAGIO) {
 				
 				//PRIMERO LA ELIMINAMOS DEL CONTENIDO DE LAS LISTAS DE TODOS LOS USUARIOS QUE LA CONTENGAN
-				
-				for(Usuario usuarios_totales:sistema.getUsuariosTotales()) {
+				for(Iterator<Usuario> iteratorUsuarios = sistema.getUsuariosTotales().iterator(); iteratorUsuarios.hasNext();) {
+					 Usuario usuarios_totales = iteratorUsuarios.next();
 					if ( usuarios_totales.getListas() != null) {
-						
-						for(Lista lista: usuarios_totales.getListas()) {
+						for(Iterator<Lista> iteratorListas = usuarios_totales.getListas().iterator(); iteratorListas.hasNext();) {
+							Lista lista = iteratorListas.next();
 							if(lista.eliminarContenido(cancion_eliminar) == Status.OK) {
 								if(usuarios_totales.equals(Sistema.sistema.getUsuarioActual()) == false) {
 									sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado la cancion " + cancion_eliminar.getTitulo());
