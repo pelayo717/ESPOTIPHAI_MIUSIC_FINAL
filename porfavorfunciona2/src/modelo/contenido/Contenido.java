@@ -2,11 +2,9 @@ package modelo.contenido;
 
 import java.io.FileNotFoundException;
 import java.io.Serializable;
-import java.util.*;
 
 import modelo.usuario.*;
 import pads.musicPlayer.Mp3Player;
-import pads.musicPlayer.exceptions.Mp3InvalidFileException;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 /**

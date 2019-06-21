@@ -4,9 +4,7 @@ package controlador;
 import java.awt.event.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.swing.*;
 
@@ -45,7 +43,6 @@ public class ControladorReproducirCancion implements ActionListener{
 		 * @param e: accion o boton que el usuario ha pulsado y se pasa como argumento 
 		 * para asignarle el controlador correspondiente 
 		 */
-		@SuppressWarnings("null")
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (((JButton)e.getSource()).getText() == "Iniciar Sesion") {				
@@ -109,7 +106,7 @@ public class ControladorReproducirCancion implements ActionListener{
 	
 			} else if(((JButton)e.getSource()).getText() == "Limpiar Buscador") {
 				vista.limpiarBuscador();
-			} else if((((JButton)e.getSource()).getText() == "Ver comentario")) {
+			} else if((((JButton)e.getSource()).getText() == "Ver Comentario")) {
 				int response;
 				String[] options = new String[] {"Responder","Cerrar"};
 				if(vista.getComentarioSeleccionado() != null) {
@@ -120,20 +117,28 @@ public class ControladorReproducirCancion implements ActionListener{
 					}
 					if(response == 0) {
 						String comentarioEscrito = JOptionPane.showInputDialog("Escribe tu comentario");
-						Comentario nuevoComentario = new Comentario(comentarioEscrito, Sistema.sistema.getUsuarioActual());
-						vista.getComentarioSeleccionado().anyadirSubComentario(nuevoComentario);
-						Ventana.ventana.reproducirCancion.setTree();
+						if(comentarioEscrito.length() > 0) {
+							Comentario nuevoComentario = new Comentario(comentarioEscrito, Sistema.sistema.getUsuarioActual());
+							vista.getComentarioSeleccionado().anyadirSubComentario(nuevoComentario);
+							Ventana.ventana.reproducirCancion.setTree();
+						}else {
+							JOptionPane.showMessageDialog(Ventana.ventana,"Debe escribir algo para que podamos añadir el comentario");
+						}
 					}
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Debe seleccionar un comentario para poder verlo o comentarlo");
 				}
 				
 				
-			} else if(((JButton)e.getSource()).getText() == "Añadir comentario") {
+			} else if(((JButton)e.getSource()).getText() == "Añadir Comentario") {
 				String comentarioEscrito = JOptionPane.showInputDialog("Escribe tu comentario");
-				Comentario nuevoComentario = new Comentario(comentarioEscrito, Sistema.sistema.getUsuarioActual());
-				Ventana.ventana.reproducirCancion.insertarComentario(nuevoComentario);
-				Ventana.ventana.reproducirCancion.setTree();
+				if(comentarioEscrito.length() > 0) {
+					Comentario nuevoComentario = new Comentario(comentarioEscrito, Sistema.sistema.getUsuarioActual());
+					Ventana.ventana.reproducirCancion.insertarComentario(nuevoComentario);
+					Ventana.ventana.reproducirCancion.setTree();
+				}else {
+					JOptionPane.showMessageDialog(Ventana.ventana,"Debe escribir algo para que podamos añadir el comentario");
+				}
 			} else if(((JButton)e.getSource()).getText() == "Reportar") {
 				
 				if(Sistema.sistema.getUsuarioActual() != null) {
@@ -195,7 +200,7 @@ public class ControladorReproducirCancion implements ActionListener{
 								if(Sistema.sistema.anyadirCancionAAlbum(albumes_totales[i], vista.getCancion()) == Status.OK) {
 									JOptionPane.showMessageDialog(Ventana.ventana,"La cancion se ha añadido correctamente al album " + opcion);
 								}else {
-									JOptionPane.showMessageDialog(Ventana.ventana,"La cancion no se ha añadido al album " + opcion);
+									JOptionPane.showMessageDialog(Ventana.ventana,"La cancion ya se encuentra en el album " + opcion);
 								}
 							}
 						}
@@ -224,7 +229,7 @@ public class ControladorReproducirCancion implements ActionListener{
 								if(Sistema.sistema.anyadirALista(listas_totales[i], vista.getCancion()) == Status.OK) {
 									JOptionPane.showMessageDialog(Ventana.ventana,"La cancion se ha añadido correctamente a la lista " + opcion);
 								}else {
-									JOptionPane.showMessageDialog(Ventana.ventana,"La cancion no se ha añadido a la lista " + opcion);
+									JOptionPane.showMessageDialog(Ventana.ventana,"La cancion ya se encuentra en la lista " + opcion);
 								}
 							}
 						}
@@ -235,9 +240,9 @@ public class ControladorReproducirCancion implements ActionListener{
 					JOptionPane.showMessageDialog(Ventana.ventana,"Debe iniciar sesion para añadir la cancion a una lista");
 				}
 			
-			} else if(((JButton)e.getSource()).getText() == "Modificar cancion") {		
+			} else if(((JButton)e.getSource()).getText() == "Modificar Cancion") {		
 				
-				//BORRAMOS EL ANTIGUO 
+				//BORRAMOS EL ANTIGUO ARCHIVO PARA SUBIR EL NUEVO
 
 			    File fichero=new File(vista.getCancion().getNombreMP3());
 			    
@@ -265,7 +270,6 @@ public class ControladorReproducirCancion implements ActionListener{
 			    }else {
 			    	
 			    }
-				
 				
 			} else {
 				System.out.println(e.getSource());

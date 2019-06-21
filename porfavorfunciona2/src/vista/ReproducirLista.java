@@ -2,7 +2,6 @@ package vista;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.net.URL;
 import java.util.*;
 
 import javax.swing.*;
@@ -14,21 +13,29 @@ import modelo.contenido.*;
 
 public class ReproducirLista extends PantallaPrincipal {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private Lista lista;
 	
 	public JButton botonPlay;
 	public JButton botonPause;
 	public JButton botonDelete;
-	public JButton perfilAutor;
 	private JList<String> lista_contenido;
 	private JScrollPane contenidoScrollPane;
 	private JButton botonList;
+	private JButton anyadirLista;
 	
 	private JLabel datos_lista;
 	private JLabel titulo_lista;
 	private JLabel autor_lista;
 	private JLabel duracion_lista;
 	private JLabel comentarios_label;
+	private JLabel num_canciones;
+	private JLabel num_albumes;
+	private JLabel num_listas;
 
 	private  Contenido[] contenido;
 	private  DefaultListModel<String> model1;
@@ -44,18 +51,14 @@ public class ReproducirLista extends PantallaPrincipal {
 		model1 = new DefaultListModel<>();
 
 		lista_contenido = new JList<String>(model1);
-		
-		perfilAutor = new JButton("Ver Perfil Autor");
-		perfilAutor.setOpaque(false);
-		perfilAutor.setContentAreaFilled(false);
-		perfilAutor.setBorderPainted(false);
-		perfilAutor.setForeground(new Color(1f,0f,0f,.0f));
 	    
 	    
 		this.botonPlay = new JButton("play");
 		this.botonPause = new JButton("pause");
-		this.botonDelete = new JButton("Eliminar Contenido");
+		this.botonDelete = new JButton("Retirar Contenido");
 		this.botonList = new JButton("Ver comentario");
+		this.anyadirLista = new JButton("Añadir a Lista");
+		
 		botonPlay.setIcon(icono_reproducir); 
 		botonPause.setIcon(icono_parar);
 		
@@ -68,7 +71,10 @@ public class ReproducirLista extends PantallaPrincipal {
 		titulo_lista = new JLabel("Titulo:\t\t\t\t\t" ,SwingConstants.CENTER);
 		autor_lista = new JLabel("Autor:\t\t\t\t\t" ,SwingConstants.LEFT);
 		duracion_lista = new JLabel("Duracion:\t\t\t\t\t" + " s",SwingConstants.LEFT);
-		
+		num_canciones = new JLabel("Num. Canciones:\t\t\t\t\t",SwingConstants.LEFT);
+		num_albumes = new JLabel("Num. Albumes:\t\t\t\t\t",SwingConstants.LEFT);
+		num_listas = new JLabel("Num. Listas:\t\t\t\t\t",SwingConstants.LEFT);
+
 		contenidoScrollPane = new JScrollPane(lista_contenido);
 
 		
@@ -77,8 +83,15 @@ public class ReproducirLista extends PantallaPrincipal {
 		Font tituloFont = new Font(titulo_lista.getFont().getName(),Font.BOLD,titulo_lista.getFont().getSize());
 		Font autorFont = new Font(autor_lista.getFont().getName(),Font.BOLD,autor_lista.getFont().getSize());
 		Font duracionFont = new Font(duracion_lista.getFont().getName(),Font.BOLD,duracion_lista.getFont().getSize());
-        contenidoScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        Font numCancionesFont = new Font(num_canciones.getFont().getName(),Font.BOLD,num_canciones.getFont().getSize());
+        Font numAlbumesFont = new Font(num_albumes.getFont().getName(),Font.BOLD,num_albumes.getFont().getSize());
+        Font numListasFont = new Font(num_listas.getFont().getName(),Font.BOLD,num_listas.getFont().getSize());
+		
+		contenidoScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
+		num_canciones.setFont(numCancionesFont);
+		num_albumes.setFont(numAlbumesFont);
+		num_listas.setFont(numListasFont);
 		datos_lista.setFont(datosFont);
 		titulo_lista.setFont(tituloFont);
 		autor_lista.setFont(autorFont);
@@ -88,34 +101,37 @@ public class ReproducirLista extends PantallaPrincipal {
 		this.setLayout(layout);
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-		//Manual Constraints
-		//x axis, y axis, width, height 
 		
 		//Distribucion
-		datos_lista.setBounds(screenSize.width/2 - 380, 210, 300, 50);
-		autor_lista.setBounds(screenSize.width/2  - 375, 250, 150, 50);
-		perfilAutor.setBounds(screenSize.width/2  - 375, 250, 150, 50);
-		duracion_lista.setBounds(screenSize.width/2  - 375,330,180,50);
+		datos_lista.setBounds(screenSize.width/2 - 350, 210, 300, 50);
+		autor_lista.setBounds(screenSize.width/2  - 345, 250, 150, 50);
+		duracion_lista.setBounds(screenSize.width/2  - 345,300,180,50);
+		num_canciones.setBounds(screenSize.width/2  - 345,350,180,50);
+		num_albumes.setBounds(screenSize.width/2  - 345,400,180,50);
+		num_listas.setBounds(screenSize.width/2  - 345,450,180,50);
 
 		titulo_lista.setBounds(screenSize.width/2 + 150, 210, 200, 50);
 		contenidoScrollPane.setBounds(screenSize.width/2  + 100, 260, 300, 300);
 
-		botonPlay.setBounds(screenSize.width/2 + 160, 580, 60, 60);
-		botonPause.setBounds(screenSize.width/2 + 230, 580, 60, 60);
-		botonDelete.setBounds(screenSize.width/2 + 300, 580, 150, 60);
-		
+		botonPlay.setBounds(screenSize.width/2 + 180, 580, 60, 60);
+		botonPause.setBounds(screenSize.width/2 + 270, 580, 60, 60);
+		botonDelete.setBounds(screenSize.width/2 + 420, 350, 150, 30);
+		anyadirLista.setBounds(screenSize.width/2 + 420, 400, 150, 30);
+
 		
 		//Añadimos
 		this.add(datos_lista);
 		this.add(titulo_lista);
 		this.add(autor_lista);
-		this.add(perfilAutor);
 		this.add(duracion_lista);
+		this.add(num_canciones);
+		this.add(num_albumes);
+		this.add(num_listas);
 		this.add(contenidoScrollPane);
 		this.add(botonPlay);
 		this.add(botonPause);
 		this.add(botonDelete);
+		this.add(anyadirLista);
 	}
 	
 	public void limpiarBuscador(){
@@ -141,13 +157,16 @@ public class ReproducirLista extends PantallaPrincipal {
 		 this.botonPlay.addActionListener(c);
 		 this.botonPause.addActionListener(c);
 		 this.botonDelete.addActionListener(c);
-		 this.perfilAutor.addActionListener(c);
+		 this.anyadirLista.addActionListener(c);
 	 }
 	 
 	 
 	 public void setInformacion(Lista lista) {
 		this.lista = lista;
 
+		int nCanciones = 0;
+		int nAlbumes = 0;
+		int nListas = 0;
 		int horas = (int) (lista.getDuracion() / 3600);
 	    int minutos = (int) ((lista.getDuracion()-horas*3600)/60);
 	    int segundos = (int) (lista.getDuracion()-(horas*3600+minutos*60));
@@ -157,6 +176,19 @@ public class ReproducirLista extends PantallaPrincipal {
 		this.autor_lista.setText("Autor:\t\t\t\t\t" + this.lista.getAutor().getNombreAutor());
 		this.duracion_lista.setText("Duracion:\t\t\t\t\t" + minutos + " m/" + segundos + " s");
 		
+		for(Contenido aux: this.lista.getContenido()) {
+			if(aux instanceof Cancion) {
+				nCanciones++;
+			}else if(aux instanceof Album) {
+				nAlbumes++;
+			}else if(aux instanceof Lista) {
+				nListas++;
+			}
+		}
+		this.num_canciones.setText("Num. Canciones:\t\t\t\t\t" + nCanciones);
+		this.num_albumes.setText("Num. Albumes:\t\t\t\t\t" + nAlbumes);
+		this.num_listas.setText("Num. Listas:\t\t\t\t\t" + nListas);
+
 		this.actualizarContenido();
 	}
 	 
@@ -177,9 +209,6 @@ public class ReproducirLista extends PantallaPrincipal {
 		return botonDelete;
 	}
 
-	public JButton getPerfilAutor() {
-		return perfilAutor;
-	}
 
 	public JList<String> getLista_contenido() {
 		return lista_contenido;

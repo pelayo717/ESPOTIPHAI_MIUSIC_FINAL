@@ -629,6 +629,7 @@ public class Sistema implements Serializable{
 		return albumes_incluidas_explicitas;
 		
 	}
+	
 
 	/**
 	 * Permite para un autor dado buscar todas sus canciones
@@ -638,7 +639,6 @@ public class Sistema implements Serializable{
 	 */
 	public ArrayList<Cancion> buscadorPorAutores_DevolvemosCanciones(String palabra){
 		
-		int ide = 0;
 		ArrayList<Cancion> lista_autor_canciones = new ArrayList<Cancion>();
 		LocalDate fecha_actual = LocalDate.now();
 		

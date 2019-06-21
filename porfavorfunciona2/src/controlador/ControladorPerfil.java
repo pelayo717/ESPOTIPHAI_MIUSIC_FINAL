@@ -2,17 +2,14 @@ package controlador;
 
 
 import java.awt.event.*;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.*;
 
-import modelo.contenido.Comentario;
 import modelo.notificacion.Notificacion;
 import modelo.sistema.*;
 import modelo.status.Status;
 import modelo.usuario.Usuario;
-import pads.musicPlayer.exceptions.Mp3PlayerException;
 import vista.Perfil;
 import vista.Ventana;
 
@@ -23,6 +20,7 @@ import vista.Ventana;
  */
 public class ControladorPerfil implements ActionListener{//99.9% esta terminado
 		private Perfil vista;
+		@SuppressWarnings("unused")
 		private int modelo;
 		
 		/**

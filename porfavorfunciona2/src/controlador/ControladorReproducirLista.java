@@ -3,17 +3,13 @@ package controlador;
 
 import java.awt.event.*;
 import java.io.FileNotFoundException;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 
 import javax.swing.*;
 
 import modelo.sistema.*;
 import modelo.status.Status;
 import modelo.contenido.*;
-import modelo.usuario.*;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
 import vista.ReproducirLista;
 import vista.Ventana;
@@ -25,6 +21,7 @@ import vista.Ventana;
  */
 public class ControladorReproducirLista implements ActionListener{
 		private ReproducirLista vista;
+		@SuppressWarnings("unused")
 		private int modelo;
 		
 		/**
@@ -54,21 +51,14 @@ public class ControladorReproducirLista implements ActionListener{
 			}  else if(((JButton)e.getSource()).getText() == "Ver Perfil") {
 				Ventana.ventana.showPerfil();
 				Ventana.ventana.perfil.setInformacion(Sistema.sistema.getUsuarioActual());
-			} else if(((JButton)e.getSource()).getText() == "Ver Perfil Autor") {
-				for (Usuario usuario : Sistema.sistema.getUsuariosTotales()) {
-					if (usuario.getNombreAutor().equals(vista.getLista().getAutor()) ) {
-						Ventana.ventana.showPerfil();
-						Ventana.ventana.perfil.setInformacion(usuario);
-					}
-				}
 			}  else if(((JButton)e.getSource()).getText() == "Registro") {
 				Ventana.ventana.showRegistrarse();
 			} else if(((JButton)e.getSource()).getText() == "Buscar") {
 				
 				
-				if(Ventana.ventana.reproducirLista.getOpcion1().isSelected() == true) {
-					if(Ventana.ventana.reproducirLista.getCriterioBusqueda().getText().isEmpty() != true) {
-						ArrayList<Cancion>  retornadas = Sistema.sistema.buscadorPorTitulos(Ventana.ventana.reproducirLista.getCriterioBusqueda().getText());
+				if(vista.getOpcion1().isSelected() == true) {
+					if(vista.getCriterioBusqueda().getText().isEmpty() != true) {
+						ArrayList<Cancion>  retornadas = Sistema.sistema.buscadorPorTitulos(vista.getCriterioBusqueda().getText());
 						if(retornadas != null) { //ALGO HAY
 							Ventana.ventana.showBuscadorCanciones(retornadas.toArray(new Cancion[retornadas.size()]));
 						}else {
@@ -77,9 +67,9 @@ public class ControladorReproducirLista implements ActionListener{
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
 					}
-				}else if(Ventana.ventana.reproducirLista.getOpcion2().isSelected() == true){
-					if(Ventana.ventana.reproducirLista.getCriterioBusqueda().getText().isEmpty() != true) {
-						ArrayList<Album> retornadas = Sistema.sistema.buscadorPorAlbumes(Ventana.ventana.reproducirLista.getCriterioBusqueda().getText());
+				}else if(vista.getOpcion2().isSelected() == true){
+					if(vista.getCriterioBusqueda().getText().isEmpty() != true) {
+						ArrayList<Album> retornadas = Sistema.sistema.buscadorPorAlbumes(vista.getCriterioBusqueda().getText());
 						if(retornadas != null) { //ALGO HAY
 							Ventana.ventana.showBuscadorAlbumes(retornadas.toArray(new Album[retornadas.size()]));
 						}else {
@@ -88,9 +78,9 @@ public class ControladorReproducirLista implements ActionListener{
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
 					}
-				}else if(Ventana.ventana.reproducirLista.getOpcion3().isSelected() == true) {
-					if(Ventana.ventana.reproducirLista.getCriterioBusqueda().getText().isEmpty() != true) {
-						ArrayList<Contenido> retornadas = Sistema.sistema.buscadorPorAutores(Ventana.ventana.reproducirLista.getCriterioBusqueda().getText());
+				}else if(vista.getOpcion3().isSelected() == true) {
+					if(vista.getCriterioBusqueda().getText().isEmpty() != true) {
+						ArrayList<Contenido> retornadas = Sistema.sistema.buscadorPorAutores(vista.getCriterioBusqueda().getText());
 						if(retornadas != null) { //ALGO HAY
 							Ventana.ventana.showBuscadorAutores(retornadas.toArray(new Contenido[retornadas.size()]));
 						}else {
@@ -100,7 +90,7 @@ public class ControladorReproducirLista implements ActionListener{
 						JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
 					}
 				}else {
-					if(Ventana.ventana.reproducirLista.getCriterioBusqueda().getText().isEmpty() == true) {
+					if(vista.getCriterioBusqueda().getText().isEmpty() == true) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda y seleccione un criterio para realizar la busqueda");
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Debe seleccionar un criterio para poder realizar la busqueda");
@@ -140,7 +130,7 @@ public class ControladorReproducirLista implements ActionListener{
 				}
 			} else if(((JButton)e.getSource()).getText() == "pause") {
 				vista.getLista().parar();
-			} else if(((JButton)e.getSource()).getText() == "Eliminar Contenido") {
+			} else if(((JButton)e.getSource()).getText() == "Retirar Contenido") {
 
 				if(vista.getContenido().length > 0) {
 					Contenido[] temporal = vista.getContenido();
@@ -166,6 +156,35 @@ public class ControladorReproducirLista implements ActionListener{
 					JOptionPane.showMessageDialog(Ventana.ventana,"La lista no contiene canciones");
 				}
 				
+			} else if(((JButton)e.getSource()).getText() == "Añadir a Lista") {
+				
+				int contador=0;
+				Lista[] listas_totales = Sistema.sistema.getUsuarioActual().getListas().toArray(new Lista[Sistema.sistema.getUsuarioActual().getListas().size()]);
+				
+				String[] nombre_albumes = new String[1000]; //TEMPORAL
+				for(int i=0;i < listas_totales.length; i++) {
+					if(listas_totales[i].equals(vista.getLista()) == false) { //ENTENDEMOS QUE A LA MISMA LISTA NO SE PUEDE AÑADIR
+						nombre_albumes[i] = listas_totales[i].getTitulo();
+						contador++;
+					}
+				}
+				
+				
+				if(contador > 0) {
+					Object opcion = JOptionPane.showInputDialog(null,"Selecciona un Lista", "Elegir Lista",JOptionPane.QUESTION_MESSAGE,null,nombre_albumes, nombre_albumes[0]);
+					for(int i=0; i < listas_totales.length; i++) {
+						if(listas_totales[i].getTitulo().equals(opcion)) {
+							if(Sistema.sistema.anyadirALista(listas_totales[i], vista.getLista()) == Status.OK) {
+								Ventana.ventana.showReproducirLista(vista.getLista());
+								JOptionPane.showMessageDialog(Ventana.ventana,"La lista se ha añadido correctamente a la lista " + opcion);
+							}else {
+								JOptionPane.showMessageDialog(Ventana.ventana,"La lista ya se encuentra en la lista " + opcion);
+							}
+						}
+					}
+				}else {
+					JOptionPane.showMessageDialog(Ventana.ventana,"No hay listas a las que añadir esta lista");
+				}
 				
 			} else {
 				

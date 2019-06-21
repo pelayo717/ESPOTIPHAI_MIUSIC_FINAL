@@ -10,7 +10,6 @@ import modelo.sistema.Sistema;
 import modelo.status.*;
 import modelo.usuario.*;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
-import vista.Ventana;
 
 /**
  *	Clase Album con herencia de ContenidoComentable

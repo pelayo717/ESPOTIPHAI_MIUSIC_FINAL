@@ -21,6 +21,7 @@ import vista.Ventana;
  */
 public class ControladorReproducirAlbum implements ActionListener{
 		private ReproducirAlbum vista;
+		@SuppressWarnings("unused")
 		private int modelo;
 		
 		/**
@@ -35,6 +36,7 @@ public class ControladorReproducirAlbum implements ActionListener{
 			this.modelo = modelo;
 		}
 	 
+		
 		/**
 	 	* Funcion que asigna el controlador necesario a la accion o boton que 
 	 	* el usuario ha pulsado 
@@ -53,14 +55,13 @@ public class ControladorReproducirAlbum implements ActionListener{
 				}
 			}  else if(((JButton)e.getSource()).getText() == "Ver Perfil") {
 				Ventana.ventana.showPerfil();
-				Ventana.ventana.perfil.setInformacion(Sistema.sistema.getUsuarioActual());
 			} else if(((JButton)e.getSource()).getText() == "Registro") {
 				Ventana.ventana.showRegistrarse();
 			}else if(((JButton)e.getSource()).getText() == "Buscar") {
 				
-				if(Ventana.ventana.reproducirAlbum.getOpcion1().isSelected() == true) {
-					if(Ventana.ventana.reproducirAlbum.getCriterioBusqueda().getText().isEmpty() != true) {
-						ArrayList<Cancion>  retornadas = Sistema.sistema.buscadorPorTitulos(Ventana.ventana.reproducirAlbum.getCriterioBusqueda().getText());
+				if(vista.getOpcion1().isSelected() == true) {
+					if(vista.getCriterioBusqueda().getText().isEmpty() != true) {
+						ArrayList<Cancion>  retornadas = Sistema.sistema.buscadorPorTitulos(vista.getCriterioBusqueda().getText());
 						if(retornadas != null) { //ALGO HAY
 							Ventana.ventana.showBuscadorCanciones(retornadas.toArray(new Cancion[retornadas.size()]));
 						}else {
@@ -69,9 +70,9 @@ public class ControladorReproducirAlbum implements ActionListener{
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
 					}
-				}else if(Ventana.ventana.reproducirAlbum.getOpcion2().isSelected() == true){
-					if(Ventana.ventana.reproducirAlbum.getCriterioBusqueda().getText().isEmpty() != true) {
-						ArrayList<Album> retornadas = Sistema.sistema.buscadorPorAlbumes(Ventana.ventana.reproducirAlbum.getCriterioBusqueda().getText());
+				}else if(vista.getOpcion2().isSelected() == true){
+					if(vista.getCriterioBusqueda().getText().isEmpty() != true) {
+						ArrayList<Album> retornadas = Sistema.sistema.buscadorPorAlbumes(vista.getCriterioBusqueda().getText());
 						if(retornadas != null) { //ALGO HAY
 							Ventana.ventana.showBuscadorAlbumes(retornadas.toArray(new Album[retornadas.size()]));
 						}else {	
@@ -80,9 +81,9 @@ public class ControladorReproducirAlbum implements ActionListener{
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
 					}
-				}else if(Ventana.ventana.reproducirAlbum.getOpcion3().isSelected() == true) {
-					if(Ventana.ventana.reproducirAlbum.getCriterioBusqueda().getText().isEmpty() != true) {
-						ArrayList<Contenido> retornadas = Sistema.sistema.buscadorPorAutores(Ventana.ventana.reproducirAlbum.getCriterioBusqueda().getText());
+				}else if(vista.getOpcion3().isSelected() == true) {
+					if(vista.getCriterioBusqueda().getText().isEmpty() != true) {
+						ArrayList<Contenido> retornadas = Sistema.sistema.buscadorPorAutores(vista.getCriterioBusqueda().getText());
 						if(retornadas != null) { //ALGO HAY
 							Ventana.ventana.showBuscadorAutores(retornadas.toArray(new Contenido[retornadas.size()]));
 						}else {
@@ -92,7 +93,7 @@ public class ControladorReproducirAlbum implements ActionListener{
 						JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
 					}
 				}else {
-					if(Ventana.ventana.reproducirAlbum.getCriterioBusqueda().getText().isEmpty() == true) {
+					if(vista.getCriterioBusqueda().getText().isEmpty() == true) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda y seleccione un criterio para realizar la busqueda");
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Debe seleccionar un criterio para poder realizar la busqueda");
@@ -103,7 +104,7 @@ public class ControladorReproducirAlbum implements ActionListener{
 				
 			} else if(((JButton)e.getSource()).getText() == "Limpiar Buscador") {
 				vista.limpiarBuscador();
-			} else if(((JButton)e.getSource()).getText() == "Ver comentario") {
+			} else if(((JButton)e.getSource()).getText() == "Ver Comentario") {
 				int response;
 				
 				String[] options = new String[] {"Responder","Cerrar"};
@@ -116,9 +117,13 @@ public class ControladorReproducirAlbum implements ActionListener{
 					}
 					if(response == 0) {
 						String comentarioEscrito = JOptionPane.showInputDialog("Escribe tu comentario");
-						Comentario nuevoComentario = new Comentario(comentarioEscrito, Sistema.sistema.getUsuarioActual());
-						vista.getComentarioSeleccionado().anyadirSubComentario(nuevoComentario);
-						Ventana.ventana.reproducirAlbum.setTree();
+						if(comentarioEscrito.length() > 0) {
+							Comentario nuevoComentario = new Comentario(comentarioEscrito, Sistema.sistema.getUsuarioActual());
+							vista.getComentarioSeleccionado().anyadirSubComentario(nuevoComentario);
+							vista.setTree();
+						}else {
+							JOptionPane.showMessageDialog(Ventana.ventana,"Debe escribir algo para que podamos añadir el comentario");
+						}
 					}					
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Debe seleccionar un comentario para poder verlo o comentarlo");
@@ -127,9 +132,14 @@ public class ControladorReproducirAlbum implements ActionListener{
 				
 			} else if(((JButton)e.getSource()).getText() == "Añadir Comentario") {
 				String comentarioEscrito = JOptionPane.showInputDialog("Escribe tu comentario");
-				Comentario nuevoComentario = new Comentario(comentarioEscrito, Sistema.sistema.getUsuarioActual());
-				Ventana.ventana.reproducirAlbum.insertarComentario(nuevoComentario);
-				Ventana.ventana.reproducirAlbum.setTree();
+				if(comentarioEscrito.length() > 0) {
+					Comentario nuevoComentario = new Comentario(comentarioEscrito, Sistema.sistema.getUsuarioActual());
+					vista.insertarComentario(nuevoComentario);
+					vista.setTree();
+				}else {
+					JOptionPane.showMessageDialog(Ventana.ventana,"Debe escribir algo para que podamos añadir el comentario");
+				}
+				
 			} else if(((JButton)e.getSource()).getText() == "play") {				
 				try {
 
@@ -158,7 +168,7 @@ public class ControladorReproducirAlbum implements ActionListener{
 				
 				vista.getAlbum().parar();
 			
-			} else if(((JButton)e.getSource()).getText() == "Eliminar Cancion") {
+			} else if(((JButton)e.getSource()).getText() == "Retirar Cancion") {
 				if(vista.getMisCanciones().length > 0) {
 					int indice = vista.getLista_canciones().getSelectedIndex();
 					if(indice == -1) {
@@ -166,15 +176,15 @@ public class ControladorReproducirAlbum implements ActionListener{
 					}else {
 						Cancion[] entrantes = vista.getMisCanciones();
 						Album entrante = vista.getAlbum();
-						int a=JOptionPane.showConfirmDialog(Ventana.ventana,"¿Esta seguro que desea eliminar la cancion " + entrantes[indice].getTitulo() + " del album?","Alert",JOptionPane.WARNING_MESSAGE);  
+						int a=JOptionPane.showConfirmDialog(Ventana.ventana,"¿Esta seguro que desea retirar la cancion " + entrantes[indice].getTitulo() + " del album?","Alert",JOptionPane.WARNING_MESSAGE);  
 						if(a == JOptionPane.YES_OPTION) {
 							if(Sistema.sistema.quitarCancionDeAlbum(vista.getAlbum(),entrantes[indice]) == Status.OK) {
-								Ventana.ventana.reproducirAlbum.actualizarCanciones();
+								vista.actualizarCanciones();
 								vista.setInformacion(entrante);
-								JOptionPane.showMessageDialog(Ventana.ventana,"Se elimino correctamente");
+								JOptionPane.showMessageDialog(Ventana.ventana,"Se retiro correctamente");
 
 							}else {
-								JOptionPane.showMessageDialog(Ventana.ventana,"Se elimino correctamente");
+								JOptionPane.showMessageDialog(Ventana.ventana,"No se retiro correctamente");
 							}
 							
 						}
@@ -195,13 +205,13 @@ public class ControladorReproducirAlbum implements ActionListener{
 					
 					
 					if(listas_totales.length > 0) {
-						Object opcion = JOptionPane.showInputDialog(null,"Selecciona un album", "Elegir Album",JOptionPane.QUESTION_MESSAGE,null,nombre_albumes, nombre_albumes[0]);
+						Object opcion = JOptionPane.showInputDialog(null,"Selecciona una Lista", "Elegir Lista",JOptionPane.QUESTION_MESSAGE,null,nombre_albumes, nombre_albumes[0]);
 						for(int i=0; i < listas_totales.length; i++) {
 							if(listas_totales[i].getTitulo().equals(opcion)) {
 								if(Sistema.sistema.anyadirALista(listas_totales[i], vista.getAlbum()) == Status.OK) {
 									JOptionPane.showMessageDialog(Ventana.ventana,"El album se ha añadido correctamente a la lista " + opcion);
 								}else {
-									JOptionPane.showMessageDialog(Ventana.ventana,"El album no se ha añadido a la lista " + opcion);
+									JOptionPane.showMessageDialog(Ventana.ventana,"El album ya se encuentra en la lista " + opcion);
 								}
 							}
 						}
@@ -213,8 +223,8 @@ public class ControladorReproducirAlbum implements ActionListener{
 				}
 				
 			} else {
-				
 				System.out.println(e.getSource());
 			}
 		}
 }
+

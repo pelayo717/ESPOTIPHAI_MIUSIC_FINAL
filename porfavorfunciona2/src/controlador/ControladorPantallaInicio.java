@@ -44,6 +44,7 @@ public class ControladorPantallaInicio implements ActionListener{
 		this.modelo = modelo;
 		this.vista = x;
 	}
+	
 
 	/**
 	 * Funcion que asigna el controlador necesario a la accion o boton que 
@@ -198,8 +199,8 @@ public class ControladorPantallaInicio implements ActionListener{
 					 Cancion c;
 					if(a == JFileChooser.APPROVE_OPTION) {
 						if((c = Sistema.sistema.crearCancion(titulo,temporal,escogido.getName())) != null) {
+							Ventana.ventana.showPantallaInicio();
 							JOptionPane.showMessageDialog(Ventana.ventana,"La cancion " + c.getTitulo() + " se ha creado correctamente");
-							vista.actualizarCanciones(Sistema.sistema.getUsuarioActual().getCanciones());
 						}else {
 							JOptionPane.showMessageDialog(Ventana.ventana,"Hubo un problema con la creacion de la cancion");
 						}
@@ -228,8 +229,8 @@ public class ControladorPantallaInicio implements ActionListener{
 				if (option == JOptionPane.OK_OPTION) {
 				    try {
 						if(Sistema.sistema.crearAlbum(Integer.parseInt(anyo.getText()), titulo.getText()) != null) {
-					    	JOptionPane.showMessageDialog(Ventana.ventana,"El album " + titulo.getText() +" se ha creado correctamente");
-					    	vista.actualizarAlbumes(Sistema.sistema.getUsuarioActual().getAlbumes());
+							Ventana.ventana.showPantallaInicio();
+							JOptionPane.showMessageDialog(Ventana.ventana,"El album " + titulo.getText() +" se ha creado correctamente");
 						}else{
 					    	JOptionPane.showMessageDialog(Ventana.ventana,"Hubo un problema con la creacion del album");
 					    }
@@ -258,8 +259,8 @@ public class ControladorPantallaInicio implements ActionListener{
 				try {
 					if(titulo != null && titulo.length() > 0) {
 						if(Sistema.sistema.crearLista(titulo) != null) {
+							Ventana.ventana.showPantallaInicio();
 							JOptionPane.showMessageDialog(Ventana.ventana,"La lista " + titulo +" se ha creado correctamente");
-							vista.actualizarListas(Sistema.sistema.getUsuarioActual().getListas());
 						}else {
 							JOptionPane.showMessageDialog(Ventana.ventana,"Hubo un problema con la creacion de la lista");
 						}
@@ -287,8 +288,8 @@ public class ControladorPantallaInicio implements ActionListener{
 						int a=JOptionPane.showConfirmDialog(Ventana.ventana,"¿Esta seguro que desea eliminar " + canciones_totales[indice].getTitulo()  + " ?","Alert",JOptionPane.WARNING_MESSAGE);  
 						if(a == JOptionPane.YES_OPTION) {
 							if(Sistema.sistema.eliminarCancion(canciones_totales[indice]) == Status.OK) {
+								Ventana.ventana.showPantallaInicio();
 								JOptionPane.showMessageDialog(Ventana.ventana,"La cancion se elimino correctamente");
-								vista.actualizarCanciones(Sistema.sistema.getUsuarioActual().getCanciones());
 							}else {
 								JOptionPane.showMessageDialog(Ventana.ventana,"Hubo un problema con la eliminacion de la cancion");
 
@@ -316,8 +317,8 @@ public class ControladorPantallaInicio implements ActionListener{
 						int a = JOptionPane.showConfirmDialog(Ventana.ventana,"¿Esta seguro que desea eliminar " + albumes_totales[indice].getTitulo()  + " ?","Alert",JOptionPane.WARNING_MESSAGE);  
 						if(a == JOptionPane.YES_OPTION) {
 							if(Sistema.sistema.eliminarAlbum(albumes_totales[indice]) == Status.OK) {
+								Ventana.ventana.showPantallaInicio();
 								JOptionPane.showMessageDialog(Ventana.ventana,"El album se elimino correctamente");
-								vista.actualizarAlbumes(Sistema.sistema.getUsuarioActual().getAlbumes());
 							}else {
 								JOptionPane.showMessageDialog(Ventana.ventana,"Hubo un problema con la eliminacion del album");
 							}
@@ -344,8 +345,8 @@ public class ControladorPantallaInicio implements ActionListener{
 						int a = JOptionPane.showConfirmDialog(Ventana.ventana,"¿Esta seguro que desea eliminar " + listas_totales[indice].getTitulo()  + " ?","Alert",JOptionPane.WARNING_MESSAGE);  
 						if(a == JOptionPane.YES_OPTION) {
 							if(Sistema.sistema.eliminarLista(listas_totales[indice]) == Status.OK) {
+								Ventana.ventana.showPantallaInicio();
 								JOptionPane.showMessageDialog(Ventana.ventana,"La lista se elimino correctamente");
-								vista.actualizarListas(Sistema.sistema.getUsuarioActual().getListas());
 							}else {
 								JOptionPane.showMessageDialog(Ventana.ventana,"Hubo un problema con la eliminacion de la lista");
 							}
@@ -362,5 +363,6 @@ public class ControladorPantallaInicio implements ActionListener{
 			System.out.println(e.getSource());
 		}
 	}
+	
 	
 }

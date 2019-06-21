@@ -2,9 +2,7 @@ package modelo.sistema;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Scanner;
+
 
 import pads.musicPlayer.exceptions.Mp3PlayerException;
 
@@ -14,7 +12,7 @@ public class Main {
 
 public static void main(String[] args) throws Mp3PlayerException, InterruptedException, IOException{
 		
-	 	String entradaTeclado = "";
+	 	/*String entradaTeclado = "";
 	 	Scanner entradaEscaner = new Scanner (System.in);
 	 	LocalDate d = LocalDate.now();
 

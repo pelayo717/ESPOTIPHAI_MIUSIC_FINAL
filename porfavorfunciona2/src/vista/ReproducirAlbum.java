@@ -31,12 +31,12 @@ public class ReproducirAlbum extends PantallaPrincipal {
 	private JScrollPane comentariosScrollPane;
 	private JScrollPane cancionesScrollPane;
 
-	public JButton botonList;
-	public JButton botonAnyadirComentario;
-	public JButton eliminarCancion;
-	public JButton anyadirLista;
-	public JButton botonPlay;
-	public JButton botonPause;
+	private JButton botonList;
+	private JButton botonAnyadirComentario;
+	private JButton eliminarCancion;
+	private JButton anyadirLista;
+	private JButton botonPlay;
+	private JButton botonPause;
 	
 	
 	private JLabel datos_album;
@@ -101,10 +101,10 @@ public class ReproducirAlbum extends PantallaPrincipal {
 	    
 		this.botonPlay = new JButton("play");
 		this.botonPause = new JButton("pause");
-		this.botonList = new JButton("Ver comentario");
+		this.botonList = new JButton("Ver Comentario");
 		this.botonAnyadirComentario = new JButton("Añadir Comentario");
 		
-		this.eliminarCancion = new JButton("Eliminar Cancion");
+		this.eliminarCancion = new JButton("Retirar Cancion");
 		
 		this.anyadirLista = new JButton("Añadir a Lista");
 		

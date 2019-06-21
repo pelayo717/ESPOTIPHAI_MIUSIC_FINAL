@@ -31,17 +31,17 @@ public class ReproducirCancion extends PantallaPrincipal {
 	private JLabel comentarios_label;
 	private JLabel estadoCancion;
 	
-	public JButton botonPlay;
-	public JButton botonPause;
+	private JButton botonPlay;
+	private JButton botonPause;
 	private JScrollPane comentariosScrollPane;
-	public JButton botonList;
-	public JButton botonAnyadirComentario;
-	public JButton botonReportar;
+	private JButton botonList;
+	private JButton botonAnyadirComentario;
+	private JButton botonReportar;
 	
-	public JButton modificarCancion;
+	private JButton modificarCancion;
 	
-	public JButton anyadirAlbum;
-	public JButton anyadirLista;
+	private JButton anyadirAlbum;
+	private JButton anyadirLista;
 	
 	private Dimension screenSize;
 	
@@ -51,6 +51,7 @@ public class ReproducirCancion extends PantallaPrincipal {
 	private JTree comentariosTree;
 	private DefaultMutableTreeNode root;
 	private DefaultTreeModel treeModel;
+	
 	public ReproducirCancion() {
 		super();
 		
@@ -88,12 +89,12 @@ public class ReproducirCancion extends PantallaPrincipal {
 		JLabel imagen_reproduccion = new JLabel("",icono_corchea,JLabel.CENTER);
 		this.botonPlay = new JButton("play");
 		this.botonPause = new JButton("pause");
-		this.botonList = new JButton("Ver comentario");
-		this.botonAnyadirComentario = new JButton("Añadir comentario");
+		this.botonList = new JButton("Ver Comentario");
+		this.botonAnyadirComentario = new JButton("Añadir Comentario");
 		this.botonReportar = new JButton("Reportar");
 		this.anyadirAlbum = new JButton("Añadir a Album");
 		this.anyadirLista = new JButton("Añadir a Lista");
-		this.modificarCancion = new JButton("Modificar cancion");
+		this.modificarCancion = new JButton("Modificar Cancion");
 		botonPlay.setIcon(icono_reproducir);
 		botonPause.setIcon(icono_parar);
 
@@ -192,7 +193,7 @@ public class ReproducirCancion extends PantallaPrincipal {
 		 this.anyadirLista.addActionListener(c);
 		 this.modificarCancion.addActionListener(c);
 	 }
-	 
+	
 		public void insertarComentario(Comentario nuevoComentario) {
 		if(this.cancion != null) {
 			cancion.anyadirComentario(nuevoComentario);
