@@ -48,13 +48,24 @@ public class Comentario implements Serializable{
 	 */
 	public Status anyadirSubComentario(Comentario comentario) {
 		if(comentario == null) {
-			System.out.print("adei");
+			return Status.ERROR;
 		}
 		if (this.subComentarios.add(comentario) == true) {
 			return Status.OK;
 		} else {
 			return Status.ERROR;
 		}
+	}
+	
+	
+	public void eliminarSubComentarios() {
+		if (this.subComentarios.isEmpty()){
+			for(Iterator<Comentario> iteratorComentario = this.subComentarios.iterator(); iteratorComentario.hasNext();) {
+				Comentario subcomentario = iteratorComentario.next();
+				subcomentario.eliminarSubComentarios();
+				iteratorComentario.remove();
+			}
+		}	
 	}
 
 	

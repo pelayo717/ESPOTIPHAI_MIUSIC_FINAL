@@ -29,10 +29,24 @@ public abstract class ContenidoComentable extends Contenido {
 	 */
 	public Status anyadirComentario(Comentario comentario) {
 		if(comentario == null) {
-			System.out.print("adei");
+			return Status.ERROR;
 		}
 		if (this.comentarios.add(comentario) == true) {
 			return Status.OK;
+		} else {
+			return Status.ERROR;
+		}
+	}
+	
+	
+	public Status eliminarComentario(Comentario comentario) {
+		if(comentario == null) {
+			return Status.ERROR;
+		}
+		if (this.comentarios.contains(comentario)== true) {
+			comentario.eliminarSubComentarios();
+			this.comentarios.remove(comentario);
+			return Status.OK;	
 		} else {
 			return Status.ERROR;
 		}
