@@ -12,18 +12,19 @@ import modelo.usuario.*;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 /**
- *	Clase Album con herencia de ContenidoComentable
+ * Clase Album con herencia de ContenidoComentable, en la 
+ * que se va a implementar toda la funcionalidad del album
  */
 public class Album extends ContenidoComentable {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Cancion> contenido = new ArrayList<Cancion>();
 
 	/**
-	 *	Constructor de Album con herencia de ContenidoComentable
-	 *	@param contenido  canciones del album
+	 * Constructor de Album con herencia de ContenidoComentable
+	 * @param anyo: argumento de tipo entero que determina el año del album  
+	 * @param titulo: titulo  del album que se pasa como argumento en su creacion
+	 * @param cotenido: argumento de tipo arraylist que contiene el contenido que va a tener el album
 	 * @throws Mp3PlayerException 
 	 * @throws FileNotFoundException 
 	 */
