@@ -223,6 +223,7 @@ public class Perfil extends JPanel{
 		this.seguidos.setVisible(true);
 		this.susSeguidores.setVisible(true);
 		this.susSeguidos.setVisible(true);
+		this.reproRestantes.setVisible(true);
 	}
 			
 	public void setAdministrador() {
@@ -256,7 +257,15 @@ public class Perfil extends JPanel{
 		this.numeroSeguidos.setVisible(true);
 		this.numeroSeguidores.setVisible(true);
 		this.botonEliminarCuenta.setVisible(true);
+		this.botonCerrarSesion.setBounds(screenSize.width/2 + 30, 410, 150, 30);
+		this.seleccionarSeguido.setVisible(true);
+		this.seleccionarSeguidor.setVisible(true);
+		this.seguidores.setVisible(true);
+		this.seguidos.setVisible(true);
+		this.susSeguidores.setVisible(true);
+		this.susSeguidos.setVisible(true);
 		this.botonHacersePRO.setVisible(false);	
+		this.reproRestantes.setVisible(false);
 		this.botonCerrarSesion.setBounds(screenSize.width/2 + 30, 410, 150, 30);
 	}
 		 

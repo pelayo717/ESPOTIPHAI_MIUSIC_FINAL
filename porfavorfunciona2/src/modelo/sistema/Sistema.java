@@ -364,7 +364,7 @@ public class Sistema implements Serializable{
 						 Usuario seguidos = iteratorSeguido.next();
 						 iteratorSeguido.remove();
 						 if(seguidos.eliminarSeguidor(usuario)==true) {
-							 usuario.enviarNotificacion(seguidos, "El usuario " + usuario.getNombreUsuario() + " le ha dejado de seguir");
+							 usuario.enviarNotificacion(seguidos, "El autor " + usuario.getNombreAutor() + " le ha dejado de seguir");
 						 }
 					 }
 					 					 
@@ -373,7 +373,7 @@ public class Sistema implements Serializable{
 						Usuario seguidores = iteratorSeguidores.next();
 						iteratorSeguidores.remove();
 						if(seguidores.eliminarSeguido(usuario) == true){
-							usuario.enviarNotificacion(seguidores, "El usuario " + usuario.getNombreUsuario() + " ha eliminado su cuenta");
+							usuario.enviarNotificacion(seguidores, "El autor " + usuario.getNombreAutor() + " ha eliminado su cuenta");
 						}
 					 }
 					 
@@ -809,8 +809,9 @@ public class Sistema implements Serializable{
 	 * @param NombreMp3
 	 * @param aux 
 	 * @return retorna OK si la modificacion se llevo de manera satisfactoria, y ERROR si no fue asi
+	 * @throws FileNotFoundException 
 	 */
-	public Status modificarCancion(Cancion c,String NombreMp3, String aux) {
+	public Status modificarCancion(Cancion c,String NombreMp3, String aux) throws FileNotFoundException {
 		LocalDate d = LocalDate.now();
 				
 		if(sistema.getUsuarioActual() != null && sistema.getAdministrador() == false && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
@@ -822,7 +823,7 @@ public class Sistema implements Serializable{
 				if(c.esMP3() == true){
 										
 					c.setDuracion(c.devolverDuracion());
-					Sistema.sistema.getUsuarioActual().enviarNotificacion(Sistema.sistema.getUsuariosTotales().get(0), "El usuario " + Sistema.sistema.getUsuarioActual().getNombreUsuario() + " ha modificado su cancion " + c.getTitulo() + " dentro del plazo permitido");
+					Sistema.sistema.getUsuarioActual().enviarNotificacion(Sistema.sistema.getUsuariosTotales().get(0), "El autor " + Sistema.sistema.getUsuarioActual().getNombreAutor() + " ha modificado su cancion " + c.getTitulo() + " dentro del plazo permitido");
 					return Status.OK;
 				}
 			}
@@ -915,7 +916,7 @@ public class Sistema implements Serializable{
 							Lista lista = iteratorListas.next();
 							if(lista.eliminarContenido(cancion_eliminar) == Status.OK) {
 								if(usuarios_totales.equals(Sistema.sistema.getUsuarioActual()) == false) {
-									sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado la cancion " + nombre);
+									sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El autor " + sistema.getUsuarioActual().getNombreAutor() + " ha eliminado la cancion " + nombre);
 								}
 							}
 						}
@@ -972,7 +973,7 @@ public class Sistema implements Serializable{
 			return null;
 		}
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {			
-			Album a = new Album(anyo,titulo,sistema.usuario_actual,new ArrayList<Cancion>());
+			Album a = new Album(anyo,titulo,sistema.usuario_actual);
 			for(Album album:sistema.usuario_actual.getAlbumes()) {
 				if(album.getTitulo().equals(titulo)== true) {
 					return null;
@@ -1029,7 +1030,7 @@ public class Sistema implements Serializable{
 							if(usuarios_totales.equals(Sistema.sistema.getUsuarioActual()) == false) {
 								
 
-								sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha eliminado el album " + nombre);
+								sistema.getUsuarioActual().enviarNotificacion(usuarios_totales, "El autor " + sistema.getUsuarioActual().getNombreAutor() + " ha eliminado el album " + nombre);
 							}
 						}
 					}
@@ -1423,7 +1424,7 @@ public class Sistema implements Serializable{
 				
 				for(Usuario u_t:sistema.getUsuariosTotales()) {
 					if(u_t.getSeguidos().contains(c.getAutor()) == true) {
-						sistema.getUsuarioActual().enviarNotificacion(u_t, "El autor " + c.getAutor() + " ha subido la cancion " + c.getTitulo());
+						sistema.getUsuarioActual().enviarNotificacion(u_t, "El autor " + c.getAutor().getNombreAutor() + " ha subido la cancion " + c.getTitulo());
 					}
 				}
 			
@@ -1460,7 +1461,7 @@ public class Sistema implements Serializable{
 			c.setEstado(EstadoCancion.PLAGIO);
 			c.getAutor().bloqueoCuentaPorReporte();
 			sistema.getUsuariosTotales().get(0).enviarNotificacion(c.getAutor(), "Su cancion " + c.getTitulo() + " ha sido bloqueada por un reporte y usted de manera temporal. Comprobaremos esta informacion con la mayor brevedad porsible.");
-			sistema.getUsuarioActual().enviarNotificacion(sistema.getUsuariosTotales().get(0), "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha reportado la cancion " + c.getTitulo() + ".");
+			sistema.getUsuarioActual().enviarNotificacion(sistema.getUsuariosTotales().get(0), "El usuario " + sistema.getUsuarioActual().getNombreUsuario() + " ha reportado la cancion " + c.getTitulo());
 			
 			sistema.getReportesTotales().add(r);
 			

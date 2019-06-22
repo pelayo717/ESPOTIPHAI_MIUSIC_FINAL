@@ -12,9 +12,7 @@ import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 public abstract class ContenidoComentable extends Contenido {
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Comentario> comentarios = new ArrayList<Comentario>();
 	
@@ -38,7 +36,11 @@ public abstract class ContenidoComentable extends Contenido {
 		}
 	}
 	
-	
+	/**
+	 * Funcion para eliminar un comentario del array de comentarios de un album o cancion
+	 * @param comentario: comentario que se desea eliminar
+	 * @return OK si se elimino correctamente, ERROR en otro caso
+	 */
 	public Status eliminarComentario(Comentario comentario) {
 		if(comentario == null) {
 			return Status.ERROR;
@@ -55,7 +57,7 @@ public abstract class ContenidoComentable extends Contenido {
 
 
 	/**
-	 *	Getter de comentarios del contenido omentable
+	 *	Funcion que retorna un array de comentarios del contenido omentable
 	 * 	@return  un ArrayList de los comentarios que tiene el contenido comentable
 	 */
 	public ArrayList<Comentario> getComentarios() {
@@ -63,23 +65,9 @@ public abstract class ContenidoComentable extends Contenido {
 	}
 	
 	
-	
-
-	//GETTERS Y SETTERS
-	
-	
-	
 	/**
-	 * Getter de coemntarios
-	 * @return comentarios
-	 */
-	public ArrayList<Comentario> getComentarios(ArrayList<Comentario> comentarios) {
-		return comentarios;
-	}
-
-	/**
-	 * Setter de fecha
-	 * @param fecha del comentario
+	 * Funcion que establece un array de comentarios para un contenido comentable
+	 * @param arraylist de comentarios a establecer
 	 */
 	public void setComentarios(ArrayList<Comentario> comentarios) {
 		if (comentarios == null){

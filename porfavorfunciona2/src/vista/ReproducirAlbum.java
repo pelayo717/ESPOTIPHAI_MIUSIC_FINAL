@@ -307,7 +307,10 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		misCanciones = album.getContenido().toArray(new Cancion[album.getContenido().size()]);
 		if(misCanciones != null) {
 			for(int i=0; i < misCanciones.length;i++) {
-				model2.addElement("Titulo: " + misCanciones[i].getTitulo() + " // Duracion: " + misCanciones[i].getDuracion() + " // Estado: " + misCanciones[i].getEstado().toString());
+				int horas = (int) (misCanciones[i].getDuracion() / 3600);
+			    int minutos = (int) ((misCanciones[i].getDuracion()-horas*3600)/60);
+			    int segundos = (int) (misCanciones[i].getDuracion()-(horas*3600+minutos*60));
+				model2.addElement("Titulo: " + misCanciones[i].getTitulo() + " // Duracion HH-MM-SS: " + horas + "-" + minutos + "-" + segundos + " // Estado: " + misCanciones[i].getEstado().toString());
 			}
 		}
 	 }

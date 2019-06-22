@@ -108,7 +108,7 @@ public class ControladorReproducirAlbum implements ActionListener{
 				int response;
 				String[] options;				
 				if(vista.getComentarioSeleccionado() != null) {
-					if(vista.getComentarioSeleccionado().getComentador() == Sistema.sistema.getUsuarioActual()) {
+					if(vista.getComentarioSeleccionado().getComentador().equals(Sistema.sistema.getUsuarioActual().getNombreUsuario())) {
 						options = new String[] {"Responder","Eliminar","Cerrar"};
 					} else {
 						options = new String[] {"Responder","Cerrar"};
@@ -116,12 +116,12 @@ public class ControladorReproducirAlbum implements ActionListener{
 					if(vista.getComentarioSeleccionado().getComentador() == null) {
 						response = JOptionPane.showOptionDialog(Ventana.ventana, "Autor: Desconocido" + "\nComentario: " + vista.getComentarioSeleccionado().getTexto() + "\nFecha: " + vista.getComentarioSeleccionado().getFecha() + "\nHora/Minuto/Segundo: " + vista.getComentarioSeleccionado().getHora() + "/" + vista.getComentarioSeleccionado().getMinuto() + "/" + vista.getComentarioSeleccionado().getSegundo(), "Comentario", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 					}else {
-						response = JOptionPane.showOptionDialog(Ventana.ventana, "Autor: " + vista.getComentarioSeleccionado().getComentador().getNombreUsuario() + "\n" + "Comentario: " + vista.getComentarioSeleccionado().getTexto() + "\nFecha: " + vista.getComentarioSeleccionado().getFecha() + "\nHora/Minuto/Segundo: " + vista.getComentarioSeleccionado().getHora() + "/" + vista.getComentarioSeleccionado().getMinuto() + "/" + vista.getComentarioSeleccionado().getSegundo(), "Comentario", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+						response = JOptionPane.showOptionDialog(Ventana.ventana, "Autor: " + vista.getComentarioSeleccionado().getComentador() + "\n" + "Comentario: " + vista.getComentarioSeleccionado().getTexto() + "\nFecha: " + vista.getComentarioSeleccionado().getFecha() + "\nHora/Minuto/Segundo: " + vista.getComentarioSeleccionado().getHora() + "/" + vista.getComentarioSeleccionado().getMinuto() + "/" + vista.getComentarioSeleccionado().getSegundo(), "Comentario", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 					}
 					if(response == 0) {
 						String comentarioEscrito = JOptionPane.showInputDialog("Escribe tu comentario");
 						if(comentarioEscrito.length() > 0) {
-							Comentario nuevoComentario = new Comentario(comentarioEscrito, Sistema.sistema.getUsuarioActual());
+							Comentario nuevoComentario = new Comentario(comentarioEscrito, Sistema.sistema.getUsuarioActual().getNombreUsuario());
 							vista.getComentarioSeleccionado().anyadirSubComentario(nuevoComentario);
 							vista.setTree();
 						}else {
@@ -139,7 +139,12 @@ public class ControladorReproducirAlbum implements ActionListener{
 			} else if(((JButton)e.getSource()).getText() == "Añadir Comentario") {
 				String comentarioEscrito = JOptionPane.showInputDialog("Escribe tu comentario");
 				if(comentarioEscrito.length() > 0) {
-					Comentario nuevoComentario = new Comentario(comentarioEscrito, Sistema.sistema.getUsuarioActual());
+					Comentario nuevoComentario;
+					if(Sistema.sistema.getUsuarioActual() != null) {
+						nuevoComentario = new Comentario(comentarioEscrito, Sistema.sistema.getUsuarioActual().getNombreUsuario());
+					}else {
+						nuevoComentario = new Comentario(comentarioEscrito, "Desconocido");
+					}					
 					vista.insertarComentario(nuevoComentario);
 					vista.setTree();
 				}else {
@@ -158,6 +163,8 @@ public class ControladorReproducirAlbum implements ActionListener{
 						JOptionPane.showMessageDialog(Ventana.ventana,"Esta cancion esta categorizada de Explicita, al no ser un usuario registrado desconocemos si cumple o no la edad minima para poder escucharla");
 					}else if(variable == EstadoReproduccion.OTRO) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Esta cancion esta bloqueada o ha sido eliminada del sistema");
+					}else if(variable == EstadoReproduccion.VACIA) {
+						JOptionPane.showMessageDialog(Ventana.ventana,"Es posible que el album este vacio, o existan canciones que usted no esta autorizado a escuchar");
 					}
 					
 					
@@ -178,7 +185,7 @@ public class ControladorReproducirAlbum implements ActionListener{
 				if(vista.getMisCanciones().length > 0) {
 					int indice = vista.getLista_canciones().getSelectedIndex();
 					if(indice == -1) {
-						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Eliminar Cancion debe seleccionar una");
+						JOptionPane.showMessageDialog(Ventana.ventana,"Antes de presionar Retirar Cancion debe seleccionar una");
 					}else {
 						Cancion[] entrantes = vista.getMisCanciones();
 						Album entrante = vista.getAlbum();

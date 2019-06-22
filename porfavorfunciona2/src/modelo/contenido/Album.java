@@ -25,25 +25,21 @@ public class Album extends ContenidoComentable {
 	 * @param anyo: argumento de tipo entero que determina el año del album  
 	 * @param titulo: titulo  del album que se pasa como argumento en su creacion
 	 * @param cotenido: argumento de tipo arraylist que contiene el contenido que va a tener el album
-	 * @throws Mp3PlayerException 
-	 * @throws FileNotFoundException 
+	 * @throws Mp3PlayerException provocada por una incorrecta creacion delreproductor
+	 * @throws FileNotFoundException provocada por no encontrar el fichero que se esta solicitando
 	 */
-	public Album (int anyo, String titulo,  Usuario autor, ArrayList<Cancion> contenido) throws FileNotFoundException, Mp3PlayerException {
+	public Album (int anyo, String titulo,  Usuario autor) throws FileNotFoundException, Mp3PlayerException {
 		super(anyo, titulo, autor, new ArrayList<Comentario>());
-		this.setContenido(contenido);
 		this.setDuracion(this.calcularTiempo());
 		
 	}
+	
 	/**
-	 *	Funcion para calcular el tiempo que dura el album
-	 * 	@return  duracion la suma de las duraciones de sus contenidos
+	 *	Getter de contenido del album
+	 * 	@return  un ArrayList del contenido del album, este vacio o tenga algo
 	 */
-	public double calcularTiempo() {
-		double duracion = 0;
-		for(Cancion cancion: contenido) {
-			duracion += cancion.getDuracion();
-		}
-		return duracion;
+	public ArrayList<Cancion> getContenido() {
+		return contenido;
 	}
 	
 	/**
@@ -65,6 +61,18 @@ public class Album extends ContenidoComentable {
 	}
 	
 	/**
+	 *	Funcion para calcular el tiempo que dura el album
+	 * 	@return  duracion la suma de las duraciones de sus contenidos
+	 */
+	public double calcularTiempo() {
+		double duracion = 0;
+		for(Cancion cancion: contenido) {
+			duracion += cancion.getDuracion();
+		}
+		return duracion;
+	}
+	
+	/**
 	 *	Funcion para eliminar un contenido de el album
 	 * 	@return  OK si no hay errores y ERROR de lo contrario
 	 */
@@ -81,60 +89,21 @@ public class Album extends ContenidoComentable {
 		}
 	}
 	
-	
-	/**
-	 *	Funcion para eliminar los contenidos de estado eliminado dEL aLBUM
-	 * 	@return  OK si no hay errores y ERROR de lo contrario
-	 */
-	public Status checkContenido() {
-		for(Cancion c: contenido) {
-			if (c.getEstado() == EstadoCancion.ELIMINADA) {
-				if (this.eliminarContenido(c) == Status.ERROR) {
-					return Status.ERROR;
-				}
-			}
-		}
-		return Status.OK;
-			
-			
-	}
-	
-	/**
-	 *	Setter de contenido de la lista
-	 * 	@param  contenido ArrayList del contenido de la lista
-	 */
-	public void setContenido(ArrayList<Cancion> contenido) {
-		if (contenido == null) {
-			this.contenido = new ArrayList<Cancion>();
-		} else {
-			this.contenido = contenido;
-		}
-	}
-	
 
-	/**
-	 *	Getter de contenido de la lista
-	 * 	@return  un ArrayList del contenido de la lista
-	 */
-	public ArrayList<Cancion> getContenido() {
-		return contenido;
-	}
+	
 	
 	/**
 	 * Esta funcion permite a cualquier usuario reproducir un album de cancion en cancion si es un usuario premium el que lo realiza o de manera limita si no lo es
-	 * @param a
 	 * @throws InterruptedException
 	 * @throws Mp3PlayerException 
 	 * @throws FileNotFoundException 
 	 * @throws ExcesoReproduccionesExcepcion
 	 */
 	
-	@SuppressWarnings("unlikely-arg-type")
 	public EstadoReproduccion reproducirAlbum() throws InterruptedException, FileNotFoundException, Mp3PlayerException{
 		
-		EstadoReproduccion variable;
 		LocalDate fecha_actual = LocalDate.now();
-		
+		int contador=0;
 		try {
 				
 			super.parar();
@@ -148,39 +117,50 @@ public class Album extends ContenidoComentable {
 					
 					if(canciones_reproduciendose.getEstado() == EstadoCancion.EXPLICITA && intervalo.getYears() < 18) {
 						continue;
-						// EstadoReproduccion.MENOR;
 					}
 					
-					canciones_reproduciendose.reproducirBasico();
-
-					if(canciones_reproduciendose.getAutor().getAlbumes().contains(canciones_reproduciendose) == false) {
-						canciones_reproduciendose.getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());
-					}
-
+					super.getReproductor().add(canciones_reproduciendose.getNombreMP3());
+					contador++;
 				}
-													
+				
+				if(this.getAutor().equals(Sistema.sistema.getUsuarioActual()) == false) {
+					this.getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());
+				}
+				
+				if(contador == 0) {
+					return EstadoReproduccion.VACIA;
+				}else {
+					super.reproducir();
+				}
+												
 			}else {
 				if(Sistema.sistema.getUsuarioActual() != null) {
+					
 					if(Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
+						
 						Period intervalo = Period.between(Sistema.sistema.getUsuarioActual().getFechaNacimiento(), fecha_actual);
 						for(Cancion canciones_reproduciendose:this.getContenido()) {
 							
-							if(Sistema.sistema.getUsuarioActual().getContenidoEscuchadoSinSerPremium() == Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()) {
+							if(canciones_reproduciendose.getEstado() == EstadoCancion.EXPLICITA && intervalo.getYears() < 18) {
 								continue;
 							}
 							
-							if(canciones_reproduciendose.getEstado() == EstadoCancion.EXPLICITA && intervalo.getYears() < 18) {
-								return EstadoReproduccion.MENOR;
-							}
-							
-							canciones_reproduciendose.reproducirBasico();
-							
-							Sistema.sistema.getUsuarioActual().addContenidoEscuchadoSinSerPremium();
-							if(canciones_reproduciendose.getAutor().getAlbumes().contains(canciones_reproduciendose) == false) {
-								canciones_reproduciendose.getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());
-							}
-
+							super.getReproductor().add(canciones_reproduciendose.getNombreMP3());
+							contador++;
+					
 						}
+						
+						if(this.getAutor().equals(Sistema.sistema.getUsuarioActual()) == false) {
+							this.getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());
+						}
+												
+						if(contador == 0) {
+							return EstadoReproduccion.VACIA;
+						}else {
+							Sistema.sistema.getUsuarioActual().addContenidoEscuchadoSinSerPremium();
+							super.reproducir();
+						}
+
 						
 					}else {
 						return EstadoReproduccion.REPRODUCCIONES_AGOTADAS;
@@ -188,11 +168,24 @@ public class Album extends ContenidoComentable {
 				}else {
 					if(Sistema.sistema.getContenidoEscuchadoSinRegistrarse() < Sistema.sistema.getMaxReproduccionesUsuariosNoPremium()){
 						for(Cancion canciones_reproduciendose:this.getContenido()) {
-							variable = canciones_reproduciendose.reproducirCancion();
-							if(variable != null) {
-								return variable;
+							
+							if(canciones_reproduciendose.getEstado() == EstadoCancion.EXPLICITA) {
+								continue;
 							}
-						}	
+							
+							super.getReproductor().add(canciones_reproduciendose.getNombreMP3());
+							contador++;
+						}
+						
+						this.getAutor().sumarReproduccion(Sistema.sistema.getUmbralReproducciones());
+												
+						if(contador == 0) {
+							return EstadoReproduccion.VACIA;
+						}else {
+							Sistema.sistema.addContenidoEscuchadoSinRegistrarse();
+							super.reproducir();
+						}
+
 						
 					}else {
 						return EstadoReproduccion.REPRODUCCIONES_AGOTADAS;
@@ -201,30 +194,9 @@ public class Album extends ContenidoComentable {
 			}
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
-	}
-	
-	
-	
-	
-	/**
-	 * Esta funcion que la puede utilizar los usuario registrados les permite escribir un comentario sobre un album
-	 * @param comentario
-	 * @param album
-	 * @return OK si se a�adio correctamente al album o ERROR si no fue asi
-	 */
-	
-	public Status anyadirComentarioAlbum(Comentario comentario) {
-		if((comentario == null) && (Sistema.sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO && Sistema.sistema.getUsuarioActual() != null)) {
-			return Status.ERROR;
-		}else {
-			return this.anyadirComentario(comentario);
-		}
-	
-	}
-	
+	}	
 	
 }

@@ -8,7 +8,9 @@ import pads.musicPlayer.Mp3Player;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 /**
- *	Clase Contenido
+ *	Clase abstacta que engloba a cancio,album,lista y contenido comentable.En esta implementamos las
+ *	funciones comunes a las demas y mas basicas. Se trabaja con los metadatos de los demas productos
+ *	como titulo del contenido o autor y tambien se desarollan las funcionalidades basicas del reproductor
  */
 public abstract class Contenido implements Serializable {
 	
@@ -22,9 +24,9 @@ public abstract class Contenido implements Serializable {
 	private Usuario autor;
 	
 	/**
-	 *	Constructor de Contenido
-	 *	@param estado  estado de la cancion
-	 *	@param reproducible  si la cacion es o no reproducible
+	 * Constructor de Contenido
+	 * @param estado  estado de la cancion
+	 * @param reproducible  si la cacion es o no reproducible
 	 * @throws Mp3PlayerException 
 	 * @throws FileNotFoundException 
 	 */

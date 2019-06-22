@@ -101,10 +101,6 @@ public class ControladorReproducirLista implements ActionListener{
 				
 			} else if(((JButton)e.getSource()).getText() == "Limpiar Buscador") {
 				vista.limpiarBuscador();
-			} else if(((JButton)e.getSource()).getText() == "Añadir Comentario") {
-				String comentarioEscrito = JOptionPane.showInputDialog("Escribe tu comentario");
-				Comentario nuevoComentario = new Comentario(comentarioEscrito, Sistema.sistema.getUsuarioActual());
-				Sistema.sistema.getCancionTotales().get(0).anyadirComentario(nuevoComentario);
 			} else if(((JButton)e.getSource()).getText() == "Reportar") {
 				vista.limpiarBuscador();
 			} else if(((JButton)e.getSource()).getText() == "play") {
@@ -120,6 +116,8 @@ public class ControladorReproducirLista implements ActionListener{
 						JOptionPane.showMessageDialog(Ventana.ventana,"Esta cancion esta categorizada de Explicita, al no ser un usuario registrado desconocemos si cumple o no la edad minima para poder escucharla");
 					}else if(variable == EstadoReproduccion.OTRO) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Esta cancion esta bloqueada o ha sido eliminada del sistema");
+					}else if(variable == EstadoReproduccion.VACIA) {
+						JOptionPane.showMessageDialog(Ventana.ventana,"Es posible que la lista este vacia, o exista contenido que usted no esta autorizado a escuchar");
 					}
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();

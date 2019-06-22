@@ -1,6 +1,7 @@
 package controlador;
 
 
+import java.awt.HeadlessException;
 import java.awt.event.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -110,7 +111,7 @@ public class ControladorReproducirCancion implements ActionListener{
 				int response;
 				String[] options;
 				if(vista.getComentarioSeleccionado() != null) {
-					if(vista.getComentarioSeleccionado().getComentador() == Sistema.sistema.getUsuarioActual()) {
+					if(vista.getComentarioSeleccionado().getComentador().equals(Sistema.sistema.getUsuarioActual().getNombreUsuario())) {
 						options = new String[] {"Responder","Eliminar","Cerrar"};
 					} else {
 						options = new String[] {"Responder","Cerrar"};
@@ -118,12 +119,12 @@ public class ControladorReproducirCancion implements ActionListener{
 					if(vista.getComentarioSeleccionado().getComentador() == null) {
 						response = JOptionPane.showOptionDialog(Ventana.ventana, "Autor: Desconocido" + "\nComentario: " + vista.getComentarioSeleccionado().getTexto() + "\nFecha: " + vista.getComentarioSeleccionado().getFecha() + "\nHora/Minuto/Segundo: " + vista.getComentarioSeleccionado().getHora() + "/" + vista.getComentarioSeleccionado().getMinuto() + "/" + vista.getComentarioSeleccionado().getSegundo(), "Comentario", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 					}else {
-						response = JOptionPane.showOptionDialog(Ventana.ventana, "Autor: " + vista.getComentarioSeleccionado().getComentador().getNombreUsuario() + "\n" + "Comentario: " + vista.getComentarioSeleccionado().getTexto() + "\nFecha: " + vista.getComentarioSeleccionado().getFecha() + "\nHora/Minuto/Segundo: " + vista.getComentarioSeleccionado().getHora() + "/" + vista.getComentarioSeleccionado().getMinuto() + "/" + vista.getComentarioSeleccionado().getSegundo(), "Comentario", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+						response = JOptionPane.showOptionDialog(Ventana.ventana, "Autor: " + vista.getComentarioSeleccionado().getComentador() + "\n" + "Comentario: " + vista.getComentarioSeleccionado().getTexto() + "\nFecha: " + vista.getComentarioSeleccionado().getFecha() + "\nHora/Minuto/Segundo: " + vista.getComentarioSeleccionado().getHora() + "/" + vista.getComentarioSeleccionado().getMinuto() + "/" + vista.getComentarioSeleccionado().getSegundo(), "Comentario", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 					}
 					if(response == 0) {
 						String comentarioEscrito = JOptionPane.showInputDialog("Escribe tu comentario");
 						if(comentarioEscrito.length() > 0) {
-							Comentario nuevoComentario = new Comentario(comentarioEscrito, Sistema.sistema.getUsuarioActual());
+							Comentario nuevoComentario = new Comentario(comentarioEscrito, Sistema.sistema.getUsuarioActual().getNombreUsuario());
 							vista.getComentarioSeleccionado().anyadirSubComentario(nuevoComentario);
 							vista.setTree();
 						}else {
@@ -141,7 +142,12 @@ public class ControladorReproducirCancion implements ActionListener{
 			} else if(((JButton)e.getSource()).getText() == "Añadir Comentario") {
 				String comentarioEscrito = JOptionPane.showInputDialog("Escribe tu comentario");
 				if(comentarioEscrito.length() > 0) {
-					Comentario nuevoComentario = new Comentario(comentarioEscrito, Sistema.sistema.getUsuarioActual());
+					Comentario nuevoComentario;
+					if(Sistema.sistema.getUsuarioActual() != null) {
+						nuevoComentario = new Comentario(comentarioEscrito, Sistema.sistema.getUsuarioActual().getNombreUsuario());
+					}else {
+						nuevoComentario = new Comentario(comentarioEscrito, "Desconocido");
+					}
 					Ventana.ventana.reproducirCancion.insertarComentario(nuevoComentario);
 					Ventana.ventana.reproducirCancion.setTree();
 				}else {
@@ -268,11 +274,16 @@ public class ControladorReproducirCancion implements ActionListener{
 					//POR EL MOMENTO SUPONEMOS QUE SOLO ES COSA DEL MP3
 					Cancion c = vista.getCancion();
 					
-					if(Sistema.sistema.modificarCancion(c, temporal,escogido.getName()) == Status.OK) {
-						JOptionPane.showMessageDialog(Ventana.ventana,"La cancion " + c.getTitulo() + " ha sido modificada correctamente");
-						Ventana.ventana.showReproducirCancion(c);
-					}else {
-						JOptionPane.showMessageDialog(Ventana.ventana,"La cancion no se ha podido modificar");
+					try {
+						if(Sistema.sistema.modificarCancion(c, temporal,escogido.getName()) == Status.OK) {
+							JOptionPane.showMessageDialog(Ventana.ventana,"La cancion " + c.getTitulo() + " ha sido modificada correctamente");
+							Ventana.ventana.showReproducirCancion(c);
+						}else {
+							JOptionPane.showMessageDialog(Ventana.ventana,"La cancion no se ha podido modificar");
+						}
+					} catch (HeadlessException | FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
 			    	
 			    }else {

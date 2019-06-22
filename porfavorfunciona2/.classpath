@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="jl1.0.1.jar"/>
 	<classpathentry kind="lib" path="MP3Player.jar"/>
 	<classpathentry kind="lib" path="TeleChargeAndPaySystem8.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
