@@ -278,6 +278,7 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		        }
 			}
 			treeModel = new DefaultTreeModel(root);
+			((DefaultTreeModel)comentariosTree.getModel()).reload(root);
 			treeModel.reload();
 			expandAllNodes(comentariosTree, 0, comentariosTree.getRowCount());
 		}

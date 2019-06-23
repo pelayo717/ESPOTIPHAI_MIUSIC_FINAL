@@ -5,6 +5,7 @@ import java.awt.HeadlessException;
 import java.awt.event.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -110,10 +111,23 @@ public class ControladorReproducirCancion implements ActionListener{
 			} else if((((JButton)e.getSource()).getText() == "Ver Comentario")) {
 				int response;
 				String[] options;
+				boolean editable = true;
+				if( LocalDateTime.now().getYear() - vista.getComentarioSeleccionado().getFecha().getYear() >= 1) {
+				} else if( LocalDateTime.now().getMonthValue() - vista.getComentarioSeleccionado().getFecha().getMonthValue() >= 1) {
+					editable = false;
+				} else if( LocalDateTime.now().getDayOfMonth() - vista.getComentarioSeleccionado().getFecha().getDayOfMonth() >= 1) {
+					editable = false;
+				} else if( LocalDateTime.now().getHour() - vista.getComentarioSeleccionado().getHora() >= 1) {
+					editable = false;
+				} else if( LocalDateTime.now().getMinute() - vista.getComentarioSeleccionado().getMinuto() >= 30) {
+					editable = false;
+				} 
 				if(vista.getComentarioSeleccionado() != null) {
-					if(vista.getComentarioSeleccionado().getComentador().equals(Sistema.sistema.getUsuarioActual().getNombreUsuario())) {
+					if(vista.getComentarioSeleccionado().getComentador().equals(Sistema.sistema.getUsuarioActual().getNombreUsuario()) && editable ) {
+						options = new String[] {"Responder","Editar","Cerrar"};
+					} else if (vista.getComentarioSeleccionado().getComentador().equals(Sistema.sistema.getUsuarioActual().getNombreUsuario()) && !editable ) {
 						options = new String[] {"Responder","Eliminar","Cerrar"};
-					} else {
+					}  else {
 						options = new String[] {"Responder","Cerrar"};
 					}
 					if(vista.getComentarioSeleccionado().getComentador() == null) {
@@ -132,6 +146,10 @@ public class ControladorReproducirCancion implements ActionListener{
 						}
 					} else if (response == 1 && options[1] == "Eliminar") {
 						vista.getCancion().eliminarComentario(vista.getComentarioSeleccionado());
+						vista.setTree();
+					}  else if (response == 1 && options[1] == "Editar") {
+						String comentarioEscrito = JOptionPane.showInputDialog("Edita tu comentario", vista.getComentarioSeleccionado().getTexto());
+						vista.getComentarioSeleccionado().setTexto(comentarioEscrito);
 						vista.setTree();
 					}
 				}else {
