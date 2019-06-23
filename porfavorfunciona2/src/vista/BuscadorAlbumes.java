@@ -14,11 +14,14 @@ import javax.swing.SwingConstants;
 
 import modelo.contenido.Album;
 
+/**
+ * Clase en la que se implementa la vista BuscadorAlbumes con todo
+ * lo necesario para cumplir los requisitos impuestos
+ */
+
 public class BuscadorAlbumes extends PantallaPrincipal{//99.9% esta terminado
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	
 	private DefaultListModel<String> model1;
@@ -34,6 +37,10 @@ public class BuscadorAlbumes extends PantallaPrincipal{//99.9% esta terminado
 	public JButton seleccionarAlbum;
 	
 	
+	/**
+	 * Constructor de la clase BuscadorAlbumes donde se inicializan
+	 * todos los atributos con lo valores correspondientes 
+	 */
 	public BuscadorAlbumes() {
 		
 		super();
@@ -79,7 +86,11 @@ public class BuscadorAlbumes extends PantallaPrincipal{//99.9% esta terminado
 		this.add(seleccionarAlbum);
 	}
 	
-		
+	
+	/**
+	 * Funcion que asgina a cada boton la accion que se pasa como argumento
+	 * @param c: accion que se va a pasar a cada boton para que luego sse asigne el usuario determinado
+	 */
 	public void setControlador(ActionListener c) {
 		this.getBotonIzquierdaArriba().addActionListener(c);
 		this.getBotonIzquierdaMedio().addActionListener(c);
@@ -89,17 +100,26 @@ public class BuscadorAlbumes extends PantallaPrincipal{//99.9% esta terminado
 		this.getBotonLimpiarBuscador().addActionListener(c);
 	}
 	
+	/**
+	 * Funcion que cambia el texto de unos determinados botones para ponerlos el 
+	 * texto a lo necesario para cuando el usuario si que esa registrado
+	 */
 	public void setUsuarioRegistrado() {
 		this.getBotonIzquierdaArriba().setText("Ver Perfil");
 		this.getBotonIzquierdaMedio().setText("Inicio");
 		this.getBotonIzquierdaAbajo().setVisible(false);
 	}
-			
+	
+	/**
+	 * Funcion que cambia el texto de unos determinados botones para ponerlos el 
+	 * texto a lo necesario para cuando el usuario no esta registrado
+	 */
 	public void setUsuarioNoRegistrado() {
 		this.getBotonIzquierdaArriba().setText("Iniciar Sesion");
 		this.getBotonIzquierdaMedio().setText("Registro");
 		this.getBotonIzquierdaAbajo().setVisible(true);
 	}
+	
 	
 	public static long getSerialversionuid() {
 		return serialVersionUID;
