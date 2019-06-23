@@ -92,14 +92,6 @@ class TestCancion {
 		assertEquals(true, prueba);
 	}
 	
-	/*@Test void TestEliminarFichero() {
-		if(x.eliminarAudio() == true) {
-			prueba = true;
-		}else {
-			prueba = false;
-		}
-		assertEquals(true, prueba);
-	}*/
 	
 	@Test
 	public void TestAnyadirComentario() {

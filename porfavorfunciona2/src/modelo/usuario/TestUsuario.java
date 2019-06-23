@@ -24,9 +24,8 @@ class TestUsuario {
 	Usuario d;
 	Album album;
 	Cancion cancion;
-	Lista l;
+	Lista lista;
 	Sistema a;
-	boolean explicita;
 	boolean prueba;
 	String nombre;
 	String path;
@@ -35,13 +34,17 @@ class TestUsuario {
 	@BeforeEach
 	public void before() throws Mp3PlayerException, IOException {
 		a = Sistema.getSistema();
+		
 		z = new Usuario("alex", "alex", LocalDate.of(1967, 12, 26), "alex");
 		d = new Usuario("pedro","pedro",LocalDate.of(1967, 12, 26),"pedro");
+		
 		nombre = "hive.mp3";
 		path = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs_junit" + System.getProperty("file.separator") + nombre;
 		cancion = new Cancion("hive",z,path,nombre);
 		album = new Album(LocalDate.now().getYear(), "deporte", z);
-		l = new Lista("por mi", z);
+		lista = new Lista("por mi", z);
+		
+		
 		a.getUsuariosTotales().add(z);
 		a.getUsuariosTotales().add(d);
 		a.iniciarSesion("alex", "alex");
@@ -230,25 +233,25 @@ class TestUsuario {
 	
 	@Test
 	public void TestAnyadirAListas() {
-		if(z.anyadirAListasPersonales(l) == true) {
+		if(z.anyadirAListasPersonales(lista) == true) {
 			prueba = true;
 		}else {
 			prueba = false;
 		}
 		assertEquals(true, prueba);
-		assertEquals(true, z.getListas().contains(l));	
+		assertEquals(true, z.getListas().contains(lista));	
 	}
 	
 	@Test
 	public void TestEliminarDeListas() {
-		z.anyadirAListasPersonales(l);
-		if(z.eliminarDeListasPersonales(l) == true) {
+		z.anyadirAListasPersonales(lista);
+		if(z.eliminarDeListasPersonales(lista) == true) {
 			prueba = true;
 		}else {
 			prueba = false;
 		}
 		assertEquals(true, prueba);
-		assertEquals(false, z.getListas().contains(l));	
+		assertEquals(false, z.getListas().contains(lista));	
 	}
 	
 	@Test
