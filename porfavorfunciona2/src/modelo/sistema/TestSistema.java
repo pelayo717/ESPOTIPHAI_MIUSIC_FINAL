@@ -1,13 +1,13 @@
 package modelo.sistema;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-class TestSistema {
+public class TestSistema {
 
 	@Test
-	final void test() {
+	public final void test() {
 		fail("Not yet implemented"); // TODO
 	}
 

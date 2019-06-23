@@ -1,10 +1,10 @@
-package modelo.reporte;
+package modelo.contenido;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class TestReporte {
+class Testcacac {
 
 	@Test
 	final void test() {

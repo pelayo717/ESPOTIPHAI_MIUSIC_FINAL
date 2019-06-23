@@ -8,9 +8,12 @@ import pads.musicPlayer.Mp3Player;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 /**
- *	Clase abstacta que engloba a cancio,album,lista y contenido comentable.En esta implementamos las
- *	funciones comunes a las demas y mas basicas. Se trabaja con los metadatos de los demas productos
- *	como titulo del contenido o autor y tambien se desarollan las funcionalidades basicas del reproductor
+ * Clase abstacta que engloba a cancio,album,lista y contenido comentable.En esta implementamos las
+ * funciones comunes a las demas y mas basicas. Se trabaja con los metadatos de los demas productos
+ * como titulo del contenido o autor y tambien se desarollan las funcionalidades basicas del reproductor
+ * @author pelayo rodriguez
+ * @author roberto pirck
+ * @author manuel salvador
  */
 public abstract class Contenido implements Serializable {
 	

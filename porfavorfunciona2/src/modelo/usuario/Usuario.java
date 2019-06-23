@@ -109,8 +109,8 @@ public class Usuario implements Serializable{
 	/*=================================================================================*/
 	
 	/**
-	 * 
-	 * @param aux
+	 * Funcion que establece el nombre de usuario al objeto
+	 * @param aux: cadena que recoge el nombre del usuario
 	 */
 	public void setNombreUsuario(String aux) {
 		this.nombre_usuario = aux;
@@ -125,8 +125,8 @@ public class Usuario implements Serializable{
 	}
 	
 	/**
-	 * 
-	 * @param aux
+	 * Funcion que establece el nombre de autor al objeto
+	 * @param aux: cadena que recoge el nombre del autor
 	 */
 	public void setNombreAutor(String aux) {
 		this.nombre_autor = aux;
@@ -141,8 +141,8 @@ public class Usuario implements Serializable{
 	}
 	
 	/**
-	 * 
-	 * @param aux
+	 * Funcion que establece la fecha de nacimiento del usuario
+	 * @param aux: objeto de tipo LocalDate que almacena la fecha de nacimiento
 	 */
 	public void setFechaNacimiento(LocalDate aux) {
 		this.fecha_nacimiento = aux;
@@ -157,8 +157,8 @@ public class Usuario implements Serializable{
 	}
 	
 	/**
-	 * 
-	 * @param aux
+	 * Funcion que establece la fecha de registro del usuario en el sistema
+	 * @param aux: objeto de tipo LocalDate que almacena la fecha en la que un usuario se registro
 	 */
 	public void setFechaRegistro(LocalDate aux) {
 		this.fecha_registro = aux;
@@ -173,24 +173,24 @@ public class Usuario implements Serializable{
 	}
 	
 	/**
-	 * 
-	 * @param aux
+	 * Funcion que establece la contrasenia que escogio el usuario en su cuenta
+	 * @param aux: cadena que almacena la contrasenia
 	 */
 	public void setContrasena(String aux) {
 		this.contrasena = aux;
 	}
 	
 	/**
-	 * Funcion que devuelve la constraseña del usuario
-	 * @return contraseña: devuelve la cadena donde se almaceno la contraseña del usuario cuando se registro
+	 * Funcion que devuelve la constrasenia del usuario
+	 * @return contraseña: devuelve la cadena donde se almaceno la contrasenia del usuario cuando se registro
 	 */
 	public String getContrasena() {
 		return this.contrasena;
 	}
 	
 	/**
-	 * 
-	 * @param aux
+	 * Funcion que establece la fecha del inicio de premium a un usuario
+	 * @param aux: objeto de tipo LocalDate que alberga la fecha de inicio de premium a un usuario
 	 */
 	public void setFechaInicioPro(LocalDate aux) {
 		this.fecha_inicio_pro = aux;
@@ -205,8 +205,8 @@ public class Usuario implements Serializable{
 	}
 	
 	/**
-	 * 
-	 * @param aux
+	 * Funcion que establece el estado premium de un usuario a activado o desactivado
+	 * @param aux:booleano que determina si es premium o no un usuario
 	 */
 	public void setPremium(boolean aux) {
 		this.premium = aux;
@@ -221,8 +221,8 @@ public class Usuario implements Serializable{
 	}
 	
 	/**
-	 * 
-	 * @param aux
+	 * Funcion que establece el estado de bloqueado a un usuario(puede ser tambien elestado NOBLOQUEADO)
+	 * @param aux: objeto de tipo UsuarioBloqueado que determina el estado del usuario
 	 */
 	public void setEstadoBloqueado(UsuarioBloqueado aux) {
 		this.bloqueado = aux;
@@ -238,8 +238,8 @@ public class Usuario implements Serializable{
 	}
 	
 	/**
-	 * 
-	 * @param aux
+	 * Funcion que establece el identificador a un usuario
+	 * @param aux: entero que indica la identificacion para el usuario
 	 */
 	public void setId(int aux) {
 		this.id = aux;
@@ -254,8 +254,8 @@ public class Usuario implements Serializable{
 	}
 	
 	/**
-	 * 
-	 * @param aux
+	 * Funcion que establece la fecha del inicio de bloqueo a un usuario
+	 * @param aux: objeto de tipo LocalDate que alberga la fecha de inicio de bloqueo a un usuario
 	 */
 	public void setFechaInicioBloqueado(LocalDate aux) {
 		this.fecha_inicio_bloqueado = aux;
@@ -270,8 +270,8 @@ public class Usuario implements Serializable{
 	}
 	
 	/**
-	 * 
-	 * @param aux
+	 * Funcion que establece el numero de reproducciones totales de un usuario
+	 * @param aux: entero que indica el numero de reproducciones
 	 */
 	public void setNumeroReproducciones(int aux) {
 		this.numero_repro_totales = aux;
@@ -286,45 +286,45 @@ public class Usuario implements Serializable{
 	}
 	
 	/**
-	 * 
-	 * @param aux
+	 * Funcion que establece el numero de reproducciones para que el usuario pase a ser premium
+	 * @param aux: entero que indica el numero de reproducciones
 	 */
 	public void setNumeroReproParaPro(int aux) {
 		this.numero_repro_para_pro = aux;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Funcion que retorna el numero de reproducciones para ser premium
+	 * @return numero_repro_para_pro: entero que indica las reproducciones que lleva el usuario para ser pro
 	 */
 	public int getNumeroReproParaPro() {
 		return this.numero_repro_para_pro;
 	}
 	
 	/**
-	 * 
+	 * Funcion que resetea a 0 el numero de reproducciones para ser premium
 	 */
 	public void resetNumeroReproParaPro() {
 		this.numero_repro_para_pro = 0;
 	}
 	
 	/**
-	 * 
+	 * Suma en uno para indicar que el usuario ha escuchado otra reproduccion sea suya o no
 	 */
 	public void addContenidoEscuchadoSinSerPremium() {
 		this.contenido_escuchado_sin_ser_premium++;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Funcion que retorna el numero de contenidos que ha escuchado un usuario
+	 * @return contenido_escuchado_sin_ser_premium: entero que nos retorna el contenido escuchado por el usuario(siempre 0 o mayor a 0)
 	 */
 	public int getContenidoEscuchadoSinSerPremium() {
 		return this.contenido_escuchado_sin_ser_premium;
 	}
 	
 	/**
-	 * 
+	 * Funcion que resetea a 0 el contenido que ha escuchado un usuario sin ser premium
 	 */
 	public void resetContenidoEscuchadosSinSerPremium() {
 		this.contenido_escuchado_sin_ser_premium = 0;
@@ -537,7 +537,7 @@ public class Usuario implements Serializable{
 	 * Funcion que baja la cuenta del estatus de premium a una cuenta normal 
 	 * que no paga mensualmente
 	 */
-	public void emperorarCuenta() {
+	public void empeorarCuenta() {
 		this.setPremium(false);
 		this.resetNumeroReproParaPro();
 		this.setFechaInicioPro(null);
@@ -574,7 +574,7 @@ public class Usuario implements Serializable{
 	 */
 	public void desbloquearCuenta() {
 		this.setEstadoBloqueado(UsuarioBloqueado.NOBLOQUEADO);
-		this.setFechaInicioBloqueado(null);;
+		this.setFechaInicioBloqueado(null);
 	}
 	
 	/*===========================================*/

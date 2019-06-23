@@ -438,7 +438,7 @@ public class Sistema implements Serializable{
 			if(usuario.getPremium() == true) {
 				LocalDate fecha_inicio_premium = usuario.getFechaInicioPro();
 				if(fecha_actual.minusDays(30).isAfter(fecha_inicio_premium) == true || fecha_actual.minusDays(30).isEqual(fecha_inicio_premium) == true) {
-					usuario.emperorarCuenta();
+					usuario.empeorarCuenta();
 					
 					//HACEMOS QUE SEA EL ADMINISTRADOR QUIEN AVISE AL USUARIO
 					sistema.getUsuariosTotales().get(0).enviarNotificacion(usuario, "Tras 15 dias su cuenta ha sido degrada a registrado normal, abone el importe para disfrutar de ser premium");

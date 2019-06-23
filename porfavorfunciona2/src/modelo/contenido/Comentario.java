@@ -7,10 +7,13 @@ import java.util.*;
 import modelo.status.Status;
 
 /**
- *	La clase comentario de por si es muy sencilla y tiene pocas funcionalidades pero en el prodcuto final
- *	supone un importante modulo para darle mas flexibilidad a las canciones y albumes que son quien contiene
- *	a esta. Esta clase utiliza funciones muy basicas y aunque contiene multiples atributos de tiempo, strings o
- *	otros comentarios el desarrollo de esta ha sido sencilla y muy productiva por la recursividad
+ * La clase comentario de por si es muy sencilla y tiene pocas funcionalidades pero en el prodcuto final
+ * supone un importante modulo para darle mas flexibilidad a las canciones y albumes que son quien contiene
+ * a esta. Esta clase utiliza funciones muy basicas y aunque contiene multiples atributos de tiempo, strings o
+ * otros comentarios el desarrollo de esta ha sido sencilla y muy productiva por la recursividad
+ * @author pelayo rodriguez
+ * @author roberto pirck
+ * @author manuel salvador
  */
 public class Comentario implements Serializable{
 	

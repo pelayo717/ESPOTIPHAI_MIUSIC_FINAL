@@ -16,10 +16,13 @@ import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 
 /**
- *	La clase cancion es practicamente el pilar fundamental en la que se basa la aplicacio, esta contiene multiples
- *	funciones que alteran su estado y otras funciones que le permiten almacenar objetos de otras clases en su interior
- *	Gracias a la existencia de esta clase nuestra aplicacion tiene una utilidad final y ademas esta es dependiente para
- *	otras clases como album o lista
+ * La clase cancion es practicamente el pilar fundamental en la que se basa la aplicacio, esta contiene multiples
+ * funciones que alteran su estado y otras funciones que le permiten almacenar objetos de otras clases en su interior
+ * Gracias a la existencia de esta clase nuestra aplicacion tiene una utilidad final y ademas esta es dependiente para
+ * otras clases como album o lista
+ * @author pelayo rodriguez
+ * @author roberto pirck
+ * @author manuel salvador
  */
 
 

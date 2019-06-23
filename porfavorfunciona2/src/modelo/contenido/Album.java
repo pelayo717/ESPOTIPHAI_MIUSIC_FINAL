@@ -14,6 +14,9 @@ import pads.musicPlayer.exceptions.Mp3PlayerException;
 /**
  * Clase Album con herencia de ContenidoComentable, en la 
  * que se va a implementar toda la funcionalidad del album
+ * @author pelayo rodriguez
+ * @author roberto pirck
+ * @author manuel salvador
  */
 public class Album extends ContenidoComentable {
 

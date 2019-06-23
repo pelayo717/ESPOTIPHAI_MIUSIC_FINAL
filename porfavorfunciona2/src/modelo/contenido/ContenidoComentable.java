@@ -7,7 +7,10 @@ import modelo.usuario.*;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 /**
- *	Clase ContenidoComentable con herencia de Contenido
+ * Clase ContenidoComentable con herencia de Contenido
+ * @author pelayo rodriguez
+ * @author roberto pirck
+ * @author manuel salvador
  */
 
 public abstract class ContenidoComentable extends Contenido {

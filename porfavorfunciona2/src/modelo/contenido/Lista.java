@@ -10,8 +10,11 @@ import modelo.usuario.*;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 /**
- *	La clase lista hereda directamente de contenido y le permite englobar a todas las demas clases(albumes,canciones) y
- *	a otras listas de ahi que el array general de items sea de tipo Contenido y no se especifique uno en concreto.
+ * La clase lista hereda directamente de contenido y le permite englobar a todas las demas clases(albumes,canciones) y
+ * a otras listas de ahi que el array general de items sea de tipo Contenido y no se especifique uno en concreto
+ * @author pelayo rodriguez
+ * @author roberto pirck
+ * @author manuel salvador
  */
 public class Lista extends Contenido{
 	
