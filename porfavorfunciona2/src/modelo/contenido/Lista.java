@@ -30,9 +30,9 @@ public class Lista extends Contenido{
 	 * @throws FileNotFoundException se da si no se encuentra el fichero indicado
 	 * @throws Mp3PlayerException se da si existe cualquier problema con el reproductor
 	 */
-	public Lista(String titulo,Usuario autor, ArrayList<Contenido> contenido) throws FileNotFoundException, Mp3PlayerException {
+	public Lista(String titulo,Usuario autor) throws FileNotFoundException, Mp3PlayerException {
 		super(-1, titulo,autor);
-		this.setContenido(contenido);
+		this.setContenido(new ArrayList<Contenido>());
 		this.setDuracion(this.calcularTiempo());
 
 	}

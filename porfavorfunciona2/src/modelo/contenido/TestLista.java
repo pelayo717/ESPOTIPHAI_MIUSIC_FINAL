@@ -29,8 +29,8 @@ class TestLista {
 		path = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs_junit" + System.getProperty("file.separator") + nombre;
 		cancion = new Cancion("hive",z,path,nombre);
 		album = new Album(LocalDate.now().getYear(), "deporte", z);
-		lista_auxiliar = new Lista("despertar",z,null);
-		lista = new Lista("fiesta", z, null);
+		lista_auxiliar = new Lista("despertar",z);
+		lista = new Lista("fiesta", z);
 	}
 	
 	

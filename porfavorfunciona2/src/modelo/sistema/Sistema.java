@@ -49,7 +49,7 @@ public class Sistema implements Serializable{
 	
 	
 	/**
-	 * Constructor de la clase sistema, aunque vacio inicializamos los valores al utilizar el connstructor
+	 * Constructor de la clase sistema, esta vacio ya que inicializamos los valores de manera predeterminada al inicio
 	 */
 	public Sistema(){}
 	
@@ -89,7 +89,7 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Esta funcion retorna el numero maximo de reproducciones que puede realizar un usuario no registrado o registrado normal
-	 * @return numero de canciones
+	 * @return max_reproducciones_usuarios_no_premium: entero y siempre positivo o igual a 0
 	 */
 	public int getMaxReproduccionesUsuariosNoPremium() {
 		return sistema.max_reproducciones_usuarios_no_premium;
@@ -98,7 +98,7 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Devuelve todos los usuarios que estan registrados en el sistema
-	 * @return retorna el array general de usuarios o null si no existe
+	 * @return usuarios_totales: retorna el array general de usuarios o null si no existe
 	 */
 	public ArrayList<Usuario> getUsuariosTotales(){
 		return sistema.usuarios_totales;
@@ -106,7 +106,7 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Devuelve todas las canciones que estan en el sistema
-	 * @return retorna el array general de canciones o null si no existe
+	 * @return canciones_totales: retorna el array general de canciones o null si no existe
 	 */
 	public ArrayList<Cancion> getCancionTotales(){
 		return sistema.canciones_totales;
@@ -114,7 +114,7 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Devuelve todos los albumes que estan en el sistema
-	 * @return retorna el array general de albumes o null si no existe
+	 * @return albumes_totales: retorna el array general de albumes o null si no existe
 	 */
 	public ArrayList<Album> getAlbumTotales(){
 		return sistema.albumes_totales;
@@ -122,7 +122,7 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Devuelve todos losreportes que han realizado los usuarios
-	 * @return retorna el array general de reportes o null si no existe 
+	 * @return reportes_totales: retorna el array general de reportes o null si no existe 
 	 */
 	public ArrayList<Reporte> getReportesTotales(){
 		return sistema.reportes_totales;
@@ -130,7 +130,7 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Esta funcion es la encaragada de retornar el numero de reproducciones que ha escuchado un usuario sin registrarse
-	 * @return numero de canciones
+	 * @return contenido_escuchado_sin_registrarse: entero que solo acepta valores positivos o 0
 	 */
 	public int getContenidoEscuchadoSinRegistrarse() {
 		return sistema.contenido_escuchado_sin_registrarse;
@@ -139,15 +139,15 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Devuelve el usuario que ha iniciado sesion actualmente
-	 * @return retorna el usuario actual si inicio sesion, null si no se inicio sesion
+	 * @return usuario_actual: retorna el usuario actual si inicio sesion, null si no se inicio sesion
 	 */
 	public Usuario getUsuarioActual() {
-		return (Usuario) sistema.usuario_actual;
+		return sistema.usuario_actual;
 	}
 	
 	/**
 	 * Devuelve el umbral de reproducciones que deben superar los usuarios
-	 * @return retorna el umbral de reproducciones para hacerse premium del sistema 
+	 * @return umbral_reproducciones: retorna el umbral de reproducciones para hacerse premium del sistema 
 	 */
 	public int getUmbralReproducciones() {
 		return sistema.umbral_reproducciones;
@@ -155,7 +155,7 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Devuelve la cuota que se debe pagar para hacerse premium
-	 * @return retorna el precio necesario para hacerse premium
+	 * @return precio_premium: retorna el precio necesario para hacerse premium
 	 */
 	public double getPrecioPremium() {
 		return sistema.precio_premium;
@@ -164,7 +164,7 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Devuelve si el usuario actual es un administrador o no
-	 * @return nos indica si el usuario actual de la cuenta es un administrador o no
+	 * @return es_administrador: si es true es administrador, false en caso de que no lo sea
 	 */
 	public boolean getAdministrador() {
 		return sistema.es_administrador;
@@ -177,7 +177,7 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Esta funcion establece el umbral de reproducciones que debe superar un autor para pasar al estado de premium, y solo es aplicable a aquellos usuarios que estan registrados
-	 * @param umbral indica el umbral de reproducciones que debe superar un usuario registrado para hacerse premium sin abonar nada
+	 * @param umbral: indica el umbral de reproducciones que debe superar un usuario registrado para hacerse premium sin abonar nada
 	 * @return retorna un OK si se establece correctamente el umbral o ERROR si no es asi
 	 */
 	public Status setUmbralReproducciones(int umbral) {
@@ -190,7 +190,7 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Esta funcion establece el precio que se cobra a un usuario para hacerse premium
-	 * @param precio indica el precio que hay que abonar para ascender a Premium
+	 * @param precio: indica el precio que hay que abonar para ascender a Premium
 	 * @return retorna un OK si se establece correctamente el precio o ERROR si no es asi
 	 */
 	public Status setPrecioPremium(double precio) {
@@ -203,14 +203,14 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Esta funcion establece el numero maximo de reproducciones que puede realizar un usuario no registrado o un usuario registrado pero no premium
-	 * @param x indica el numerode reproducciones maximas que puede escuchar un usuario no registrado o registrado normal
+	 * @param max: indica el numerode reproducciones maximas que puede escuchar un usuario no registrado o registrado normal
 	 * @return retorna un OK si se establece correctamente el numero maximo de reproducciones para un usuario o ERROR si no es asi
 	 */
-	public Status setMaxReproduccionesUsuarioNoPremium(int x) {
-		if(x < 0) {
+	public Status setMaxReproduccionesUsuarioNoPremium(int max) {
+		if(max < 0) {
 			return Status.ERROR;
 		}
-		sistema.max_reproducciones_usuarios_no_premium = x;
+		sistema.max_reproducciones_usuarios_no_premium = max;
 		return Status.OK;
 	}
 	
@@ -224,7 +224,7 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Esta funcion es la encargada de establecer el usuario actual
-	 * @param aux objeto de tipo usuario que va a inciar sesion
+	 * @param aux: objeto de tipo usuario que va a inciar sesion
 	 * @return devuelve ok si se establecio el usuario correctamente o error si no fue asi
 	 */
 	public Status setUsuarioActual(Usuario aux) {
@@ -237,7 +237,7 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Esta funcion es la encargada de establecer el usuario actual que es el administrador
-	 * @param aux objeto de tipo usuario que va a iniciar sesion y es el administrador
+	 * @param aux: objeto de tipo usuario que va a iniciar sesion y es el administrador
 	 */
 	public void setAdministrador(boolean aux) {
 		this.es_administrador = aux;
@@ -252,10 +252,10 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Permite registrarse a un usuario creando un objeto de tipo usuario y almacenandolo en el array de usuarios totales
-	 * @param nombre_usuario cadena que indica el nombre de usuario que va a recibir el usuario al registrarse
-	 * @param nombre_autor cadena que indica el nombre de autor que va a recibir el usuario al registrarse
-	 * @param fecha_nacimiento fecha que indica el dia,mes y año de nacimiento del usuario
-	 * @param contrasenia cadena que indica la contrasenya que va a utilizar el usuario al iniciar sesion
+	 * @param nombre_usuario: cadena que indica el nombre de usuario que va a recibir el usuario al registrarse
+	 * @param nombre_autor: cadena que indica el nombre de autor que va a recibir el usuario al registrarse
+	 * @param fecha_nacimiento: fecha que indica el dia,mes y año de nacimiento del usuario
+	 * @param contrasenia: cadena que indica la contrasenya que va a utilizar el usuario al iniciar sesion
 	 * @return devuelve OK si el usuario se registro correctamente o ERROR si no lo consiguio
 	 */
 	public Status registrarse(String nombre_usuario,String nombre_autor,LocalDate fecha_nacimiento, String contrasenia) {
@@ -325,7 +325,7 @@ public class Sistema implements Serializable{
 	 * Comprueba sin un usuario ha iniciado sesion y de ser asi la cierra
 	 * @return devuelve un OK si la sesion se cerro correctamente y se almacenaron los valores del sistema, 
 	 * y ERROR si no se consiguio ya que no habia ningun usuario 
-	 * @throws IOException 
+	 * @throws IOException puede lanzarse al llamar a la funcion guardarDatosGenerales();
 	 */
 	public Status cerrarSesion() throws IOException {
 		if(sistema.usuario_actual != null) {
@@ -521,9 +521,25 @@ public class Sistema implements Serializable{
 					usuarios_totales.getCanciones().remove(canciones_en_usuario);
 				}
 			}
+		}	
+	}
+	
+	
+	/**
+	 * Esta funcion que se ejecuta de manera periodica, busca una independencia del sistema donde se este corriendo este proyecto.
+	 * Tras iniciarse el objeto sistema cada cancion es alterada cambiando su path al sistema operativo correspondiente. 
+	 * Al ser un proyecto de eclipse las funciones son las mismas(System.getProperty()) y estas nos permiten conocer la 
+	 * nueva ruta hasta el fichero que esta asignado a cada cancion. Gracias a esto conseguimos que la unica limitacion para
+	 * mover el proyecto entre distintos sistemas sea solucionada con una capa de abstraccion que nos proporciona eclipse. 
+	 */
+	public void actualizarPathCanciones() {
+		String temporal = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator");
+		String aux = null;
+		 
+		for(Cancion auxiliar: sistema.getCancionTotales()) {
+			aux = temporal + auxiliar.getNombreFichero();
+			auxiliar.setNombreMP3(aux);
 		}
-		
-		
 	}
 	
 	/*=================================================================================*/
@@ -532,8 +548,8 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Permite realizar una busqueda en todas las canciones al introducir una cadena
-	 * @param palabra criterio para buscar por titulo
-	 * @return retorna un arraylist de elementos de tipo cancion si se encuentra contenido igual
+	 * @param palabra: criterio para buscar por titulo
+	 * @return canciones_retornar: retorna un arraylist de elementos de tipo cancion si se encuentra contenido igual
 	 * o que contiene la cadena introducida por parametro
 	 */
 	public ArrayList<Cancion> buscadorPorTitulos(String palabra){
@@ -579,12 +595,12 @@ public class Sistema implements Serializable{
 
 	/**
 	 * Permite ralizar una busqueda en todos los albumes al introducir una cadena
-	 * @param palabra criterio para buscar por album
-	 * @return retorna un arraylist de elementos de tipo album si se encuentra contenido igual
+	 * @param palabra: criterio para buscar por album
+	 * @return albumes_incluidas_explicitas: retorna un arraylist de elementos de tipo album si se encuentra contenido igual
 	 * o que contiene la cadena introducida por parametro 
 	 */
 	public ArrayList<Album> buscadorPorAlbumes(String palabra){
-		LocalDate fecha_actual = LocalDate.now();
+		//LocalDate fecha_actual = LocalDate.now();
 		ArrayList<Album> albumes_incluidas_explicitas = new ArrayList<Album>();
 		int flag = 0;
 				
@@ -592,7 +608,7 @@ public class Sistema implements Serializable{
 			return null;
 		}
 				
-		if(sistema.usuario_actual != null) {
+		/*if(sistema.usuario_actual != null) {
 						
 			Period intervalo = Period.between(sistema.usuario_actual.getFechaNacimiento(), fecha_actual);
 			if(intervalo.getYears() >= 18) {
@@ -619,7 +635,7 @@ public class Sistema implements Serializable{
 				
 				return albumes_incluidas_explicitas;
 			}
-		}
+		}*/
 		
 		for(Album album_totales:sistema.albumes_totales) {
 			flag = 0;
@@ -652,8 +668,8 @@ public class Sistema implements Serializable{
 
 	/**
 	 * Permite para un autor dado buscar todas sus canciones
-	 * @param palabra criterio para buscar por autor
-	 * @return retorna un arraylist de elementos de tipo cancion aplicados a un autor concreto
+	 * @param palabra: criterio para buscar por autor
+	 * @return lista_autor_canciones: retorna un arraylist de elementos de tipo cancion aplicados a un autor concreto
 	 * si se encuentra alguno mediante el parametro introducido
 	 */
 	public ArrayList<Cancion> buscadorPorAutores_DevolvemosCanciones(String palabra){
@@ -670,7 +686,7 @@ public class Sistema implements Serializable{
 			
 			if(usuario.getNombreAutor().equals(palabra) == true || usuario.getNombreAutor().contains(palabra) == true) {
 				
-				if(usuario.equals(Sistema.sistema.getUsuariosTotales().get(0)) == false) { //MIENTRAS NO SEA ROOT
+				if(usuario.equals(Sistema.sistema.getUsuariosTotales().get(0)) == false) { //MIENTRAS NO SEA ROOT, porque este no tiene contenido
 					
 					if(sistema.usuario_actual != null) {
 						Period intervalo = Period.between(sistema.usuario_actual.getFechaNacimiento(), fecha_actual);
@@ -713,8 +729,8 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Permite para un autor dado buscar todos sus albumes
-	 * @param palabra criterio para buscar por autor
-	 * @return retorna un arraylista de elementos de tipo album aplicados a un autor concreto
+	 * @param palabra: criterio para buscar por autor
+	 * @return albumes_filtrados: retorna un arraylista de elementos de tipo album aplicados a un autor concreto
 	 * si se encuentra alguno mediante el parametro introducido
 	 */
 	public ArrayList<Album> buscadorPorAutores_DevolvemosAlbumes(String palabra){
@@ -728,20 +744,10 @@ public class Sistema implements Serializable{
 		for(Usuario usuario: sistema.usuarios_totales) {
 						
 			if(usuario.getNombreAutor().equals(palabra) == true || usuario.getNombreAutor().contains(palabra) == true) {
-				
-				
-				if(usuario.equals(Sistema.sistema.getUsuariosTotales().get(0)) == false) { //MIENTRAS NO SEA ROOT
-					
-					
-					for(Album album: usuario.getAlbumes()) {
-						albumes_filtrados.add(album);
-						
-					}	
-
+				if(usuario.equals(Sistema.sistema.getUsuariosTotales().get(0)) == false) { //MIENTRAS NO SEA ROOT, porque este no tiene contenido	
+					for(Album album: usuario.getAlbumes()) { albumes_filtrados.add(album);}	
 				}
-			}
-			
-			
+			}			
 		}
 				
 		if(albumes_filtrados.size() == 0) {
@@ -755,8 +761,8 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Buscador general de autores, se introduce una cadena y este busca canciones y albumes del autor.
-	 * @param palabra criterio para buscar por autor
-	 * @return retorna un arraylist de contenido si sencuentran canciones y/o albumes, sino devuelve null.
+	 * @param palabra: criterio para buscar por autor
+	 * @return contenido: retorna un arraylist de contenido si sencuentran canciones y/o albumes, sino devuelve null.
 	 */
 	public ArrayList<Contenido> buscadorPorAutores(String palabra){
 		if(palabra == null) {
@@ -805,11 +811,11 @@ public class Sistema implements Serializable{
 	/**
 	 * Esta cancion permite a un usuario registrado modificar una cancion que se encuentra en estado PENDIENTEMODIFICACION
 	 * Desde su intento de validacion el usuario tendra 3 dias para modificar el contenido
-	 * @param c
-	 * @param NombreMp3
-	 * @param aux 
+	 * @param c: cancion a modificar
+	 * @param NombreMp3: la ruta del nuevo fichero a subir
+	 * @param aux: nombre real del fichero que se va a subir
 	 * @return retorna OK si la modificacion se llevo de manera satisfactoria, y ERROR si no fue asi
-	 * @throws FileNotFoundException 
+	 * @throws FileNotFoundException se da si el fichero a buscar no se ha encontrado 
 	 */
 	public Status modificarCancion(Cancion c,String NombreMp3, String aux) throws FileNotFoundException {
 		LocalDate d = LocalDate.now();
@@ -835,23 +841,21 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Permite a un usuario registrado o registrado premium crear una cancion, a la espera de que el administrador las valide y las haga visibles al publico
-	 * @param anyo
-	 * @param titulo
-	 * @param nombreMP3
-	 * @param string 
+	 * @param titulo: nombre que va a recibir la cancion por el que luego se buscara
+	 * @param nombreMP3: ruta completa donde se encuentra el fichero
+	 * @param auxiliar: nombre real del fichero
 	 * @return retorna la referencia a la cancion creada, que esta almacenada en el array general de canciones y en el propio del usuario
-	 * @throws FileNotFoundException
-	 * @throws Mp3PlayerException
+	 * @throws FileNotFoundException se da si el fichero a buscar no se encuentra
+	 * @throws Mp3PlayerException se da si existe cualquier problema al crear el reproductor
 	 */
 	public Cancion crearCancion(String titulo,String nombreMP3, String auxiliar) throws FileNotFoundException, Mp3PlayerException{
-		//LocalDate fecha_actual = LocalDate.now();
-		if(titulo == null || nombreMP3 == null) {
+
+		if(titulo == null || nombreMP3 == null || auxiliar == null) {
 			return null;
 		}
 		
 		
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
-			//Period intervalo = Period.between(sistema.usuario_actual.getFechaNacimiento(), fecha_actual);
 					
 			Cancion c = new Cancion(titulo,sistema.usuario_actual,nombreMP3,auxiliar);
 			
@@ -894,8 +898,9 @@ public class Sistema implements Serializable{
 	}
 	
 	/**
-	 * Permite a un usuario eliminar una de sus propias canciones(realmente en vez de eliminar el objeto le cambiamso el estado a Eliminado para que luego no se reproduzca ni se reconozca)
-	 * @param cancion_eliminar
+	 * Permite a un usuario eliminar una de sus propias canciones, y esto implica eliminarla de todos los
+	 * lugares donde la misma se encuentre(albumes y listas)
+	 * @param cancion_eliminar: objeto de tipo cancion que vamos a eliminar totalmente del sistema
 	 * @return retorna ERROR si la cancion no existe o no se puede eliminar del sistema u OK si se elimina correctamente
 	 */
 	public Status eliminarCancion(Cancion cancion_eliminar) {		
@@ -903,6 +908,7 @@ public class Sistema implements Serializable{
 		if(cancion_eliminar == null) {
 			return Status.ERROR;
 		}
+		
 		String nombre = cancion_eliminar.getTitulo();
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
 					
@@ -960,13 +966,11 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Permite al usuario registrado o registrado premium crear un album que inicialmente estara vacio
-	 * @param anyo
-	 * @param titulo
-	 * @param id
-	 * @param contenido
+	 * @param anyo: anyo en el que se creo el album
+	 * @param titulo: titulo que va a recibir el album
 	 * @return retorna la referencia al objeto album si se crea correctamente, sino devuelve null 
-	 * @throws Mp3PlayerException 
-	 * @throws FileNotFoundException 
+	 * @throws Mp3PlayerException se da si existe algun problema con el reproductor
+	 * @throws FileNotFoundException se da si el fichero referenciado no se encuentra
 	 */
 	public Album crearAlbum(int anyo,String titulo) throws FileNotFoundException, Mp3PlayerException {
 		if(titulo == null) {
@@ -998,8 +1002,8 @@ public class Sistema implements Serializable{
 	}
 	
 	/**
-	 * Permite a un usuario eliminar uno de sus propios albumes(a diferencia de las canciones que mantendremos las referencias en este caso eliminaremos directamente la referencia al objeto en ambos arraylists de albumes)
-	 * @param album_eliminar
+	 * Permite a un usuario eliminar uno de sus propios albumes eliminandolo del array general de albumes y del propio
+	 * @param album_eliminar: album que va a ser eliminado del sistema y de todas las listas de todos los usuarios
 	 * @return retorna ERROR si la cancion no se elimina del album, OK si se consigue
 	 */
 	public Status eliminarAlbum(Album album_eliminar) {
@@ -1057,8 +1061,8 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Esta funcion permite a un usuario anyadir a sus albumes sus propias canciones
-	 * @param a
-	 * @param c
+	 * @param a: album al que vamos a anyadirle la cancion pasadapor argumento
+	 * @param c: cancion que vamos a anyadir al album
 	 * @return retorna OK si se anyade correctamente la cancion al album, de lo contrario nos devolvera ERROR
 	 */
 	public Status anyadirCancionAAlbum(Album a, Cancion c) {
@@ -1074,8 +1078,11 @@ public class Sistema implements Serializable{
 			for(Cancion cancion:sistema.getUsuarioActual().getCanciones()) {
 				
 				if(cancion.getTitulo().equals(c.getTitulo()) == true && cancion.getNombreMP3().equals(c.getNombreMP3()) == true) {
+					
 					if(c.getEstado() == EstadoCancion.VALIDA || (c.getEstado() == EstadoCancion.EXPLICITA && intervalo.getYears() >= 18)) {
+						
 						for(Album album:sistema.getUsuarioActual().getAlbumes()) {
+						
 							if(album.getTitulo().equals(a.getTitulo()) == true && album.getAutor().getId() == sistema.getUsuarioActual().getId()) {
 								
 								ArrayList<Cancion> canciones_en_album = album.getContenido();
@@ -1086,16 +1093,13 @@ public class Sistema implements Serializable{
 									x++;
 								}
 								
-								if(x < canciones_en_album.size() - 1) {
-									return Status.ERROR;
+								if(x < canciones_en_album.size() - 1) { //si x se a quedado antes del total de canciones en el album es por
+									return Status.ERROR;				//que esta ya se encuentra dentro del album
 								}
 								
 								if(album.anyadirContenido(c) == Status.OK) {
 									return Status.OK;
-								}else {
-									return Status.ERROR;
-								}
-									
+								}									
 							}
 						}
 					
@@ -1110,8 +1114,8 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Permite eliminar la referencia de una cancion que se encuentra en un album de un usuario registrado o registrado premium
-	 * @param a
-	 * @param c
+	 * @param a: album del que vamos a retirar la cancion pasada por argumento
+	 * @param c: cancion que queremos retir del album
 	 * @return retorna OK si se elimina la cancion del album indicado correctamente, de lo contrario devolvera ERROR
 	 */
 	public Status quitarCancionDeAlbum(Album a, Cancion c) {
@@ -1121,10 +1125,13 @@ public class Sistema implements Serializable{
 		}
 		
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO && sistema.es_administrador == false) {
+			
 			for(Cancion cancion:sistema.getUsuarioActual().getCanciones()) {
-				if(cancion.getTitulo().equals(c.getTitulo()) == true && cancion.getNombreMP3().equals(c.getNombreMP3()) == true && (c.getEstado() == EstadoCancion.VALIDA || c.getEstado() == EstadoCancion.EXPLICITA)) {
+				
+				if(cancion.getTitulo().equals(c.getTitulo()) == true && cancion.getAutor().getId() == sistema.getUsuarioActual().getId() && (c.getEstado() == EstadoCancion.VALIDA || c.getEstado() == EstadoCancion.EXPLICITA)) {
 			
 					for(Album album:sistema.getUsuarioActual().getAlbumes()) {
+						
 						if(album.getTitulo().equals(a.getTitulo()) == true && album.getAutor().getId() == sistema.getUsuarioActual().getId()) {
 					
 							ArrayList<Cancion> canciones_en_album = a.getContenido();
@@ -1133,8 +1140,6 @@ public class Sistema implements Serializable{
 								if(canciones_album.getTitulo().equals(c.getTitulo()) == true && canciones_album.getNombreMP3().equals(c.getNombreMP3()) == true) {
 									if(album.eliminarContenido(c) == Status.OK) {
 										return Status.OK;
-									}else {
-										return Status.ERROR;
 									}
 								}
 							}	
@@ -1152,14 +1157,10 @@ public class Sistema implements Serializable{
 	/**
 	 * Permte al usuario registrado o registrado premium crear una lista de contenidos que inicialmente estara vacia y unicamente sera visible para el
 	 * El contenido final que almacenara la lista sera de tipo Cancion aunque a la hora de anyadir podra ser de tipo LISTA,CANCION o ALBUM
-	 * @param anyo
-	 * @param titulo
-	 * @param id
-	 * @param autor
-	 * @param contenido
+	 * @param titulo: cadena que hace referencia al nombre del objeto de tipo lista
 	 * @return retorna la referencia al objeto lista si se creo correctamente, y de lo contrario devolvera null
-	 * @throws Mp3PlayerException 
-	 * @throws FileNotFoundException 
+	 * @throws Mp3PlayerException se puede dar si existe algun problema al crearel reproductor
+	 * @throws FileNotFoundException se da si no se encuentra el fichero especifico
 	 */
 	public Lista crearLista(String titulo) throws FileNotFoundException, Mp3PlayerException {
 		
@@ -1168,7 +1169,7 @@ public class Sistema implements Serializable{
 			return null;
 		}
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
-			Lista l = new Lista(titulo,sistema.usuario_actual,new ArrayList<Contenido>());
+			Lista l = new Lista(titulo,sistema.usuario_actual);
 			for(Lista lista:sistema.usuario_actual.getListas()) {
 				if(lista.getTitulo().equals(titulo) == true) {
 					lista_repetida_en_usuario = true;
@@ -1187,7 +1188,7 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Permite al usuario eliminar una de sus propias listas(eliminamos en el arraylist de listas en usuario la referencia al objeto correspondiente)
-	 * @param lista_eliminar
+	 * @param lista_eliminar: objeto de tipo lista que pretendemos eliminar del sistema
 	 * @return retorna OK si la lista fue eliminada correctamente, ERROR si no se elimino del sistema
 	 */
 	public Status eliminarLista(Lista lista_eliminar) {
@@ -1203,30 +1204,28 @@ public class Sistema implements Serializable{
 				if(sistema.getUsuarioActual().eliminarDeListasPersonales(lista_eliminar) == true) {
 					return Status.OK;
 
-				}else {
-					return Status.ERROR;
 				}
 				
-			}else {
-				return Status.ERROR;
 			}
-		}else {
-			return Status.ERROR;
 		}
+		
+		return Status.ERROR;
 	}
 	
 	/**
 	 * Esta funcion permite anyadir un contenido(LISTA,CANCION o ALBUM) a una lista si no esta incluido ya
-	 * @param l
-	 * @param c
+	 * @param l: lista a la que le vamos a anyadir un contenido
+	 * @param c: contenido a anyadir a la lista especificada
 	 * @return retorna OK si se anyadio correctamente, ERROR si no fue asi
 	 */
 	public Status anyadirALista(Lista l, Contenido c) {
 		LocalDate d = LocalDate.now();
+		
 		if(l == null || c == null) {
 			return null;
 		}
-		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
+		
+		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO && sistema.getAdministrador() == false) {
 				
 			Period intervalo = Period.between(Sistema.sistema.getUsuarioActual().getFechaNacimiento(), d);
 
@@ -1263,15 +1262,15 @@ public class Sistema implements Serializable{
 	
 	/**
 	 * Esta funcion permite eliminar un contenido de la lista especificada
-	 * @param l
-	 * @param c
+	 * @param l: lista de la que vamos a retirar un contenido
+	 * @param c: contenido que va a ser retirado de la lista
 	 * @return retorna OK si se elimino correctamente, ERROR si no fue asi
 	 */
 	public Status quitarDeLista(Lista l,Contenido c) {
 		if(l == null || c == null) {
 			return null;
 		}
-		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
+		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO && sistema.getAdministrador() == false) {
 			if(sistema.getUsuarioActual().getListas().contains(l) == true) {
 				 if(l.eliminarContenido(c) == Status.OK) {
 					 return Status.OK;
@@ -1295,6 +1294,7 @@ public class Sistema implements Serializable{
 	 * ERROR si no fue asi
 	 */
 	public Status guardarDatosGenerales() throws IOException {
+		
 		try {
 			FileOutputStream fileOut = new FileOutputStream("datos.obj");
 			ObjectOutputStream oos = new ObjectOutputStream(fileOut);
@@ -1337,30 +1337,7 @@ public class Sistema implements Serializable{
 		
 	}
 	
-	
-	/**
-	 * Esta funcion permite al administrador a modificar los datos basicos de configuracion de la aplicacion
-	 * Se creara el fichero si no esta creado y de ser asi se creara de nuevo cada vez que se modifiquen los mismos
-	 * @param precio
-	 * @param umbral
-	 * @param reproducciones
-	 * @return devuelve OK si la accion se realizo de manera satisfacotria, o ERROR si no fue asi
-	 * @throws IOException
-	 */
 
-	public Status guardarDatosConfiguracion(double precio,int umbral,int reproducciones) throws IOException {
-		if(precio < 0.0 || umbral <= 0 || reproducciones <= 0) {
-			return null;
-		}
-		
-		if(sistema.usuario_actual != null && sistema.es_administrador == true) {
-			sistema.precio_premium = precio;
-			sistema.max_reproducciones_usuarios_no_premium = reproducciones;
-			sistema.umbral_reproducciones = umbral;
-		}
-		return Status.ERROR;
-			
-	}
 	
 	
 	
@@ -1370,26 +1347,10 @@ public class Sistema implements Serializable{
 	/*=================================================================================*/
 	
 	/**
-	 * Esta funcion que unicamente la puede utilizar el administrador al ver sus notificaciones 
-	 * permite ver si la cancion pasada como argumento es un plagio de otra o no
-	 * @param c
-	 * @return devuelve OK si efectivamente se trata de un plagio o ERROR si no lo es
+	 * Funcion que retorna las canciones que estan pendientes de ser validadas o modificadas, y si son del tipo
+	 * de las segundas que sigan dentro del plazo de modificacion
+	 * @return un arraylist de canciones existan o no
 	 */
-	public Status comprobarPlagio(Cancion c) {
-		if(c == null) {
-			return Status.ERROR;
-		}else{
-			for(Cancion c_t:sistema.getCancionTotales()) {
-				if(c.getTitulo().equals(c_t.getTitulo())== true && c.getNombreMP3().equals(c_t.getNombreMP3()) == true && c.getAutor().getId() != c_t.getAutor().getId()) {
-					return Status.OK;
-				}
-			}
-		}
-		return Status.ERROR;
-		
-	}
-	
-	
 	public ArrayList<Cancion> getCancionesPendientesValidacion() {
 		ArrayList<Cancion> para_validar = new ArrayList<Cancion>();
 		
@@ -1405,7 +1366,12 @@ public class Sistema implements Serializable{
 		return para_validar;
 	}
 	
-	
+	/**
+	 * Funcion que decide si una cancion es validada(se incluye explicita), pasa a estar 
+	 * pendiente de modificacion o es eliminada del sistema
+	 * @param c: cancion a valorar
+	 * @param estado: estado que va a adquirir la cancion
+	 */
 	public void gestionarCancionesPendientesValidacion_Modificacion(Cancion c, EstadoCancion estado) {
 		
 		if(c == null || estado == null) {
@@ -1444,6 +1410,13 @@ public class Sistema implements Serializable{
 	/*=================FUNCIONES RELACIONADAS CON DENUNCIAS============================*/
 	/*=================================================================================*/
 	
+	/**
+	 * Funcion que puede realizar solo los usuarios para indicar el posible palgio en una cancion
+	 * Tras realizar el reporte, el duenio de la cancion es bloqueado de manera indefinida hasta que
+	 * el administrador lo acepte o lo deniegue, y la cancion pasada al estado de plagio
+	 * @param c: cancion que ha sido reportada
+	 * @return OK si el reporte es satisfactorio, ERROR en caso contrario
+	 */
 	public Status denunciarPlagio(Cancion c) {
 				
 		if(sistema.getUsuarioActual()!= null && sistema.es_administrador == false && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
@@ -1472,12 +1445,25 @@ public class Sistema implements Serializable{
 		
 	}
 	
+	/**
+	 * Funcion que elimina un determinado reporte del array general del sistema de reportes
+	 * @param r: reporte a eliminar del sistema
+	 */
 	public void eliminar_reporte(Reporte r) {
 		if(sistema.getUsuarioActual() != null && sistema.es_administrador == true) {
 			sistema.getReportesTotales().remove(r);
 		}
 	}
 	
+	/**
+	 * Funcion especifica del administrador en el que el valora si el reporte es aceptado
+	 * o denegado. Cada decision implica consecuencias diferentes.
+	 * Si es aceptado, el dueño de la cancion es bloqueado de manera indefinida, y la cancion considerada de plagio
+	 * Si es denegado, la persona que realizo el reporte es bloqueado por 30 dias, y la cancion vuelve
+	 * a sus estado anterior
+	 * @param r: reporte a ser aceptado, o denegado
+	 * @param aceptada: true si es aceptado, false si no lo es
+	 */
 	public void gestionarReportes(Reporte r,boolean aceptada) {
 		if(sistema.getUsuarioActual() != null && sistema.es_administrador == true) {
 			if(aceptada == true) {
@@ -1509,6 +1495,14 @@ public class Sistema implements Serializable{
 		}
 	}
 	
+	/**
+	 * Funcion especifica del administrador que le permite alterar los criterios de la aplicacion(precio,umbral, y reproducciones
+	 * maximas).
+	 * @param u_r: umbral de reproducciones para pasar a ser premium
+	 * @param p_p: precio para abonar la tarifa y ser premium
+	 * @param m_r: maximas reproducciones para los usuarios
+	 * @return OK si todo se sobreescribe correctamente, ERROR en otro caso
+	 */
 	public Status modificarCriteriosAplicacion(int u_r,double p_p, int m_r) {
 		if(sistema.getUsuarioActual() != null && sistema.es_administrador == true) {
 			sistema.setPrecioPremium(p_p);
@@ -1518,17 +1512,6 @@ public class Sistema implements Serializable{
 		}
 		
 		return Status.ERROR;
-	}
-	
-	
-	public void actualizarPathCanciones() {
-		String temporal = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator");
-		String aux = null;
-		 
-		for(Cancion auxiliar: sistema.getCancionTotales()) {
-			aux = temporal + auxiliar.getNombreFichero();
-			auxiliar.setNombreMP3(aux);
-		}
 	}
 }
 

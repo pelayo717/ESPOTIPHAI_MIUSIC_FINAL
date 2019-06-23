@@ -1,39 +1,50 @@
 package modelo.usuario;
 
-import static org.junit.Assert.*;
-import java.io.FileNotFoundException;
-import java.time.LocalDate;
-
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 
 import modelo.contenido.Album;
 import modelo.contenido.Cancion;
 import modelo.contenido.Lista;
+import modelo.sistema.Sistema;
 import modelo.status.Status;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.IOException;
+import java.time.LocalDate;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import modelo.usuario.Usuario;
 
 class TestUsuario {
 
 	Usuario z;
 	Usuario d;
 	Album album;
-	Cancion x;
+	Cancion cancion;
 	Lista l;
+	Sistema a;
 	boolean explicita;
 	boolean prueba;
 	String nombre;
 	String path;
 	
+	
 	@BeforeEach
-	public void before() throws FileNotFoundException, Mp3PlayerException {
+	public void before() throws Mp3PlayerException, IOException {
+		a = Sistema.getSistema();
 		z = new Usuario("alex", "alex", LocalDate.of(1967, 12, 26), "alex");
 		d = new Usuario("pedro","pedro",LocalDate.of(1967, 12, 26),"pedro");
 		nombre = "hive.mp3";
 		path = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs_junit" + System.getProperty("file.separator") + nombre;
-		x = new Cancion("hive",z,path,nombre);
+		cancion = new Cancion("hive",z,path,nombre);
 		album = new Album(LocalDate.now().getYear(), "deporte", z);
-		l = new Lista("por mi", z, null);
+		l = new Lista("por mi", z);
+		a.getUsuariosTotales().add(z);
+		a.getUsuariosTotales().add(d);
+		a.iniciarSesion("alex", "alex");
 	}
 	
 	@Test
@@ -58,6 +69,7 @@ class TestUsuario {
 		assertEquals(true, prueba);
 		assertEquals(true, z.getSeguidos().contains(d));
 		assertEquals(true, d.getSeguidores().contains(z));
+		z.dejarDeSeguirUsuario(d);
 	}
 	
 	@Test
@@ -84,6 +96,7 @@ class TestUsuario {
 		assertEquals(true, prueba);
 		assertEquals(false, z.getSeguidos().contains(d));
 		assertEquals(true, d.getSeguidores().contains(z));
+		d.eliminarSeguidor(z);
 	}
 	
 	@Test
@@ -97,6 +110,7 @@ class TestUsuario {
 		assertEquals(true, prueba);
 		assertEquals(true, z.getSeguidos().contains(d));
 		assertEquals(false, d.getSeguidores().contains(z));
+		z.eliminarSeguido(d);
 	}
 	
 	@Test
@@ -131,8 +145,7 @@ class TestUsuario {
 			prueba = false;
 		}
 		z.empeorarCuenta();
-		assertEquals(true, prueba);
-		assertEquals(true, z.getPremium());
+		assertEquals(false, z.getPremium());
 		assertEquals(0, z.getNumeroReproParaPro());
 		assertEquals(0, z.getContenidoEscuchadoSinSerPremium());
 		assertEquals(null, z.getFechaInicioPro());
@@ -141,7 +154,7 @@ class TestUsuario {
 	
 	@Test
 	public void TestBloquearCuentaIndefinido() {
-		z.bloquearCuentaTemporal();
+		z.bloquearCuentaIndefinido();
 		assertEquals(UsuarioBloqueado.INDEFINIDO, z.getEstadoBloqueado());
 		assertEquals(LocalDate.now(), z.getFechaInicioBloqueado());
 	}
@@ -156,7 +169,7 @@ class TestUsuario {
 	@Test
 	public void TestBloquearCuentaPorReporte() {
 		z.bloqueoCuentaPorReporte();
-		assertEquals(UsuarioBloqueado.INDEFINIDO, z.getEstadoBloqueado());
+		assertEquals(UsuarioBloqueado.POR_REPORTE, z.getEstadoBloqueado());
 	}
 	
 
@@ -170,25 +183,25 @@ class TestUsuario {
 	
 	@Test
 	public void TestAnyadirACanciones() {
-		if(z.anyadirACancionesPersonales(x) == true) {
+		if(z.anyadirACancionesPersonales(cancion) == true) {
 			prueba = true;
 		}else {
 			prueba = false;
 		}
 		assertEquals(true, prueba);
-		assertEquals(true, z.getCanciones().contains(x));	
+		assertEquals(true, z.getCanciones().contains(cancion));	
 	}
 	
 	@Test
 	public void TestEliminarDeCanciones() {
-		z.anyadirACancionesPersonales(x);
-		if(z.eliminarDeCancionesPersonales(x) == true) {
+		z.anyadirACancionesPersonales(cancion);
+		if(z.eliminarDeCancionesPersonales(cancion) == true) {
 			prueba = true;
 		}else {
 			prueba = false;
 		}
 		assertEquals(true, prueba);
-		assertEquals(false, z.getCanciones().contains(x));	
+		assertEquals(false, z.getCanciones().contains(cancion));	
 	}
 	
 	
@@ -246,8 +259,6 @@ class TestUsuario {
 			prueba = false;
 		}
 		assertEquals(true, prueba);
-		assertEquals(true, z.getSeguidos().contains(d));
-		assertEquals(true, d.getSeguidores().contains(z));
 	}
 	
 	@Test
@@ -266,6 +277,7 @@ class TestUsuario {
 	
 	@Test
 	public void TestEnviarNotificacion() {
+		
 		if(z.enviarNotificacion(d, "gran cancion amigo") == Status.OK) {
 			prueba = true;
 		}else {

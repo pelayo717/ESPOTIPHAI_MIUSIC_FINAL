@@ -404,9 +404,10 @@ public class Usuario implements Serializable{
 	 * @return true si se ejecuta correctamente, false si hay algun error
 	 */
 	public boolean seguirUsuario(Usuario x) { 
-			if(this.seguidos.contains(x)) //Ya se sigue al usuario
+
+			if(this.seguidos.contains(x) == true) {//Ya se sigue al usuario
 				return false;
-			else {
+			}else {
 				this.seguidos.add(x);
 				x.incluirSeguidor(this);
 				return true;
@@ -686,16 +687,17 @@ public class Usuario implements Serializable{
 		if(autor == null) {
 			return Status.ERROR;
 		}
-		
+				
 		if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getAdministrador() == false && Sistema.sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
 			
 			for(Usuario totales:Sistema.sistema.getUsuariosTotales()) {
-
+				
 				if(totales.getNombreAutor().equals(autor.getNombreAutor()) == true) {
 
-					if(Sistema.sistema.getUsuarioActual().seguirUsuario(totales) == false) {
+					if(Sistema.sistema.getUsuarioActual().seguirUsuario(totales) == false) {			
 						return Status.ERROR;
 					}
+					
 					this.enviarNotificacion(totales,Sistema.sistema.getUsuarioActual().getNombreAutor() + " ha comenzado a seguir " + totales.getNombreAutor());
 					return Status.OK;
 				}
@@ -743,11 +745,15 @@ public class Usuario implements Serializable{
 	 * @return retorna OK si la notificacion fue creada y almacenada correctamente en el array general, de lo contrario devolvera ERROR
 	 */
 	public Status enviarNotificacion(Usuario receptor,String mensaje) {
+
 		if(receptor == null || mensaje == null) {
 			return null;
 		}
+		
 		if(this.getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
+						
 			Notificacion n = new Notificacion(receptor,mensaje,Sistema.sistema.getUsuarioActual());
+			
 			this.notificaciones_propias.add(n);
 			receptor.notificaciones_propias.add(n);
 			return Status.OK;
@@ -762,7 +768,9 @@ public class Usuario implements Serializable{
 	 * @return devuelve OK si las notificaciones fueron eliminadas del sistema correctamente
 	 */
 	public Status eliminarNotificacionesPropias() {
+
 		this.getNotificacionesTotales().clear();
+		
 		return Status.OK;
 	}
 
