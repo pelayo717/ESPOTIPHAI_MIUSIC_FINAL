@@ -57,7 +57,6 @@ public class ControladorReproducirCancion implements ActionListener{
 				}
 			} else if(((JButton)e.getSource()).getText() == "Ver Perfil") {
 				Ventana.ventana.showPerfil();
-				Ventana.ventana.perfil.setInformacion(Sistema.sistema.getUsuarioActual());
 			}  else if(((JButton)e.getSource()).getText() == "Registro") {
 				Ventana.ventana.showRegistrarse();
 			} else if(((JButton)e.getSource()).getText() == "Buscar") {
