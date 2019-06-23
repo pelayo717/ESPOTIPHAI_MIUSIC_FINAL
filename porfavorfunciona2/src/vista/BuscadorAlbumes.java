@@ -120,42 +120,68 @@ public class BuscadorAlbumes extends PantallaPrincipal{//99.9% esta terminado
 		this.getBotonIzquierdaAbajo().setVisible(true);
 	}
 	
-	
+	/**
+	 * Funcion que delvuelve el atributo serialVersionUID de la clase
+	 * @param serialVersionUID:
+	 */
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
 
+	/**
+	 * Funcion que devuelve el modelo1 de la clase
+	 * @param model1: atributo que indica que estamos en el modelo 1
+	 */
 	public DefaultListModel<String> getModel1() {
 		return model1;
 	}
-
-
+	
+	/**
+	 * Funcion que devuelve un array con todos los albumes que hay 
+	 * @return losAlbumes: array de albumes que contiene todos los albumes
+	 */
 	public Album[] getLosAlbumes() {
 		return losAlbumes;
 	}
 
-
+	/**
+	 * Funcion que devuelve una lista de albumes 
+	 * @return lista_albumes: lista que contiene todos los albumes 
+	 */
 	public JList<String> getLista_albumes() {
 		return lista_albumes;
 	}
 
-
+	/**
+	 * Funcion que devuelve un JScrollPane con todos los albumes 
+	 * @return albumes: JScrollPane en el que dentro esta la lista de albumes
+	 */
 	public JScrollPane getAlbumes() {
 		return albumes;
 	}
 
-
+	/**
+	 * Funcion que devuelve los albumes despues de la busqueda
+	 * @param albumesEncontrados: JLabel que contiene todos los albumes 
+	 * encontrados despues de la busqueda
+	 */
 	public JLabel getAlbumesEncontrados() {
 		return albumesEncontrados;
 	}
 
-
+	/**
+	 * Funcion que devuelve el boton de seleccionar album
+	 * @return seleccionarAlbum: devuelve el boton de seleccionarAlbum
+	 */
 	public JButton getSeleccionarAlbum() {
 		return seleccionarAlbum;
 	}
 
-
+	/**
+	 * Funcion que actualiza los albumes por los albumes propios
+	 * @param albumes_propios: albumes que se van a poner como nuevos al actualizar
+	 */
 	public void actualizarAlbumes(Album[] albumes_propios) {
 		model1.clear();
 		losAlbumes = albumes_propios;
@@ -169,16 +195,26 @@ public class BuscadorAlbumes extends PantallaPrincipal{//99.9% esta terminado
 		}
 	}
 	
+	/**
+	 * Funcion que limpia los datos completamente
+	 */
 	public void limpiarDatos() {
 		model1.clear();
 	}
 
-
+	/**
+	 * Funcion que un array con todos los albumes disponibles
+	 * @return losAlbumes: array con todos los albumes
+	 */
 	public Album[] getAlbum() {
 		return this.losAlbumes;
 	}
 
-
+	/**
+	 * Funcion que devuelve un Jlist de todos los albumes 
+	 * @return lista_albumes: atributo de tipo JList que contiene
+	 * una lista con todos los albumes
+	 */
 	public JList<String> getListAlbum() {
 		return this.lista_albumes;
 	}
