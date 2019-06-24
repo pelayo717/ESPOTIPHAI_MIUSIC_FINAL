@@ -22,11 +22,14 @@ import modelo.contenido.EstadoCancion;
 import modelo.sistema.Sistema;
 import modelo.usuario.Usuario;
 
+
+/**
+ * Clase BuscadorAutores que extiende la clase de PantallaPrincipal y que implementa la 
+ * vista que tiene como resultado la busqueda por autores
+ */
 public class BuscadorAutores extends PantallaPrincipal {//99.9% esta terminado
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	
 	private  DefaultListModel<String> model1;
@@ -53,7 +56,10 @@ public class BuscadorAutores extends PantallaPrincipal {//99.9% esta terminado
 	
 	public JButton seleccionarContenido;
 	
-	
+	/**
+	 * Constructor de la clase BuscadorAutores donde se inicializan los atributos
+	 * de la clase y se les asignan los valores correspondientes
+	 */
 	public BuscadorAutores() {
 		
 		super();
@@ -111,7 +117,10 @@ public class BuscadorAutores extends PantallaPrincipal {//99.9% esta terminado
 		this.add(seleccionarContenido);
 	}
 	
-	
+	/**
+	 * Funcion que asgina a cada boton la accion que se pasa como argumento
+	 * @param c: accion que se va a pasar a cada boton para que luego sse asigne el usuario determinado
+	 */
 	public void setControlador(ActionListener c) {
 		this.getBotonIzquierdaArriba().addActionListener(c);
 		this.getBotonIzquierdaMedio().addActionListener(c);
@@ -122,83 +131,160 @@ public class BuscadorAutores extends PantallaPrincipal {//99.9% esta terminado
 		this.getBotonLimpiarBuscador().addActionListener(c);
 	}
 	
+	
+	/**
+	 * Funcion que pone el texto de los botones al texto correspondiente cuando
+	 * el usuario esta registrado
+	 */
 	public void setUsuarioRegistrado() {
 		this.getBotonIzquierdaArriba().setText("Ver Perfil");
 		this.getBotonIzquierdaMedio().setText("Inicio");
 		this.getBotonIzquierdaAbajo().setVisible(false);
 	}
-			
+	
+	
+	/**
+	 * Funcion que cambia los textos de los botones por los comentarios necesarios
+	 * cuando el usuario no esta registrado
+	 */
 	public void setUsuarioNoRegistrado() {
 		this.getBotonIzquierdaArriba().setText("Iniciar Sesion");
 		this.getBotonIzquierdaMedio().setText("Registro");
 		this.getBotonIzquierdaAbajo().setVisible(true);
 	}
 	
+	
+	/**
+	 * Funcion que devuelve el atributo Serialversionuid 
+	 * @return serialVersionUID: atributo que indica la version de serie
+	 */
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
-
+	
+	
+	/**
+	 * Funcion que devuelve el modelo en el que nos encontramos
+	 * @return model1: atributo que indica el modelo en el que estamos
+	 */
 	public DefaultListModel<String> getModel1() {
 		return model1;
 	}
 
-
+	
+	/**
+	 * Funcion que devuelve el modelo en el que nos encontramos
+	 * @return model2: devuelve el atributo que indica el modelo 
+	 */
 	public DefaultListModel<String> getModel2() {
 		return model2;
 	}
 
-
+	
+	/**
+	 * Funcion que devuele un array de tipo con Conetnido con todos los contenidos 
+	 * que hay 
+	 * @return losContenidos: array de tipo contenido que contiene todos los contenidos 
+	 */
 	public Contenido[] getLosContenidos() {
 		return losContenidos;
 	}
 
-
+	
+	/**
+	 * Funcion que devuelve un array con todos los autores
+	 * @return losAutores: array de autores
+	 */
 	public Usuario[] getLosAutores() {
 		return losAutores;
 	}
 
-
+	
+	/**
+	 * Funcion que devuelve un JList con todos los autores 
+	 * @return lista_autores: lista que contiene todos los autores
+	 */
 	public JList<String> getLista_autores() {
 		return lista_autores;
 	}
 
 
+	/**
+	 * Funcion que devuelve un JList con todos los contenidos en forma de lista
+	 * @return lista_contenidos: un JList que contiene todos los contenidos
+	 */
 	public JList<String> getLista_contenidos() {
 		return lista_contenidos;
 	}
 
-
+	
+	/**
+	 * Funcion que devuelve un JScrollPane con todos los autores 
+	 * que hay 
+	 * @return autores: atributo que contiene todos los autores
+	 */
 	public JScrollPane getAutores() {
 		return autores;
 	}
 
 
+	/**
+	 * Funcion que devuelve los contenidos 
+	 * @return contenidos: varible de tipo JScrollPane que contiene 
+	 * todos los contenidos
+	 */
 	public JScrollPane getContenidos() {
 		return contenidos;
 	}
 
 
+	/**
+	 * Funcion que devuelve un JLabel con los resultados de la busqueda
+	 * realizada por autores 
+	 * @return autoresEncontrados: argumento de tipo JLabel que devuelve el resultado de la busqueda
+	 */
 	public JLabel getAutoresEncontrados() {
 		return autoresEncontrados;
 	}
 
-
+	
+	/**
+	 * Funcion que devuelve el JLabel con todos los contenidos encontrados 
+	 * despues de la busqueda
+	 * @return contenidosEncontrados: variable de tipo JLabel que contiene el resultado de la busqueda
+	 * que se ha realizado
+	 */
 	public JLabel getContenidosEncontrados() {
 		return contenidosEncontrados;
 	}
 
 
+	/**
+	 * Funcion que devuelve el boton de autor de la vista
+	 * @return seleccionarAutor: boton que se devuelve en la funcion y 
+	 * que indica que ya se ha seleccionado el autor
+	 */
 	public JButton getSeleccionarAutor() {
 		return seleccionarAutor;
 	}
 
 
+	/**
+	 * Funcion que seleeciona el boton de contenido y devuelve ese boton en el retorno 
+	 * de la funcion
+	 @return seleccionarContenido: boton que devuelve la funcion en el retorno
+	 */
 	public JButton getSeleccionarContenido() {
 		return seleccionarContenido;
 	}
 
 
+	/**
+	 * Funcion que actualiza el contenido a partir del argumento que se le pasa 
+	 * a la funcion
+	 * @param autores_propios: argumento de tipo contenido el cual se va a introducir al modelo
+	 */
 	@SuppressWarnings("unlikely-arg-type")
 	public void actualizarContenido(Contenido[] autores_propios) {
 		model2.clear();
@@ -236,6 +322,12 @@ public class BuscadorAutores extends PantallaPrincipal {//99.9% esta terminado
 		}
 	}
 	
+	/**
+	 * Funcion la cual actualiza los autores que hay a partir del array de contenido 
+	 * pasado como argumento el cual contiene todos los autores a actualizar
+	 * @param autores_propios: array de contenido que contiene los autores que se van a 
+	 * actualizar
+	 */
 	public void actualizarAutores(Contenido[] autores_propios) {
 		
 		int contador=0;
@@ -295,12 +387,20 @@ public class BuscadorAutores extends PantallaPrincipal {//99.9% esta terminado
 		}
 	}
 	
+	/**
+	 * Funcion que limpia todos los datos del modelo, dejandolo 
+	 * exactamente igual que cuando se ha creado
+	 */
 	public void limpiarDatos() {
 		model1.clear();
 		model2.clear();
 	}
 
 
+	/**
+	 * Funcion la cual devuelve un array con todo los contenidos
+	 * @return losContenidos: array de tipo Contenido que contiene todos los contenidos a devolver
+	 */
 	public Contenido[] getContenido() {
 		// TODO Auto-generated method stub
 		return this.losContenidos;
