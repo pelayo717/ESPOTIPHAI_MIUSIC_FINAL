@@ -237,15 +237,15 @@ public class ControladorPantallaInicio implements ActionListener{
 					    	JOptionPane.showMessageDialog(Ventana.ventana,"Hubo un problema con la creacion del album");
 					    }
 				    }catch(NumberFormatException f1) {
-				    	f1.printStackTrace();
+				    	//f1.printStackTrace();
 				    	JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca correctamente los parametros del album");
 
 				    } catch (HeadlessException e1) {
-						e1.printStackTrace();
+						//e1.printStackTrace();
 					} catch (FileNotFoundException e1) {
-						e1.printStackTrace();
+						//e1.printStackTrace();
 					} catch (Mp3PlayerException e1) {
-						e1.printStackTrace();
+						//e1.printStackTrace();
 					}
 				}else {
 			    	JOptionPane.showMessageDialog(Ventana.ventana,"Se cancelo la creacion del album");

@@ -55,6 +55,9 @@ public class ControladorPerfil implements ActionListener{//99.9% esta terminado
 				try {
 					int a=JOptionPane.showConfirmDialog(Ventana.ventana,"¿Esta seguro que desea cerrar la sesion?","Alert",JOptionPane.WARNING_MESSAGE);  
 					if(a == JOptionPane.YES_OPTION) {
+						if(Sistema.sistema.getReproductor() != null) {
+							Sistema.sistema.getReproductor().stop();
+						}
 						Sistema.sistema.cerrarSesion();
 						Ventana.ventana.showPantallaInicio();
 					}else {

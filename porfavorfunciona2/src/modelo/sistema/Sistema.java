@@ -5,8 +5,7 @@ import modelo.contenido.*;
 import modelo.reporte.*;
 import modelo.status.*;
 import modelo.usuario.*;
-
-
+import pads.musicPlayer.Mp3Player;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 import java.util.ArrayList;
@@ -46,23 +45,14 @@ public class Sistema implements Serializable{
 	private double precio_premium = 9.9;
 	private int max_reproducciones_usuarios_no_premium = 4;
 	private int contenido_escuchado_sin_registrarse = 0;
-	
+	private Mp3Player reproductorSonando;
 	
 	/**
 	 * Constructor de la clase sistema, se encarga de inicializar los datos que seran mas tarde utilizados
+	 * @throws Mp3PlayerException 
+	 * @throws FileNotFoundException 
 	 */
-	public Sistema(){
-		usuarios_totales =  new ArrayList<Usuario>();
-		canciones_totales = new ArrayList<Cancion>();
-		albumes_totales = new ArrayList<Album>();
-		reportes_totales = new ArrayList<Reporte>();
-		usuario_actual = null;
-		es_administrador = false;
-		umbral_reproducciones = 30;
-		precio_premium = 9.9;
-		max_reproducciones_usuarios_no_premium = 4;
-		contenido_escuchado_sin_registrarse = 0;
-	}
+	public Sistema(){}
 	
 	/**
 	 * Para la implementacion del patron singleton, creamos este metodo que comprobara la existencia de un objeto
@@ -75,10 +65,11 @@ public class Sistema implements Serializable{
 	 */
 	public static Sistema getSistema() throws Mp3PlayerException, IOException {
 		if(sistema == null) {
-			File archivo = new File("datos.ser");			
+			File archivo = new File("datos.obj");		
 			if(archivo.exists() == true) {
 				sistema = new Sistema();
 				sistema = Sistema.cargarDatosGenerales();
+
 				sistema.actualizarPathCanciones();
 				sistema.empeorarCuentaPrincipal();
 				sistema.desbloquearUsuario();
@@ -184,6 +175,13 @@ public class Sistema implements Serializable{
 	/*======================FUNCIONES GENERALES DE SETTERS=============================*/
 	/*=================================================================================*/
 	
+	public void setReproductor(Mp3Player aux) {
+		this.reproductorSonando = aux;
+	}
+	
+	public Mp3Player getReproductor() {
+		return this.reproductorSonando;
+	}
 	
 	/**
 	 * Esta funcion establece el umbral de reproducciones que debe superar un autor para pasar al estado de premium, y solo es aplicable a aquellos usuarios que estan registrados
@@ -516,31 +514,16 @@ public class Sistema implements Serializable{
 	 */
 	public void eliminarCancionPendienteModificacionCaducada(LocalDate d) {
 		
-		ArrayList<Cancion> retorno = sistema.getCancionTotales();
 		
 		//ELIMINAMOS CANCIONES QUE HAN PASADO EL TIEMPO DE MODIFICACION
 		for(Iterator<Cancion> cancionesIterator = sistema.getCancionTotales().iterator(); cancionesIterator.hasNext();) {
 			Cancion aux = cancionesIterator.next();
-			cancionesIterator.remove();
 			if(aux.getEstado() == EstadoCancion.PENDIENTEMODIFICACION && d.minusDays(3).isAfter(aux.getFechaModificacion())) {
-				retorno.remove(aux);
-				
-			}
+				cancionesIterator.remove();
+				sistema.eliminarCancion(aux);
+			}			
 		}
 		
-		//ELIMINAMOS LAS CANCIONES QUE SIGUEN EL MIMSO PATRON PERO EN CADA UNO DE LOS ARRAYS DE CANCIONES DE USUARIO
-		for(Iterator<Usuario> usuariosIterator = sistema.getUsuariosTotales().iterator(); usuariosIterator.hasNext();) {
-			Usuario auxiliar = usuariosIterator.next();
-			usuariosIterator.remove();
-			for(Iterator<Cancion> cancionesIterator = auxiliar.getCanciones().iterator(); cancionesIterator.hasNext();) {
-				Cancion auxiliar_cancion = cancionesIterator.next();
-				cancionesIterator.remove();
-				if(auxiliar_cancion.getEstado() == EstadoCancion.PENDIENTEMODIFICACION && d.minusDays(3).isAfter(auxiliar_cancion.getFechaModificacion())) {
-					retorno = auxiliar.getCanciones();
-					retorno.remove(auxiliar_cancion);
-				}
-			}
-		}	
 	}
 	
 	
@@ -861,7 +844,7 @@ public class Sistema implements Serializable{
 			}
 						
 			for(Cancion cancion:sistema.usuario_actual.getCanciones()) {
-				if(cancion.getTitulo().equals(titulo) == true && cancion.getNombreMP3().equals(nombreMP3) == true) {
+				if(cancion.getTitulo().equals(titulo) == true || cancion.getNombreMP3().equals(nombreMP3) == true) {
 					return null;
 				}	
 			}
@@ -1297,7 +1280,7 @@ public class Sistema implements Serializable{
 	public Status guardarDatosGenerales() throws IOException {
 		
 		try {
-			FileOutputStream fileOut = new FileOutputStream("datos.ser");
+			FileOutputStream fileOut = new FileOutputStream("datos.obj");
 			ObjectOutputStream oos = new ObjectOutputStream(fileOut);
 			oos.writeObject(this);
 			oos.flush();
@@ -1313,6 +1296,7 @@ public class Sistema implements Serializable{
 	}
 	
 	
+	
 	/**
 	 * Funcion encargada de cargar datos leeyendo de un fichero almacenado en disco
 	 * Al igual que la anterior esta funcion tambien conoce en que sistema se esta corriendo para asi saber
@@ -1322,7 +1306,7 @@ public class Sistema implements Serializable{
 	public static Sistema cargarDatosGenerales(){
 		
 		try {
-			FileInputStream in = new FileInputStream("datos.ser");
+			FileInputStream in = new FileInputStream("datos.obj");
 			ObjectInputStream oin = new ObjectInputStream(in);
 			Sistema s1 = (Sistema) oin.readObject();
 			oin.close();

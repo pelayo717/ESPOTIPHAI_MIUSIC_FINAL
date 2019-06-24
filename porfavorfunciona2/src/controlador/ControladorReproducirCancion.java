@@ -189,7 +189,6 @@ public class ControladorReproducirCancion implements ActionListener{
 			
 			}else if(((JButton)e.getSource()).getText() == "play") {
 				try {
-					
 					EstadoReproduccion  variable = vista.getCancion().reproducirCancion();
 					if( variable == EstadoReproduccion.MENOR) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Esta cancion esta categorizada de Explicita y usted no tiene la edad suficiente para escucharla");
@@ -201,7 +200,8 @@ public class ControladorReproducirCancion implements ActionListener{
 						JOptionPane.showMessageDialog(Ventana.ventana,"Esta cancion esta bloqueada o ha sido eliminada del sistema");
 					}
 					
-					
+					//Sistema.sistema.setReproductor(vista.getCancion().getReproductor());
+
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				} catch (FileNotFoundException e1) {
@@ -210,8 +210,8 @@ public class ControladorReproducirCancion implements ActionListener{
 					e1.printStackTrace();
 				}
 			} else if(((JButton)e.getSource()).getText() == "pause") {
-				
 				vista.getCancion().parar();
+				Sistema.sistema.setReproductor(null);
 			} else if(((JButton)e.getSource()).getText() == "Añadir a Album") {
 				
 				if(Sistema.sistema.getUsuarioActual() != null) {

@@ -136,7 +136,7 @@ public class Ventana extends JFrame { //99.9% esta terminado
 		this.addWindowListener(new WindowAdapter(){
 			@Override
 			public void windowClosing(WindowEvent e) {
-				if (JOptionPane.showConfirmDialog(Ventana.ventana,  "Estas seguro de que quieres cerrar ESPOTIPHAIMUSIC?", "Cerrar ESPOTIPHAIMUSIC?", 
+				if (JOptionPane.showConfirmDialog(Ventana.ventana,"¿Estas seguro de que quieres cerrar ESPOTIPHAIMUSIC?", "Cerrar ESPOTIPHAIMUSIC?", 
 			            JOptionPane.YES_NO_OPTION,
 			            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
 						try {
