@@ -22,11 +22,13 @@ import modelo.contenido.EstadoCancion;
 import modelo.reporte.Reporte;
 import modelo.sistema.Sistema;
 
+/**
+ * Clase en la que se implementa la vista PantallaInicioAdmin que extiende 
+ * PantallaPrincipalcon todo lo necesario para cumplir los requisitos impuestos
+ */
 public class PantallaInicioAdmin extends PantallaPrincipal{ //99.9% esta terminado
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private JScrollPane reportes;
 	private JScrollPane canciones;
@@ -63,6 +65,11 @@ public class PantallaInicioAdmin extends PantallaPrincipal{ //99.9% esta termina
 	private  DefaultListModel<String> model1;
 	private  DefaultListModel<String> model2;
 	
+	/**
+	 * Constructor de la clase PantallaInicioAdmin donde se inicializan
+	 * todos los atributos con lo valores correspondientes 
+	 */
+
 	public PantallaInicioAdmin () {
 		
 		super();
@@ -242,31 +249,60 @@ public class PantallaInicioAdmin extends PantallaPrincipal{ //99.9% esta termina
 	        }
 			
 		}
-
+		
+		/**
+	 	 * Funcion que delvuelve el atributo serialVersionUID de la clase
+		 * @param serialVersionUID:
+	 	 */
 		public static long getSerialversionuid() {
 			return serialVersionUID;
 		}
-
+	
+		/**
+		 * Funcion que delvuelve un JScrollPane con todos los reportes que ha habido
+		 * @return serialVersionUID:
+	 	*/
 		public JScrollPane getReportes() {
 			return reportes;
 		}
-
+	
+		/**
+		 * Funcion que delvuelve un JScrollPane con todas las canciones
+		 * @return canciones: atributo de tipo JScrollPane que contiene todas las canciones 
+	 	*/
 		public JScrollPane getCanciones() {
 			return canciones;
 		}
-
+	
+		/**
+		 * Funcion que delvuelve un JList con todos los reportes que ha habido
+		 * @return lista_reportes: lista que contiene todos los reportes que ha habido
+	 	*/
 		public JList<String> getLista_reportes() {
 			return lista_reportes;
 		}
-
+	
+		/**
+		 * Funcion que delvuelve un JList con todos las canciones que hay
+		 * @return lista_canciones: atributo de  tipo JList que contiene
+		 * lista con todas las canciones 
+ 		*/
 		public JList<String> getLista_canciones() {
 			return lista_canciones;
 		}
-
+	
+		/**
+		 * Funcion que delvuelve el JButton que 
+		 * @return serialVersionUID:
+	 	*/
 		public JButton getModificarCriterios() {
 			return modificarCriterios;
 		}
-
+	
+		/**
+		 * Funcion que delvuelve un JButton 
+		 * @return valida: atributo de tipo JButton llamado valida
+	 	*/
 		public JButton getValida() {
 			return valida;
 		}
@@ -342,11 +378,19 @@ public class PantallaInicioAdmin extends PantallaPrincipal{ //99.9% esta termina
 		public Reporte[] getaReportar() {
 			return aReportar;
 		}
-
+	
+		/**
+		 * Funcion que devuelve el modelo1 de la clase
+		 * @return model1: atributo que indica que estamos en el modelo 1
+	 	*/
 		public DefaultListModel<String> getModel1() {
 			return model1;
 		}
 
+		/**
+		 * Funcion que devuelve el modelo2 de la clase
+	 	 * @return model2: atributo que indica que estamos en el modelo 1
+	 	 */
 		public DefaultListModel<String> getModel2() {
 			return model2;
 		}
