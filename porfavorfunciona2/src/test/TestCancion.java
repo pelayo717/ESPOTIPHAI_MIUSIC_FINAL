@@ -1,4 +1,4 @@
-package modelo.contenido;
+package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -8,6 +8,9 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import modelo.contenido.Cancion;
+import modelo.contenido.Comentario;
+import modelo.contenido.EstadoCancion;
 import modelo.status.Status;
 import modelo.usuario.Usuario;
 import pads.musicPlayer.exceptions.Mp3PlayerException;

@@ -68,7 +68,8 @@ public class Sistema implements Serializable{
 	 * Para la implementacion del patron singleton, creamos este metodo que comprobara la existencia de un objeto
 	 * de tipo Sistema estatico. Si no esta creado lo creara con los valores inciales, si estuvo creado previamente y
 	 * se guardaron correctamente los datos se cargan del fichero correspondiente en disco.
-	 * @return
+	 * @return Objeto de tipo sistema que sera cargado con datos si previamente habia un fichero de carga 
+	 * o se creara uno nuevo si no es asi
 	 * @throws Mp3PlayerException
 	 * @throws IOException
 	 */

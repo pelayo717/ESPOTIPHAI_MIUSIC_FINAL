@@ -1,4 +1,4 @@
-package modelo.usuario;
+package test;
 
 
 import modelo.contenido.Album;
@@ -17,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import modelo.usuario.Usuario;
+import modelo.usuario.UsuarioBloqueado;
 
 class TestUsuario {
 

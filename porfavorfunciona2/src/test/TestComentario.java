@@ -1,4 +1,4 @@
-package modelo.contenido;
+package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import modelo.contenido.Comentario;
 import modelo.status.Status;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
 
