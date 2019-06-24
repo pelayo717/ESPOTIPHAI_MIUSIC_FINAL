@@ -193,7 +193,7 @@ public class PantallaInicio extends PantallaPrincipal { //99.9% esta terminado
 	
 	/**
 	 * Funcion que delvuelve el atributo serialVersionUID de la clase
-	 * @param serialVersionUID:
+	 * @return serialVersionUID:
 	 */
 	public static long getSerialversionuid() {
 		return serialVersionUID;
