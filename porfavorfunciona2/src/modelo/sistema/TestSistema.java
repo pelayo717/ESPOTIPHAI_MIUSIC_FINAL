@@ -58,6 +58,40 @@ public class TestSistema {
 		}
 		
 		assertEquals(true, prueba);
+		File archivo = new File("datos.obj");
+		archivo.delete();
+	}
+	
+	
+	@Test
+	public void TestGestionarCancionesPendientes() throws Mp3PlayerException, IOException {
+		
+		Sistema a = Sistema.getSistema();
+		
+		a.registrarse("pepe", "pepe", LocalDate.of(1967, 12, 12), "pepe");
+		a.iniciarSesion("pepe", "pepe");
+		
+		nombre = "hive.mp3";
+		path = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs_junit" + System.getProperty("file.separator") + nombre;
+		a.crearCancion("pp", path, nombre);
+		
+		a.cerrarSesion();
+		
+		a.iniciarSesion("root1967", "ADMINISTRADOR");
+		
+		ArrayList<Cancion> pv = a.getCancionesPendientesValidacion();
+		
+		a.gestionarCancionesPendientesValidacion_Modificacion(pv.get(0),EstadoCancion.VALIDA);
+		
+		a.cerrarSesion();
+		
+		a.iniciarSesion("pepe", "pepe");
+		
+		ArrayList<Cancion> buscadas = a.buscadorPorTitulos("pp");
+		
+		assertEquals(EstadoCancion.VALIDA,buscadas.get(0).getEstado());
+		
+		a.eliminarCancion(buscadas.get(0));
 		
 		File archivo = new File("datos.obj");
 		archivo.delete();
@@ -74,20 +108,24 @@ public class TestSistema {
 		nombre = "hive.mp3";
 		path = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs_junit" + System.getProperty("file.separator") + nombre;
 		
-		
-		if(a.crearCancion("pp", path, nombre) != null) {
+		Cancion aux_c;
+		if(( aux_c = a.crearCancion("pp", path, nombre)) != null) {
 			prueba  = true;
 		}else {
 			prueba = false;
 		}
 		
+		a.eliminarCancion(aux_c);
+		
 		assertEquals(true,prueba);
+		File archivo = new File("datos.obj");
+		archivo.delete();		
+		
 	}
 	
 	@Test
 	public void TestEliminarCuenta() throws Mp3PlayerException, IOException {
 		Sistema a = Sistema.getSistema();
-		
 		a.registrarse("pepe", "pepe", LocalDate.of(1967, 12, 12), "pepe");
 		
 		a.iniciarSesion("pepe","pepe");
@@ -100,6 +138,7 @@ public class TestSistema {
 		
 		File archivo = new File("datos.obj");
 		archivo.delete();
+		
 	}
 	
 	
@@ -127,7 +166,7 @@ public class TestSistema {
 				
 		File archivo = new File("datos.obj");
 		archivo.delete();
-		
+
 	}
 	
 	@Test
@@ -152,6 +191,7 @@ public class TestSistema {
 		
 		File archivo = new File("datos.obj");
 		archivo.delete();
+		
 	}
 	
 	
@@ -183,7 +223,7 @@ public class TestSistema {
 		
 		nombre = "hive.mp3";
 		path = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs_junit" + System.getProperty("file.separator") + nombre;
-		a.crearCancion("pp", path, nombre);
+		Cancion aux_c = a.crearCancion("pp", path, nombre);
 		
 		
 		//La validamos asi aunque esta funcion la deberia realizar el  administrador desde su cuenta
@@ -196,6 +236,8 @@ public class TestSistema {
 		File archivo = new File("datos.obj");
 		archivo.delete();
 		
+		a.eliminarCancion(aux_c);
+	
 	}
 	
 	
@@ -206,7 +248,7 @@ public class TestSistema {
 		a.registrarse("pepe", "pepe", LocalDate.of(1967, 12, 12), "pepe");
 		a.iniciarSesion("pepe", "pepe");
 		
-		a.crearAlbum(2019, "musica");
+		Album album_eliminar = a.crearAlbum(2019, "musica");
 			
 		ArrayList<Album> auxiliar = a.buscadorPorAutores_DevolvemosAlbumes("pepe");
 		
@@ -214,6 +256,8 @@ public class TestSistema {
 		
 		File archivo = new File("datos.obj");
 		archivo.delete();
+		
+		a.eliminarAlbum(album_eliminar);
 	}
 	
 	@Test
@@ -225,7 +269,7 @@ public class TestSistema {
 		
 		nombre = "hive.mp3";
 		path = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs_junit" + System.getProperty("file.separator") + nombre;
-		a.crearCancion("pp", path, nombre);
+		Cancion aux_cancion = a.crearCancion("pp", path, nombre);
 		
 		//La validamos asi aunque esta funcion la deberia realizar el  administrador desde su cuenta
 		a.getCancionTotales().get(0).setEstado(EstadoCancion.VALIDA); 
@@ -237,6 +281,7 @@ public class TestSistema {
 		File archivo = new File("datos.obj");
 		archivo.delete();
 		
+		a.eliminarCancion(aux_cancion);
 	}
 	
 	@Test
@@ -286,7 +331,7 @@ public class TestSistema {
 		
 		a.registrarse("pepe", "pepe", LocalDate.of(1967, 12, 12), "pepe");
 		a.iniciarSesion("pepe", "pepe");
-		
+
 		nombre = "hive.mp3";
 		path = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs_junit" + System.getProperty("file.separator") + nombre;
 		Cancion c = a.crearCancion("pp", path, nombre);
@@ -310,7 +355,7 @@ public class TestSistema {
 		a.registrarse("pepe", "pepe", LocalDate.of(1967, 12, 12), "pepe");
 		a.iniciarSesion("pepe", "pepe");
 		
-		a.crearAlbum(2019, "por mi");
+		Album album_eliminar = a.crearAlbum(2019, "por mi");
 		
 		
 		ArrayList<Album> auxiliar = a.buscadorPorAlbumes("por mi");
@@ -319,6 +364,8 @@ public class TestSistema {
 		
 		File archivo = new File("datos.obj");
 		archivo.delete();
+		
+		a.eliminarAlbum(album_eliminar);
 	}
 	
 	
@@ -335,6 +382,8 @@ public class TestSistema {
 		assertEquals(true, prueba);
 		assertEquals(true,a.getAdministrador());
 		
+		a.cerrarSesion();
+		
 		File archivo = new File("datos.obj");
 		archivo.delete();
 	}
@@ -344,6 +393,7 @@ public class TestSistema {
 		Sistema a = Sistema.getSistema();
 		LocalDate hoy = LocalDate.now();
 		hoy = hoy.plusDays(-30);
+		
 		
 		a.registrarse("pepe", "pepe", LocalDate.of(1967, 12, 12), "pepe");
 		a.iniciarSesion("pepe", "pepe");
@@ -368,7 +418,7 @@ public class TestSistema {
 		
 		nombre = "hive.mp3";
 		path = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs_junit" + System.getProperty("file.separator") + nombre;
-		a.crearCancion("pp", path, nombre);
+		Cancion aux_cancion = a.crearCancion("pp", path, nombre);
 		
 		//La validamos asi aunque esta funcion la deberia realizar el  administrador desde su cuenta
 		a.getCancionTotales().get(0).setEstado(EstadoCancion.VALIDA); 
@@ -382,6 +432,8 @@ public class TestSistema {
 		
 		File archivo = new File("datos.obj");
 		archivo.delete();
+		
+		a.eliminarCancion(aux_cancion);
 	}
 
 	
@@ -398,7 +450,7 @@ public class TestSistema {
 		
 		nombre = "hive.mp3";
 		path = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs_junit" + System.getProperty("file.separator") + nombre;
-		a.crearCancion("pp", path, nombre);
+		Cancion aux_cancion = a.crearCancion("pp", path, nombre);
 		
 		//La validamos asi aunque esta funcion la deberia realizar el  administrador desde su cuenta
 		a.getCancionTotales().get(0).setEstado(EstadoCancion.PENDIENTEMODIFICACION);	
@@ -414,6 +466,9 @@ public class TestSistema {
 		
 		File archivo = new File("datos.obj");
 		archivo.delete();
+		a.eliminarCancion(aux_cancion);
+		
+		
 	}
 	
 	@Test
@@ -429,7 +484,7 @@ public class TestSistema {
 		
 		nombre = "hive.mp3";
 		path = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs_junit" + System.getProperty("file.separator") + nombre;
-		a.crearCancion("pp", path, nombre);
+		Cancion aux_cancion = a.crearCancion("pp", path, nombre);
 		
 		//La validamos asi aunque esta funcion la deberia realizar el  administrador desde su cuenta
 		a.getCancionTotales().get(0).setEstado(EstadoCancion.PENDIENTEMODIFICACION);
@@ -445,6 +500,7 @@ public class TestSistema {
 		
 		File archivo = new File("datos.obj");
 		archivo.delete();
+		a.eliminarCancion(aux_cancion);
 	}
 	
 	
@@ -458,7 +514,8 @@ public class TestSistema {
 		a.registrarse("pepe", "pepe", LocalDate.of(1967, 12, 12), "pepe");
 		a.iniciarSesion("pepe", "pepe");
 		
-		if(a.crearAlbum(2019, "escuela") != null) {
+		Album aux_album = a.crearAlbum(2019, "escuela");
+		if(aux_album != null) {
 			prueba = true;
 		}else{
 			prueba = false;
@@ -467,6 +524,7 @@ public class TestSistema {
 		assertEquals(true,prueba);
 		File archivo = new File("datos.obj");
 		archivo.delete();
+		a.eliminarAlbum(aux_album);
 	}
 	
 	@Test
@@ -500,8 +558,8 @@ public class TestSistema {
 		
 		a.registrarse("pepe", "pepe", LocalDate.of(1967, 12, 12), "pepe");
 		a.iniciarSesion("pepe", "pepe");
-		
-		if(a.crearLista("pitufo") != null) {
+		Lista aux_lista =a.crearLista("pitufo");
+		if(aux_lista != null) {
 			prueba = true;
 		}else{
 			prueba = false;
@@ -510,6 +568,7 @@ public class TestSistema {
 		assertEquals(true,prueba);
 		File archivo = new File("datos.obj");
 		archivo.delete();
+		a.eliminarLista(aux_lista);
 	}
 	
 	@Test
@@ -534,24 +593,132 @@ public class TestSistema {
 	}
 	
 	@Test
-	public void TestAnyadirAAlbum() {
+	public void TestAnyadirAAlbum() throws Mp3PlayerException, IOException {
 		
+		Sistema a = Sistema.getSistema();
+	
+		a.registrarse("pepe", "pepe", LocalDate.of(1967, 12, 12), "pepe");
+		a.iniciarSesion("pepe", "pepe");
+		
+		nombre = "hive.mp3";
+		path = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs_junit" + System.getProperty("file.separator") + nombre;
+		
+		Cancion aux_cancion = a.crearCancion("pp", path, nombre);
+		
+		aux_cancion.setEstado(EstadoCancion.VALIDA);
+		
+		Album aux_album = a.crearAlbum(2019, "escuela");
+
+		if(a.anyadirCancionAAlbum(aux_album, aux_cancion) == Status.OK) {
+			prueba = true;
+		}else {
+			prueba = false;
+		}
+		
+		assertEquals(true,prueba);
+		File archivo = new File("datos.obj");
+		archivo.delete();
+		
+		a.eliminarCancion(a.getCancionTotales().get(0));
+		a.eliminarAlbum(a.getAlbumTotales().get(0));		
 	}
 	
 	@Test
-	public void TestEliminarDeAlbum() {
+	public void TestEliminarDeAlbum() throws Mp3PlayerException, IOException {
 		
+		Sistema a = Sistema.getSistema();
+		
+		a.registrarse("pepe", "pepe", LocalDate.of(1967, 12, 12), "pepe");
+		a.iniciarSesion("pepe", "pepe");
+		
+		nombre = "hive.mp3";
+		path = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs_junit" + System.getProperty("file.separator") + nombre;
+		
+		Cancion aux_cancion = a.crearCancion("pp", path, nombre);
+		
+		aux_cancion.setEstado(EstadoCancion.VALIDA);
+		
+		Album aux_album = a.crearAlbum(2019, "escuela");
+		
+		a.anyadirCancionAAlbum(aux_album, aux_cancion);
+		
+		
+		if(a.quitarCancionDeAlbum(aux_album, aux_cancion) == Status.OK) {
+			prueba = true;
+		}else {
+			prueba = false;
+		}
+		
+		assertEquals(true,prueba);
+		File archivo = new File("datos.obj");
+		archivo.delete();
+		
+		a.eliminarCancion(aux_cancion);
+		a.eliminarAlbum(aux_album);
 	}
 	
 	
 	@Test
-	public void TestAnyadirALista() {
+	public void TestAnyadirALista() throws Mp3PlayerException, IOException {
 		
+		Sistema a = Sistema.getSistema();
+		
+		a.registrarse("pepe", "pepe", LocalDate.of(1967, 12, 12), "pepe");
+		a.iniciarSesion("pepe", "pepe");
+		
+		nombre = "hive.mp3";
+		path = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs_junit" + System.getProperty("file.separator") + nombre;
+		
+		Cancion aux_cancion = a.crearCancion("pp", path, nombre);
+		
+		aux_cancion.setEstado(EstadoCancion.VALIDA);
+		
+		Lista aux_lista = a.crearLista("escuela");
+
+		if(a.anyadirALista(aux_lista, aux_cancion) == Status.OK) {
+			prueba = true;
+		}else {
+			prueba = false;
+		}
+		
+		assertEquals(true,prueba);
+		File archivo = new File("datos.obj");
+		archivo.delete();
+		
+		a.eliminarCancion(aux_cancion);
+		a.eliminarLista(aux_lista);
 	}
 	
 	@Test
-	public void TestEliminarDeLista() {
+	public void TestEliminarDeLista() throws Mp3PlayerException, IOException {
+		Sistema a = Sistema.getSistema();
 		
+		a.registrarse("pepe", "pepe", LocalDate.of(1967, 12, 12), "pepe");
+		a.iniciarSesion("pepe", "pepe");
+		
+		nombre = "hive.mp3";
+		path = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs_junit" + System.getProperty("file.separator") + nombre;
+		
+		Cancion aux_cancion = a.crearCancion("pp", path, nombre);
+		
+		aux_cancion.setEstado(EstadoCancion.VALIDA);
+		
+		Lista aux_lista = a.crearLista("escuela");
+		
+		a.anyadirALista(aux_lista, aux_cancion);
+		
+		if(a.quitarDeLista(aux_lista, aux_cancion) == Status.OK) {
+			prueba = true;
+		}else {
+			prueba = false;
+		}
+		
+		assertEquals(true,prueba);
+		File archivo = new File("datos.obj");
+		archivo.delete();
+		
+		a.eliminarCancion(aux_cancion);
+		a.eliminarLista(aux_lista);
 	}
 	
 	
@@ -579,24 +746,55 @@ public class TestSistema {
 		Sistema a1 = Sistema.getSistema();
 		
 		File archivo = new File("datos.obj");
-		assertEquals(2,a1.getUsuariosTotales().size());
+		assertEquals(3,a1.getUsuariosTotales().size());
 		archivo.delete();
 	}
 	
-	@Test
-	public void TestGestionarCancionesPendientes() throws Mp3PlayerException, IOException {
-		
-	}
-	
 	
 	@Test
-	public void TestDenunciarPlagio() {
+	public void TestDenunciarPlagioYGestionarReporte() throws Mp3PlayerException, IOException {
+		Sistema a = Sistema.getSistema();
+
+		a.registrarse("pepo", "pepo", LocalDate.of(1967, 12, 12), "pepo");
+		a.registrarse("pepe", "pepe", LocalDate.of(1967, 12, 12), "pepe");
+		a.iniciarSesion("pepe", "pepe");
 		
-	}
-	
-	@Test
-	public void TestGestionarReporte() {
+		nombre = "hive.mp3";
+		path = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs_junit" + System.getProperty("file.separator") + nombre;
 		
+		Cancion aux_cancion = a.crearCancion("pp", path, nombre);
+		
+		aux_cancion.setEstado(EstadoCancion.VALIDA);
+		
+		a.cerrarSesion();
+		
+		a.iniciarSesion("pepo", "pepo");
+		
+		a.denunciarPlagio(aux_cancion);
+		
+		a.cerrarSesion();
+		
+		a.iniciarSesion("pepe", "pepe");
+		
+		assertEquals(false,a.getReportesTotales().isEmpty());
+		
+		a.cerrarSesion();
+		
+		a.iniciarSesion("root1967", "ADMINISTRADOR");
+				
+		a.gestionarReportes(a.getReportesTotales().get(0), false);
+		
+		assertEquals(true,a.getReportesTotales().isEmpty());
+		
+		a.cerrarSesion();
+		
+		a.iniciarSesion("pepe", "pepe");
+		
+		a.eliminarCancion(aux_cancion);
+		
+		a.eliminarCuenta();
+		
+		File archivo = new File("datos.obj");
+		archivo.delete();
 	}
-	
 }

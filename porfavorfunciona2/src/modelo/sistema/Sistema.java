@@ -1069,14 +1069,22 @@ public class Sistema implements Serializable{
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO && sistema.es_administrador == false) {
 			for(Cancion cancion:sistema.getUsuarioActual().getCanciones()) {
 				
+				
+
 				if(cancion.getTitulo().equals(c.getTitulo()) == true && cancion.getNombreMP3().equals(c.getNombreMP3()) == true) {
 					
+					
+
 					if(c.getEstado() == EstadoCancion.VALIDA || (c.getEstado() == EstadoCancion.EXPLICITA && intervalo.getYears() >= 18)) {
+						
 						
 						for(Album album:sistema.getUsuarioActual().getAlbumes()) {
 						
+							
 							if(album.getTitulo().equals(a.getTitulo()) == true && album.getAutor().getId() == sistema.getUsuarioActual().getId()) {
 								
+								
+
 								ArrayList<Cancion> canciones_en_album = album.getContenido();
 								for(Cancion canciones_album:canciones_en_album) {
 									if(canciones_album.getTitulo().equals(c.getTitulo()) == true && canciones_album.getNombreMP3().equals(c.getNombreMP3()) == true) {
@@ -1117,11 +1125,11 @@ public class Sistema implements Serializable{
 		}
 		
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO && sistema.es_administrador == false) {
-			
+
 			for(Cancion cancion:sistema.getUsuarioActual().getCanciones()) {
 				
 				if(cancion.getTitulo().equals(c.getTitulo()) == true && cancion.getAutor().getId() == sistema.getUsuarioActual().getId() && (c.getEstado() == EstadoCancion.VALIDA || c.getEstado() == EstadoCancion.EXPLICITA)) {
-			
+
 					for(Album album:sistema.getUsuarioActual().getAlbumes()) {
 						
 						if(album.getTitulo().equals(a.getTitulo()) == true && album.getAutor().getId() == sistema.getUsuarioActual().getId()) {
