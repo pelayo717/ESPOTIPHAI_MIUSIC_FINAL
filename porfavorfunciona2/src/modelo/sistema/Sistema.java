@@ -74,7 +74,7 @@ public class Sistema implements Serializable{
 	 */
 	public static Sistema getSistema() throws Mp3PlayerException, IOException {
 		if(sistema == null) {
-			File archivo = new File("datos.obj");			
+			File archivo = new File("datos.ser");			
 			if(archivo.exists() == true) {
 				sistema = new Sistema();
 				sistema = Sistema.cargarDatosGenerales();
@@ -1296,7 +1296,7 @@ public class Sistema implements Serializable{
 	public Status guardarDatosGenerales() throws IOException {
 		
 		try {
-			FileOutputStream fileOut = new FileOutputStream("datos.obj");
+			FileOutputStream fileOut = new FileOutputStream("datos.ser");
 			ObjectOutputStream oos = new ObjectOutputStream(fileOut);
 			oos.writeObject(this);
 			oos.flush();
@@ -1321,7 +1321,7 @@ public class Sistema implements Serializable{
 	public static Sistema cargarDatosGenerales(){
 		
 		try {
-			FileInputStream in = new FileInputStream("datos.obj");
+			FileInputStream in = new FileInputStream("datos.ser");
 			ObjectInputStream oin = new ObjectInputStream(in);
 			Sistema s1 = (Sistema) oin.readObject();
 			oin.close();

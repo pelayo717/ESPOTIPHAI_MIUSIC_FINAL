@@ -190,14 +190,16 @@ public class ControladorPantallaInicio implements ActionListener{
 				 int a = file.showOpenDialog(Ventana.ventana);
 				 File escogido = file.getSelectedFile();
 				 
-				 escogido.renameTo(new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName()));
-				 
-				 String temporal = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName();
-				 
+	
 				 try {
 					 
 					 Cancion c;
 					if(a == JFileChooser.APPROVE_OPTION) {
+						
+						escogido.renameTo(new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName()));
+						 
+						 String temporal = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName();
+						 
 						if((c = Sistema.sistema.crearCancion(titulo,temporal,escogido.getName())) != null) {
 							Ventana.ventana.showPantallaInicio();
 							JOptionPane.showMessageDialog(Ventana.ventana,"La cancion " + c.getTitulo() + " se ha creado correctamente");
