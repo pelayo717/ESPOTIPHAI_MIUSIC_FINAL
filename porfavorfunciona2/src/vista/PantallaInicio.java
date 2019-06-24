@@ -193,7 +193,7 @@ public class PantallaInicio extends PantallaPrincipal { //99.9% esta terminado
 	
 	/**
 	 * Funcion que delvuelve el atributo serialVersionUID de la clase
-	 * @param serialVersionUID:
+	 * @return serialVersionUID:
 	 */
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -382,7 +382,7 @@ public class PantallaInicio extends PantallaPrincipal { //99.9% esta terminado
 	 * Funcion que delvuelve un array de tipo Lista con todas las listas
 	 * del usuario
 	 * @return misListas: atributo de tipo Listas el cual contiene todas las 
-	 * lsitas del usuario
+	 * listas del usuario
 	 */
 	public Lista[] getMisListas() {
 		return misListas;
@@ -390,7 +390,7 @@ public class PantallaInicio extends PantallaPrincipal { //99.9% esta terminado
 
 	/**
 	 * Funcion que devuelve el modelo1 de la clase
-	 * @param model1: atributo que indica que estamos en el modelo 1
+	 * @return model1: atributo que indica que estamos en el modelo 1
 	 */
 	public DefaultListModel<String> getModel1() {
 		return model1;
@@ -398,7 +398,7 @@ public class PantallaInicio extends PantallaPrincipal { //99.9% esta terminado
 
 	/**
 	 * Funcion que devuelve el modelo2 de la clase
-	 * @param model2: atributo que indica que estamos en el modelo 2
+	 * @return model2: atributo que indica que estamos en el modelo 2
 	 */
 	public DefaultListModel<String> getModel2() {
 		return model2;
