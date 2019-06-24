@@ -10,12 +10,13 @@ import modelo.sistema.*;
 import modelo.usuario.Usuario;
 import modelo.contenido.*;
 
-
+/**
+ * Clase en la que se implementa la vista ReproducirLista con todo
+ * lo necesario para cumplir los requisitos impuestos
+ */
 public class ReproducirLista extends PantallaPrincipal {
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 
 	private Lista lista;
@@ -40,6 +41,10 @@ public class ReproducirLista extends PantallaPrincipal {
 	private  Contenido[] contenido;
 	private  DefaultListModel<String> model1;
 	
+	/**
+	 * Constructor de la clase ReproducirLista donde se inicializan
+	 * todos los atributos con lo valores correspondientes 
+	 */
 	public ReproducirLista() {
 		super();
 		
@@ -134,11 +139,19 @@ public class ReproducirLista extends PantallaPrincipal {
 		this.add(anyadirLista);
 	}
 	
+	/**
+	 * Funcion que limpia el buscador de la aplicacion y lo deja vacio 
+	 * para que el usuario pueda realizar otra busqueda
+	 */
 	public void limpiarBuscador(){
 		super.getBusquedaTextfield().setText("");
 		super.getGrupo_eleccion().clearSelection();
 	}
 	
+	/**
+	 * Funcion que cambia el texto de unos determinados botones para ponerlos el 
+	 * texto a lo necesario para cuando el usuario si que esa registrado
+	 */
 	public void setUsuarioRegistrado() {
 		super.getBotonIzquierdaArriba().setText("Ver Perfil");
 		super.getBotonIzquierdaMedio().setText("Inicio");
@@ -146,7 +159,11 @@ public class ReproducirLista extends PantallaPrincipal {
 	}
 
 	
-	 // método para asignar un controlador al botón
+	 /**
+	 * Funcion que asgina a cada boton la accion que se pasa como argumento
+	 * @param c: accion que se va a pasar a cada boton para que luego sse asigne el usuario determinado
+	 */
+
 	 public void setControlador(ActionListener c) {
 		 super.getBotonIzquierdaArriba().addActionListener(c);
 		 super.getBotonIzquierdaMedio().addActionListener(c);
@@ -160,7 +177,10 @@ public class ReproducirLista extends PantallaPrincipal {
 		 this.anyadirLista.addActionListener(c);
 	 }
 	 
-	 
+	 /**
+	 * Funcion que pone la informacion necesaria sobre la vista en base al argumento de
+	 * entrada, siendo este la lista que se va a reproducir
+	 */
 	 public void setInformacion(Lista lista) {
 		this.lista = lista;
 
@@ -192,24 +212,43 @@ public class ReproducirLista extends PantallaPrincipal {
 		this.actualizarContenido();
 	}
 	 
-
+	/**
+	 * Funcion que devuelve la Lista que se va a reproducir
+	 * @return lista: atributo el cual se va a reproducir por parte del usuario
+	 */
 	 public Lista getLista() {
 		return lista;
 	}
 
+	/**
+	 * Funcion que devuelve el boton de play en la aplicacion
+	 * @return botonPlay: devuelve el boton de play que se encuentra en la vista
+	 */
 	public JButton getBotonPlay() {
 		return botonPlay;
 	}
 
+	/**
+	 * Funcion que devuelve el boton de pause en la vista para parar la cancion
+	 * @return botonPause: devuelve el boton de pausa que se encuentra en la vista
+	 */
 	public JButton getBotonPause() {
 		return botonPause;
 	}
-
+	
+	/**
+	 * Funcion que devuelve el boton de borrar 
+	 * @return botonDelete: devuelve el boton de borrar de la vista
+	 */
 	public JButton getBotonDelete() {
 		return botonDelete;
 	}
 
-
+	/**
+	 * Funcion que devuelve un Jlist de todos los contenidos
+	 * @return lista_contenido: atributo de tipo JList que contiene
+	 * una lista con todos los contenidos de la clase
+	 */
 	public JList<String> getLista_contenido() {
 		return lista_contenido;
 	}
