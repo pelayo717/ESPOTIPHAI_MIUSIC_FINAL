@@ -23,11 +23,12 @@ import modelo.contenido.Cancion;
 import modelo.contenido.EstadoCancion;
 import modelo.contenido.Lista;
 
+/**
+ * Clase en la que se implementa la vista PantallaInicio con todo
+ * lo necesario para cumplir los requisitos impuestos
+ */
 public class PantallaInicio extends PantallaPrincipal { //99.9% esta terminado
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JScrollPane canciones;
 	private JScrollPane albumes;
@@ -57,6 +58,10 @@ public class PantallaInicio extends PantallaPrincipal { //99.9% esta terminado
 	private DefaultListModel<String> model2;
 	private DefaultListModel<String> model3;
 	
+	/**
+	 * Constructor de la clase PantallaInicio donde se inicializan
+	 * todos los atributos con lo valores correspondientes 
+	 */
 	public PantallaInicio() {  //CAMBIADO, MEJORADO
 		
 		super();
@@ -144,7 +149,10 @@ public class PantallaInicio extends PantallaPrincipal { //99.9% esta terminado
 	}
 		
 	
-	// metodo para asignar un controlador al boton
+	/**
+	 * Funcion que asgina a cada boton la accion que se pasa como argumento
+	 * @param c: accion que se va a pasar a cada boton para que luego sse asigne el usuario determinado
+	 */
 	public void setControlador(ActionListener c) {
 		super.getBotonIzquierdaArriba().addActionListener(c);
 		super.getBotonIzquierdaMedio().addActionListener(c);
@@ -161,12 +169,20 @@ public class PantallaInicio extends PantallaPrincipal { //99.9% esta terminado
 		this.eliminarLista.addActionListener(c);
 	}
 		 
+	/**
+	 * Funcion que cambia el texto de unos determinados botones para ponerlos el 
+	 * texto a lo necesario para cuando el usuario si que esa registrado
+	 */
 	public void setUsuarioRegistrado() {
 		super.getBotonIzquierdaArriba().setText("Ver Perfil");
 		super.getBotonIzquierdaMedio().setVisible(false);
 		super.getBotonIzquierdaAbajo().setVisible(false);
 	}
-			
+	
+	/**
+	 * Funcion que cambia el texto de unos determinados botones para ponerlos el 
+	 * texto a lo necesario para cuando el usuario no esta registrado
+	 */
 	public void setUsuarioNoRegistrado() {
 		super.getBotonIzquierdaArriba().setText("Iniciar Sesion");
 		super.getBotonIzquierdaMedio().setText("Registro");
@@ -174,131 +190,233 @@ public class PantallaInicio extends PantallaPrincipal { //99.9% esta terminado
 		super.getBotonIzquierdaAbajo().setVisible(false);
 	}
 	
+	
+	/**
+	 * Funcion que delvuelve el atributo serialVersionUID de la clase
+	 * @param serialVersionUID:
+	 */
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
-
+	/**
+	 * Funcion que delvuelve un scrollPane que contiene todas las canciones del usuario
+	 * @return canciones: atributo de tipo JScrollPane el cual contiene todas las canciones del usuario
+	 */
 	public JScrollPane getCanciones() {
 		return canciones;
 	}
 
-
+	/**
+	 * Funcion que delvuelve un scrollPane que contiene todas los albumes del usuario
+	 * @return albumes: atributo de tipo JScrollPane el cual contiene todas las canciones del usuario
+	 */
 	public JScrollPane getAlbumes() {
 		return albumes;
 	}
 
-
+	/**
+	 * Funcion que delvuelve un scrollPane que contiene todas las listas del usuario
+	 * @return listas: atributo de tipo JScrollPane el cual contiene todas las listas del usuario
+	 */
 	public JScrollPane getListas() {
 		return listas;
 	}
 
-
+	/**
+	 * Funcion que delvuelve un JList que contiene todas las canciones del usuario
+	 * @return lista_canciones: atributo de tipo JList el cual contiene todas las canciones del usuario
+	 */
 	public JList<String> getLista_canciones() {
 		return lista_canciones;
 	}
 
-
+	/**
+	 * Funcion que delvuelve un JList que contiene todas los albumes del usuario
+	 * @return lista_albumes: atributo de tipo JList el cual contiene todas los albumes del usuario
+	 */
 	public JList<String> getLista_albumes() {
 		return lista_albumes;
 	}
 
-
+	/**
+	 * Funcion que delvuelve un JList que contiene todas las listas del usuario
+	 * @return lista_listas: atributo de tipo JList el cual contiene todas las listas del usuario
+	 */
 	public JList<String> getLista_listas() {
 		return lista_listas;
 	}
 
-
+	/**
+	 * Funcion que delvuelve un JButton que indicar la funcion de seleccionar un album determinado
+	 * @return seleccionarAlbum: atributo de tipo JButton el cual contiene todas las canciones del usuario
+	 */
 	public JButton getSeleccionarAlbum() {
 		return seleccionarAlbum;
 	}
-
-
+	
+	/**
+	 * Funcion que devuelve el boton de seleccionar cancion
+	 * @return seleccionarCancion: devuelve el boton de seleccionarCancion
+	 */
 	public JButton getSeleccionarCancion() {
 		return seleccionarCancion;
 	}
 
-
+	/**
+	 * Funcion que devuelve el boton de seleccionar lista
+	 * @return seleccionarAlbum: devuelve el boton de seleccionarLista
+	 */
 	public JButton getSeleccionarLista() {
 		return seleccionarLista;
 	}
 
 
+	/**
+	 * Funcion que delvuelve el boton que lleva a cabo la funcion de crear una cancion
+	 * @return crear_cancion: atributo de tipo JButton el cual representa graficamente
+	 * la funcion de crear una cancion por parte del usuario
+	 */
 	public JButton getCrearCancion() {
 		return crearCancion;
 	}
 
-
+	
+	/**
+	 * Funcion que delvuelve el boton que tiene por nombre CrearAlbum
+	 * @return crearAlbum: atributo de tipo JButton la cual representa la accion 
+	 * de crear un nuevo album
+	 */
 	public JButton getCrearAlbum() {
 		return crearAlbum;
 	}
 
-
+	
+	/**
+	 * Funcion que delvuelve el boton que tiene por nombre CrearLista
+	 * @return crearLista: atributo de la clase de tipo JButton el cual representa el boton
+	 * de la vista llamado CrearLista
+	 */
 	public JButton getCrearLista() {
 		return crearLista;
 	}
 
-
+	
+	/**
+	 * Funcion que delvuelve el boton de la vista denominado como EliminarCancion
+	 * @return eliminarCancion: atributo que se devuelve en la funcion el cual representa la accion
+	 * de borrar una cancion de tus propias canciones
+	 */
 	public JButton getEliminarCancion() {
 		return eliminarCancion;
 	}
 
-
+	
+	
+	/**
+	 * Funcion que delvuelve el boton que se usa para poder eliminar un album
+	 * @return eliminarAlbum: boton que representa la accion de eliminar un album de los que has subido tu
+	 */
 	public JButton getEliminarAlbum() {
 		return eliminarAlbum;
 	}
 
-
+	/**
+	 * Funcion que delvuelve el boton que se usa para poder eliminar una lista
+	 * @return eliminarAlbum: boton que representa la accion de eliminar un album de los que has subido tu
+	 */
 	public JButton getEliminarLista() {
 		return eliminarLista;
 	}
 
 
+	
+	/**
+	 * Funcion que delvuelve un JLabel con todas las canciones que tiene el usuario
+	 * que realiza la accion
+	 * @return susCanciones: atributo de tipo JLabel que contiene todas las canciones del usuario
+	 */
 	public JLabel getSusCanciones() {
 		return susCanciones;
 	}
-
-
+	
+	/**
+	 * Funcion que delvuelve un JLabel con todos los albumes del usuario
+	 * @return susAlbumes: atributo de tipo JLabel que contiene todos los 
+	 * albumes del usuario
+	 */
 	public JLabel getSusAlbumes() {
 		return susAlbumes;
 	}
 
-
+	/**
+	 * Funcion que delvuelve un JLabel con todas las listas del usuario
+	 * @return susListas: atributo de tipo JLabel el cual contiene todas las 
+	 * listas del usuario
+	 */
 	public JLabel getSusListas() {
 		return susListas;
 	}
-
-
+	
+	/**
+	 * Funcion que delvuelve un array de tipo Cancion con todas las canciones
+	 * del usuario
+	 * @return misCanciones: atributo de tipo Canciones el cual contiene todas las 
+	 * canciones del usuario
+	 */
 	public Cancion[] getMisCanciones() {
 		return misCanciones;
 	}
-
-
+	
+	/**
+	 * Funcion que delvuelve un array de tipo Album con todas los albumes
+	 * del usuario
+	 * @return misAlbumes: atributo de tipo Album el cual contiene todos los 
+	 * albumes del usuario
+	 */
 	public Album[] getMisAlbumes() {
 		return misAlbumes;
 	}
 
-
+	/**
+	 * Funcion que delvuelve un array de tipo Lista con todas las listas
+	 * del usuario
+	 * @return misListas: atributo de tipo Listas el cual contiene todas las 
+	 * lsitas del usuario
+	 */
 	public Lista[] getMisListas() {
 		return misListas;
 	}
 
-
+	/**
+	 * Funcion que devuelve el modelo1 de la clase
+	 * @param model1: atributo que indica que estamos en el modelo 1
+	 */
 	public DefaultListModel<String> getModel1() {
 		return model1;
 	}
 
-
+	/**
+	 * Funcion que devuelve el modelo2 de la clase
+	 * @param model2: atributo que indica que estamos en el modelo 2
+	 */
 	public DefaultListModel<String> getModel2() {
 		return model2;
 	}
 
-
+	/**
+	 * Funcion que devuelve el modelo3 de la clase
+	 * @param model3: atributo que indica que estamos en el modelo 3
+	 */
 	public DefaultListModel<String> getModel3() {
 		return model3;
 	}
 
-
+	/**
+	 * Funcion que actualiza las canciones a partir del array list de canciones pasado
+	 * como argumento 
+	 * @param canciones_propias: canciones que se van a poner como nuevas al actualizar
+	 */
 	public void actualizarCanciones(ArrayList<Cancion> canciones_propias) {
 		model1.clear();
 		misCanciones = canciones_propias.toArray(new Cancion[canciones_propias.size()]);
@@ -317,6 +435,10 @@ public class PantallaInicio extends PantallaPrincipal { //99.9% esta terminado
 		
 	}
 	
+	/**
+	 * Funcion que actualiza los albumes por los albumes propios
+	 * @param albumes_propios: albumes que se van a poner como nuevos al actualizar
+	 */
 	public void actualizarAlbumes(ArrayList<Album> albumes_propios) {
 		model2.clear();
 		misAlbumes = albumes_propios.toArray(new Album[albumes_propios.size()]);
@@ -329,6 +451,10 @@ public class PantallaInicio extends PantallaPrincipal { //99.9% esta terminado
 		
 	}
 	
+	/**
+	 * Funcion que actualiza las listas de las listas propias del usuario
+	 * @param listas_propias: listasque se van a poner como nuevas al actualizar
+	 */
 	public void actualizarListas(ArrayList<Lista> listas_propias) {
 		model3.clear();
 		misListas = listas_propias.toArray(new Lista[listas_propias.size()]);
@@ -342,14 +468,19 @@ public class PantallaInicio extends PantallaPrincipal { //99.9% esta terminado
 		
 	}
 
-
+	/**
+	 * Funcion que limpia los datos completamente
+	 */
 	public void limpiarDatos() {
 		model1.clear();
 		model2.clear();
 		model3.clear();
 	}
 	
-	
+	/**
+	 * Clase que se ejecuta cada vez que se actualiza la pagina para comprobar que todos los 
+	 * objetos de la vista son de tipo correcto
+	 */
 	private class RowColor extends DefaultListCellRenderer{
 		
 		private static final long serialVersionUID = 1L;
