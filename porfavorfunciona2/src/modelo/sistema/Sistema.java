@@ -78,8 +78,6 @@ public class Sistema implements Serializable{
 			if(archivo.exists() == true) {
 				sistema = new Sistema();
 				sistema = Sistema.cargarDatosGenerales();
-				
-
 				sistema.actualizarPathCanciones();
 				sistema.empeorarCuentaPrincipal();
 				sistema.desbloquearUsuario();
@@ -517,24 +515,28 @@ public class Sistema implements Serializable{
 	 */
 	public void eliminarCancionPendienteModificacionCaducada(LocalDate d) {
 		
+		ArrayList<Cancion> retorno = sistema.getCancionTotales();
 		
 		//ELIMINAMOS CANCIONES QUE HAN PASADO EL TIEMPO DE MODIFICACION
-		for(Cancion canciones_eliminar_sistema:sistema.getCancionTotales()) {
-			if(canciones_eliminar_sistema.getEstado() == EstadoCancion.PENDIENTEMODIFICACION && d.minusDays(3).isAfter(canciones_eliminar_sistema.getFechaModificacion())) {
-
-				ArrayList<Cancion> retorno = sistema.getCancionTotales();
-				retorno.remove(canciones_eliminar_sistema);
+		for(Iterator<Cancion> cancionesIterator = sistema.getCancionTotales().iterator(); cancionesIterator.hasNext();) {
+			Cancion aux = cancionesIterator.next();
+			cancionesIterator.remove();
+			if(aux.getEstado() == EstadoCancion.PENDIENTEMODIFICACION && d.minusDays(3).isAfter(aux.getFechaModificacion())) {
+				retorno.remove(aux);
 				
 			}
 		}
 		
 		//ELIMINAMOS LAS CANCIONES QUE SIGUEN EL MIMSO PATRON PERO EN CADA UNO DE LOS ARRAYS DE CANCIONES DE USUARIO
-		for(Usuario usuarios_totales:sistema.getUsuariosTotales()) {
-			for(Cancion canciones_en_usuario:usuarios_totales.getCanciones()) {
-				if(canciones_en_usuario.getEstado() == EstadoCancion.PENDIENTEMODIFICACION && d.minusDays(3).isAfter(canciones_en_usuario.getFechaModificacion())) {
-					usuarios_totales.getCanciones().remove(canciones_en_usuario);
-					ArrayList<Cancion> retorno = usuarios_totales.getCanciones();
-					retorno.remove(canciones_en_usuario);
+		for(Iterator<Usuario> usuariosIterator = sistema.getUsuariosTotales().iterator(); usuariosIterator.hasNext();) {
+			Usuario auxiliar = usuariosIterator.next();
+			usuariosIterator.remove();
+			for(Iterator<Cancion> cancionesIterator = auxiliar.getCanciones().iterator(); cancionesIterator.hasNext();) {
+				Cancion auxiliar_cancion = cancionesIterator.next();
+				cancionesIterator.remove();
+				if(auxiliar_cancion.getEstado() == EstadoCancion.PENDIENTEMODIFICACION && d.minusDays(3).isAfter(auxiliar_cancion.getFechaModificacion())) {
+					retorno = auxiliar.getCanciones();
+					retorno.remove(auxiliar_cancion);
 				}
 			}
 		}	
@@ -624,34 +626,6 @@ public class Sistema implements Serializable{
 			return null;
 		}
 				
-		/*if(sistema.usuario_actual != null) {
-						
-			Period intervalo = Period.between(sistema.usuario_actual.getFechaNacimiento(), fecha_actual);
-			if(intervalo.getYears() >= 18) {
-				
-				for(Album album_totales:sistema.albumes_totales) {
-					flag = 0;
-					if(album_totales.getTitulo().equals(palabra) == true || album_totales.getTitulo().contains(palabra) == true) {
-						for(Cancion canciones_album: album_totales.getContenido()) {
-							if(canciones_album.getEstado() == EstadoCancion.PLAGIO) { //Estado de la cancion que mientras no este en plagio se anyade
-								flag = 1;
-								break;
-							}
-						}
-						
-						if(flag == 0) {
-							albumes_incluidas_explicitas.add(album_totales);
-						}
-					}
-				}
-				
-				if(albumes_incluidas_explicitas.size() == 0) {
-					return null;
-				}
-				
-				return albumes_incluidas_explicitas;
-			}
-		}*/
 		
 		for(Album album_totales:sistema.albumes_totales) {
 			flag = 0;
@@ -758,10 +732,13 @@ public class Sistema implements Serializable{
 		}
 				
 		for(Usuario usuario: sistema.usuarios_totales) {
-						
+			
 			if(usuario.getNombreAutor().equals(palabra) == true || usuario.getNombreAutor().contains(palabra) == true) {
+				
 				if(usuario.equals(Sistema.sistema.getUsuariosTotales().get(0)) == false) { //MIENTRAS NO SEA ROOT, porque este no tiene contenido	
-					for(Album album: usuario.getAlbumes()) { albumes_filtrados.add(album);}	
+					
+					for(Album album: usuario.getAlbumes()) { 
+						albumes_filtrados.add(album);}	
 				}
 			}			
 		}
@@ -835,9 +812,9 @@ public class Sistema implements Serializable{
 	 */
 	public Status modificarCancion(Cancion c,String NombreMp3, String aux) throws FileNotFoundException {
 		LocalDate d = LocalDate.now();
-				
+
 		if(sistema.getUsuarioActual() != null && sistema.getAdministrador() == false && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
-						
+									
 			if(sistema.getCancionTotales().contains(c) == true && (d.minusDays(3).isBefore(c.getFechaModificacion()) == true || d.minusDays(3).isEqual(c.getFechaModificacion()) == true)&& c.getEstado() == EstadoCancion.PENDIENTEMODIFICACION) {
 								
 				c.setNombreMP3(NombreMp3);
@@ -872,15 +849,16 @@ public class Sistema implements Serializable{
 				
 		
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
-								
-			Cancion c = new Cancion(titulo,sistema.usuario_actual,nombreMP3,auxiliar);
 						
+			
+			Cancion c = new Cancion(titulo,sistema.usuario_actual,nombreMP3,auxiliar);
+
+
 			if(c.getDuracion() == -1) { //ESTO SIGNIFICA QUE NO ES MP3 Y LA CANCION ESTARIA MAL CONSTRUIDA
 				c = null;
 				return null;
 			}
-			
-			
+						
 			for(Cancion cancion:sistema.usuario_actual.getCanciones()) {
 				if(cancion.getTitulo().equals(titulo) == true && cancion.getNombreMP3().equals(nombreMP3) == true) {
 					return null;
@@ -933,7 +911,8 @@ public class Sistema implements Serializable{
 				//PRIMERO LA ELIMINAMOS DEL CONTENIDO DE LAS LISTAS DE TODOS LOS USUARIOS QUE LA CONTENGAN
 				for(Iterator<Usuario> iteratorUsuarios = sistema.getUsuariosTotales().iterator(); iteratorUsuarios.hasNext();) {
 					 Usuario usuarios_totales = iteratorUsuarios.next();
-					if ( usuarios_totales.getListas() != null) {
+										 
+					 if ( usuarios_totales.getListas() != null) {
 						for(Iterator<Lista> iteratorListas = usuarios_totales.getListas().iterator(); iteratorListas.hasNext();) {
 							Lista lista = iteratorListas.next();
 							if(lista.eliminarContenido(cancion_eliminar) == Status.OK) {
@@ -992,7 +971,9 @@ public class Sistema implements Serializable{
 		if(titulo == null) {
 			return null;
 		}
+		
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {			
+						
 			Album a = new Album(anyo,titulo,sistema.usuario_actual);
 			for(Album album:sistema.usuario_actual.getAlbumes()) {
 				if(album.getTitulo().equals(titulo)== true) {
@@ -1000,15 +981,10 @@ public class Sistema implements Serializable{
 				}
 			}
 			
-			for(Album album:sistema.getAlbumTotales()) {
-				if(album.getTitulo().equals(titulo) == true) {
-					return null;
-				}
-			}
-			
 			
 			sistema.usuario_actual.anyadirAAlbumesPersonales(a);
 			sistema.albumes_totales.add(a);
+
 			return a;
 			
 		}else {
