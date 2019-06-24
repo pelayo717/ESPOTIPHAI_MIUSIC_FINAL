@@ -10,10 +10,12 @@ import modelo.notificacion.Notificacion;
 import modelo.sistema.Sistema;
 import modelo.usuario.*;
 
+/**
+ * Clase en la que se implementa la vista Ventana con todo
+ * lo necesario para cumplir los requisitos impuestos
+ */
 public class Perfil extends JPanel{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	public JButton botonInicio;
 	public JButton botonCerrarSesion;
@@ -62,6 +64,10 @@ public class Perfil extends JPanel{
 	private JScrollPane seguidos;	
 	private JButton seleccionarSeguido;
 	
+	/**
+	 * Constructor de la clase Ventana donde se inicializan
+	 * todos los atributos con lo valores correspondientes 
+	 */
 	public Perfil() {
 		
 		
@@ -210,6 +216,10 @@ public class Perfil extends JPanel{
 		
 	}
 	
+	/**
+	 * Funcion que hace visibles o invisibles los diferentes botones que 
+	 * va a poder usar usuarios 
+	 */
 	public void setUsuario() {
 		this.botonEliminarCuenta.setVisible(true);
 		this.botonHacersePRO.setVisible(true);
