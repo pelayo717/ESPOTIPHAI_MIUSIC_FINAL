@@ -2,6 +2,8 @@ package vista;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDateTime;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.event.TreeSelectionListener;
@@ -235,7 +237,18 @@ public class ReproducirCancion extends PantallaPrincipal {
 		
 		if(comentarios != null) {
 			for (Comentario c : comentarios)
-	        {
+	        {				
+				boolean editable = true;
+				if( LocalDateTime.now().getYear() - c.getFecha().getYear() >= 1) {
+				} else if( LocalDateTime.now().getMonthValue() - c.getFecha().getMonthValue() >= 1) {
+					editable = false;
+				} else if( LocalDateTime.now().getDayOfMonth() - c.getFecha().getDayOfMonth() >= 1) {
+					editable = false;
+				} else if( LocalDateTime.now().getHour() - c.getHora() >= 1) {
+					editable = false;
+				} else if( LocalDateTime.now().getMinute() - c.getMinuto() >= 30) {
+					editable = false;
+				} 
 	          DefaultMutableTreeNode comentario = new DefaultMutableTreeNode(c);
 	          root.add(comentario);
 	          for (Comentario subc : c.getSubComentarios()) {

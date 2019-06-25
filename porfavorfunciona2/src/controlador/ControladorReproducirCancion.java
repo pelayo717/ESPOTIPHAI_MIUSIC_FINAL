@@ -113,6 +113,7 @@ public class ControladorReproducirCancion implements ActionListener{
 				String[] options;
 				boolean editable = true;
 				if( LocalDateTime.now().getYear() - vista.getComentarioSeleccionado().getFecha().getYear() >= 1) {
+					editable = false;
 				} else if( LocalDateTime.now().getMonthValue() - vista.getComentarioSeleccionado().getFecha().getMonthValue() >= 1) {
 					editable = false;
 				} else if( LocalDateTime.now().getDayOfMonth() - vista.getComentarioSeleccionado().getFecha().getDayOfMonth() >= 1) {
