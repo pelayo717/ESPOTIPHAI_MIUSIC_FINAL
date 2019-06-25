@@ -76,8 +76,9 @@ public class ControladorPerfil implements ActionListener{//99.9% esta terminado
 				}
 			} else if(((JButton)e.getSource()).getText() == "Hacerse PRO") {
 
-				String titulo = JOptionPane.showInputDialog("Introduzca su numero de tarjeta");
-				if(titulo.isEmpty() == true) {
+				String titulo = JOptionPane.showInputDialog("Precio: " + Sistema.sistema.getPrecioPremium() + "\nIntroduzca su numero de tarjeta");
+				
+				if(titulo == null || titulo.isEmpty() == true) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Debe introducir su tarjeta para ascender a PRO");
 				}else {
 					if(Sistema.sistema.getUsuarioActual().mejorarCuentaPago(titulo) == Status.OK) {

@@ -331,8 +331,8 @@ public class ReproducirCancion extends PantallaPrincipal {
 		this.anyadirAlbum.setVisible(true);
 		this.anyadirLista.setVisible(true);
 		this.anyadirLista.setBounds(screenSize.width/2 - 210, 600, 150, 30);
-		this.botonReportar.setVisible(true);
-		this.botonAnyadirComentario.setBounds(screenSize.width/2 + 80, 680, 150, 30);
+		this.botonReportar.setVisible(false);
+		this.botonAnyadirComentario.setBounds(screenSize.width/2 + 150, 680, 150, 30);
 
 	}
 	
@@ -343,7 +343,7 @@ public class ReproducirCancion extends PantallaPrincipal {
 		this.anyadirAlbum.setVisible(false);
 		this.anyadirLista.setVisible(true);
 		this.anyadirLista.setBounds(screenSize.width/2 - 280, 600, 150, 30);
-		this.botonReportar.setVisible(true);
+		this.botonReportar.setBounds(screenSize.width/2 + 230, 680, 150, 30);
 		this.botonAnyadirComentario.setBounds(screenSize.width/2 + 80, 680, 150, 30);
 
 	}
@@ -356,8 +356,8 @@ public class ReproducirCancion extends PantallaPrincipal {
 		this.anyadirAlbum.setVisible(false);
 		this.anyadirLista.setVisible(true);
 		this.anyadirLista.setBounds(screenSize.width/2 - 280, 600, 150, 30);
-		this.botonReportar.setVisible(true);
-		this.botonAnyadirComentario.setBounds(screenSize.width/2 + 80, 680, 150, 30);
+		this.botonReportar.setBounds(screenSize.width/2 + 150, 680, 150, 30);
+		this.botonAnyadirComentario.setVisible(false);
 
 	}
 

@@ -108,27 +108,28 @@ public class ControladorReproducirCancion implements ActionListener{
 			} else if(((JButton)e.getSource()).getText() == "Limpiar Buscador") {
 				vista.limpiarBuscador();
 			} else if((((JButton)e.getSource()).getText() == "Ver Comentario")) {
-				int response;
-				String[] options;
-				boolean editable = true;
-				String nombreUsuario;
-				if( LocalDateTime.now().getYear() - vista.getComentarioSeleccionado().getFecha().getYear() >= 1) {
-					editable = false;
-				} else if( LocalDateTime.now().getMonthValue() - vista.getComentarioSeleccionado().getFecha().getMonthValue() >= 1) {
-					editable = false;
-				} else if( LocalDateTime.now().getDayOfMonth() - vista.getComentarioSeleccionado().getFecha().getDayOfMonth() >= 1) {
-					editable = false;
-				} else if( LocalDateTime.now().getHour() - vista.getComentarioSeleccionado().getHora() >= 1) {
-					editable = false;
-				} else if( LocalDateTime.now().getMinute() - vista.getComentarioSeleccionado().getMinuto() >= 30) {
-					editable = false;
-				}
-				if(Sistema.sistema.getUsuarioActual() == null) {
-					nombreUsuario = "";
-				} else {
-					nombreUsuario = Sistema.sistema.getUsuarioActual().getNombreUsuario();
-				}
+				 
 				if(vista.getComentarioSeleccionado() != null) {
+					int response;
+					String[] options;
+					boolean editable = true;
+					String nombreUsuario;
+
+					if( LocalDateTime.now().getYear() - vista.getComentarioSeleccionado().getFecha().getYear() >= 1) {
+					} else if( LocalDateTime.now().getMonthValue() - vista.getComentarioSeleccionado().getFecha().getMonthValue() >= 1) {
+						editable = false;
+					} else if( LocalDateTime.now().getDayOfMonth() - vista.getComentarioSeleccionado().getFecha().getDayOfMonth() >= 1) {
+						editable = false;
+					} else if( LocalDateTime.now().getHour() - vista.getComentarioSeleccionado().getHora() >= 1) {
+						editable = false;
+					} else if( LocalDateTime.now().getMinute() - vista.getComentarioSeleccionado().getMinuto() >= 30) {
+						editable = false;
+					}
+					if(Sistema.sistema.getUsuarioActual() == null) {
+						nombreUsuario = "";
+					} else {
+						nombreUsuario = Sistema.sistema.getUsuarioActual().getNombreUsuario();
+					}
 					if (nombreUsuario.equals("")) {
 						options = new String[] {"Cerrar"};
 					} else if(vista.getComentarioSeleccionado().getComentador().equals(nombreUsuario) && editable ) {
@@ -170,9 +171,10 @@ public class ControladorReproducirCancion implements ActionListener{
 						break;
 
 					default:
-						break;
-					}
-				}else {
+						break;	
+					} 
+					
+				} else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Debe seleccionar un comentario para poder verlo o comentarlo");
 				}
 				
@@ -305,14 +307,16 @@ public class ControladorReproducirCancion implements ActionListener{
 					File escogido = file.getSelectedFile();
 					 
 					
-					escogido.renameTo(new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName()));
-
-					String temporal = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName();
-
+					
 					//POR EL MOMENTO SUPONEMOS QUE SOLO ES COSA DEL MP3
 					Cancion c = vista.getCancion();
 					
 					try {
+						
+						escogido.renameTo(new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName()));
+
+						String temporal = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName();
+
 						if(Sistema.sistema.modificarCancion(c, temporal,escogido.getName()) == Status.OK) {
 							JOptionPane.showMessageDialog(Ventana.ventana,"La cancion " + c.getTitulo() + " ha sido modificada correctamente");
 							Ventana.ventana.showReproducirCancion(c);

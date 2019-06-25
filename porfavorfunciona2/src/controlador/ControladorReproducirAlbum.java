@@ -106,71 +106,72 @@ public class ControladorReproducirAlbum implements ActionListener{
 			} else if(((JButton)e.getSource()).getText() == "Limpiar Buscador") {
 				vista.limpiarBuscador();
 			} else if(((JButton)e.getSource()).getText() == "Ver Comentario") {
-				int response;
-				String[] options;		
-				boolean editable = true;
-				String nombreUsuario;
-				if( LocalDateTime.now().getYear() - vista.getComentarioSeleccionado().getFecha().getYear() >= 1) {
-					editable = false;
-				} else if( LocalDateTime.now().getMonthValue() - vista.getComentarioSeleccionado().getFecha().getMonthValue() >= 1) {
-					editable = false;
-				} else if( LocalDateTime.now().getDayOfMonth() - vista.getComentarioSeleccionado().getFecha().getDayOfMonth() >= 1) {
-					editable = false;
-				} else if( LocalDateTime.now().getHour() - vista.getComentarioSeleccionado().getHora() >= 1) {
-					editable = false;
-				} else if( LocalDateTime.now().getMinute() - vista.getComentarioSeleccionado().getMinuto() >= 30) {
-					editable = false;
-				} 
-				if(Sistema.sistema.getUsuarioActual() == null) {
-					nombreUsuario = "";
-				} else {
-					nombreUsuario = Sistema.sistema.getUsuarioActual().getNombreUsuario();
-				}
+				
+				
 				if(vista.getComentarioSeleccionado() != null) {
-					if (nombreUsuario.equals("")) {
-						options = new String[] {"Cerrar"};
-					} else if(vista.getComentarioSeleccionado().getComentador().equals(nombreUsuario) && editable ) {
-						options = new String[] {"Responder","Editar","Eliminar","Cerrar"};
-					} else if (vista.getComentarioSeleccionado().getComentador().equals(nombreUsuario) && !editable && vista.getComentarioSeleccionado().getSubComentarios().isEmpty()) {
-						options = new String[] {"Responder","Eliminar","Cerrar"};
-					} else if (vista.getComentarioSeleccionado().getComentador().equals(nombreUsuario) && !editable && !vista.getComentarioSeleccionado().getSubComentarios().isEmpty()) {
-						options = new String[] {"Responder","Cerrar"};
-					}  else {
-						options = new String[] {"Responder","Cerrar"};
-					}
-					if(vista.getComentarioSeleccionado().getComentador() == null) {
-						response = JOptionPane.showOptionDialog(Ventana.ventana, "Autor: Desconocido" + "\nComentario: " + vista.getComentarioSeleccionado().getTexto() + "\nFecha: " + vista.getComentarioSeleccionado().getFecha() + "\nHora/Minuto/Segundo: " + vista.getComentarioSeleccionado().getHora() + "/" + vista.getComentarioSeleccionado().getMinuto() + "/" + vista.getComentarioSeleccionado().getSegundo(), "Comentario", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-					}else {
-						response = JOptionPane.showOptionDialog(Ventana.ventana, "Autor: " + vista.getComentarioSeleccionado().getComentador() + "\n" + "Comentario: " + vista.getComentarioSeleccionado().getTexto() + "\nFecha: " + vista.getComentarioSeleccionado().getFecha() + "\nHora/Minuto/Segundo: " + vista.getComentarioSeleccionado().getHora() + "/" + vista.getComentarioSeleccionado().getMinuto() + "/" + vista.getComentarioSeleccionado().getSegundo(), "Comentario", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-					}
-					switch (options[response]) {
-					case "Eliminar":
-						System.out.println(vista.getAlbum().eliminarComentario(vista.getComentarioSeleccionado()));
-						vista.setTree();
-						break;
-					case "Editar":
-						String comentarioEscrito = JOptionPane.showInputDialog("Edita tu comentario", vista.getComentarioSeleccionado().getTexto());
-						vista.getComentarioSeleccionado().setTexto(comentarioEscrito);
-						vista.setTree();
-						break;
-					case "Responder":
-						String comentarioAEscribir = JOptionPane.showInputDialog("Escribe tu comentario");
-						if(comentarioAEscribir == null) {
-							break;
-						}
-						if(comentarioAEscribir.length() > 0) {
-							Comentario nuevoComentario = new Comentario(comentarioAEscribir, Sistema.sistema.getUsuarioActual().getNombreUsuario());
-							vista.getComentarioSeleccionado().anyadirSubComentario(nuevoComentario);
-							vista.setTree();
-						}else {
-							JOptionPane.showMessageDialog(Ventana.ventana,"Debe escribir algo para que podamos añadir el comentario");
-						}
-						break;
+					int response;
+					String[] options;		
+					boolean editable = true;
+					String nombreUsuario;
 
-					default:
-						break;
-					}			
-				}else {
+					if( LocalDateTime.now().getYear() - vista.getComentarioSeleccionado().getFecha().getYear() >= 1) {
+					} else if( LocalDateTime.now().getMonthValue() - vista.getComentarioSeleccionado().getFecha().getMonthValue() >= 1) {
+						editable = false;
+					} else if( LocalDateTime.now().getDayOfMonth() - vista.getComentarioSeleccionado().getFecha().getDayOfMonth() >= 1) {
+						editable = false;
+					} else if( LocalDateTime.now().getHour() - vista.getComentarioSeleccionado().getHora() >= 1) {
+						editable = false;
+					} else if( LocalDateTime.now().getMinute() - vista.getComentarioSeleccionado().getMinuto() >= 30) {
+						editable = false;
+					}
+					
+					if(Sistema.sistema.getUsuarioActual() == null) {
+						nombreUsuario = "";
+					} else {
+						nombreUsuario = Sistema.sistema.getUsuarioActual().getNombreUsuario();
+					}
+					
+					if(Sistema.sistema.getUsuarioActual() != null) {
+
+						if (nombreUsuario.equals("")) {
+							options = new String[] {"Cerrar"};
+						} else if(vista.getComentarioSeleccionado().getComentador().equals(nombreUsuario) && editable ) {
+							options = new String[] {"Responder","Editar","Eliminar","Cerrar"};
+						} else if (vista.getComentarioSeleccionado().getComentador().equals(nombreUsuario) && !editable && vista.getComentarioSeleccionado().getSubComentarios().isEmpty()) {
+							options = new String[] {"Responder","Eliminar","Cerrar"};
+						} else if (vista.getComentarioSeleccionado().getComentador().equals(nombreUsuario) && !editable && !vista.getComentarioSeleccionado().getSubComentarios().isEmpty()) {
+							options = new String[] {"Responder","Cerrar"};
+						}  else {
+							options = new String[] {"Responder","Cerrar"};
+						}
+						if(vista.getComentarioSeleccionado().getComentador() == null) {
+							response = JOptionPane.showOptionDialog(Ventana.ventana, "Autor: Desconocido" + "\nComentario: " + vista.getComentarioSeleccionado().getTexto() + "\nFecha: " + vista.getComentarioSeleccionado().getFecha() + "\nHora/Minuto/Segundo: " + vista.getComentarioSeleccionado().getHora() + "/" + vista.getComentarioSeleccionado().getMinuto() + "/" + vista.getComentarioSeleccionado().getSegundo(), "Comentario", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+						}else {
+							response = JOptionPane.showOptionDialog(Ventana.ventana, "Autor: " + vista.getComentarioSeleccionado().getComentador() + "\n" + "Comentario: " + vista.getComentarioSeleccionado().getTexto() + "\nFecha: " + vista.getComentarioSeleccionado().getFecha() + "\nHora/Minuto/Segundo: " + vista.getComentarioSeleccionado().getHora() + "/" + vista.getComentarioSeleccionado().getMinuto() + "/" + vista.getComentarioSeleccionado().getSegundo(), "Comentario", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+						}
+						switch (options[response]) {
+						case "Eliminar":
+							System.out.println(vista.getAlbum().eliminarComentario(vista.getComentarioSeleccionado()));
+							vista.setTree();
+							break;
+						case "Editar":
+							String comentarioEscrito = JOptionPane.showInputDialog("Edita tu comentario", vista.getComentarioSeleccionado().getTexto());
+							vista.getComentarioSeleccionado().setTexto(comentarioEscrito);
+							vista.setTree();
+							break;
+						case "Responder":
+							String comentarioAEscribir = JOptionPane.showInputDialog("Escribe tu comentario");
+							if(comentarioAEscribir == null) {
+								break;
+							}
+							if(comentarioAEscribir.length() > 0) {
+								Comentario nuevoComentario = new Comentario(comentarioAEscribir, Sistema.sistema.getUsuarioActual().getNombreUsuario());
+								vista.getComentarioSeleccionado().anyadirSubComentario(nuevoComentario);
+								vista.setTree();
+							}
+						}	
+					}
+				} else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Debe seleccionar un comentario para poder verlo o comentarlo");
 				}
 				

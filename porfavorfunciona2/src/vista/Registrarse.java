@@ -4,11 +4,12 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-
+/**
+ * Clase en la que se implementa la vista de Registrarse con todo
+ * lo necesario para cumplir los requisitos impuestos
+ */
 public class Registrarse extends JPanel{ //99.9% esta terminado
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	public JButton botonInicio;
 	public JButton botonIniciarSesion ;
@@ -28,7 +29,10 @@ public class Registrarse extends JPanel{ //99.9% esta terminado
 
 	private JPasswordField passwordTextfield ;
 	
-	
+	/**
+	 * Constructor de la clase Perfil donde se inicializan
+	 * todos los atributos con lo valores correspondientes 
+	 */
 	public Registrarse() {
 		
 		this.setBackground(new Color(40,159,211));
@@ -108,68 +112,137 @@ public class Registrarse extends JPanel{ //99.9% esta terminado
 		
 	}
 	
+	/**
+	 * Funcion que asgina a cada boton la accion que se pasa como argumento
+	 * @param c: accion que se va a pasar a cada boton para que luego sse asigne el usuario determinado
+	 */
 	 public void setControlador(ActionListener c) {
 		 this.botonInicio.addActionListener(c);
 		 this.botonIniciarSesion.addActionListener(c);
 		 this.botonRegistrarse.addActionListener(c);
 	 }
 		 
+	/**
+	 * Funcion que delvuelve el atributo serialVersionUID de la clase
+	 * @param serialVersionUID:
+	 */
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
+	
+	/**
+	 * Funcion la cual devuelve el boton de buscar con lo que se ha pulsado
+	 * @return botonInicio: aributo que devuelve el boton de inicio para ir a la pantalla principal
+	 */
 	public JButton getBotonInicio() {
 		return botonInicio;
 	}
 
+	/**
+	 * Funcion la cual devuelve el boton de iniciar sesion
+	 * @return botonIniciarSesion: atributo que devuelve el boton de iniciar sesion
+	 */
 	public JButton getBotonIniciarSesion() {
 		return botonIniciarSesion;
 	}
 
+	/**
+	 * Funcion la cual devuelve el boton de registrarse de la vista
+	 * @return botonRegistrarse: atributo que devuelve el boton de buscar de la vista
+	 */
 	public JButton getBotonRegistrarse() {
 		return botonRegistrarse;
 	}
 
+	/**
+	 * Funcion que devuelve un JLabel con el titulo 
+	 * @return titulo: argumento de tipo JLabel que devuelve el titulo
+	 */
 	public JLabel getTitulo() {
 		return titulo;
 	}
 
+	/**
+	 * Funcion que devuelve un JLabel con el nombre de usuario del usuario que se esta registrando
+	 * @return usuarioLabel: argumento de tipo JLabel que devuelve el nombre de usuario
+	 */
 	public JLabel getUsuarioLabel() {
 		return usuarioLabel;
 	}
 
+	/**
+	 * Funcion que devuelve un JLabel con el nombre de autor del usuario que se va a registrarse
+	 * @return authorLabel: argumento de tipo JLabel que devuelve el nombre de autor
+	 */
 	public JLabel getAuthorLabel() {
 		return authorLabel;
 	}
-
+	
+	/**
+	 * Funcion que devuelve un JLabel con la fecha de nacimiento del usuario
+	 * @return birthLabel: argumento de tipo JLabel que devuelve la fecha de nacimiento del usuario
+	 */
 	public JLabel getBirthLabel() {
 		return birthLabel;
 	}
 
+	/**
+	 * Funcion que devuelve un JLabel con la contraseña
+	 * @return passwordLabel: argumento de tipo JLabel que devuelve la contraseña
+	 */
 	public JLabel getPasswordLabel() {
 		return passwordLabel;
 	}
 
+	/**
+	 * Funcion que devuelve un JLabel con el label de pregunta 
+	 * @return preguntaLabel: argumento de tipo JLabel que devuelve la pregunta realizada
+	 */
 	public JLabel getPreguntaLabel() {
 		return preguntaLabel;
 	}
 
+	/**
+	 * Funcion que devuelve el texto que se ha introducido para 
+	 * el campo de nombre de usuario
+	 * @return usuarioTextflied: texto en el cual el usuario
+	 * ha escrito en el campo de nombre de usuario
+	 */
 	public JTextField getUsuarioTextfield() {
 		return usuarioTextfield;
 	}
 
+	/**
+	 * Funcion que devuelve el texto que se ha introducido para 
+	 * el campo de nombre de autor
+	 * @return authorTextflied: texto en el cual el usuario
+	 * ha escrito en el campo de nombre de autor
+	 */
 	public JTextField getAuthorTextfield() {
 		return authorTextfield;
 	}
-
+	
+	/**
+	 * Funcion que devuelve el texto del campo de la fecha de nacimiento
+	 * @return birthTextflied: texto en el cual el usuario
+	 * ha escrito en el cuadro de fecha de nacimiento
+	 */
 	public JTextField getBirthTextfield() {
 		return birthTextfield;
 	}
 
+	/**
+	 * Funcion que devuelve el textField de la contraseña en la vista
+	 * @return passwordTextfield: atributo de tipo JPasswordField que devuelve el textfield del
+	 * campo contraseña
+	 */
 	public JPasswordField getPasswordTextfield() {
 		return passwordTextfield;
 	}
 
+	/**
+	 * Funcion que limpiar el la ventana dejando en blanco los los TextFields 
+	 */
 	public void limpiarVentana(){
 		this.passwordTextfield.setText("");
 		this.authorTextfield.setText("");
