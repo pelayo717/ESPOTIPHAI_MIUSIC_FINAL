@@ -253,38 +253,73 @@ public class ReproducirLista extends PantallaPrincipal {
 		return lista_contenido;
 	}
 
+	/**
+	 * Funcopm que devuelve JScrollPane con todos los contenidos de la lista de reproduccion
+	 * @return contenidoScrollPane: atributo de tipo JScrollPane el cual contiene todos los datos de la lista
+	 */
 	public JScrollPane getContenidoScrollPane() {
 		return contenidoScrollPane;
 	}
 
+	/**
+	 * Funcopm que devuelve el JButton  que representa el boton de lista
+	 * @return botonList: atributo que representa la funcion de seleccionar lista a la hora de buscar
+	 */
 	public JButton getBotonList() {
 		return botonList;
 	}
 
+	/**
+	 * Funcopm que devuelve JLabel con todos los datos que tiene la lista 
+	 * @return datos_lista: atributo de tipo JLabel el cual contiene todos los datos de la lista de reproduccion
+	 */
 	public JLabel getDatos_lista() {
 		return datos_lista;
 	}
 
+	/**
+	 * Funcopm que devuelve JLabel con el titulo de la lista de reproduccion
+	 * @return titulo_lista: atributo que identifica el nombre de la lista de reproduccion
+	 */
 	public JLabel getTitulo_lista() {
 		return titulo_lista;
 	}
-
+	
+	/**
+	 * Funcopm que devuelve JLabel con el autor de la lista
+	 * @return autor_lista: atributo que identifica quien ha sido el autor de la lista de reproducion
+	 */
 	public JLabel getAutor_lista() {
 		return autor_lista;
 	}
-
+	
+	/**
+	 * Funcopm que devuelve JLabel con la duracion de reproduccion de la lista 
+	 * @return duracion_lista: atributo que representa la duracion total de la lista
+	 */
 	public JLabel getDuracion_lista() {
 		return duracion_lista;
 	}
 
+	/**
+	 * Funcopm que devuelve JLabel de los comentarios que hay en la lista
+	 * @return comentarios_label: atributo que contiene todos los comentarios de la lista
+	 */
 	public JLabel getComentarios_label() {
 		return comentarios_label;
 	}
 
+	/**
+	 * Funcopm que devuelve un array de tipo Contenido con todos los contenidos
+	 * @return contenido: atributo que contiene todos los contenidos 
+	 */
 	public Contenido[] getContenido() {
 		return contenido;
 	}
 
+	/**
+	 * Funcion que actualiza el contenido de la aplicacion y actualiza la vista si fuera necesario
+	 */
 	public void actualizarContenido() {
 		model1.clear();
 		
