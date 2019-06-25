@@ -151,7 +151,7 @@ public class ControladorReproducirAlbum implements ActionListener{
 						}
 						switch (options[response]) {
 						case "Eliminar":
-							System.out.println(vista.getAlbum().eliminarComentario(vista.getComentarioSeleccionado()));
+							vista.getAlbum().eliminarComentario(vista.getComentarioSeleccionado());
 							vista.setTree();
 							break;
 						case "Editar":
