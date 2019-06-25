@@ -46,13 +46,20 @@ public abstract class ContenidoComentable extends Contenido {
 	 */
 	public Status eliminarComentario(Comentario comentario) {
 		if(comentario == null) {
+			System.out.println("no hay comentario");
 			return Status.ERROR;
 		}
-		if (this.comentarios.contains(comentario)== true) {
+		if (this.comentarios.contains(comentario)) {
 			comentario.eliminarSubComentarios();
 			this.comentarios.remove(comentario);
 			return Status.OK;	
 		} else {
+			for(Iterator<Comentario> iteratorComentario = this.comentarios.iterator(); iteratorComentario.hasNext();) {
+				Comentario subcomentario = iteratorComentario.next();
+				if (subcomentario.buscarYEliminarSubComentario(comentario) == Status.OK) {
+					return Status.OK;
+				}
+			}
 			return Status.ERROR;
 		}
 	}

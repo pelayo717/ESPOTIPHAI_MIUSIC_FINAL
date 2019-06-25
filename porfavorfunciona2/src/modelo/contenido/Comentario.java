@@ -60,6 +60,24 @@ public class Comentario implements Serializable{
 		}
 	}
 	
+	
+	public Status buscarYEliminarSubComentario(Comentario comentario){
+		if (this.subComentarios.isEmpty() == false){
+			for(Iterator<Comentario> iteratorComentario = this.subComentarios.iterator(); iteratorComentario.hasNext();) {
+				Comentario subcomentario = iteratorComentario.next();
+				if(subcomentario.equals(comentario)) {
+					subcomentario.eliminarSubComentarios();
+					iteratorComentario.remove();
+				} else {
+					buscarYEliminarSubComentario(subcomentario);
+				}
+			}
+			
+			return Status.OK;
+		}		
+		return Status.ERROR;
+	}
+	
 	/**
 	 * Funcion encargada de eliminar los subcomentarios de un comentario
 	 * return OK si todo se borro, ERROR si no habia para borrar

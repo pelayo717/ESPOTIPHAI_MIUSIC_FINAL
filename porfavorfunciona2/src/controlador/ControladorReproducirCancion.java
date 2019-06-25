@@ -129,11 +129,15 @@ public class ControladorReproducirCancion implements ActionListener{
 					nombreUsuario = Sistema.sistema.getUsuarioActual().getNombreUsuario();
 				}
 				if(vista.getComentarioSeleccionado() != null) {
-					if(vista.getComentarioSeleccionado().getComentador().equals(nombreUsuario) && editable ) {
-						options = new String[] {"Responder","Editar","Cerrar"};
-					} else if (vista.getComentarioSeleccionado().getComentador().equals(nombreUsuario) && !editable ) {
+					if (nombreUsuario.equals("")) {
+						options = new String[] {"Cerrar"};
+					} else if(vista.getComentarioSeleccionado().getComentador().equals(nombreUsuario) && editable ) {
+						options = new String[] {"Responder","Editar","Eliminar","Cerrar"};
+					} else if (vista.getComentarioSeleccionado().getComentador().equals(nombreUsuario) && !editable  && vista.getComentarioSeleccionado().getSubComentarios().isEmpty()) {
 						options = new String[] {"Responder","Eliminar","Cerrar"};
-					}  else {
+					} else if (vista.getComentarioSeleccionado().getComentador().equals(nombreUsuario) && !editable  && !vista.getComentarioSeleccionado().getSubComentarios().isEmpty()) {
+						options = new String[] {"Responder","Cerrar"};
+					} else {
 						options = new String[] {"Responder","Cerrar"};
 					}
 					if(vista.getComentarioSeleccionado().getComentador() == null) {
@@ -141,22 +145,32 @@ public class ControladorReproducirCancion implements ActionListener{
 					}else {
 						response = JOptionPane.showOptionDialog(Ventana.ventana, "Autor: " + vista.getComentarioSeleccionado().getComentador() + "\n" + "Comentario: " + vista.getComentarioSeleccionado().getTexto() + "\nFecha: " + vista.getComentarioSeleccionado().getFecha() + "\nHora/Minuto/Segundo: " + vista.getComentarioSeleccionado().getHora() + "/" + vista.getComentarioSeleccionado().getMinuto() + "/" + vista.getComentarioSeleccionado().getSegundo(), "Comentario", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 					}
-					if(response == 0) {
-						String comentarioEscrito = JOptionPane.showInputDialog("Escribe tu comentario");
-						if(comentarioEscrito.length() > 0) {
-							Comentario nuevoComentario = new Comentario(comentarioEscrito, Sistema.sistema.getUsuarioActual().getNombreUsuario());
+					switch (options[response]) {
+					case "Eliminar":
+						vista.getCancion().eliminarComentario(vista.getComentarioSeleccionado());
+						vista.setTree();
+						break;
+					case "Editar":
+						String comentarioEscrito = JOptionPane.showInputDialog("Edita tu comentario", vista.getComentarioSeleccionado().getTexto());
+						vista.getComentarioSeleccionado().setTexto(comentarioEscrito);
+						vista.setTree();
+						break;
+					case "Responder":
+						String comentarioAEscribir = JOptionPane.showInputDialog("Escribe tu comentario");
+						if(comentarioAEscribir == null) {
+							break;
+						}
+						if(comentarioAEscribir.length() > 0) {
+							Comentario nuevoComentario = new Comentario(comentarioAEscribir, Sistema.sistema.getUsuarioActual().getNombreUsuario());
 							vista.getComentarioSeleccionado().anyadirSubComentario(nuevoComentario);
 							vista.setTree();
 						}else {
 							JOptionPane.showMessageDialog(Ventana.ventana,"Debe escribir algo para que podamos añadir el comentario");
 						}
-					} else if (response == 1 && options[1] == "Eliminar") {
-						vista.getCancion().eliminarComentario(vista.getComentarioSeleccionado());
-						vista.setTree();
-					}  else if (response == 1 && options[1] == "Editar") {
-						String comentarioEscrito = JOptionPane.showInputDialog("Edita tu comentario", vista.getComentarioSeleccionado().getTexto());
-						vista.getComentarioSeleccionado().setTexto(comentarioEscrito);
-						vista.setTree();
+						break;
+
+					default:
+						break;
 					}
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Debe seleccionar un comentario para poder verlo o comentarlo");
