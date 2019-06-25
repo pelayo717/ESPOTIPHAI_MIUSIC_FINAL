@@ -10,12 +10,13 @@ import modelo.sistema.*;
 import modelo.usuario.Usuario;
 import modelo.contenido.*;
 
-
+/**
+ * Clase en la que se implementa la vista ReproducirLista con todo
+ * lo necesario para cumplir los requisitos impuestos
+ */
 public class ReproducirLista extends PantallaPrincipal {
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 
 	private Lista lista;
@@ -40,6 +41,10 @@ public class ReproducirLista extends PantallaPrincipal {
 	private  Contenido[] contenido;
 	private  DefaultListModel<String> model1;
 	
+	/**
+	 * Constructor de la clase ReproducirLista donde se inicializan
+	 * todos los atributos con lo valores correspondientes 
+	 */
 	public ReproducirLista() {
 		super();
 		
@@ -134,11 +139,19 @@ public class ReproducirLista extends PantallaPrincipal {
 		this.add(anyadirLista);
 	}
 	
+	/**
+	 * Funcion que limpia el buscador de la aplicacion y lo deja vacio 
+	 * para que el usuario pueda realizar otra busqueda
+	 */
 	public void limpiarBuscador(){
 		super.getBusquedaTextfield().setText("");
 		super.getGrupo_eleccion().clearSelection();
 	}
 	
+	/**
+	 * Funcion que cambia el texto de unos determinados botones para ponerlos el 
+	 * texto a lo necesario para cuando el usuario si que esa registrado
+	 */
 	public void setUsuarioRegistrado() {
 		super.getBotonIzquierdaArriba().setText("Ver Perfil");
 		super.getBotonIzquierdaMedio().setText("Inicio");
@@ -146,7 +159,11 @@ public class ReproducirLista extends PantallaPrincipal {
 	}
 
 	
-	 // método para asignar un controlador al botón
+	 /**
+	 * Funcion que asgina a cada boton la accion que se pasa como argumento
+	 * @param c: accion que se va a pasar a cada boton para que luego sse asigne el usuario determinado
+	 */
+
 	 public void setControlador(ActionListener c) {
 		 super.getBotonIzquierdaArriba().addActionListener(c);
 		 super.getBotonIzquierdaMedio().addActionListener(c);
@@ -160,7 +177,10 @@ public class ReproducirLista extends PantallaPrincipal {
 		 this.anyadirLista.addActionListener(c);
 	 }
 	 
-	 
+	 /**
+	 * Funcion que pone la informacion necesaria sobre la vista en base al argumento de
+	 * entrada, siendo este la lista que se va a reproducir
+	 */
 	 public void setInformacion(Lista lista) {
 		this.lista = lista;
 
@@ -192,60 +212,114 @@ public class ReproducirLista extends PantallaPrincipal {
 		this.actualizarContenido();
 	}
 	 
-
+	/**
+	 * Funcion que devuelve la Lista que se va a reproducir
+	 * @return lista: atributo el cual se va a reproducir por parte del usuario
+	 */
 	 public Lista getLista() {
 		return lista;
 	}
 
+	/**
+	 * Funcion que devuelve el boton de play en la aplicacion
+	 * @return botonPlay: devuelve el boton de play que se encuentra en la vista
+	 */
 	public JButton getBotonPlay() {
 		return botonPlay;
 	}
 
+	/**
+	 * Funcion que devuelve el boton de pause en la vista para parar la cancion
+	 * @return botonPause: devuelve el boton de pausa que se encuentra en la vista
+	 */
 	public JButton getBotonPause() {
 		return botonPause;
 	}
-
+	
+	/**
+	 * Funcion que devuelve el boton de borrar 
+	 * @return botonDelete: devuelve el boton de borrar de la vista
+	 */
 	public JButton getBotonDelete() {
 		return botonDelete;
 	}
 
-
+	/**
+	 * Funcion que devuelve un Jlist de todos los contenidos
+	 * @return lista_contenido: atributo de tipo JList que contiene
+	 * una lista con todos los contenidos de la clase
+	 */
 	public JList<String> getLista_contenido() {
 		return lista_contenido;
 	}
 
+	/**
+	 * Funcion que devuelve JScrollPane con todos los contenidos de la lista de reproduccion
+	 * @return contenidoScrollPane: atributo de tipo JScrollPane el cual contiene todos los datos de la lista
+	 */
 	public JScrollPane getContenidoScrollPane() {
 		return contenidoScrollPane;
 	}
 
+	/**
+	 * Funcion que devuelve el JButton  que representa el boton de lista
+	 * @return botonList: atributo que representa la funcion de seleccionar lista a la hora de buscar
+	 */
 	public JButton getBotonList() {
 		return botonList;
 	}
 
+	/**
+	 * Funcion que devuelve JLabel con todos los datos que tiene la lista 
+	 * @return datos_lista: atributo de tipo JLabel el cual contiene todos los datos de la lista de reproduccion
+	 */
 	public JLabel getDatos_lista() {
 		return datos_lista;
 	}
 
+	/**
+	 * Funcion que devuelve JLabel con el titulo de la lista de reproduccion
+	 * @return titulo_lista: atributo que identifica el nombre de la lista de reproduccion
+	 */
 	public JLabel getTitulo_lista() {
 		return titulo_lista;
 	}
-
+	
+	/**
+	 * Funcion que devuelve JLabel con el autor de la lista
+	 * @return autor_lista: atributo que identifica quien ha sido el autor de la lista de reproducion
+	 */
 	public JLabel getAutor_lista() {
 		return autor_lista;
 	}
-
+	
+	/**
+	 * Funcion que devuelve JLabel con la duracion de reproduccion de la lista 
+	 * @return duracion_lista: atributo que representa la duracion total de la lista
+	 */
 	public JLabel getDuracion_lista() {
 		return duracion_lista;
 	}
 
+	/**
+	 * Funcion que devuelve JLabel de los comentarios que hay en la lista
+	 * @return comentarios_label: atributo que contiene todos los comentarios de la lista
+	 */
 	public JLabel getComentarios_label() {
 		return comentarios_label;
 	}
 
+	/**
+	 * Funcion que devuelve un array de tipo Contenido con todos los contenidos
+	 * @return contenido: atributo que contiene todos los contenidos 
+	 */
 	public Contenido[] getContenido() {
 		return contenido;
 	}
 
+	/**
+	 * Funcion que actualiza el contenido de la aplicacion y actualiza la vista si fuera necesario
+	 */
 	public void actualizarContenido() {
 		model1.clear();
 		

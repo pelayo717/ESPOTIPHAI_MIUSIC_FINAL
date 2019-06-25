@@ -50,7 +50,6 @@ public class ControladorReproducirLista implements ActionListener{
 				Ventana.ventana.showPantallaInicio();
 			}  else if(((JButton)e.getSource()).getText() == "Ver Perfil") {
 				Ventana.ventana.showPerfil();
-				Ventana.ventana.perfil.setInformacion(Sistema.sistema.getUsuarioActual());
 			}  else if(((JButton)e.getSource()).getText() == "Registro") {
 				Ventana.ventana.showRegistrarse();
 			} else if(((JButton)e.getSource()).getText() == "Buscar") {
@@ -107,6 +106,7 @@ public class ControladorReproducirLista implements ActionListener{
 				try {
 					vista.getLista().parar();
 					vista.getLista().setMp3Player();
+					Sistema.sistema.setReproductor(vista.getLista().getReproductor());
 					EstadoReproduccion  variable = vista.getLista().reproducirLista();
 					if( variable == EstadoReproduccion.MENOR) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"El album tiene contenido explicito que no esta autorizado a escuchar");
@@ -127,6 +127,7 @@ public class ControladorReproducirLista implements ActionListener{
 					e1.printStackTrace();
 				}
 			} else if(((JButton)e.getSource()).getText() == "pause") {
+				Sistema.sistema.setReproductor(null);
 				vista.getLista().parar();
 			} else if(((JButton)e.getSource()).getText() == "Retirar Contenido") {
 

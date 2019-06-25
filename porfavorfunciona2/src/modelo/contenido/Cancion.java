@@ -1,6 +1,5 @@
 package modelo.contenido;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.Period;
@@ -333,20 +332,6 @@ public class Cancion extends ContenidoComentable {
 						
 		}
 	
-
-
-	/**
-	 * Esta funcion es llamada cuando una cancion se elimina, y se encarga de eliminar del sistema el fichero
-	 * asignado a esta cancion
-	 * return true si se elimino correctamente el fichero o false si no fue asi
-	 */
-	public boolean eliminarAudio() {
-		File aux = new File(this.nombreMP3);
-		if(aux.delete() == true) {
-			return true;
-		}
-		return false;
-	}
 		
 	
 

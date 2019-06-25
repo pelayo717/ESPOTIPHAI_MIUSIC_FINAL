@@ -5,8 +5,7 @@ import modelo.contenido.*;
 import modelo.reporte.*;
 import modelo.status.*;
 import modelo.usuario.*;
-
-
+import pads.musicPlayer.Mp3Player;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 import java.util.ArrayList;
@@ -46,10 +45,12 @@ public class Sistema implements Serializable{
 	private double precio_premium = 9.9;
 	private int max_reproducciones_usuarios_no_premium = 4;
 	private int contenido_escuchado_sin_registrarse = 0;
-	
+	private Mp3Player reproductorSonando;
 	
 	/**
-	 * Constructor de la clase sistema, esta vacio ya que inicializamos los valores de manera predeterminada al inicio
+	 * Constructor de la clase sistema, se encarga de inicializar los datos que seran mas tarde utilizados
+	 * @throws Mp3PlayerException 
+	 * @throws FileNotFoundException 
 	 */
 	public Sistema(){}
 	
@@ -57,23 +58,23 @@ public class Sistema implements Serializable{
 	 * Para la implementacion del patron singleton, creamos este metodo que comprobara la existencia de un objeto
 	 * de tipo Sistema estatico. Si no esta creado lo creara con los valores inciales, si estuvo creado previamente y
 	 * se guardaron correctamente los datos se cargan del fichero correspondiente en disco.
-	 * @return
+	 * @return Objeto de tipo sistema que sera cargado con datos si previamente habia un fichero de carga 
+	 * o se creara uno nuevo si no es asi
 	 * @throws Mp3PlayerException
 	 * @throws IOException
 	 */
 	public static Sistema getSistema() throws Mp3PlayerException, IOException {
 		if(sistema == null) {
-			File archivo = new File("datos.obj");			
+			File archivo = new File("datos.obj");		
 			if(archivo.exists() == true) {
 				sistema = new Sistema();
 				sistema = Sistema.cargarDatosGenerales();
-				
 
 				sistema.actualizarPathCanciones();
 				sistema.empeorarCuentaPrincipal();
 				sistema.desbloquearUsuario();
-				sistema.resetearContadoresNuevoMes();
-				sistema.eliminarCancionPendienteModificacionCaducada();
+				sistema.resetearContadoresNuevoMes(LocalDate.now());
+				sistema.eliminarCancionPendienteModificacionCaducada(LocalDate.now());
 			}else {
 				sistema = new Sistema();
 				sistema.registrarse("root1967", "ADMINISTRADOR",LocalDate.of(1967, 12, 26), "ADMINISTRADOR");
@@ -174,6 +175,13 @@ public class Sistema implements Serializable{
 	/*======================FUNCIONES GENERALES DE SETTERS=============================*/
 	/*=================================================================================*/
 	
+	public void setReproductor(Mp3Player aux) {
+		this.reproductorSonando = aux;
+	}
+	
+	public Mp3Player getReproductor() {
+		return this.reproductorSonando;
+	}
 	
 	/**
 	 * Esta funcion establece el umbral de reproducciones que debe superar un autor para pasar al estado de premium, y solo es aplicable a aquellos usuarios que estan registrados
@@ -261,21 +269,23 @@ public class Sistema implements Serializable{
 	public Status registrarse(String nombre_usuario,String nombre_autor,LocalDate fecha_nacimiento, String contrasenia) {
 
 		int i=0;
-		
+				
 		if(nombre_usuario == null || contrasenia == null || fecha_nacimiento == null) {
 			return Status.ERROR;
 		}
-		
-		for(Usuario usuario: sistema.usuarios_totales) {
-			if(usuario.getNombreUsuario().equals(nombre_usuario) == true || usuario.getNombreAutor().equals(nombre_autor) == true) {
-				break;
+		if(sistema.usuarios_totales.size() > 0) {
+			for(Usuario usuario: sistema.usuarios_totales) {
+							
+				if(usuario.getNombreUsuario().equals(nombre_usuario) == true || usuario.getNombreAutor().equals(nombre_autor) == true) {
+					break;
+				}
+				i++;
 			}
-			i++;
+					
+			if(i < sistema.usuarios_totales.size()) {
+				return Status.ERROR;
+			}
 		}
-		
-		if(i < sistema.usuarios_totales.size()) {
-			return Status.ERROR;
-		}		
 		
 		Usuario usuario_registrado_nuevo = new Usuario(nombre_usuario,nombre_autor,fecha_nacimiento, contrasenia); 
 		sistema.usuarios_totales.add(usuario_registrado_nuevo);
@@ -436,7 +446,7 @@ public class Sistema implements Serializable{
 		LocalDate fecha_actual = LocalDate.now();
 		for(Usuario usuario:sistema.usuarios_totales) {
 			if(usuario.getPremium() == true) {
-				LocalDate fecha_inicio_premium = usuario.getFechaInicioPro();
+				LocalDate fecha_inicio_premium = usuario.getFechaInicioPro();				
 				if(fecha_actual.minusDays(30).isAfter(fecha_inicio_premium) == true || fecha_actual.minusDays(30).isEqual(fecha_inicio_premium) == true) {
 					usuario.empeorarCuenta();
 					
@@ -476,9 +486,8 @@ public class Sistema implements Serializable{
 	 * los contadores de reproducciones de los usuarios no registrados y de los
 	 * usuarios registrados no premium el primer dia de cada mes.
 	 */
-	private void resetearContadoresNuevoMes() {
+	public void resetearContadoresNuevoMes(LocalDate fecha_actual) {
 		
-		LocalDate fecha_actual = LocalDate.now();
 		if(fecha_actual.getDayOfMonth() == 1) {
 			
 			//PARA AQUELLOS QUE NO HAN INICIADO SESION
@@ -503,25 +512,18 @@ public class Sistema implements Serializable{
 	 * todas aquellas que cumplen los requisitos anteriores, y luego se procedera a 
 	 * eliminarlas de cada array de canciones de cada usuario.
 	 */
-	private void eliminarCancionPendienteModificacionCaducada() {
+	public void eliminarCancionPendienteModificacionCaducada(LocalDate d) {
 		
-		LocalDate d = LocalDate.now();
 		
 		//ELIMINAMOS CANCIONES QUE HAN PASADO EL TIEMPO DE MODIFICACION
-		for(Cancion canciones_eliminar_sistema:sistema.getCancionTotales()) {
-			if(canciones_eliminar_sistema.getEstado() == EstadoCancion.PENDIENTEMODIFICACION && d.minusDays(3).isAfter(canciones_eliminar_sistema.getFechaModificacion())) {
-				sistema.getCancionTotales().remove(canciones_eliminar_sistema);
-			}
+		for(Iterator<Cancion> cancionesIterator = sistema.getCancionTotales().iterator(); cancionesIterator.hasNext();) {
+			Cancion aux = cancionesIterator.next();
+			if(aux.getEstado() == EstadoCancion.PENDIENTEMODIFICACION && d.minusDays(3).isAfter(aux.getFechaModificacion())) {
+				cancionesIterator.remove();
+				sistema.eliminarCancion(aux);
+			}			
 		}
 		
-		//ELIMINAMOS LAS CANCIONES QUE SIGUEN EL MIMSO PATRON PERO EN CADA UNO DE LOS ARRAYS DE CANCIONES DE USUARIO
-		for(Usuario usuarios_totales:sistema.getUsuariosTotales()) {
-			for(Cancion canciones_en_usuario:usuarios_totales.getCanciones()) {
-				if(canciones_en_usuario.getEstado() == EstadoCancion.PENDIENTEMODIFICACION && d.minusDays(3).isAfter(canciones_en_usuario.getFechaModificacion())) {
-					usuarios_totales.getCanciones().remove(canciones_en_usuario);
-				}
-			}
-		}	
 	}
 	
 	
@@ -608,34 +610,6 @@ public class Sistema implements Serializable{
 			return null;
 		}
 				
-		/*if(sistema.usuario_actual != null) {
-						
-			Period intervalo = Period.between(sistema.usuario_actual.getFechaNacimiento(), fecha_actual);
-			if(intervalo.getYears() >= 18) {
-				
-				for(Album album_totales:sistema.albumes_totales) {
-					flag = 0;
-					if(album_totales.getTitulo().equals(palabra) == true || album_totales.getTitulo().contains(palabra) == true) {
-						for(Cancion canciones_album: album_totales.getContenido()) {
-							if(canciones_album.getEstado() == EstadoCancion.PLAGIO) { //Estado de la cancion que mientras no este en plagio se anyade
-								flag = 1;
-								break;
-							}
-						}
-						
-						if(flag == 0) {
-							albumes_incluidas_explicitas.add(album_totales);
-						}
-					}
-				}
-				
-				if(albumes_incluidas_explicitas.size() == 0) {
-					return null;
-				}
-				
-				return albumes_incluidas_explicitas;
-			}
-		}*/
 		
 		for(Album album_totales:sistema.albumes_totales) {
 			flag = 0;
@@ -742,10 +716,13 @@ public class Sistema implements Serializable{
 		}
 				
 		for(Usuario usuario: sistema.usuarios_totales) {
-						
+			
 			if(usuario.getNombreAutor().equals(palabra) == true || usuario.getNombreAutor().contains(palabra) == true) {
+				
 				if(usuario.equals(Sistema.sistema.getUsuariosTotales().get(0)) == false) { //MIENTRAS NO SEA ROOT, porque este no tiene contenido	
-					for(Album album: usuario.getAlbumes()) { albumes_filtrados.add(album);}	
+					
+					for(Album album: usuario.getAlbumes()) { 
+						albumes_filtrados.add(album);}	
 				}
 			}			
 		}
@@ -819,9 +796,9 @@ public class Sistema implements Serializable{
 	 */
 	public Status modificarCancion(Cancion c,String NombreMp3, String aux) throws FileNotFoundException {
 		LocalDate d = LocalDate.now();
-				
+
 		if(sistema.getUsuarioActual() != null && sistema.getAdministrador() == false && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
-						
+									
 			if(sistema.getCancionTotales().contains(c) == true && (d.minusDays(3).isBefore(c.getFechaModificacion()) == true || d.minusDays(3).isEqual(c.getFechaModificacion()) == true)&& c.getEstado() == EstadoCancion.PENDIENTEMODIFICACION) {
 								
 				c.setNombreMP3(NombreMp3);
@@ -853,24 +830,25 @@ public class Sistema implements Serializable{
 		if(titulo == null || nombreMP3 == null || auxiliar == null) {
 			return null;
 		}
-		
+				
 		
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {
-					
-			Cancion c = new Cancion(titulo,sistema.usuario_actual,nombreMP3,auxiliar);
+						
 			
+			Cancion c = new Cancion(titulo,sistema.usuario_actual,nombreMP3,auxiliar);
+
+
 			if(c.getDuracion() == -1) { //ESTO SIGNIFICA QUE NO ES MP3 Y LA CANCION ESTARIA MAL CONSTRUIDA
 				c = null;
 				return null;
 			}
-			
+						
 			for(Cancion cancion:sistema.usuario_actual.getCanciones()) {
-				if(cancion.getTitulo().equals(titulo) == true && cancion.getNombreMP3().equals(nombreMP3) == true) {
+				if(cancion.getTitulo().equals(titulo) == true || cancion.getNombreMP3().equals(nombreMP3) == true) {
 					return null;
 				}	
 			}
-			
-			
+						
 			for(Cancion cancion:sistema.getCancionTotales()) {
 				if(cancion.getTitulo().equals(titulo) == true && cancion.getNombreMP3().equals(nombreMP3) == true) {
 					return null;
@@ -917,7 +895,8 @@ public class Sistema implements Serializable{
 				//PRIMERO LA ELIMINAMOS DEL CONTENIDO DE LAS LISTAS DE TODOS LOS USUARIOS QUE LA CONTENGAN
 				for(Iterator<Usuario> iteratorUsuarios = sistema.getUsuariosTotales().iterator(); iteratorUsuarios.hasNext();) {
 					 Usuario usuarios_totales = iteratorUsuarios.next();
-					if ( usuarios_totales.getListas() != null) {
+										 
+					 if ( usuarios_totales.getListas() != null) {
 						for(Iterator<Lista> iteratorListas = usuarios_totales.getListas().iterator(); iteratorListas.hasNext();) {
 							Lista lista = iteratorListas.next();
 							if(lista.eliminarContenido(cancion_eliminar) == Status.OK) {
@@ -976,7 +955,9 @@ public class Sistema implements Serializable{
 		if(titulo == null) {
 			return null;
 		}
+		
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO) {			
+						
 			Album a = new Album(anyo,titulo,sistema.usuario_actual);
 			for(Album album:sistema.usuario_actual.getAlbumes()) {
 				if(album.getTitulo().equals(titulo)== true) {
@@ -984,15 +965,10 @@ public class Sistema implements Serializable{
 				}
 			}
 			
-			for(Album album:sistema.getAlbumTotales()) {
-				if(album.getTitulo().equals(titulo) == true) {
-					return null;
-				}
-			}
-			
 			
 			sistema.usuario_actual.anyadirAAlbumesPersonales(a);
 			sistema.albumes_totales.add(a);
+
 			return a;
 			
 		}else {
@@ -1077,14 +1053,22 @@ public class Sistema implements Serializable{
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO && sistema.es_administrador == false) {
 			for(Cancion cancion:sistema.getUsuarioActual().getCanciones()) {
 				
+				
+
 				if(cancion.getTitulo().equals(c.getTitulo()) == true && cancion.getNombreMP3().equals(c.getNombreMP3()) == true) {
 					
+					
+
 					if(c.getEstado() == EstadoCancion.VALIDA || (c.getEstado() == EstadoCancion.EXPLICITA && intervalo.getYears() >= 18)) {
+						
 						
 						for(Album album:sistema.getUsuarioActual().getAlbumes()) {
 						
+							
 							if(album.getTitulo().equals(a.getTitulo()) == true && album.getAutor().getId() == sistema.getUsuarioActual().getId()) {
 								
+								
+
 								ArrayList<Cancion> canciones_en_album = album.getContenido();
 								for(Cancion canciones_album:canciones_en_album) {
 									if(canciones_album.getTitulo().equals(c.getTitulo()) == true && canciones_album.getNombreMP3().equals(c.getNombreMP3()) == true) {
@@ -1125,11 +1109,11 @@ public class Sistema implements Serializable{
 		}
 		
 		if(sistema.usuario_actual != null && sistema.getUsuarioActual().getEstadoBloqueado() == UsuarioBloqueado.NOBLOQUEADO && sistema.es_administrador == false) {
-			
+
 			for(Cancion cancion:sistema.getUsuarioActual().getCanciones()) {
 				
 				if(cancion.getTitulo().equals(c.getTitulo()) == true && cancion.getAutor().getId() == sistema.getUsuarioActual().getId() && (c.getEstado() == EstadoCancion.VALIDA || c.getEstado() == EstadoCancion.EXPLICITA)) {
-			
+
 					for(Album album:sistema.getUsuarioActual().getAlbumes()) {
 						
 						if(album.getTitulo().equals(a.getTitulo()) == true && album.getAutor().getId() == sistema.getUsuarioActual().getId()) {
@@ -1310,6 +1294,7 @@ public class Sistema implements Serializable{
 		}
 		
 	}
+	
 	
 	
 	/**

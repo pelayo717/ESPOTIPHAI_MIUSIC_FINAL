@@ -22,11 +22,13 @@ import modelo.contenido.EstadoCancion;
 import modelo.reporte.Reporte;
 import modelo.sistema.Sistema;
 
+/**
+ * Clase en la que se implementa la vista PantallaInicioAdmin que extiende 
+ * PantallaPrincipalcon todo lo necesario para cumplir los requisitos impuestos
+ */
 public class PantallaInicioAdmin extends PantallaPrincipal{ //99.9% esta terminado
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private JScrollPane reportes;
 	private JScrollPane canciones;
@@ -63,6 +65,11 @@ public class PantallaInicioAdmin extends PantallaPrincipal{ //99.9% esta termina
 	private  DefaultListModel<String> model1;
 	private  DefaultListModel<String> model2;
 	
+	/**
+	 * Constructor de la clase PantallaInicioAdmin donde se inicializan
+	 * todos los atributos con lo valores correspondientes 
+	 */
+
 	public PantallaInicioAdmin () {
 		
 		super();
@@ -175,7 +182,10 @@ public class PantallaInicioAdmin extends PantallaPrincipal{ //99.9% esta termina
 		this.add(seleccionarReporte);
 	}
 	
-	// metodo para asignar un controlador al boton
+		/**
+	 	* Funcion que asgina a cada boton la accion que se pasa como argumento
+	 	* @param c: accion que se va a pasar a cada boton para que luego sse asigne el usuario determinado
+	 	*/
 		public void setControlador(ActionListener c) {
 			super.getBotonIzquierdaArriba().addActionListener(c);
 			super.getBotonIzquierdaMedio().addActionListener(c);
@@ -193,6 +203,9 @@ public class PantallaInicioAdmin extends PantallaPrincipal{ //99.9% esta termina
 			
 		}
 		
+		/**
+	 	* Funcion que actualiza las canciones que estan pendientes de validacion
+	 	*/
 		public void actualizarCanciones() {
 			model2.clear();
 			aValidar = Sistema.sistema.getCancionesPendientesValidacion().toArray(new Cancion[Sistema.sistema.getCancionesPendientesValidacion().size()]);
@@ -210,6 +223,9 @@ public class PantallaInicioAdmin extends PantallaPrincipal{ //99.9% esta termina
 			}
 		}
 		
+		/**
+	 	 * Funcion la cual actualiza todos los reportes que hay sobre canciones 
+	 	 */
 		public void actualizarReportes() {
 			model1.clear();
 			aReportar = Sistema.sistema.getReportesTotales().toArray(new Reporte[Sistema.sistema.getReportesTotales().size()]);
@@ -218,12 +234,16 @@ public class PantallaInicioAdmin extends PantallaPrincipal{ //99.9% esta termina
 			}
 		}
 		
-		
+		/**
+		 * Funcion la cual actualiza los criterios de la aplicacion en base a que nos 
+		 * encontramos que el usuario es el administrados
+	 	 */
 		public void actualizarCriterios() {	
 			precio.setText("Precio PRO => " + Sistema.sistema.getPrecioPremium() + " €");
 			umbral.setText("Umbral Reproducciones => " + Sistema.sistema.getUmbralReproducciones());
 			reproducciones.setText("Reproducciones Maximas => " + Sistema.sistema.getMaxReproduccionesUsuariosNoPremium());			
 		}
+		
 		
 		private class RowColor extends DefaultListCellRenderer{
 			
@@ -242,111 +262,230 @@ public class PantallaInicioAdmin extends PantallaPrincipal{ //99.9% esta termina
 	        }
 			
 		}
-
+		
+		/**
+	 	 * Funcion que delvuelve el atributo serialVersionUID de la clase
+		 * @param serialVersionUID:
+	 	 */
 		public static long getSerialversionuid() {
 			return serialVersionUID;
 		}
-
+	
+		/**
+		 * Funcion que delvuelve un JScrollPane con todos los reportes que ha habido
+		 * @return serialVersionUID:
+	 	*/
 		public JScrollPane getReportes() {
 			return reportes;
 		}
-
+	
+		/**
+		 * Funcion que delvuelve un JScrollPane con todas las canciones
+		 * @return canciones: atributo de tipo JScrollPane que contiene todas las canciones 
+	 	*/
 		public JScrollPane getCanciones() {
 			return canciones;
 		}
-
+	
+		/**
+		 * Funcion que delvuelve un JList con todos los reportes que ha habido
+		 * @return lista_reportes: lista que contiene todos los reportes que ha habido
+	 	*/
 		public JList<String> getLista_reportes() {
 			return lista_reportes;
 		}
-
+	
+		/**
+		 * Funcion que delvuelve un JList con todos las canciones que hay
+		 * @return lista_canciones: atributo de  tipo JList que contiene
+		 * lista con todas las canciones 
+ 		*/
 		public JList<String> getLista_canciones() {
 			return lista_canciones;
 		}
-
+	
+		/**
+		 * Funcion que delvuelve el JButton que 
+		 * @return serialVersionUID:
+	 	*/
 		public JButton getModificarCriterios() {
 			return modificarCriterios;
 		}
-
+	
+		/**
+		 * Funcion que delvuelve un JButton 
+		 * @return valida: atributo de tipo JButton llamado valida
+	 	*/
 		public JButton getValida() {
 			return valida;
 		}
-
+	
+		/**
+	 	 * Funcion que devuelve un JButton el cual realizaria la funcion de poner una cancion como explicita 
+	 	 * @return explicita: atributo de tipo JButton que representa el boton que se usuaria para clasificar una 
+		 * cancion como explicita
+	 	 */
 		public JButton getExplicita() {
 			return explicita;
 		}
-
+	
+		/**
+	 	 * Funcion que devuelve un JButton el cual realizaria la funcion de poner una cancion en la lista de
+		 * pendientes de modificacion
+	 	 * @return pendienteModificacion: atributo de tipo JButton que representa el boton que se usuaria para 
+		 * poner una cancion en la lista de pendiente de modificacion
+	 	 */
 		public JButton getPendienteModificacion() {
 			return pendienteModificacion;
 		}
-
+	
+		/**
+	 	 * Funcion que devuelve un JButton el cual realizaria la funcion de eliminar una cancion
+	 	 * @return eliminada: atributo de tipo JButton que representa el boton que se usuaria para eliminar una cancion
+	 	 */
 		public JButton getEliminada() {
 			return eliminada;
 		}
-
+	
+		/**
+	 	 * Funcion que devuelve un JButton el cual realizaria la funcion de seleccionar una cancion
+	 	 * @return seleccionarCancion: atributo de tipo JButton que representa el boton que se usuaria para seleccionar
+		 * la cancion
+	 	 */
 		public JButton getSeleccionarCancion() {
 			return seleccionarCancion;
 		}
-
+	
+		/**
+	 	 * Funcion que devuelve un JButton el cual realizaria la funcion de aceptar el reporte que se iba a realizar
+	 	 * @return aceptarReporte: atributo de tipo JButton que representa el boton que se usuaria para aceptar el reporte
+		 * que se iba a realizar
+	 	 */
 		public JButton getAceptarReporte() {
 			return aceptarReporte;
 		}
-
+	
+		/**
+	 	 * Funcion que devuelve un JButton el cual realizaria la funcion de denegar el reporte que se iba a realizar
+	 	 * @return denegarReporte: atributo de tipo JButton que representa el boton que se usuaria para denegar el
+		 * reporte que se iba a realizar
+	 	 */
 		public JButton getDenegarReporte() {
 			return denegarReporte;
 		}
-
+	
+		/**
+	 	 * Funcion que devuelve un JButton el cual realizaria la funcion de seleccionar el reporte
+	 	 * @return seleccionarReporte: atributo de tipo JButton que representa el boton que se usuaria para seleccionar
+		 * el tipo de reporte
+	 	 */
 		public JButton getSeleccionarReporte() {
 			return seleccionarReporte;
 		}
-
+	
+		/**
+	 	 * Funcion que devuelve un JButton el cual realizaria la funcion de cambiar los criterios de la aplicacion
+	 	 * @return cambiarCriterios: atributo de tipo JButton que representa el boton que se usuaria para cambiar los
+		 * criterios de la aplicacion
+	 	 */
 		public JButton getCambiarCriterios() {
 			return cambiarCriterios;
 		}
-
+	
+		/**
+	 	 * Funcion que devuelve un JTextField con el campo umbral 
+	 	 * @return campoUmbral: atributo de tipo JTextField el cual indica el umbral
+	 	 */
 		public JTextField getCampoUmbral() {
 			return campoUmbral;
 		}
-
+	
+		/**
+	 	 * Funcion que devuelve un JLabel con el campo del precio de la aplicacion
+	 	 * @return campoPrecio: atributo de tipo JLabel el cual indica el precio de la aplicacion poara ser premium
+	 	 */
 		public JTextField getCampoPrecio() {
 			return campoPrecio;
 		}
-
+	
+		/**
+	 	 * Funcion que devuelve un JLabel con las canciones de un usuario
+	 	 * @return susCanciones: atributo de tipo JLabel el cual indica las canciones de un usuario
+	 	 */
 		public JTextField getCampoReproducciones() {
 			return campoReproducciones;
 		}
-
+	
+		/**
+	 	 * Funcion que devuelve un JLabel con las canciones de un usuario
+	 	 * @return susCanciones: atributo de tipo JLabel el cual indica las canciones de un usuario
+	 	 */
 		public JLabel getSusCanciones() {
 			return susCanciones;
 		}
-
+	
+		/**
+	 	 * Funcion que devuelve un JLabel con el atributo de susReportes
+	 	 * @return susReportes: atributo de tipo JLabel el cual indica los reportes 
+	 	 */
 		public JLabel getSusReportes() {
 			return susReportes;
 		}
-
+	
+		/**
+	 	 * Funcion que devuelve un JLabel con el precio 
+	 	 * @return precio: atributo de tipo JLabel el cual indica el precio a pagar para 
+		 * ser premium en la aplicacion
+	 	 */
 		public JLabel getPrecio() {
 			return precio;
 		}
-
+	
+		/**
+	 	 * Funcion la cual devuelve un JLabel con el umbral de reproducciones necesarias
+	 	 * @return umbral: atributo de tipo JLabel el cual indica el umbral de reproducciones
+	 	 */
 		public JLabel getUmbral() {
 			return umbral;
 		}
 
+		/**
+	 	 * Funcion que devuelve un JLabel con el atributo de las reproducciones
+	 	 * @return reproducciones: atributo de tipo JLabel que indica en numero de reproducciones
+	 	 */
 		public JLabel getReproducciones() {
 			return reproducciones;
 		}
-
+		/**
+	 	 * Funcion que devuelve un array de tipo Cancion el cual contiene todas las 
+		 * canciones que estan pendientes de validacion
+	 	 * @return aValidar: atributo de tipo Cancion que contiene todas las canciones 
+		 * que estan aun por validar
+	 	 */
 		public Cancion[] getaValidar() {
 			return aValidar;
 		}
-
+		
+		/**
+	 	 * Funcion que devuelve un array de tipo reporte con todos los reportes que hay 
+	 	 * @return aReportar: array de tipo reportar el cual contiene todos los reporte de la aplicacion
+	 	 */
 		public Reporte[] getaReportar() {
 			return aReportar;
 		}
-
+	
+		/**
+		 * Funcion que devuelve el modelo1 de la clase
+		 * @return model1: atributo que indica que estamos en el modelo 1
+	 	*/
 		public DefaultListModel<String> getModel1() {
 			return model1;
 		}
 
+		/**
+		 * Funcion que devuelve el modelo2 de la clase
+	 	 * @return model2: atributo que indica que estamos en el modelo 1
+	 	 */
 		public DefaultListModel<String> getModel2() {
 			return model2;
 		}

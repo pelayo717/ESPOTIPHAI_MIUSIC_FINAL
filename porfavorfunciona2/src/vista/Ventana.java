@@ -13,10 +13,12 @@ import modelo.contenido.*;
 import controlador.*;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
 
+/**
+ * Clase en la que se implementa la vista Ventana con todo
+ * lo necesario para cumplir los requisitos impuestos
+ */
 public class Ventana extends JFrame { //99.9% esta terminado
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	public InicioSesion inicioSesion;
 	public ReproducirCancion reproducirCancion;
@@ -49,6 +51,10 @@ public class Ventana extends JFrame { //99.9% esta terminado
 	Container container;
 	Sistema sistema;
 	
+	/**
+	 * Constructor de la clase Ventana donde se inicializan
+	 * todos los atributos con lo valores correspondientes 
+	 */
 	public Ventana() throws Mp3PlayerException, IOException{ //CAMBIADO, MEJORADO
 		
 		this.sistema = Sistema.getSistema();
@@ -136,7 +142,7 @@ public class Ventana extends JFrame { //99.9% esta terminado
 		this.addWindowListener(new WindowAdapter(){
 			@Override
 			public void windowClosing(WindowEvent e) {
-				if (JOptionPane.showConfirmDialog(Ventana.ventana,  "Estas seguro de que quieres cerrar ESPOTIPHAIMUSIC?", "Cerrar ESPOTIPHAIMUSIC?", 
+				if (JOptionPane.showConfirmDialog(Ventana.ventana,"¿Estas seguro de que quieres cerrar ESPOTIPHAIMUSIC?", "Cerrar ESPOTIPHAIMUSIC?", 
 			            JOptionPane.YES_NO_OPTION,
 			            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
 						try {
@@ -151,6 +157,10 @@ public class Ventana extends JFrame { //99.9% esta terminado
 		
 	}
 	
+	/**
+	 * Funcion la cual pone como primera carta a la vista de 
+	 * inicio sesion dentro del cardLayout para que el usuario la vea
+	 */
 	public void showInicioSesion(){
 		
 		final String inicioSesionString = "Iniciar Sesion";
@@ -159,6 +169,10 @@ public class Ventana extends JFrame { //99.9% esta terminado
 	    
 	}
 	
+	/**
+	 * Funcion la cual pone como primera carta a la vista de 
+	 * PantallaInicio dentro del CardLayout para que el usuario la vea
+	 */
 	public void showPantallaInicio(){
 		
 		final String pantallaInicioString = "Pantalla Inicio";
@@ -178,6 +192,10 @@ public class Ventana extends JFrame { //99.9% esta terminado
 	    this.pantallaInicio.limpiarBuscador();
 	}
 	
+	/**
+	 * Funcion la cual pone como primera carta a la vista de 
+	 * ReproducirCancion dentro del CardLayout para que el usuario la vea
+	 */
 	public void showReproducirCancion(Cancion c){
 		
 		final String reproducirCancionString = "Reproducir Cancion";
@@ -201,6 +219,10 @@ public class Ventana extends JFrame { //99.9% esta terminado
 	    this.reproducirCancion.limpiarBuscador();
 	}
 	
+	/**
+	 * Funcion la cual pone como primera carta a la vista de 
+	 * ReproducirAlbum dentro del CardLayout para que el usuario la vea
+	 */
 	public void showReproducirAlbum(Album a){
 		
 		final String reproducirAlbumString = "Reproducir Album";
@@ -225,7 +247,10 @@ public class Ventana extends JFrame { //99.9% esta terminado
 	    this.reproducirAlbum.limpiarBuscador();
 	}
 	
-	
+	/**
+	 * Funcion la cual pone como primera carta a la vista de 
+	 * ReproducirLista dentro del CardLayout para que el usuario la vea
+	 */
 	public void showReproducirLista(Lista l){
 		
 		final String reproducirListaString = "Reproducir Lista";
@@ -240,13 +265,20 @@ public class Ventana extends JFrame { //99.9% esta terminado
 	}
 	
 	
-	
+	/**
+	 * Funcion la cual pone como primera carta a la vista de 
+	 * Registrarse dentro del CardLayout para que el usuario la vea
+	 */
 	public void showRegistrarse(){
 		final String registrarseString = "Registrarse";
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
 	    cl.show(this.getContentPane(), registrarseString);
 	}
 	
+	/**
+	 * Funcion la cual pone como primera carta a la vista de 
+	 * Perfil dentro del CardLayout para que el usuario la vea
+	 */
 	public void showPerfil(){
 		final String perfilString = "Perfil";
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
@@ -265,6 +297,10 @@ public class Ventana extends JFrame { //99.9% esta terminado
 	    }
 	}
 
+	/**
+	 * Funcion la cual pone como primera carta a la vista de 
+	 * PantallaInicioAdmin dentro del CardLayout para que el usuario la vea
+	 */
 	public void showPantallaInicioAdmin() {
 		final String pantallaInicioAdminString = "Pantalla Inicio Admin";
 		CardLayout cl = (CardLayout)(this.getContentPane().getLayout());
@@ -279,6 +315,10 @@ public class Ventana extends JFrame { //99.9% esta terminado
 	    
 	}
 	
+	/**
+	 * Funcion la cual pone como primera carta a la vista de 
+	 * BuscadorCanciones dentro del CardLayout para que el usuario la vea
+	 */
 	public void showBuscadorCanciones(Cancion[] retornadas) {
 		
 		final String buscadorCancionesString = "Buscador Canciones";
@@ -298,6 +338,10 @@ public class Ventana extends JFrame { //99.9% esta terminado
 	    this.buscadorCanciones.limpiarBuscador();
 	}
 
+	/**
+	 * Funcion la cual pone como primera carta a la vista de 
+	 * BuscadorAutores dentro del CardLayout para que el usuario la vea
+	 */
 	public void showBuscadorAutores(Contenido[] retornadas) {
 		
 		final String buscadorAutoresString = "Buscador Autores";
@@ -319,6 +363,10 @@ public class Ventana extends JFrame { //99.9% esta terminado
 		
 	}
 
+	/**
+	 * Funcion la cual pone como primera carta a la vista de 
+	 * BuscadorAlbumes dentro del CardLayout para que el usuario la vea
+	 */
 	public void showBuscadorAlbumes(Album[] retornadas) {
 		
 		final String buscadorAlbumesString = "Buscador Albumes";
