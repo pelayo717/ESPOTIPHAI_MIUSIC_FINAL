@@ -12,14 +12,17 @@ import javax.swing.*;
 
 
 import modelo.contenido.*;
+import modelo.sistema.Sistema;
 
   
-/**
- * Clase en la que se implementa la vista ReproducirCancion con todo
- * lo necesario para cumplir los requisitos impuestos
- */
+
+
+
 public class ReproducirCancion extends PantallaPrincipal {
 
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 
 	private  Cancion cancion;
@@ -52,10 +55,6 @@ public class ReproducirCancion extends PantallaPrincipal {
 	private DefaultMutableTreeNode root;
 	private DefaultTreeModel treeModel;
 	
-	/**
-	 * Constructor de la clase ReproducirCancion donde se inicializan
-	 * todos los atributos con lo valores correspondientes 
-	 */
 	public ReproducirCancion() {
 		super();
 		
@@ -181,11 +180,7 @@ public class ReproducirCancion extends PantallaPrincipal {
 	}
 	
 
-	 /**
-	 * Funcion que asgina a cada boton la accion que se pasa como argumento
-	 * @param c: accion que se va a pasar a cada boton para que luego sse asigne el usuario determinado
-	 */
-
+	// método para asignar un controlador al botón
 	 public void setControlador(ActionListener c) {
 		 super.getBotonIzquierdaArriba().addActionListener(c);
 		 super.getBotonIzquierdaMedio().addActionListener(c);
@@ -209,20 +204,11 @@ public class ReproducirCancion extends PantallaPrincipal {
 		}
 	}
 	
-	/**
-	 * Funcion que limpia el buscador de la aplicacion y lo deja vacio 
-	 * para que el usuario pueda realizar otra busqueda
-	 */
 	public void limpiarBuscador(){
 		super.getBusquedaTextfield().setText("");
 		super.getGrupo_eleccion().clearSelection();
 	}
 	
-	 /**
-	  * Funcion que pone la informacion necesaria sobre la vista en base al argumento de
-	  * entrada, siendo este la lista que se va a reproducir
-	  * @param cancion: Cancion que se va a poner en la vista ya que el usuario la ha seleccionado
-	  */
 	public void setInformacion(Cancion cancion) {
 		this.cancion = cancion;
 
@@ -243,11 +229,6 @@ public class ReproducirCancion extends PantallaPrincipal {
 		this.setTree();
 	}
 	
-	
-	/**
-	 * Funcion que crea y ordena el arbol desde el principio para luego ir introduciendo 
-	 * los diferentes comentarios que se van realizando sobre la cancion 
-	 */
 	public void setTree() {
 		root.removeAllChildren();
         //create the child nodes
@@ -256,10 +237,10 @@ public class ReproducirCancion extends PantallaPrincipal {
 		}
 		
 		if(comentarios != null) {
-			for (Comentario c : comentarios)
-	        {				
+			for (Comentario c : comentarios){				
 				boolean editable = true;
 				if( LocalDateTime.now().getYear() - c.getFecha().getYear() >= 1) {
+					editable = false;
 				} else if( LocalDateTime.now().getMonthValue() - c.getFecha().getMonthValue() >= 1) {
 					editable = false;
 				} else if( LocalDateTime.now().getDayOfMonth() - c.getFecha().getDayOfMonth() >= 1) {
@@ -269,14 +250,16 @@ public class ReproducirCancion extends PantallaPrincipal {
 				} else if( LocalDateTime.now().getMinute() - c.getMinuto() >= 30) {
 					editable = false;
 				} 
-	          DefaultMutableTreeNode comentario = new DefaultMutableTreeNode(c);
-	          root.add(comentario);
-	          for (Comentario subc : c.getSubComentarios()) {
-				DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subc);
-	            comentario.add(subNode);
-				((DefaultTreeModel)comentariosTree.getModel()).reload(comentario);
-				this.addToTree(subNode,subc);
-	          }
+				if(c.getComentador().equals(Sistema.sistema.getUsuarioActual().getNombreUsuario()) ||  editable == false){
+					DefaultMutableTreeNode comentario = new DefaultMutableTreeNode(c);
+					root.add(comentario);
+					for (Comentario subc : c.getSubComentarios()) {
+						DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subc);
+						comentario.add(subNode);
+						((DefaultTreeModel)comentariosTree.getModel()).reload(comentario);
+						this.addToTree(subNode,subc);
+					}
+				}
 	        }
 		}
 		treeModel = new DefaultTreeModel(root);
@@ -296,27 +279,29 @@ public class ReproducirCancion extends PantallaPrincipal {
 	    }
 	}
 	
-	
-	/**
-	 * Funcion que añade un comentario pasado como argumento a un arbol que contiene todos los comentarios que se
-	 * han realizado sobre esa cancion
-	 * @param fatherNode: padre del nodo en donde se va a introducir el comentario
-	 * @param c: comentario el cual se va a introducir en el arbol
-	 */
 	public void addToTree(DefaultMutableTreeNode fatherNode, Comentario c) {
 		for (Comentario subc : c.getSubComentarios()) {
-			DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subc);
-            fatherNode.add(subNode);
-            ((DefaultTreeModel)comentariosTree.getModel()).reload(fatherNode);
-			this.addToTree(subNode,subc);
+			boolean editable = true;
+			if( LocalDateTime.now().getYear() - subc.getFecha().getYear() >= 1) {
+				editable = false;
+			} else if( LocalDateTime.now().getMonthValue() - subc.getFecha().getMonthValue() >= 1) {
+				editable = false;
+			} else if( LocalDateTime.now().getDayOfMonth() - subc.getFecha().getDayOfMonth() >= 1) {
+				editable = false;
+			} else if( LocalDateTime.now().getHour() - subc.getHora() >= 1) {
+				editable = false;
+			} else if( LocalDateTime.now().getMinute() - subc.getMinuto() >= 30) {
+				editable = false;
+			} 
+			if(subc.getComentador().equals(Sistema.sistema.getUsuarioActual().getNombreUsuario()) ||  editable == false){
+				DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subc);
+	            fatherNode.add(subNode);
+	            ((DefaultTreeModel)comentariosTree.getModel()).reload(fatherNode);
+				this.addToTree(subNode,subc);
+			}
           }
 	}
 
-	
-	/**
-	 * Funcion que cambia el texto de unos determinados botones para ponerlos el 
-	 * texto a lo necesario para cuando el usuario es el administrador
-	 */	
 	public void setAdministrador() {
 		super.getBotonIzquierdaArriba().setText("Ver Perfil");
 		super.getBotonIzquierdaMedio().setText("Inicio");
@@ -327,11 +312,6 @@ public class ReproducirCancion extends PantallaPrincipal {
 		this.botonAnyadirComentario.setBounds(screenSize.width/2 + 150, 680, 150, 30);
 	}
 	
-	/**
-	 * Funcion que cambia el texto de unos determinados botones para ponerlos el 
-	 * texto a lo necesario para cuando el usuario si que esta registrado y la cancion que 
-	 * se va a poner en la vista si es suya propia 
-	 */
 	public void setUsuarioRegistradoPropia() {
 		super.getBotonIzquierdaArriba().setText("Ver Perfil");
 		super.getBotonIzquierdaMedio().setText("Inicio");
@@ -344,11 +324,6 @@ public class ReproducirCancion extends PantallaPrincipal {
 
 	}
 	
-	/**
-	 * Funcion que cambia el texto de unos determinados botones para ponerlos el 
-	 * texto a lo necesario para cuando el usuario si esta registrado y la cancion que 
-	 * se va a poner en la vista no es suya propia
-	 */
 	public void setUsuarioRegistradoNoPropia() {
 		super.getBotonIzquierdaArriba().setText("Ver Perfil");
 		super.getBotonIzquierdaMedio().setText("Inicio");
@@ -361,11 +336,7 @@ public class ReproducirCancion extends PantallaPrincipal {
 
 	}
 	
-	/**
-	 * Funcion que cambia el texto de unos determinados botones para ponerlos el 
-	 * texto a lo necesario para cuando el usuario no esta registrado y la cancion
-	 * que se va a poner en la vista no es suya propia
-	 */
+	
 	public void setUsuarioNoRegistradoNoPropia() {
 		super.getBotonIzquierdaArriba().setText("Iniciar Sesion");
 		super.getBotonIzquierdaMedio().setText("Registro");
@@ -382,166 +353,83 @@ public class ReproducirCancion extends PantallaPrincipal {
 		return serialVersionUID;
 	}
 
-	/**
-	 * Funcion que devuelve la cancion que el usuario a elegido
-	 * @return cancion: atributo el cual se va a reproducir por parte del usuario
-	 */
 	public Cancion getCancion() {
 		return cancion;
 	}
 
-	/**
-	 * Funcopm que devuelve JLabel de los comentarios que hay en la lista
-	 * @return comentarios_label: atributo que contiene todos los comentarios de la lista
-	 */
 	public JLabel getDatos_cancion() {
 		return datos_cancion;
 	}
 
-	/**
-	 * Funcion que devuelve JLabel con el titulo de la cancion
-	 * @return titulo_cancion: atributo que identifica el nombre de la cancion
-	 */
 	public JLabel getTitulo_cancion() {
 		return titulo_cancion;
 	}
 
-	/**
-	 * Funcion que devuelve JLabel con el autor de la cancion
-	 * @return autor_cancion: atributo que hace referencia al autor de la cancion
-	 */
 	public JLabel getAutor_cancion() {
 		return autor_cancion;
 	}
 
-	/**
-	 * Funcion que devuelve JLabel con la duracion de la cancion en cuestion
-	 * @return duracion_cancion: atributo que representa la duracion que tiene la cancion
-	 */
 	public JLabel getDuracion_cancion() {
 		return duracion_cancion;
 	}
 
-	/**
-	 * Funcion que devuelve JLabel con los comentarios que tiene la cancion
-	 * @return comentarios_label: atributo que contiene todos los comentarios realizados sobre la cancion
-	 */
 	public JLabel getComentarios_label() {
 		return comentarios_label;
 	}
-	
-	/**
-	 * Funcion que devuelve JLabel con el estado de la cancion
-	 * @return estadoCancion: atributo que identifica el estado de la cancion
-	 */
+
 	public JLabel getEstadoCancion() {
 		return estadoCancion;
 	}
 
-	/**
-	 * Funcion que devuelve el JButton  que representa el boton de play de la cancion
-	 * @return botonPlay: atributo que representa la funcion de darle a play a la cancion
-	 */	
 	public JButton getBotonPlay() {
 		return botonPlay;
 	}
-	
-	/**
-	 * Funcion que devuelve el JButton  que representa el boton de pausa de la cancion
-	 * @return botonPause: atributo que representa la funcion de pausar la cancion
-	 */
+
 	public JButton getBotonPause() {
 		return botonPause;
 	}
 
-	/**
-	 * Funcion que devuelve el JScrollPane que contiene todos los comentarios de la cancion
-	 * @return comentariosScrollPane: atributo que contiene todos los comentarios de la cancion
-	 */
+
 	public JScrollPane getComentariosScrollPane() {
 		return comentariosScrollPane;
 	}
 
-	/**
-	 * Funcion que devuelve el JButton  que representa el boton de lista
-	 * @return botonList: atributo que representa la funcion de seleccionar lista a la hora de buscar
-	 */
 	public JButton getBotonList() {
 		return botonList;
 	}
 
-	/**
-	 * Funcion que devuelve el JButton  que representa el boton de anyadir comentario
-	 * @return botonAnyadirComentario: atributo que representa la funcion de poder anyadir un 
-	 * comentario a una cancion
-	 */
 	public JButton getBotonAnyadirComentario() {
 		return botonAnyadirComentario;
 	}
-	
-	/**
-	 * Funcion que devuelve el JButton  que representa el boton de reportar una cancion
-	 * @return botonReportar: atributo que representa la funcion de reportar una cancion
-	 */
+
 	public JButton getBotonReportar() {
 		return botonReportar;
 	}
 
-	/**
-	 * Funcion que devuelve el JButton  que representa el boton de modificar cancion
-	 * @return modificarCancion: atributo que representa la funcion de modificar una cancion
-	 */
 	public JButton getModificarCancion() {
 		return modificarCancion;
 	}
 
-	/**
-	 * Funcion que devuelve el JButton  que representa el boton de anyadir a un album
-	 * @return anyadirAlbum: atributo que representa la funcion de anyadira un album la cancion
-	 */
 	public JButton getAnyadirAlbum() {
 		return anyadirAlbum;
 	}
 
-	/**
-	 * Funcion que devuelve el JButton  que representa el boton de anyadir la cancion a una lista
-	 * @return anyadirLista: atributo que representa la funcion de anyadir la cancion a una lista
-	 */
 	public JButton getAnyadirLista() {
 		return anyadirLista;
 	}
-	
-	/**
-	 * Funcion que devuelve la dimension de la pantalla para ajustar la vista a la misma
-	 * @return screenSize: atributo que define el tamaño de la pantalla en la que se 
-	 * esta usando la aplicacion para ajustar la vista
-	 */
+
 	public Dimension getScreenSize() {
 		return screenSize;
 	}
-	
-	/**
-	 * Funcion que devuelve un array de comentarios con todos los comentarios que tiene la cancion
-	 * @return comentarios: atributo de tipo Comentario que contiene todos los comentarios que se han 
-	 * hecho sobre la cancion pertinente
-	 */
+
 	public Comentario[] getComentarios() {
 		return comentarios;
 	}
-	
-	/**
-	 * Funcion que devuelve un JTree con todos los comentarios en forma de arbol
-	 * @return comentariosTree: atributo de tipo JTree el cual contiene todos los comentarios
-	 */
+
 	 public JTree getComentariosTree() {
 		return comentariosTree;
 	}
 	
-	/**
-	 * Funcion que devuelve un Comentario seleccionado
-	 * @return comentarioSeleccionado: atributo de tipo comentario el cual devuelve 
-	 * un comentario seleccionado por el usuario
-	 */
 	public Comentario getComentarioSeleccionado() {
 			return comentarioSeleccionado;
 	}

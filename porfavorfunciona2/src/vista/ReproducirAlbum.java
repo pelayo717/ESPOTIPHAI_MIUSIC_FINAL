@@ -3,6 +3,7 @@ package vista;
 import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 
 import javax.swing.*;
@@ -265,16 +266,29 @@ public class ReproducirAlbum extends PantallaPrincipal {
 				comentarios = album.getComentarios().toArray(new Comentario[album.getComentarios().size()]);
 			}
 			if(comentarios != null) {
-				for (Comentario c : comentarios)
-		        {
-		          DefaultMutableTreeNode comentario = new DefaultMutableTreeNode(c);
-		          root.add(comentario);
-		          for (Comentario subc : c.getSubComentarios()) {
-					DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subc);
-		            comentario.add(subNode);
-					((DefaultTreeModel)comentariosTree.getModel()).reload(comentario);
-					this.addToTree(subNode,subc);
-		          }
+				for (Comentario c : comentarios) {
+					boolean editable = true;
+					if( LocalDateTime.now().getYear() - c.getFecha().getYear() >= 1) {
+						editable = false;
+					} else if( LocalDateTime.now().getMonthValue() - c.getFecha().getMonthValue() >= 1) {
+						editable = false;
+					} else if( LocalDateTime.now().getDayOfMonth() - c.getFecha().getDayOfMonth() >= 1) {
+						editable = false;
+					} else if( LocalDateTime.now().getHour() - c.getHora() >= 1) {
+						editable = false;
+					} else if( LocalDateTime.now().getMinute() - c.getMinuto() >= 30) {
+						editable = false;
+					} 
+					if(c.getComentador().equals(Sistema.sistema.getUsuarioActual().getNombreUsuario()) ||  editable == false){
+						DefaultMutableTreeNode comentario = new DefaultMutableTreeNode(c);
+				          root.add(comentario);
+				          for (Comentario subc : c.getSubComentarios()) {
+							DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subc);
+				            comentario.add(subNode);
+							((DefaultTreeModel)comentariosTree.getModel()).reload(comentario);
+							this.addToTree(subNode,subc);
+				          }
+					}
 		        }
 			}
 			treeModel = new DefaultTreeModel(root);
@@ -295,11 +309,25 @@ public class ReproducirAlbum extends PantallaPrincipal {
 		
 		public void addToTree(DefaultMutableTreeNode fatherNode, Comentario c) {
 			for (Comentario subc : c.getSubComentarios()) {
-				DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subc);
-	            fatherNode.add(subNode);
-	            ((DefaultTreeModel)comentariosTree.getModel()).reload(fatherNode);
-				System.out.println("anyadimos subcomentario" + subc);
-				this.addToTree(subNode,subc);
+				boolean editable = true;
+				if( LocalDateTime.now().getYear() - subc.getFecha().getYear() >= 1) {
+					editable = false;
+				} else if( LocalDateTime.now().getMonthValue() - subc.getFecha().getMonthValue() >= 1) {
+					editable = false;
+				} else if( LocalDateTime.now().getDayOfMonth() - subc.getFecha().getDayOfMonth() >= 1) {
+					editable = false;
+				} else if( LocalDateTime.now().getHour() - subc.getHora() >= 1) {
+					editable = false;
+				} else if( LocalDateTime.now().getMinute() - subc.getMinuto() >= 30) {
+					editable = false;
+				} 
+				if(subc.getComentador().equals(Sistema.sistema.getUsuarioActual().getNombreUsuario()) ||  editable == false){
+					DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subc);
+		            fatherNode.add(subNode);
+		            ((DefaultTreeModel)comentariosTree.getModel()).reload(fatherNode);
+					System.out.println("anyadimos subcomentario" + subc);
+					this.addToTree(subNode,subc);
+				}
 	          }
 		}
 	 
