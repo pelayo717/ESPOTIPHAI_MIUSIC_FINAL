@@ -254,7 +254,7 @@ public class ReproducirLista extends PantallaPrincipal {
 	}
 
 	/**
-	 * Funcopm que devuelve JScrollPane con todos los contenidos de la lista de reproduccion
+	 * Funcion que devuelve JScrollPane con todos los contenidos de la lista de reproduccion
 	 * @return contenidoScrollPane: atributo de tipo JScrollPane el cual contiene todos los datos de la lista
 	 */
 	public JScrollPane getContenidoScrollPane() {
@@ -262,7 +262,7 @@ public class ReproducirLista extends PantallaPrincipal {
 	}
 
 	/**
-	 * Funcopm que devuelve el JButton  que representa el boton de lista
+	 * Funcion que devuelve el JButton  que representa el boton de lista
 	 * @return botonList: atributo que representa la funcion de seleccionar lista a la hora de buscar
 	 */
 	public JButton getBotonList() {
@@ -270,7 +270,7 @@ public class ReproducirLista extends PantallaPrincipal {
 	}
 
 	/**
-	 * Funcopm que devuelve JLabel con todos los datos que tiene la lista 
+	 * Funcion que devuelve JLabel con todos los datos que tiene la lista 
 	 * @return datos_lista: atributo de tipo JLabel el cual contiene todos los datos de la lista de reproduccion
 	 */
 	public JLabel getDatos_lista() {
@@ -278,7 +278,7 @@ public class ReproducirLista extends PantallaPrincipal {
 	}
 
 	/**
-	 * Funcopm que devuelve JLabel con el titulo de la lista de reproduccion
+	 * Funcion que devuelve JLabel con el titulo de la lista de reproduccion
 	 * @return titulo_lista: atributo que identifica el nombre de la lista de reproduccion
 	 */
 	public JLabel getTitulo_lista() {
@@ -286,7 +286,7 @@ public class ReproducirLista extends PantallaPrincipal {
 	}
 	
 	/**
-	 * Funcopm que devuelve JLabel con el autor de la lista
+	 * Funcion que devuelve JLabel con el autor de la lista
 	 * @return autor_lista: atributo que identifica quien ha sido el autor de la lista de reproducion
 	 */
 	public JLabel getAutor_lista() {
@@ -294,7 +294,7 @@ public class ReproducirLista extends PantallaPrincipal {
 	}
 	
 	/**
-	 * Funcopm que devuelve JLabel con la duracion de reproduccion de la lista 
+	 * Funcion que devuelve JLabel con la duracion de reproduccion de la lista 
 	 * @return duracion_lista: atributo que representa la duracion total de la lista
 	 */
 	public JLabel getDuracion_lista() {
@@ -302,7 +302,7 @@ public class ReproducirLista extends PantallaPrincipal {
 	}
 
 	/**
-	 * Funcopm que devuelve JLabel de los comentarios que hay en la lista
+	 * Funcion que devuelve JLabel de los comentarios que hay en la lista
 	 * @return comentarios_label: atributo que contiene todos los comentarios de la lista
 	 */
 	public JLabel getComentarios_label() {
@@ -310,7 +310,7 @@ public class ReproducirLista extends PantallaPrincipal {
 	}
 
 	/**
-	 * Funcopm que devuelve un array de tipo Contenido con todos los contenidos
+	 * Funcion que devuelve un array de tipo Contenido con todos los contenidos
 	 * @return contenido: atributo que contiene todos los contenidos 
 	 */
 	public Contenido[] getContenido() {
