@@ -15,10 +15,12 @@ import vista.BuscadorAlbumes;
 import vista.Ventana;
 
 /**
- * Funcion que implementa el controlador de la clase BuscadorAlbumes
+ * Clase que implementa el controlador de la clase BuscadorAutores 
+ * teniendo en cuenta todos los casos posibles en los que el usuario realiza
+ * una accion u otra y asignando el controlador determinado a la accion realizada
  * 
  */
-public class ControladorBuscadorAlbumes implements ActionListener {//99.9% esta terminado
+public class ControladorBuscadorAlbumes implements ActionListener {
 
 	private BuscadorAlbumes vista;
 	@SuppressWarnings("unused")
@@ -105,7 +107,7 @@ public class ControladorBuscadorAlbumes implements ActionListener {//99.9% esta 
 					if(retornadas != null) { //ALGO HAY
 						Ventana.ventana.showBuscadorAutores(retornadas.toArray(new Contenido[retornadas.size()]));
 					}else {
-						JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado contenido por ese nombre de autor");
+						JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado contenidos por ese nombre de autor");
 					}
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
