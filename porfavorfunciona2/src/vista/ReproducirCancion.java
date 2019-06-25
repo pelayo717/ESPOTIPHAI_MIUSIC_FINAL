@@ -2,6 +2,8 @@ package vista;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDateTime;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.event.TreeSelectionListener;
@@ -10,6 +12,7 @@ import javax.swing.*;
 
 
 import modelo.contenido.*;
+import modelo.sistema.Sistema;
 
   
 
@@ -234,16 +237,35 @@ public class ReproducirCancion extends PantallaPrincipal {
 		}
 		
 		if(comentarios != null) {
-			for (Comentario c : comentarios)
-	        {
-	          DefaultMutableTreeNode comentario = new DefaultMutableTreeNode(c);
-	          root.add(comentario);
-	          for (Comentario subc : c.getSubComentarios()) {
-				DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subc);
-	            comentario.add(subNode);
-				((DefaultTreeModel)comentariosTree.getModel()).reload(comentario);
-				this.addToTree(subNode,subc);
-	          }
+			for (Comentario c : comentarios){				
+				boolean editable = true;
+				String nombreUsuario;
+				if( LocalDateTime.now().getYear() - c.getFecha().getYear() >= 1) {
+					editable = false;
+				} else if( LocalDateTime.now().getMonthValue() - c.getFecha().getMonthValue() >= 1) {
+					editable = false;
+				} else if( LocalDateTime.now().getDayOfMonth() - c.getFecha().getDayOfMonth() >= 1) {
+					editable = false;
+				} else if( LocalDateTime.now().getHour() - c.getHora() >= 1) {
+					editable = false;
+				} else if( LocalDateTime.now().getMinute() - c.getMinuto() >= 30) {
+					editable = false;
+				} 
+				if(Sistema.sistema.getUsuarioActual() == null) {
+					nombreUsuario = "";
+				} else {
+					nombreUsuario = Sistema.sistema.getUsuarioActual().getNombreUsuario();
+				}
+				if(c.getComentador().equals(nombreUsuario) ||  editable == false){
+					DefaultMutableTreeNode comentario = new DefaultMutableTreeNode(c);
+					root.add(comentario);
+					for (Comentario subc : c.getSubComentarios()) {
+						DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subc);
+						comentario.add(subNode);
+						((DefaultTreeModel)comentariosTree.getModel()).reload(comentario);
+						this.addToTree(subNode,subc);
+					}
+				}
 	        }
 		}
 		treeModel = new DefaultTreeModel(root);
@@ -265,10 +287,30 @@ public class ReproducirCancion extends PantallaPrincipal {
 	
 	public void addToTree(DefaultMutableTreeNode fatherNode, Comentario c) {
 		for (Comentario subc : c.getSubComentarios()) {
-			DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subc);
-            fatherNode.add(subNode);
-            ((DefaultTreeModel)comentariosTree.getModel()).reload(fatherNode);
-			this.addToTree(subNode,subc);
+			boolean editable = true;
+			String nombreUsuario;
+			if( LocalDateTime.now().getYear() - subc.getFecha().getYear() >= 1) {
+				editable = false;
+			} else if( LocalDateTime.now().getMonthValue() - subc.getFecha().getMonthValue() >= 1) {
+				editable = false;
+			} else if( LocalDateTime.now().getDayOfMonth() - subc.getFecha().getDayOfMonth() >= 1) {
+				editable = false;
+			} else if( LocalDateTime.now().getHour() - subc.getHora() >= 1) {
+				editable = false;
+			} else if( LocalDateTime.now().getMinute() - subc.getMinuto() >= 30) {
+				editable = false;
+			} 
+			if(Sistema.sistema.getUsuarioActual() == null) {
+				nombreUsuario = "";
+			} else {
+				nombreUsuario = Sistema.sistema.getUsuarioActual().getNombreUsuario();
+			}
+			if(subc.getComentador().equals(nombreUsuario) ||  editable == false){
+				DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subc);
+	            fatherNode.add(subNode);
+	            ((DefaultTreeModel)comentariosTree.getModel()).reload(fatherNode);
+				this.addToTree(subNode,subc);
+			}
           }
 	}
 
