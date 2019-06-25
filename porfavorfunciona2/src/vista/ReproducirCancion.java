@@ -242,6 +242,10 @@ public class ReproducirCancion extends PantallaPrincipal {
 	}
 	
 	
+	/**
+	 * Funcion que crea y ordena el arbol desde el principio para luego ir introduciendo 
+	 * los diferentes comentarios que se van realizando sobre la cancion 
+	 */
 	public void setTree() {
 		root.removeAllChildren();
         //create the child nodes
@@ -279,6 +283,13 @@ public class ReproducirCancion extends PantallaPrincipal {
 	    }
 	}
 	
+	
+	/**
+	 * Funcion que añade un comentario pasado como argumento a un arbol que contiene todos los comentarios que se
+	 * han realizado sobre esa cancion
+	 * @param fatherNode: padre del nodo en donde se va a introducir el comentario
+	 * @param c: comentario el cual se va a introducir en el arbol
+	 */
 	public void addToTree(DefaultMutableTreeNode fatherNode, Comentario c) {
 		for (Comentario subc : c.getSubComentarios()) {
 			DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subc);
@@ -288,6 +299,11 @@ public class ReproducirCancion extends PantallaPrincipal {
           }
 	}
 
+	
+	/**
+	 * Funcion que cambia el texto de unos determinados botones para ponerlos el 
+	 * texto a lo necesario para cuando el usuario es el administrador
+	 */	
 	public void setAdministrador() {
 		super.getBotonIzquierdaArriba().setText("Ver Perfil");
 		super.getBotonIzquierdaMedio().setText("Inicio");
@@ -458,30 +474,61 @@ public class ReproducirCancion extends PantallaPrincipal {
 		return botonReportar;
 	}
 
+	/**
+	 * Funcion que devuelve el JButton  que representa el boton de modificar cancion
+	 * @return modificarCancion: atributo que representa la funcion de modificar una cancion
+	 */
 	public JButton getModificarCancion() {
 		return modificarCancion;
 	}
 
+	/**
+	 * Funcion que devuelve el JButton  que representa el boton de anyadir a un album
+	 * @return anyadirAlbum: atributo que representa la funcion de anyadira un album la cancion
+	 */
 	public JButton getAnyadirAlbum() {
 		return anyadirAlbum;
 	}
 
+	/**
+	 * Funcion que devuelve el JButton  que representa el boton de anyadir la cancion a una lista
+	 * @return anyadirLista: atributo que representa la funcion de anyadir la cancion a una lista
+	 */
 	public JButton getAnyadirLista() {
 		return anyadirLista;
 	}
-
+	
+	/**
+	 * Funcion que devuelve la dimension de la pantalla para ajustar la vista a la misma
+	 * @return screenSize: atributo que define el tamaño de la pantalla en la que se 
+	 * esta usando la aplicacion para ajustar la vista
+	 */
 	public Dimension getScreenSize() {
 		return screenSize;
 	}
-
+	
+	/**
+	 * Funcion que devuelve un array de comentarios con todos los comentarios que tiene la cancion
+	 * @return comentarios: atributo de tipo Comentario que contiene todos los comentarios que se han 
+	 * hecho sobre la cancion pertinente
+	 */
 	public Comentario[] getComentarios() {
 		return comentarios;
 	}
-
+	
+	/**
+	 * Funcion que devuelve un JTree con todos los comentarios en forma de arbol
+	 * @return comentariosTree: atributo de tipo JTree el cual contiene todos los comentarios
+	 */
 	 public JTree getComentariosTree() {
 		return comentariosTree;
 	}
 	
+	/**
+	 * Funcion que devuelve un Comentario seleccionado
+	 * @return comentarioSeleccionado: atributo de tipo comentario el cual devuelve 
+	 * un comentario seleccionado por el usuario
+	 */
 	public Comentario getComentarioSeleccionado() {
 			return comentarioSeleccionado;
 	}
