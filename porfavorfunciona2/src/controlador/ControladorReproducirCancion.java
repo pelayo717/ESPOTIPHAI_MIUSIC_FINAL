@@ -108,49 +108,57 @@ public class ControladorReproducirCancion implements ActionListener{
 			} else if(((JButton)e.getSource()).getText() == "Limpiar Buscador") {
 				vista.limpiarBuscador();
 			} else if((((JButton)e.getSource()).getText() == "Ver Comentario")) {
-				int response;
-				String[] options;
-				boolean editable = true;
-				if( LocalDateTime.now().getYear() - vista.getComentarioSeleccionado().getFecha().getYear() >= 1) {
-				} else if( LocalDateTime.now().getMonthValue() - vista.getComentarioSeleccionado().getFecha().getMonthValue() >= 1) {
-					editable = false;
-				} else if( LocalDateTime.now().getDayOfMonth() - vista.getComentarioSeleccionado().getFecha().getDayOfMonth() >= 1) {
-					editable = false;
-				} else if( LocalDateTime.now().getHour() - vista.getComentarioSeleccionado().getHora() >= 1) {
-					editable = false;
-				} else if( LocalDateTime.now().getMinute() - vista.getComentarioSeleccionado().getMinuto() >= 30) {
-					editable = false;
-				} 
+				 
 				if(vista.getComentarioSeleccionado() != null) {
-					if(vista.getComentarioSeleccionado().getComentador().equals(Sistema.sistema.getUsuarioActual().getNombreUsuario()) && editable ) {
-						options = new String[] {"Responder","Editar","Cerrar"};
-					} else if (vista.getComentarioSeleccionado().getComentador().equals(Sistema.sistema.getUsuarioActual().getNombreUsuario()) && !editable ) {
-						options = new String[] {"Responder","Eliminar","Cerrar"};
-					}  else {
-						options = new String[] {"Responder","Cerrar"};
+					
+					int response;
+					String[] options;
+					boolean editable = true;
+					if( LocalDateTime.now().getYear() - vista.getComentarioSeleccionado().getFecha().getYear() >= 1) {
+					} else if( LocalDateTime.now().getMonthValue() - vista.getComentarioSeleccionado().getFecha().getMonthValue() >= 1) {
+						editable = false;
+					} else if( LocalDateTime.now().getDayOfMonth() - vista.getComentarioSeleccionado().getFecha().getDayOfMonth() >= 1) {
+						editable = false;
+					} else if( LocalDateTime.now().getHour() - vista.getComentarioSeleccionado().getHora() >= 1) {
+						editable = false;
+					} else if( LocalDateTime.now().getMinute() - vista.getComentarioSeleccionado().getMinuto() >= 30) {
+						editable = false;
 					}
-					if(vista.getComentarioSeleccionado().getComentador() == null) {
-						response = JOptionPane.showOptionDialog(Ventana.ventana, "Autor: Desconocido" + "\nComentario: " + vista.getComentarioSeleccionado().getTexto() + "\nFecha: " + vista.getComentarioSeleccionado().getFecha() + "\nHora/Minuto/Segundo: " + vista.getComentarioSeleccionado().getHora() + "/" + vista.getComentarioSeleccionado().getMinuto() + "/" + vista.getComentarioSeleccionado().getSegundo(), "Comentario", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-					}else {
-						response = JOptionPane.showOptionDialog(Ventana.ventana, "Autor: " + vista.getComentarioSeleccionado().getComentador() + "\n" + "Comentario: " + vista.getComentarioSeleccionado().getTexto() + "\nFecha: " + vista.getComentarioSeleccionado().getFecha() + "\nHora/Minuto/Segundo: " + vista.getComentarioSeleccionado().getHora() + "/" + vista.getComentarioSeleccionado().getMinuto() + "/" + vista.getComentarioSeleccionado().getSegundo(), "Comentario", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-					}
-					if(response == 0) {
-						String comentarioEscrito = JOptionPane.showInputDialog("Escribe tu comentario");
-						if(comentarioEscrito.length() > 0) {
-							Comentario nuevoComentario = new Comentario(comentarioEscrito, Sistema.sistema.getUsuarioActual().getNombreUsuario());
-							vista.getComentarioSeleccionado().anyadirSubComentario(nuevoComentario);
-							vista.setTree();
-						}else {
-							JOptionPane.showMessageDialog(Ventana.ventana,"Debe escribir algo para que podamos añadir el comentario");
+					
+					if(Sistema.sistema.getUsuarioActual() != null) {
+						if(vista.getComentarioSeleccionado().getComentador().equals(Sistema.sistema.getUsuarioActual().getNombreUsuario()) && editable ) {
+							options = new String[] {"Responder","Editar","Cerrar"};
+						} else if (vista.getComentarioSeleccionado().getComentador().equals(Sistema.sistema.getUsuarioActual().getNombreUsuario()) && !editable ) {
+							options = new String[] {"Responder","Eliminar","Cerrar"};
+						}  else {
+							options = new String[] {"Responder","Cerrar"};
 						}
-					} else if (response == 1 && options[1] == "Eliminar") {
-						vista.getCancion().eliminarComentario(vista.getComentarioSeleccionado());
-						vista.setTree();
-					}  else if (response == 1 && options[1] == "Editar") {
-						String comentarioEscrito = JOptionPane.showInputDialog("Edita tu comentario", vista.getComentarioSeleccionado().getTexto());
-						vista.getComentarioSeleccionado().setTexto(comentarioEscrito);
-						vista.setTree();
+						if(vista.getComentarioSeleccionado().getComentador() == null) {
+							response = JOptionPane.showOptionDialog(Ventana.ventana, "Autor: Desconocido" + "\nComentario: " + vista.getComentarioSeleccionado().getTexto() + "\nFecha: " + vista.getComentarioSeleccionado().getFecha() + "\nHora/Minuto/Segundo: " + vista.getComentarioSeleccionado().getHora() + "/" + vista.getComentarioSeleccionado().getMinuto() + "/" + vista.getComentarioSeleccionado().getSegundo(), "Comentario", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+						}else {
+							response = JOptionPane.showOptionDialog(Ventana.ventana, "Autor: " + vista.getComentarioSeleccionado().getComentador() + "\n" + "Comentario: " + vista.getComentarioSeleccionado().getTexto() + "\nFecha: " + vista.getComentarioSeleccionado().getFecha() + "\nHora/Minuto/Segundo: " + vista.getComentarioSeleccionado().getHora() + "/" + vista.getComentarioSeleccionado().getMinuto() + "/" + vista.getComentarioSeleccionado().getSegundo(), "Comentario", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+						}
+						if(response == 0) {
+							String comentarioEscrito = JOptionPane.showInputDialog("Escribe tu comentario");
+							if(comentarioEscrito.length() > 0) {
+								Comentario nuevoComentario = new Comentario(comentarioEscrito, Sistema.sistema.getUsuarioActual().getNombreUsuario());
+								vista.getComentarioSeleccionado().anyadirSubComentario(nuevoComentario);
+								vista.setTree();
+							}else {
+								JOptionPane.showMessageDialog(Ventana.ventana,"Debe escribir algo para que podamos añadir el comentario");
+							}
+						} else if (response == 1 && options[1] == "Eliminar") {
+							vista.getCancion().eliminarComentario(vista.getComentarioSeleccionado());
+							vista.setTree();
+						}  else if (response == 1 && options[1] == "Editar") {
+							String comentarioEscrito = JOptionPane.showInputDialog("Edita tu comentario", vista.getComentarioSeleccionado().getTexto());
+							vista.getComentarioSeleccionado().setTexto(comentarioEscrito);
+							vista.setTree();
+						}	
+					}else {
+						JOptionPane.showMessageDialog(Ventana.ventana, "Autor: " + vista.getComentarioSeleccionado().getComentador() + "\n" + "Comentario: " + vista.getComentarioSeleccionado().getTexto() + "\nFecha: " + vista.getComentarioSeleccionado().getFecha() + "\nHora/Minuto/Segundo: " + vista.getComentarioSeleccionado().getHora() + "/" + vista.getComentarioSeleccionado().getMinuto() + "/" + vista.getComentarioSeleccionado().getSegundo());
 					}
+					
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Debe seleccionar un comentario para poder verlo o comentarlo");
 				}
@@ -284,14 +292,16 @@ public class ControladorReproducirCancion implements ActionListener{
 					File escogido = file.getSelectedFile();
 					 
 					
-					escogido.renameTo(new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName()));
-
-					String temporal = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName();
-
+					
 					//POR EL MOMENTO SUPONEMOS QUE SOLO ES COSA DEL MP3
 					Cancion c = vista.getCancion();
 					
 					try {
+						
+						escogido.renameTo(new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName()));
+
+						String temporal = System.getProperty("user.dir") + System.getProperty("file.separator") + "songs" + System.getProperty("file.separator") + escogido.getName();
+
 						if(Sistema.sistema.modificarCancion(c, temporal,escogido.getName()) == Status.OK) {
 							JOptionPane.showMessageDialog(Ventana.ventana,"La cancion " + c.getTitulo() + " ha sido modificada correctamente");
 							Ventana.ventana.showReproducirCancion(c);
