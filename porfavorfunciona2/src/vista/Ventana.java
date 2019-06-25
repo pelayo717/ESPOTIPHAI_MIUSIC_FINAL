@@ -236,9 +236,9 @@ public class Ventana extends JFrame { //99.9% esta terminado
 	    	if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getUsuarioActual().getAlbumes().contains(a) == true) {
 		    	this.reproducirAlbum.setUsuarioRegistradoPropia();
 	    	}else if(Sistema.sistema.getUsuarioActual() != null && Sistema.sistema.getUsuarioActual().getAlbumes().contains(a) == false){
-		    	this.reproducirAlbum.setUsuarioRegistradoPropia();
+		    	this.reproducirAlbum.setUsuarioRegistradoNoPropia();
 	    	}else {
-	    		this.reproducirAlbum.setUsuarioRegistradoNoPropia();
+	    		this.reproducirAlbum.setUsuarioNoRegistradoNoPropia();
 
 	    	}
 	    }

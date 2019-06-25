@@ -33,6 +33,7 @@ public class ControladorPantallaInicio implements ActionListener{
 	@SuppressWarnings("unused")
 	private int modelo;
 
+	
 	/**
 	 * Constructor de la clase en la que se inicializan todos los atributos de 
 	 * la clase dandoles los valores necesarios
@@ -159,7 +160,7 @@ public class ControladorPantallaInicio implements ActionListener{
 						Ventana.ventana.showBuscadorAutores(retornadas.toArray(new Contenido[retornadas.size()]));
 						
 					}else {
-						JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado contenido por ese nombre de autor");
+						JOptionPane.showMessageDialog(Ventana.ventana,"No se han encontrado contenidos por ese nombre de autor");
 					}
 				}else {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Introduzca un parametro de busqueda");
@@ -204,7 +205,7 @@ public class ControladorPantallaInicio implements ActionListener{
 							Ventana.ventana.showPantallaInicio();
 							JOptionPane.showMessageDialog(Ventana.ventana,"La cancion " + c.getTitulo() + " se ha creado correctamente");
 						}else {
-							JOptionPane.showMessageDialog(Ventana.ventana,"Hubo un problema con la creacion de la cancion");
+							JOptionPane.showMessageDialog(Ventana.ventana,"Hubo un problema con la creacion de la cancion, puede que ya tenga una cancion con ese nombre, o con el mismo fichero mp3");
 						}
 					}else {
 						JOptionPane.showMessageDialog(Ventana.ventana,"Se cancelo la creacion de la cancion");
@@ -212,7 +213,7 @@ public class ControladorPantallaInicio implements ActionListener{
 					
 				} catch (FileNotFoundException | Mp3PlayerException e1) {
 					JOptionPane.showMessageDialog(Ventana.ventana,"Ha escogido un fichero que no es de extension .mp3");
-					e1.printStackTrace();
+					//e1.printStackTrace();
 				}
 			 }else {
 				 JOptionPane.showMessageDialog(Ventana.ventana,"Debe iniciar sesion para crear canciones");
@@ -234,7 +235,7 @@ public class ControladorPantallaInicio implements ActionListener{
 							Ventana.ventana.showPantallaInicio();
 							JOptionPane.showMessageDialog(Ventana.ventana,"El album " + titulo.getText() +" se ha creado correctamente");
 						}else{
-					    	JOptionPane.showMessageDialog(Ventana.ventana,"Hubo un problema con la creacion del album");
+					    	JOptionPane.showMessageDialog(Ventana.ventana,"Hubo un problema con la creacion del album, puede ser que ya tenga uno con el mismo nombre");
 					    }
 				    }catch(NumberFormatException f1) {
 				    	//f1.printStackTrace();
@@ -264,13 +265,13 @@ public class ControladorPantallaInicio implements ActionListener{
 							Ventana.ventana.showPantallaInicio();
 							JOptionPane.showMessageDialog(Ventana.ventana,"La lista " + titulo +" se ha creado correctamente");
 						}else {
-							JOptionPane.showMessageDialog(Ventana.ventana,"Hubo un problema con la creacion de la lista");
+							JOptionPane.showMessageDialog(Ventana.ventana,"Hubo un problema con la creacion de la lista, puede que ya tenga alguna con el mismo nombre");
 						}
 					}else{
 						JOptionPane.showMessageDialog(Ventana.ventana,"Se cancelo la creacion de la lista");
 					}
 				} catch (FileNotFoundException | Mp3PlayerException e1) {
-					e1.printStackTrace();
+					//e1.printStackTrace();
 				}
 			 }else {
 				 JOptionPane.showMessageDialog(Ventana.ventana,"Debe iniciar sesion para crear listas");

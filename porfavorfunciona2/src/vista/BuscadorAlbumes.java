@@ -19,7 +19,7 @@ import modelo.contenido.Album;
  * lo necesario para cumplir los requisitos impuestos
  */
 
-public class BuscadorAlbumes extends PantallaPrincipal{//99.9% esta terminado
+public class BuscadorAlbumes extends PantallaPrincipal{
 
 	
 	private static final long serialVersionUID = 1L;

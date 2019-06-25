@@ -27,7 +27,7 @@ import modelo.usuario.Usuario;
  * Clase BuscadorAutores que extiende la clase de PantallaPrincipal y que implementa la 
  * vista que tiene como resultado la busqueda por autores
  */
-public class BuscadorAutores extends PantallaPrincipal {//99.9% esta terminado
+public class BuscadorAutores extends PantallaPrincipal {
 
 	
 	private static final long serialVersionUID = 1L;
@@ -402,7 +402,6 @@ public class BuscadorAutores extends PantallaPrincipal {//99.9% esta terminado
 	 * @return losContenidos: array de tipo Contenido que contiene todos los contenidos a devolver
 	 */
 	public Contenido[] getContenido() {
-		// TODO Auto-generated method stub
 		return this.losContenidos;
 	}
 

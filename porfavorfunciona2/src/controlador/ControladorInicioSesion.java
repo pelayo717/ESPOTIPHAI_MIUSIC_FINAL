@@ -14,7 +14,7 @@ import vista.Ventana;
  * teniendo en cuenta todos los casos posibles en los que el usuario realiza
  * una accion u otra y asignando el controlador determinado a la accion realizada
  */
-public class ControladorInicioSesion implements ActionListener{ //99.9% esta terminada
+public class ControladorInicioSesion implements ActionListener{
 		private InicioSesion vista;
 		@SuppressWarnings("unused")
 		private int modelo;

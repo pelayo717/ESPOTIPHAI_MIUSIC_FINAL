@@ -8,7 +8,7 @@ import javax.swing.*;
  * Clase en la que se implementa la vista de Registrarse con todo
  * lo necesario para cumplir los requisitos impuestos
  */
-public class Registrarse extends JPanel{ //99.9% esta terminado
+public class Registrarse extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
 	public JButton botonInicio;

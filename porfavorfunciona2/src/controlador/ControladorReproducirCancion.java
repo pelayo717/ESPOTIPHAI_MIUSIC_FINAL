@@ -125,11 +125,13 @@ public class ControladorReproducirCancion implements ActionListener{
 					} else if( LocalDateTime.now().getMinute() - vista.getComentarioSeleccionado().getMinuto() >= 30) {
 						editable = false;
 					}
+					
 					if(Sistema.sistema.getUsuarioActual() == null) {
 						nombreUsuario = "";
 					} else {
 						nombreUsuario = Sistema.sistema.getUsuarioActual().getNombreUsuario();
 					}
+					
 					if (nombreUsuario.equals("")) {
 						options = new String[] {"Cerrar"};
 					} else if(vista.getComentarioSeleccionado().getComentador().equals(nombreUsuario) && editable ) {
@@ -223,18 +225,16 @@ public class ControladorReproducirCancion implements ActionListener{
 						JOptionPane.showMessageDialog(Ventana.ventana,"Esta cancion esta bloqueada o ha sido eliminada del sistema");
 					}
 					
-					//Sistema.sistema.setReproductor(vista.getCancion().getReproductor());
 
 				} catch (InterruptedException e1) {
-					e1.printStackTrace();
+					//e1.printStackTrace();
 				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
+					//e1.printStackTrace();
 				} catch (Mp3PlayerException e1) {
-					e1.printStackTrace();
+					//e1.printStackTrace();
 				}
 			} else if(((JButton)e.getSource()).getText() == "pause") {
 				vista.getCancion().parar();
-				Sistema.sistema.setReproductor(null);
 			} else if(((JButton)e.getSource()).getText() == "Añadir a Album") {
 				
 				if(Sistema.sistema.getUsuarioActual() != null) {
@@ -325,7 +325,7 @@ public class ControladorReproducirCancion implements ActionListener{
 						}
 					} catch (HeadlessException | FileNotFoundException e1) {
 						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						//e1.printStackTrace();
 					}
 			    	
 			    }else {

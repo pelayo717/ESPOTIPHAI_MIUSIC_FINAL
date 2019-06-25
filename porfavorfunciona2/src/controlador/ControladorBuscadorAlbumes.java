@@ -15,7 +15,7 @@ import vista.BuscadorAlbumes;
 import vista.Ventana;
 
 /**
- * Clase que implementa el controlador de la clase BuscadorAutores 
+ * Clase que implementa el controlador de la clase BuscadorAlbumes 
  * teniendo en cuenta todos los casos posibles en los que el usuario realiza
  * una accion u otra y asignando el controlador determinado a la accion realizada
  * 
@@ -46,6 +46,7 @@ public class ControladorBuscadorAlbumes implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
 		if(((JButton)e.getSource()).getText() == "Elegir Album") {		
 			
 			if(vista.getAlbum().length > 0) {
@@ -61,7 +62,8 @@ public class ControladorBuscadorAlbumes implements ActionListener {
 				
 			}else {
 				JOptionPane.showMessageDialog(Ventana.ventana,"No hay canciones para seleccionar");
-			}						
+			}
+			
 		}  else if(((JButton)e.getSource()).getText() == "Ver Perfil") {
 			Ventana.ventana.showPerfil();
 		} else if(((JButton)e.getSource()).getText() == "Iniciar Sesion") {

@@ -5,7 +5,6 @@ import modelo.contenido.*;
 import modelo.reporte.*;
 import modelo.status.*;
 import modelo.usuario.*;
-import pads.musicPlayer.Mp3Player;
 import pads.musicPlayer.exceptions.Mp3PlayerException;
 
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ import java.time.Period;
  * La clase sistema es la encargada de trabajar con objetos de la clase Contenido que permite reproducirlos, pararlos asi como comentarlos y otras multiples funcionalidades. Por otra parte
  * esta clase es la encargada de gestionar los usuarios. Permite iniciar sesion y registrarse a todos los que no lo hicieron y les proporciona diferentes actividades dependiendo del tipo de usuario
  * que sea cada uno de este modo, aquellos interesados podran disponer de una version mejorada pagando de manera menusal o obtenerla mediante unos requisitos.
- * @author: Pelayo Rodriguez Aviles
+ * @author Pelayo Rodriguez Aviles
  * @version: 24/03/2019
  */
 
@@ -45,7 +44,6 @@ public class Sistema implements Serializable{
 	private double precio_premium = 9.9;
 	private int max_reproducciones_usuarios_no_premium = 4;
 	private int contenido_escuchado_sin_registrarse = 0;
-	private Mp3Player reproductorSonando;
 	
 	/**
 	 * Constructor de la clase sistema, se encarga de inicializar los datos que seran mas tarde utilizados
@@ -65,7 +63,7 @@ public class Sistema implements Serializable{
 	 */
 	public static Sistema getSistema() throws Mp3PlayerException, IOException {
 		if(sistema == null) {
-			File archivo = new File("datos.obj");		
+			File archivo = new File("datos.ser");		
 			if(archivo.exists() == true) {
 				sistema = new Sistema();
 				sistema = Sistema.cargarDatosGenerales();
@@ -175,13 +173,7 @@ public class Sistema implements Serializable{
 	/*======================FUNCIONES GENERALES DE SETTERS=============================*/
 	/*=================================================================================*/
 	
-	public void setReproductor(Mp3Player aux) {
-		this.reproductorSonando = aux;
-	}
 	
-	public Mp3Player getReproductor() {
-		return this.reproductorSonando;
-	}
 	
 	/**
 	 * Esta funcion establece el umbral de reproducciones que debe superar un autor para pasar al estado de premium, y solo es aplicable a aquellos usuarios que estan registrados
@@ -969,6 +961,11 @@ public class Sistema implements Serializable{
 			sistema.usuario_actual.anyadirAAlbumesPersonales(a);
 			sistema.albumes_totales.add(a);
 
+			for(Usuario u_t:sistema.getUsuariosTotales()) {
+				if(u_t.getSeguidos().contains(sistema.getUsuarioActual()) == true) {
+					sistema.getUsuarioActual().enviarNotificacion(u_t, "El autor " + sistema.getUsuarioActual().getNombreAutor() + " ha subido el album "+ titulo);
+				}
+			}
 			return a;
 			
 		}else {
@@ -1082,6 +1079,12 @@ public class Sistema implements Serializable{
 								}
 								
 								if(album.anyadirContenido(c) == Status.OK) {
+									
+									for(Usuario u_t:sistema.getUsuariosTotales()) {
+										if(u_t.getSeguidos().contains(c.getAutor()) == true) {
+											sistema.getUsuarioActual().enviarNotificacion(u_t, "El autor " + sistema.getUsuarioActual().getNombreAutor() + " ha añadido una cancion al album " + a.getTitulo());
+										}
+									}
 									return Status.OK;
 								}									
 							}
@@ -1123,6 +1126,11 @@ public class Sistema implements Serializable{
 							for(Cancion canciones_album:canciones_en_album) {
 								if(canciones_album.getTitulo().equals(c.getTitulo()) == true && canciones_album.getNombreMP3().equals(c.getNombreMP3()) == true) {
 									if(album.eliminarContenido(c) == Status.OK) {
+										for(Usuario u_t:sistema.getUsuariosTotales()) {
+											if(u_t.getSeguidos().contains(c.getAutor()) == true) {
+												sistema.getUsuarioActual().enviarNotificacion(u_t, "El autor " + sistema.getUsuarioActual().getNombreAutor() + " ha retirado una cancion del album " + a.getTitulo());
+											}
+										}
 										return Status.OK;
 									}
 								}
@@ -1280,7 +1288,7 @@ public class Sistema implements Serializable{
 	public Status guardarDatosGenerales() throws IOException {
 		
 		try {
-			FileOutputStream fileOut = new FileOutputStream("datos.obj");
+			FileOutputStream fileOut = new FileOutputStream("datos.ser");
 			ObjectOutputStream oos = new ObjectOutputStream(fileOut);
 			oos.writeObject(this);
 			oos.flush();
@@ -1306,7 +1314,7 @@ public class Sistema implements Serializable{
 	public static Sistema cargarDatosGenerales(){
 		
 		try {
-			FileInputStream in = new FileInputStream("datos.obj");
+			FileInputStream in = new FileInputStream("datos.ser");
 			ObjectInputStream oin = new ObjectInputStream(in);
 			Sistema s1 = (Sistema) oin.readObject();
 			oin.close();

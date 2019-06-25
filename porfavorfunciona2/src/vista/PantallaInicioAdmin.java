@@ -26,7 +26,7 @@ import modelo.sistema.Sistema;
  * Clase en la que se implementa la vista PantallaInicioAdmin que extiende 
  * PantallaPrincipalcon todo lo necesario para cumplir los requisitos impuestos
  */
-public class PantallaInicioAdmin extends PantallaPrincipal{ //99.9% esta terminado
+public class PantallaInicioAdmin extends PantallaPrincipal{
 
 
 	private static final long serialVersionUID = 1L;

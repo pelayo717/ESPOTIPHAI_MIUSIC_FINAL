@@ -23,7 +23,6 @@ public class Perfil extends JPanel{
 	public JButton botonHacersePRO;
 	public JButton seleccionarNotificacion;
 	 
-	
 	private String nombre_autor;
 	private LocalDate fecha_nacimiento;
 	private String nombre_usuario;

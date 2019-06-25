@@ -19,7 +19,7 @@ import vista.Ventana;
  * teniendo en cuenta todos los casos posibles en los que el usuario realiza
  * una accion u otra y asignando el controlador determinado a la accion realizada
  */
-public class ControladorRegistrarse implements ActionListener{//99.9% esta terminado
+public class ControladorRegistrarse implements ActionListener{
 		private Registrarse vista;
 		@SuppressWarnings("unused")
 		private int modelo;

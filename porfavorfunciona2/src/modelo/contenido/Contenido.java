@@ -28,8 +28,8 @@ public abstract class Contenido implements Serializable {
 	
 	/**
 	 * Constructor de Contenido
-	 * @param estado  estado de la cancion
-	 * @param reproducible  si la cacion es o no reproducible
+	 * @param estado:  estado de la cancion
+	 * @param reproducible:  si la cacion es o no reproducible
 	 * @throws Mp3PlayerException 
 	 * @throws FileNotFoundException 
 	 */

@@ -24,7 +24,7 @@ import vista.Ventana;
  * teniendo en cuenta todos los casos posibles en los que el usuario realiza
  * una accion u otra y asignando el controlador determinado a la accion realizada
  */
-public class ControladorPantallaInicioAdmin implements ActionListener{//99.9% esta terminado
+public class ControladorPantallaInicioAdmin implements ActionListener{
 	private PantallaInicioAdmin vista;
 	@SuppressWarnings("unused")
 	private int modelo;
@@ -70,7 +70,6 @@ public class ControladorPantallaInicioAdmin implements ActionListener{//99.9% es
 					if(a == 0){								
 						try {								
 							canciones_totales[indice].reproducirCancion();
-							Sistema.sistema.setReproductor(canciones_totales[indice].getReproductor());
 						} catch (InterruptedException e1) {
 							e1.printStackTrace();
 						} catch (FileNotFoundException e1) {
@@ -80,7 +79,6 @@ public class ControladorPantallaInicioAdmin implements ActionListener{//99.9% es
 						}
 					}else {
 						canciones_totales[indice].parar();
-						Sistema.sistema.setReproductor(null);
 					}
 					
 				}

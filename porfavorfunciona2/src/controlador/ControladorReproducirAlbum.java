@@ -193,7 +193,6 @@ public class ControladorReproducirAlbum implements ActionListener{
 				
 			} else if(((JButton)e.getSource()).getText() == "play") {				
 				try {
-					Sistema.sistema.setReproductor(vista.getAlbum().getReproductor());
 					EstadoReproduccion  variable = vista.getAlbum().reproducirAlbum();
 					if( variable == EstadoReproduccion.MENOR) {
 						JOptionPane.showMessageDialog(Ventana.ventana,"El album tiene contenido explicito que no esta autorizado a escuchar");
@@ -209,16 +208,15 @@ public class ControladorReproducirAlbum implements ActionListener{
 					
 					
 				} catch (InterruptedException e1) {
-					e1.printStackTrace();
+				//	e1.printStackTrace();
 				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
+				//	e1.printStackTrace();
 				} catch (Mp3PlayerException e1) {
-					e1.printStackTrace();
+				//	e1.printStackTrace();
 				}
 				
 				
 			} else if(((JButton)e.getSource()).getText() == "pause") {
-				Sistema.sistema.setReproductor(null);
 				vista.getAlbum().parar();
 			
 			} else if(((JButton)e.getSource()).getText() == "Retirar Cancion") {

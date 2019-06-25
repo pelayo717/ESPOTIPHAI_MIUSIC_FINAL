@@ -27,7 +27,7 @@ import modelo.contenido.Lista;
  * Clase en la que se implementa la vista PantallaInicio con todo
  * lo necesario para cumplir los requisitos impuestos
  */
-public class PantallaInicio extends PantallaPrincipal { //99.9% esta terminado
+public class PantallaInicio extends PantallaPrincipal {
 
 	private static final long serialVersionUID = 1L;
 	private JScrollPane canciones;

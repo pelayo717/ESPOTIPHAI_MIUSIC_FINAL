@@ -18,7 +18,7 @@ import vista.Ventana;
  * teniendo en cuenta todos los casos posibles en los que el usuario realiza
  * una accion u otra y asignando el controlador determinado a la accion realizada
  */
-public class ControladorPerfil implements ActionListener{//99.9% esta terminado
+public class ControladorPerfil implements ActionListener{
 		private Perfil vista;
 		@SuppressWarnings("unused")
 		private int modelo;
@@ -55,16 +55,14 @@ public class ControladorPerfil implements ActionListener{//99.9% esta terminado
 				try {
 					int a=JOptionPane.showConfirmDialog(Ventana.ventana,"¿Esta seguro que desea cerrar la sesion?","Alert",JOptionPane.WARNING_MESSAGE);  
 					if(a == JOptionPane.YES_OPTION) {
-						if(Sistema.sistema.getReproductor() != null) {
-							Sistema.sistema.getReproductor().stop();
-						}
+						
 						Sistema.sistema.cerrarSesion();
 						Ventana.ventana.showPantallaInicio();
 					}else {
 						Ventana.ventana.showPerfil();
 					}
 				} catch (IOException e1) {
-					e1.printStackTrace();
+					//e1.printStackTrace();
 				}
 			} else if(((JButton)e.getSource()).getText() == "Eliminar Cuenta") {
 				int a=JOptionPane.showConfirmDialog(Ventana.ventana,"¿Esta seguro que desea eliminar su cuenta?","Alert",JOptionPane.WARNING_MESSAGE);  

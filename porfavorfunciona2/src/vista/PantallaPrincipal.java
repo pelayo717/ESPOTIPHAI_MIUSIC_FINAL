@@ -7,7 +7,7 @@ import javax.swing.*;
  * Clase en la que se implementa la vista PantallaPrincipal con todo
  * lo necesario para cumplir los requisitos impuestos
  */
-public class PantallaPrincipal extends JPanel{ //99.9% esta terminado
+public class PantallaPrincipal extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
 	private  JButton botonIzquierdaArriba;   
