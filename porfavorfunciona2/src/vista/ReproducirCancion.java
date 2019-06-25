@@ -239,6 +239,7 @@ public class ReproducirCancion extends PantallaPrincipal {
 		if(comentarios != null) {
 			for (Comentario c : comentarios){				
 				boolean editable = true;
+				String nombreUsuario;
 				if( LocalDateTime.now().getYear() - c.getFecha().getYear() >= 1) {
 					editable = false;
 				} else if( LocalDateTime.now().getMonthValue() - c.getFecha().getMonthValue() >= 1) {
@@ -250,7 +251,12 @@ public class ReproducirCancion extends PantallaPrincipal {
 				} else if( LocalDateTime.now().getMinute() - c.getMinuto() >= 30) {
 					editable = false;
 				} 
-				if(c.getComentador().equals(Sistema.sistema.getUsuarioActual().getNombreUsuario()) ||  editable == false){
+				if(Sistema.sistema.getUsuarioActual() == null) {
+					nombreUsuario = "";
+				} else {
+					nombreUsuario = Sistema.sistema.getUsuarioActual().getNombreUsuario();
+				}
+				if(c.getComentador().equals(nombreUsuario) ||  editable == false){
 					DefaultMutableTreeNode comentario = new DefaultMutableTreeNode(c);
 					root.add(comentario);
 					for (Comentario subc : c.getSubComentarios()) {
@@ -282,6 +288,7 @@ public class ReproducirCancion extends PantallaPrincipal {
 	public void addToTree(DefaultMutableTreeNode fatherNode, Comentario c) {
 		for (Comentario subc : c.getSubComentarios()) {
 			boolean editable = true;
+			String nombreUsuario;
 			if( LocalDateTime.now().getYear() - subc.getFecha().getYear() >= 1) {
 				editable = false;
 			} else if( LocalDateTime.now().getMonthValue() - subc.getFecha().getMonthValue() >= 1) {
@@ -293,7 +300,12 @@ public class ReproducirCancion extends PantallaPrincipal {
 			} else if( LocalDateTime.now().getMinute() - subc.getMinuto() >= 30) {
 				editable = false;
 			} 
-			if(subc.getComentador().equals(Sistema.sistema.getUsuarioActual().getNombreUsuario()) ||  editable == false){
+			if(Sistema.sistema.getUsuarioActual() == null) {
+				nombreUsuario = "";
+			} else {
+				nombreUsuario = Sistema.sistema.getUsuarioActual().getNombreUsuario();
+			}
+			if(subc.getComentador().equals(nombreUsuario) ||  editable == false){
 				DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(subc);
 	            fatherNode.add(subNode);
 	            ((DefaultTreeModel)comentariosTree.getModel()).reload(fatherNode);

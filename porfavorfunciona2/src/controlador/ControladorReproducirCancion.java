@@ -111,6 +111,7 @@ public class ControladorReproducirCancion implements ActionListener{
 				int response;
 				String[] options;
 				boolean editable = true;
+				String nombreUsuario;
 				if( LocalDateTime.now().getYear() - vista.getComentarioSeleccionado().getFecha().getYear() >= 1) {
 					editable = false;
 				} else if( LocalDateTime.now().getMonthValue() - vista.getComentarioSeleccionado().getFecha().getMonthValue() >= 1) {
@@ -121,11 +122,16 @@ public class ControladorReproducirCancion implements ActionListener{
 					editable = false;
 				} else if( LocalDateTime.now().getMinute() - vista.getComentarioSeleccionado().getMinuto() >= 30) {
 					editable = false;
-				} 
+				}
+				if(Sistema.sistema.getUsuarioActual() == null) {
+					nombreUsuario = "";
+				} else {
+					nombreUsuario = Sistema.sistema.getUsuarioActual().getNombreUsuario();
+				}
 				if(vista.getComentarioSeleccionado() != null) {
-					if(vista.getComentarioSeleccionado().getComentador().equals(Sistema.sistema.getUsuarioActual().getNombreUsuario()) && editable ) {
+					if(vista.getComentarioSeleccionado().getComentador().equals(nombreUsuario) && editable ) {
 						options = new String[] {"Responder","Editar","Cerrar"};
-					} else if (vista.getComentarioSeleccionado().getComentador().equals(Sistema.sistema.getUsuarioActual().getNombreUsuario()) && !editable ) {
+					} else if (vista.getComentarioSeleccionado().getComentador().equals(nombreUsuario) && !editable ) {
 						options = new String[] {"Responder","Eliminar","Cerrar"};
 					}  else {
 						options = new String[] {"Responder","Cerrar"};
