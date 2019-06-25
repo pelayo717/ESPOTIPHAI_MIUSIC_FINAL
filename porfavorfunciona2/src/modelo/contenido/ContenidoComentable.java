@@ -46,7 +46,6 @@ public abstract class ContenidoComentable extends Contenido {
 	 */
 	public Status eliminarComentario(Comentario comentario) {
 		if(comentario == null) {
-			System.out.println("no hay comentario");
 			return Status.ERROR;
 		}
 		if (this.comentarios.contains(comentario)) {

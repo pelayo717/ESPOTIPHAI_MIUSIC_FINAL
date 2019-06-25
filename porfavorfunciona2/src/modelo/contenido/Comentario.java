@@ -60,7 +60,10 @@ public class Comentario implements Serializable{
 		}
 	}
 	
-	
+	/**
+	 *	Funcion para buscar y eliminar un subcomentario y sus subcomentarios
+	 * 	@return  OK si no hay errores y ERROR de lo contrario
+	 */
 	public Status buscarYEliminarSubComentario(Comentario comentario){
 		if (this.subComentarios.isEmpty() == false){
 			for(Iterator<Comentario> iteratorComentario = this.subComentarios.iterator(); iteratorComentario.hasNext();) {
